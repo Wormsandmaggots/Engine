@@ -1,0 +1,33 @@
+"D:\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -DASSIMP_WARNINGS_AS_ERRORS:BOOL=OFF -DCMAKE_TOOLCHAIN_FILE=C:\Users\Radek\.vcpkg-clion\vcpkg\scripts\buildsystems\vcpkg.cmake -G Ninja -S D:\Projects\C++\Engine -B D:\Projects\C++\Engine\cmake-build-debug
+CMake Deprecation Warning at cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:6 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Warning (dev) at cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:8 (project):
+  Policy CMP0048 is not set: project() command manages VERSION variables.
+  Run "cmake --help-policy CMP0048" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  The following variable(s) would be set to empty:
+
+    PROJECT_VERSION
+    PROJECT_VERSION_MAJOR
+    PROJECT_VERSION_MINOR
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Building for Windows target system
+-- Building with GNU compiler
+CMake Error at D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/FindPackageHandleStandardArgs.cmake:230 (message):
+  Could NOT find Freetype (missing: FREETYPE_LIBRARY FREETYPE_INCLUDE_DIRS)
+Call Stack (most recent call first):
+  D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)
+  D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/FindFreetype.cmake:162 (find_package_handle_standard_args)
+  C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake:859 (_find_package)
+  cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:100 (find_package)
+
+
+-- Configuring incomplete, errors occurred!

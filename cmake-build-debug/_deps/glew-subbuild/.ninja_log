@@ -1,0 +1,21 @@
+# ninja log v5
+0	53	7320563903156930	glew-populate-prefix/src/glew-populate-stamp/glew-populate-mkdir	69966c7ebe26902d
+0	28205	7320565149925541	glew-populate-prefix/src/glew-populate-stamp/glew-populate-download	4456a926234618ab
+0	53	7320563903156930	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-mkdir	69966c7ebe26902d
+0	28205	7320565149925541	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-download	4456a926234618ab
+375	433	7321963298511546	glew-populate-prefix/src/glew-populate-stamp/glew-populate-test	872adc7081111b12
+1	147	0	glew-populate-prefix/src/glew-populate-stamp/glew-populate-update	120349595eff88de
+375	433	7321963298511546	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-test	872adc7081111b12
+1	147	0	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-update	120349595eff88de
+148	203	7321963296221024	glew-populate-prefix/src/glew-populate-stamp/glew-populate-patch	99ca78867aacbb59
+148	203	7321963296221024	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-patch	99ca78867aacbb59
+203	260	7321963296793182	glew-populate-prefix/src/glew-populate-stamp/glew-populate-configure	53d4a0b7450f56ac
+203	260	7321963296793182	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-configure	53d4a0b7450f56ac
+260	317	7321963297351699	glew-populate-prefix/src/glew-populate-stamp/glew-populate-build	220d3982da144b73
+260	317	7321963297351699	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-build	220d3982da144b73
+317	374	7321963297935397	glew-populate-prefix/src/glew-populate-stamp/glew-populate-install	eb2e554b57f69682
+317	374	7321963297935397	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-install	eb2e554b57f69682
+433	511	7321963299305428	CMakeFiles/glew-populate-complete	28e40c9c71b8ed3b
+433	511	7321963299305428	glew-populate-prefix/src/glew-populate-stamp/glew-populate-done	28e40c9c71b8ed3b
+433	511	7321963299305428	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/CMakeFiles/glew-populate-complete	28e40c9c71b8ed3b
+433	511	7321963299305428	D:/Projects/C++/Engine/cmake-build-debug/_deps/glew-subbuild/glew-populate-prefix/src/glew-populate-stamp/glew-populate-done	28e40c9c71b8ed3b

@@ -1,0 +1,14 @@
+# Target labels
+ assimp-populate
+# Source files and their labels
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/CMakeFiles/assimp-populate
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/CMakeFiles/assimp-populate.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/CMakeFiles/assimp-populate-complete.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-build.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-configure.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-download.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-install.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-mkdir.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-patch.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-test.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-subbuild/assimp-populate-prefix/src/assimp-populate-stamp/assimp-populate-update.rule

@@ -1,0 +1,14 @@
+# Target labels
+ spdlog-populate
+# Source files and their labels
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-download.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-mkdir.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update.rule

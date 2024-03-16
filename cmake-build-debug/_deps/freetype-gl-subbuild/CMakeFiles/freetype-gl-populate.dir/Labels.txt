@@ -1,0 +1,14 @@
+# Target labels
+ freetype-gl-populate
+# Source files and their labels
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/CMakeFiles/freetype-gl-populate
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/CMakeFiles/freetype-gl-populate.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/CMakeFiles/freetype-gl-populate-complete.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-build.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-configure.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-download.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-install.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-mkdir.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-patch.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-test.rule
+D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-subbuild/freetype-gl-populate-prefix/src/freetype-gl-populate-stamp/freetype-gl-populate-update.rule

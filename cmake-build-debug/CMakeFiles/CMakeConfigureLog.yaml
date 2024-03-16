@@ -1,0 +1,1276 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineSystem.cmake:211 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 10.0.22631 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/CLion 2023.3.4/bin/mingw/bin/gcc.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is GNU, found in:
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: D:/CLion 2023.3.4/bin/mingw/bin/g++.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+      
+      The CXX compiler identification is GNU, found in:
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdCXX/a.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_23c74
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj -c "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCCompilerABI.c"
+        Using built-in specs.
+        COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe
+        Target: x86_64-w64-mingw32
+        Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends
+        Thread model: posix
+        Supported LTO compression algorithms: zlib
+        gcc version 13.1.0 (GCC) 
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/'
+         D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_23c74.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\Radek\\AppData\\Local\\Temp\\ccICfB5r.s
+        GNU C17 (GCC) version 13.1.0 (x86_64-w64-mingw32)
+        	compiled by GNU C version 13.1.0, GMP version 6.2.1, MPFR version 4.2.0-p4, MPC version 1.3.1, isl version none
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include"
+        ignoring nonexistent directory "/win/include"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../include"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"
+        ignoring nonexistent directory "/mingw/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include
+        End of search list.
+        Compiler executable checksum: 2aa4fcf5c9208168c5e2d38a58fc2a97
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/'
+         as -v -o CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj C:\\Users\\Radek\\AppData\\Local\\Temp\\ccICfB5r.s
+        GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40
+        COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/
+        LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.'
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"  -v CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj -o cmTC_23c74.exe -Wl,--out-implib,libcmTC_23c74.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-neelyu && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu/cmTC_23c74.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        Using built-in specs.
+        COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe
+        COLLECT_LTO_WRAPPER=D:/CLion\\ 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe
+        Target: x86_64-w64-mingw32
+        Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends
+        Thread model: posix
+        Supported LTO compression algorithms: zlib
+        gcc version 13.1.0 (GCC) 
+        COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/
+        LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_23c74.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_23c74.'
+         D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_23c74.exe D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj --out-implib libcmTC_23c74.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_23c74.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_23c74.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
+        end of search list found
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include] ==> [D:/CLion 2023.3.4/bin/mingw/include]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include] ==> [D:/CLion 2023.3.4/bin/mingw/x86_64-w64-mingw32/include]
+        implicit include dirs: [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include;D:/CLion 2023.3.4/bin/mingw/include;D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed;D:/CLion 2023.3.4/bin/mingw/x86_64-w64-mingw32/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld\\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu']
+        ignore line: []
+        ignore line: [Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_23c74]
+        ignore line: [[1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj -c "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCCompilerABI.c"]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib]
+        ignore line: [gcc version 13.1.0 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/']
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_23c74.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\Radek\\AppData\\Local\\Temp\\ccICfB5r.s]
+        ignore line: [GNU C17 (GCC) version 13.1.0 (x86_64-w64-mingw32)]
+        ignore line: [	compiled by GNU C version 13.1.0  GMP version 6.2.1  MPFR version 4.2.0-p4  MPC version 1.3.1  isl version none]
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include"]
+        ignore line: [ignoring nonexistent directory "/win/include"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../include"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"]
+        ignore line: [ignoring nonexistent directory "/mingw/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: 2aa4fcf5c9208168c5e2d38a58fc2a97]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/']
+        ignore line: [ as -v -o CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj C:\\Users\\Radek\\AppData\\Local\\Temp\\ccICfB5r.s]
+        ignore line: [GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40]
+        ignore line: [COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.']
+        ignore line: [[2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"  -v CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj -o cmTC_23c74.exe -Wl --out-implib libcmTC_23c74.dll.a -Wl --major-image-version 0 --minor-image-version 0   && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-neelyu && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-neelyu/cmTC_23c74.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe]
+        ignore line: [COLLECT_LTO_WRAPPER=D:/CLion\\ 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib]
+        ignore line: [gcc version 13.1.0 (GCC) ]
+        ignore line: [COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_23c74.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_23c74.']
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_23c74.exe D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. CMakeFiles/cmTC_23c74.dir/CMakeCCompilerABI.c.obj --out-implib libcmTC_23c74.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_23c74.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_23c74.']
+        ignore line: []
+        ignore line: []
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3c75d
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe"   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj -c "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp"
+        Using built-in specs.
+        COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe
+        Target: x86_64-w64-mingw32
+        Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends
+        Thread model: posix
+        Supported LTO compression algorithms: zlib
+        gcc version 13.1.0 (GCC) 
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/'
+         D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_3c75d.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\Radek\\AppData\\Local\\Temp\\ccduH20i.s
+        GNU C++17 (GCC) version 13.1.0 (x86_64-w64-mingw32)
+        	compiled by GNU C version 13.1.0, GMP version 6.2.1, MPFR version 4.2.0-p4, MPC version 1.3.1, isl version none
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include"
+        ignoring nonexistent directory "/win/include"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../include"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"
+        ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"
+        ignoring nonexistent directory "/mingw/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed
+         D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include
+        End of search list.
+        Compiler executable checksum: e75de627edc3c57e31324b930b15b056
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/'
+         as -v -o CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\Radek\\AppData\\Local\\Temp\\ccduH20i.s
+        GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40
+        COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/
+        LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.'
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe"  -v CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_3c75d.exe -Wl,--out-implib,libcmTC_3c75d.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-fdcn7z && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z/cmTC_3c75d.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        Using built-in specs.
+        COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe
+        COLLECT_LTO_WRAPPER=D:/CLion\\ 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe
+        Target: x86_64-w64-mingw32
+        Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends
+        Thread model: posix
+        Supported LTO compression algorithms: zlib
+        gcc version 13.1.0 (GCC) 
+        COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/
+        LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_3c75d.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_3c75d.'
+         D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_3c75d.exe D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_3c75d.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_3c75d.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_3c75d.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+          add: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
+        end of search list found
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include] ==> [D:/CLion 2023.3.4/bin/mingw/include]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed] ==> [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+        collapse include dir [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include] ==> [D:/CLion 2023.3.4/bin/mingw/x86_64-w64-mingw32/include]
+        implicit include dirs: [D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++;D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32;D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward;D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include;D:/CLion 2023.3.4/bin/mingw/include;D:/CLion 2023.3.4/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed;D:/CLion 2023.3.4/bin/mingw/x86_64-w64-mingw32/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld\\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z']
+        ignore line: []
+        ignore line: [Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3c75d]
+        ignore line: [[1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe"   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj -c "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp"]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib]
+        ignore line: [gcc version 13.1.0 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/']
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_3c75d.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\Radek\\AppData\\Local\\Temp\\ccduH20i.s]
+        ignore line: [GNU C++17 (GCC) version 13.1.0 (x86_64-w64-mingw32)]
+        ignore line: [	compiled by GNU C version 13.1.0  GMP version 6.2.1  MPFR version 4.2.0-p4  MPC version 1.3.1  isl version none]
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include"]
+        ignore line: [ignoring nonexistent directory "/win/include"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../include"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"]
+        ignore line: [ignoring duplicate directory "D:/CLion 2023.3.4/bin/mingw/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"]
+        ignore line: [ignoring nonexistent directory "/mingw/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed]
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: e75de627edc3c57e31324b930b15b056]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/']
+        ignore line: [ as -v -o CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\Radek\\AppData\\Local\\Temp\\ccduH20i.s]
+        ignore line: [GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40]
+        ignore line: [COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [[2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe"  -v CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_3c75d.exe -Wl --out-implib libcmTC_3c75d.dll.a -Wl --major-image-version 0 --minor-image-version 0   && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-fdcn7z && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fdcn7z/cmTC_3c75d.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=D:\\CLion 2023.3.4\\bin\\mingw\\bin\\g++.exe]
+        ignore line: [COLLECT_LTO_WRAPPER=D:/CLion\\ 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: ../gcc-13.1.0/configure --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --build=x86_64-alpine-linux-musl --prefix=/win --enable-checking=release --enable-fully-dynamic-string --enable-languages=c,c++ --with-arch=nocona --with-tune=generic --enable-libatomic --enable-libgomp --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --enable-seh-exceptions --enable-shared --enable-static --enable-threads=posix --enable-version-specific-runtime-libs --disable-bootstrap --disable-graphite --disable-libada --disable-libstdcxx-pch --disable-libstdcxx-debug --disable-libquadmath --disable-lto --disable-nls --disable-multilib --disable-rpath --disable-symvers --disable-werror --disable-win32-registry --with-gnu-as --with-gnu-ld --with-system-libiconv --with-system-libz --with-gmp=/win/makedepends --with-mpfr=/win/makedepends --with-mpc=/win/makedepends]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib]
+        ignore line: [gcc version 13.1.0 (GCC) ]
+        ignore line: [COMPILER_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_3c75d.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_3c75d.']
+        ignore line: [ D:/CLion 2023.3.4/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_3c75d.exe D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LD:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. CMakeFiles/cmTC_3c75d.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_3c75d.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_3c75d.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_3c75d.']
+        ignore line: []
+        ignore line: []
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:35 (check_include_file)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ycc8n9"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ycc8n9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ycc8n9'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_ced64
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fno-strict-aliasing -fPIC   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_ced64.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ycc8n9/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  CMakeFiles/cmTC_ced64.dir/CheckIncludeFile.c.obj -o cmTC_ced64.exe -Wl,--out-implib,libcmTC_ced64.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ycc8n9 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ycc8n9/cmTC_ced64.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:36 (check_include_file)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jo7v7r"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jo7v7r"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jo7v7r'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_07dfb
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fno-strict-aliasing -fPIC   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_07dfb.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jo7v7r/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  CMakeFiles/cmTC_07dfb.dir/CheckIncludeFile.c.obj -o cmTC_07dfb.exe -Wl,--out-implib,libcmTC_07dfb.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-jo7v7r && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jo7v7r/cmTC_07dfb.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:37 (check_include_file)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c47vzr"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c47vzr"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c47vzr'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_a44ee
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fno-strict-aliasing -fPIC   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_a44ee.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c47vzr/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  CMakeFiles/cmTC_a44ee.dir/CheckIncludeFile.c.obj -o cmTC_a44ee.exe -Wl,--out-implib,libcmTC_a44ee.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-c47vzr && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c47vzr/cmTC_a44ee.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckTypeSize.cmake:146 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckTypeSize.cmake:271 (__check_type_size_impl)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:55 (check_type_size)"
+    checks:
+      - "Check size of off64_t"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-nnwtlh"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-nnwtlh"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_OFF64_T"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-nnwtlh'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_ea241
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DHAVE_STDDEF_H -DHAVE_STDINT_H -DHAVE_SYS_TYPES_H -D_LARGEFILE64_SOURCE=1  -fno-strict-aliasing -fPIC   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_ea241.dir/OFF64_T.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-nnwtlh/OFF64_T.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  CMakeFiles/cmTC_ea241.dir/OFF64_T.c.obj -o cmTC_ea241.exe -Wl,--out-implib,libcmTC_ea241.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-nnwtlh && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-nnwtlh/cmTC_ea241.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:64 (check_function_exists)"
+    checks:
+      - "Looking for fseeko"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-znmjg5"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-znmjg5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_FSEEKO"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-znmjg5'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_50af5
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fno-strict-aliasing -fPIC  -DCHECK_FUNCTION_EXISTS=fseeko -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_50af5.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-znmjg5/CheckFunctionExists.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  -DCHECK_FUNCTION_EXISTS=fseeko  CMakeFiles/cmTC_50af5.dir/CheckFunctionExists.c.obj -o cmTC_50af5.exe -Wl,--out-implib,libcmTC_50af5.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-znmjg5 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-znmjg5/cmTC_50af5.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/assimp-src/contrib/zlib/CMakeLists.txt:72 (check_include_file)"
+    checks:
+      - "Looking for unistd.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h8bok3"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h8bok3"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing -fPIC "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/assimp-src/cmake-modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "Z_HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h8bok3'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_18290
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fno-strict-aliasing -fPIC   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_18290.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h8bok3/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -fno-strict-aliasing -fPIC  CMakeFiles/cmTC_18290.dir/CheckIncludeFile.c.obj -o cmTC_18290.exe -Wl,--out-implib,libcmTC_18290.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-h8bok3 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h8bok3/cmTC_18290.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake:859 (_find_package)"
+      - "cmake-build-debug/_deps/glfw-src/CMakeLists.txt:60 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z2f3id"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z2f3id"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z2f3id'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_65ed8
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCMAKE_HAVE_LIBC_PTHREAD  -fdiagnostics-color=always -o CMakeFiles/cmTC_65ed8.dir/src.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z2f3id/src.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_65ed8.dir/src.c.obj -o cmTC_65ed8.exe -Wl,--out-implib,libcmTC_65ed8.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-z2f3id && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z2f3id/cmTC_65ed8.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/glfw-src/src/CMakeLists.txt:274 (check_include_file)"
+    checks:
+      - "Looking for dinput.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fsrghn"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fsrghn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "DINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fsrghn'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_8cf11
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fdiagnostics-color=always -o CMakeFiles/cmTC_8cf11.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fsrghn/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_8cf11.dir/CheckIncludeFile.c.obj -o cmTC_8cf11.exe -Wl,--out-implib,libcmTC_8cf11.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-fsrghn && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-fsrghn/cmTC_8cf11.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/glfw-src/src/CMakeLists.txt:275 (check_include_file)"
+    checks:
+      - "Looking for xinput.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i93m60"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i93m60"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "XINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i93m60'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_025bc
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fdiagnostics-color=always -o CMakeFiles/cmTC_025bc.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i93m60/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_025bc.dir/CheckIncludeFile.c.obj -o cmTC_025bc.exe -Wl,--out-implib,libcmTC_025bc.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-i93m60 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i93m60/cmTC_025bc.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "cmake-build-debug/_deps/glfw-src/src/CMakeLists.txt:318 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test _GLFW_HAS_DEP"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l0ra47"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l0ra47"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "_GLFW_HAS_DEP"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l0ra47'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3c018
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -D_GLFW_HAS_DEP  -Wl,--nxcompat -fdiagnostics-color=always -o CMakeFiles/cmTC_3c018.dir/src.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l0ra47/src.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -Wl,--nxcompat  CMakeFiles/cmTC_3c018.dir/src.c.obj -o cmTC_3c018.exe -Wl,--out-implib,libcmTC_3c018.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-l0ra47 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l0ra47/cmTC_3c018.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "cmake-build-debug/_deps/glfw-src/src/CMakeLists.txt:325 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test _GLFW_HAS_ASLR"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-buyvao"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-buyvao"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "_GLFW_HAS_ASLR"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-buyvao'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_da645
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -D_GLFW_HAS_ASLR  -Wl,--dynamicbase -fdiagnostics-color=always -o CMakeFiles/cmTC_da645.dir/src.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-buyvao/src.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -Wl,--dynamicbase  CMakeFiles/cmTC_da645.dir/src.c.obj -o cmTC_da645.exe -Wl,--out-implib,libcmTC_da645.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-buyvao && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-buyvao/cmTC_da645.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "cmake-build-debug/_deps/glfw-src/src/CMakeLists.txt:332 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test _GLFW_HAS_64ASLR"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-f12d1q"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-f12d1q"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings;D:/Projects/C++/Engine/cmake-build-debug/_deps/glfw-src/CMake/modules"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "_GLFW_HAS_64ASLR"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-f12d1q'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_644d1
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -D_GLFW_HAS_64ASLR  -Wl,--high-entropy-va -fdiagnostics-color=always -o CMakeFiles/cmTC_644d1.dir/src.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-f12d1q/src.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -Wl,--high-entropy-va  CMakeFiles/cmTC_644d1.dir/src.c.obj -o cmTC_644d1.exe -Wl,--out-implib,libcmTC_644d1.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-f12d1q && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-f12d1q/cmTC_644d1.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireIncludeFile.cmake:29 (check_include_file)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:51 (require_include_file)"
+    checks:
+      - "Looking for stdbool.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-18z2zf"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-18z2zf"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_STDBOOL_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-18z2zf'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3aadc
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_3aadc.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-18z2zf/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_3aadc.dir/CheckIncludeFile.c.obj -o cmTC_3aadc.exe -Wl,--out-implib,libcmTC_3aadc.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-18z2zf && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-18z2zf/cmTC_3aadc.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireIncludeFile.cmake:29 (check_include_file)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:53 (require_include_file)"
+    checks:
+      - "Looking for math.h"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-2irvoj"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-2irvoj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_MATH_H"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-2irvoj'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_17825
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_17825.dir/CheckIncludeFile.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-2irvoj/CheckIncludeFile.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_17825.dir/CheckIncludeFile.c.obj -o cmTC_17825.exe -Wl,--out-implib,libcmTC_17825.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-2irvoj && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-2irvoj/cmTC_17825.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:55 (check_library_exists)"
+    checks:
+      - "Looking for cos in m"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_MATH_LIBRARY"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_d10fb
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=cos -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_d10fb.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'cos'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61/CheckFunctionExists.c:1:1: note: 'cos' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=cos  CMakeFiles/cmTC_d10fb.dir/CheckFunctionExists.c.obj -o cmTC_d10fb.exe -Wl,--out-implib,libcmTC_d10fb.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-c2td61 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-c2td61/cmTC_d10fb.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:62 (require_function_exists)"
+    checks:
+      - "Looking for cos"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_COS"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_9cc0e
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=cos -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_9cc0e.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'cos'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6/CheckFunctionExists.c:1:1: note: 'cos' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=cos  CMakeFiles/cmTC_9cc0e.dir/CheckFunctionExists.c.obj -o cmTC_9cc0e.exe -Wl,--out-implib,libcmTC_9cc0e.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-58kdj6 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-58kdj6/cmTC_9cc0e.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:63 (require_function_exists)"
+    checks:
+      - "Looking for fabs"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_FABS"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_1b32d
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=fabs -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_1b32d.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'fabs'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m/CheckFunctionExists.c:1:1: note: 'fabs' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=fabs  CMakeFiles/cmTC_1b32d.dir/CheckFunctionExists.c.obj -o cmTC_1b32d.exe -Wl,--out-implib,libcmTC_1b32d.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-1vmt2m && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1vmt2m/cmTC_1b32d.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:64 (require_function_exists)"
+    checks:
+      - "Looking for floor"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_FLOOR"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_94d8c
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=floor -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_94d8c.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'floor'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl/CheckFunctionExists.c:1:1: note: 'floor' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=floor  CMakeFiles/cmTC_94d8c.dir/CheckFunctionExists.c.obj -o cmTC_94d8c.exe -Wl,--out-implib,libcmTC_94d8c.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-kmblrl && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-kmblrl/cmTC_94d8c.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:65 (require_function_exists)"
+    checks:
+      - "Looking for fmod"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_FMOD"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_cf695
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=fmod -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_cf695.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'fmod'; expected 'double(double,  double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym/CheckFunctionExists.c:1:1: note: 'fmod' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=fmod  CMakeFiles/cmTC_cf695.dir/CheckFunctionExists.c.obj -o cmTC_cf695.exe -Wl,--out-implib,libcmTC_cf695.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-lu1jym && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-lu1jym/cmTC_cf695.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:66 (require_function_exists)"
+    checks:
+      - "Looking for pow"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_POW"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3db33
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=pow -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_3db33.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'pow'; expected 'double(double,  double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc/CheckFunctionExists.c:1:1: note: 'pow' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=pow  CMakeFiles/cmTC_3db33.dir/CheckFunctionExists.c.obj -o cmTC_3db33.exe -Wl,--out-implib,libcmTC_3db33.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-l5b8jc && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-l5b8jc/cmTC_3db33.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:67 (require_function_exists)"
+    checks:
+      - "Looking for roundf"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_ROUNDF"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_693ff
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=roundf -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_693ff.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'roundf'; expected 'float(float)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos/CheckFunctionExists.c:1:1: note: 'roundf' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=roundf  CMakeFiles/cmTC_693ff.dir/CheckFunctionExists.c.obj -o cmTC_693ff.exe -Wl,--out-implib,libcmTC_693ff.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-80rlos && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-80rlos/cmTC_693ff.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:68 (require_function_exists)"
+    checks:
+      - "Looking for round"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_ROUND"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_a6049
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=round -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_a6049.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'round'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp/CheckFunctionExists.c:1:1: note: 'round' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=round  CMakeFiles/cmTC_a6049.dir/CheckFunctionExists.c.obj -o cmTC_a6049.exe -Wl,--out-implib,libcmTC_a6049.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-851uqp && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-851uqp/cmTC_a6049.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:69 (require_function_exists)"
+    checks:
+      - "Looking for sin"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_SIN"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_3aac1
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=sin -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_3aac1.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'sin'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46/CheckFunctionExists.c:1:1: note: 'sin' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=sin  CMakeFiles/cmTC_3aac1.dir/CheckFunctionExists.c.obj -o cmTC_3aac1.exe -Wl,--out-implib,libcmTC_3aac1.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-x8xf46 && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-x8xf46/cmTC_3aac1.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:70 (require_function_exists)"
+    checks:
+      - "Looking for sqrt"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_SQRT"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_ee473
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=sqrt -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_ee473.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'sqrt'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc/CheckFunctionExists.c:1:1: note: 'sqrt' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=sqrt  CMakeFiles/cmTC_ee473.dir/CheckFunctionExists.c.obj -o cmTC_ee473.exe -Wl,--out-implib,libcmTC_ee473.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-bet0sc && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-bet0sc/cmTC_ee473.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "cmake-build-debug/_deps/freetype-gl-src/cmake/Modules/RequireFunctionExists.cmake:22 (check_function_exists)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:71 (require_function_exists)"
+    checks:
+      - "Looking for tan"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_TAN"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_8b535
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -DCHECK_FUNCTION_EXISTS=tan -std=gnu99 -fdiagnostics-color=always -o CMakeFiles/cmTC_8b535.dir/CheckFunctionExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy/CheckFunctionExists.c
+        <command-line>: warning: conflicting types for built-in function 'tan'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy/CheckFunctionExists.c:7:3: note: in expansion of macro 'CHECK_FUNCTION_EXISTS'
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^~~~~~~~~~~~~~~~~~~~~
+        D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy/CheckFunctionExists.c:1:1: note: 'tan' is declared in header '<math.h>'
+          +++ |+#include <math.h>
+            1 | #ifdef CHECK_FUNCTION_EXISTS
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe" -DCHECK_FUNCTION_EXISTS=tan  CMakeFiles/cmTC_8b535.dir/CheckFunctionExists.c.obj -o cmTC_8b535.exe -Wl,--out-implib,libcmTC_8b535.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-952xwy && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-952xwy/cmTC_8b535.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckSymbolExists.cmake:140 (try_compile)"
+      - "D:/CLion 2023.3.4/bin/cmake/win/x64/share/cmake-3.27/Modules/CheckSymbolExists.cmake:66 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "cmake-build-debug/_deps/freetype-gl-src/CMakeLists.txt:73 (check_symbol_exists)"
+    checks:
+      - "Looking for M_PI"
+    directories:
+      source: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h0bpsd"
+      binary: "D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h0bpsd"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_MODULE_PATH: "D:/Projects/C++/Engine/cmake-build-debug/_deps/freetype-gl-src/cmake/Modules;D:/Projects/C++/Engine/cmake-build-debug/CPM_modules;D:/Projects/C++/Engine/settings"
+      VCPKG_APPLOCAL_DEPS: "ON"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "C:/Users/Radek/.vcpkg-clion/vcpkg"
+    buildResult:
+      variable: "HAVE_M_PI"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h0bpsd'
+        
+        Run Build Command(s): "D:/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -v cmTC_a9298
+        [1/2] "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   -fdiagnostics-color=always -o CMakeFiles/cmTC_a9298.dir/CheckSymbolExists.c.obj -c D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h0bpsd/CheckSymbolExists.c
+        [2/2] cmd.exe /C "cd . && "D:\\CLion 2023.3.4\\bin\\mingw\\bin\\gcc.exe"   CMakeFiles/cmTC_a9298.dir/CheckSymbolExists.c.obj -o cmTC_a9298.exe -Wl,--out-implib,libcmTC_a9298.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cmd.exe /C "cd /D D:\\Projects\\C++\\Engine\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-h0bpsd && C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/Radek/.vcpkg-clion/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary D:/Projects/C++/Engine/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-h0bpsd/cmTC_a9298.exe -installedDir C:/Users/Radek/.vcpkg-clion/vcpkg/installed/x64-windows/bin -OutVariable out""
+        
+      exitCode: 0
+...
