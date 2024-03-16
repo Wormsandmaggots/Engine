@@ -9,28 +9,12 @@ FetchContent_Declare(
 )
 
 
-FetchContent_Declare(
-        freetype
-        GIT_REPOSITORY freetype/freetype
-        GIT_TAG master
-)
-
-
-FetchContent_Declare(
-        freetype-gl
-        GIT_REPOSITORY https://github.com/rougier/freetype-gl.git
-        GIT_TAG master
-)
-
-
-FetchContent_MakeAvailable(freetype-gl)
 FetchContent_MakeAvailable(CPM)
 
 
 set(deps ${CMAKE_SOURCE_DIR}/cmake-build-debug/_deps)
 
 
-include(vcpkg)
 include(${deps}/cpm-src/cmake/CPM.cmake)
 
 
@@ -58,10 +42,9 @@ CPMAddPackage("gh:jbeder/yaml-cpp#0.8.0")
 CPMAddPackage("gh:nlohmann/json@3.11.3")
 CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
-#CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
+CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:mackron/miniaudio#0.11.21")
 CPMAddPackage("gh:iauns/cpm-glm-aabb#1.0.4")
-#CPMAddPackage("gh:rougier/freetype-gl#master")
 
 
 add_library(miniaudio INTERFACE)
@@ -99,7 +82,6 @@ set_target_properties(glad
         glm_aabb
         miniaudio
         effolkronium_random
-        freetype-gl
         PROPERTIES FOLDER "vendor")
 
 
