@@ -7,9 +7,9 @@ file(GLOB_RECURSE HEADER_FILES
         *.h
         *.hpp)
 
-
+#based on your ide set to different location
 file(GLOB_RECURSE dlls
-        ${CMAKE_SOURCE_DIR}/cmake-build-debug/_deps/*.dll)
+        ${CMAKE_CURRENT_BINARY_DIR}/../_deps/*.dll)
 
 
 file(GLOB_RECURSE ASSETS_FILES
@@ -50,9 +50,9 @@ target_link_libraries(${PROJECT_NAME}
         nlohmann_json::nlohmann_json
         yaml-cpp::yaml-cpp
         freetype
-        #miniaudio
-        #aabb
-        #random
+        miniaudio
+        glm_aabb
+        effolkronium_random
 )
 
 

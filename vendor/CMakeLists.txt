@@ -11,8 +11,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(CPM)
 
-
-set(deps ${CMAKE_SOURCE_DIR}/cmake-build-debug/_deps)
+#based on your ide set to different location
+set(deps ${CMAKE_CURRENT_BINARY_DIR}/../_deps)
 
 
 include(${deps}/cpm-src/cmake/CPM.cmake)
