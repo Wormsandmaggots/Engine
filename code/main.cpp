@@ -44,6 +44,15 @@ int main() {
     init_imgui();
 
     SetCallbacks(s.window);
+Transform* monke = CreateTransform("tire4");
+Scene scene;
+scene.addObjects(monke);
+
+    Transform* plane = CreateTransform("tire1");
+    scene.addObjects(plane);
+  
+
+Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 
     while (!glfwWindowShouldClose(s.window)) {
 
@@ -55,6 +64,11 @@ int main() {
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        shader.use();
+        shader.setMat4("view", s.camera.GetViewMatrix());
+        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+        shader.setMat4("projection", projection);
+        scene.UpdateTransform(shader);
 
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);

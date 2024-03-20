@@ -17,6 +17,7 @@
 #include "inc/Transform.h"
 #include "Engine/inc/JsonReader.h"
 #include "Engine/inc/Camera.h"
+#include "Engine/inc/Scene.h"
 
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
@@ -30,7 +31,7 @@ struct Settings{
     int32_t GL_VERSION_MINOR = 6;
 
     //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    std::string jsonSettingsFilePath = "res/settings.json";
+    std::string jsonSettingsFilePath = "res/content/maps/ExampleNotWorkingScene.json";
 
     float lastX = WINDOW_WIDTH / 2.0f;
     float lastY = WINDOW_HEIGHT / 2.0f;

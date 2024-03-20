@@ -214,7 +214,7 @@
       "y" : 1,
       "z" : 1},
 
-    "modelPath": "res/models/tire/untitled.obj"
+    "modelPath": "res/content/models/plane.obj"
   },
 
   "tire2" : {
@@ -280,7 +280,7 @@
       "z" : 1
     },
 
-    "modelPath": "res/models/tire/untitled.obj"
+    "modelPath": "res/content/models/monke.obj"
   },
 
   "door1" :
