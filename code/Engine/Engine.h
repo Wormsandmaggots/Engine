@@ -16,6 +16,7 @@
 #include "imgui_impl/imgui_impl_opengl3.h"
 #include "inc/Transform.h"
 #include "Engine/inc/JsonReader.h"
+#include "Engine/inc/Camera.h"
 
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
@@ -38,6 +39,7 @@ struct Settings{
 
     float deltaTime = 0.0f;	// time between current frame and last frame
     float lastFrame = 0.0f;
+    Camera camera;
 } s;
 
 int GLFWInit()
@@ -104,6 +106,104 @@ Transform* CreateTransform(std::string pathToObjectInJson)
                          j.ParseToVec3(pathToObjectInJson, "pos"),
                          j.ParseToVec3(pathToObjectInJson, "rot"),
                          j.ParseToVec3(pathToObjectInJson, "scale"));
+}
+
+static void glfw_error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
+float speed = 5;
+
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    //if(carMovement) return;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+
+        s.camera.ProcessKeyboard(FORWARD, s.deltaTime);
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+
+        s.camera.ProcessKeyboard(BACKWARD, s.deltaTime);
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        s.camera.ProcessKeyboard(LEFT, s.deltaTime);
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+
+        s.camera.ProcessKeyboard(RIGHT, s.deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        s.camera.ProcessKeyboard(UP, s.deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        s.camera.ProcessKeyboard(DOWN, s.deltaTime);
+    }
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
+
+// glfw: whenever the mouse moves, this callback is called
+// -------------------------------------------------------
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (s.firstMouse)
+    {
+        s.lastX = xpos;
+        s.lastY = ypos;
+        s.firstMouse = false;
+    }
+
+    float xoffset = xpos - s.lastX;
+    float yoffset = s.lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    s.lastX = xpos;
+    s.lastY = ypos;
+
+    s.camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+
+    s.camera.canMove = button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+// ----------------------------------------------------------------------
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    //if(carMovement) return;
+
+    s.camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+
+void SetCallbacks(GLFWwindow* window)
+{
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
 }
 
 #endif //ENGINE_ENGINE_H

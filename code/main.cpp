@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Engine/Engine.h"
 
-
 int main() {
 
     if(GLFWInit())
@@ -44,13 +43,15 @@ int main() {
 
     init_imgui();
 
+    SetCallbacks(s.window);
+
     while (!glfwWindowShouldClose(s.window)) {
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
 
-        //processInput(s.window);
+        processInput(s.window);
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -68,5 +69,4 @@ int main() {
     glfwTerminate();
 
     return 0;
-
 }
