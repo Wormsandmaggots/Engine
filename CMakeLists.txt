@@ -5,7 +5,7 @@ project(ENGINE VERSION 2.0)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/settings)
 
 
-#include(global_settings)
+include(global_settings)
 
 
 add_subdirectory(vendor)
