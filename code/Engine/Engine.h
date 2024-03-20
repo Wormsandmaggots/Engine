@@ -14,6 +14,8 @@
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
+#include "inc/Transform.h"
+#include "Engine/inc/JsonReader.h"
 
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
@@ -89,6 +91,19 @@ void init_imgui()
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
+}
+
+
+///!!!!!----------------------------->
+//USE THIS TO GET A TRANSFORM FROM A JSON
+JsonReader j(s.jsonSettingsFilePath);
+
+Transform* CreateTransform(std::string pathToObjectInJson)
+{
+    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
+                         j.ParseToVec3(pathToObjectInJson, "pos"),
+                         j.ParseToVec3(pathToObjectInJson, "rot"),
+                         j.ParseToVec3(pathToObjectInJson, "scale"));
 }
 
 #endif //ENGINE_ENGINE_H

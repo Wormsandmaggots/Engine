@@ -1,0 +1,331 @@
+{
+  "camera" :
+  {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : -10.0,
+      "z" : -90.0
+    },
+
+    "planetOffset" : {
+      "x" : 1,
+      "y" : 0,
+      "z" : 1
+    }
+  },
+
+  "box" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    },
+
+    "modelPath" : "res/models/Box/box.obj"
+  },
+
+  "roof" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 1.7,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1.2,
+      "y" : 0.7,
+      "z" : 1.2
+    },
+
+    "modelPath" : "res/models/Roof/roof.obj"
+  },
+
+  "plane" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : -1.1,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 100,
+      "y" : 100,
+      "z" : 100
+    },
+
+    "modelPath" : "res/models/Plane/plane.obj"
+  },
+
+  "point" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 5.0,
+      "z" : 2.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 2,
+      "y" : 2,
+      "z" : 2
+    },
+
+    "modelPath" : "res/models/cube/cube.obj"
+  },
+
+  "spot1" : {
+    "pos" : {
+      "x" : 10.0,
+      "y" : 1.0,
+      "z" : 5.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 2,
+      "y" : 2,
+      "z" : 2
+    },
+
+    "modelPath" : "res/models/cube/cube.obj"
+  },
+
+  "spot2" : {
+    "pos" : {
+      "x" : -10.0,
+      "y" : 2.0,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 2,
+      "y" : 2,
+      "z" : 2
+    },
+
+    "modelPath" : "res/models/cube/cube.obj"
+  },
+
+  "direct" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 10.0,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 2,
+      "y" : 2,
+      "z" : 2
+    },
+
+    "modelPath" : "res/models/cube/cube.obj"
+  },
+
+  "car" : {
+    "pos" : {
+      "x" : 0.0,
+      "y" : 10.0,
+      "z" : 0.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 2,
+      "y" : 2,
+      "z" : 2
+    },
+
+    "modelPath": "res/models/car/untitled.obj"
+  },
+
+  "tire1" : {
+    "pos" : {
+      "x" : 2,
+      "y" : -1.0,
+      "z" : 2.7
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1},
+
+    "modelPath": "res/models/tire/untitled.obj"
+  },
+
+  "tire2" : {
+    "pos" : {
+      "x" : -2.0,
+      "y" : -1.0,
+      "z" : 2.7
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1
+    },
+
+    "modelPath": "res/models/tire/untitled.obj"
+  },
+
+  "tire3" : {
+    "pos" : {
+      "x" : 2.0,
+      "y" : -1.0,
+      "z" : -2.7
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1
+    },
+
+    "modelPath": "res/models/tire/untitled.obj"
+  },
+
+  "tire4" : {
+    "pos" : {
+      "x" : -2.0,
+      "y" : -1.0,
+      "z" : -2.7
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1
+    },
+
+    "modelPath": "res/models/tire/untitled.obj"
+  },
+
+  "door1" :
+  {
+    "pos" : {
+      "x" : -2.0,
+      "y" : 0.0,
+      "z" : 2.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1
+    },
+
+    "modelPath": "res/models/door/untitled.obj"
+  },
+
+  "door2" :
+  {
+    "pos" : {
+      "x" : 2.15,
+      "y" : 0.0,
+      "z" : 2.0
+    },
+
+    "rot" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+
+    "scale" : {
+      "x" : 1,
+      "y" : 1,
+      "z" : 1
+    },
+
+    "modelPath": "res/models/door/untitled.obj"
+  }
+}
