@@ -7,17 +7,17 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
-#include "inc/Logger.h"
+#include "Logger.h"
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "stb_image.h"
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
-#include "inc/Transform.h"
-#include "Engine/inc/JsonReader.h"
-#include "Engine/inc/Camera.h"
-#include "Engine/inc/Scene.h"
+#include "Transform.h"
+#include "JsonReader.h"
+#include "Camera.h"
+#include "Scene.h"
 
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;

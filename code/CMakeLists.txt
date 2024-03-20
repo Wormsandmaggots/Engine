@@ -35,7 +35,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${glad_SOURCE_DIR}
         ${stb_image_SOURCE_DIR}
-        ${imgui_SOURCE_DIR})
+        ${imgui_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
+)
 
 
 target_link_libraries(${PROJECT_NAME}

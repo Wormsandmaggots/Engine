@@ -1,5 +1,5 @@
 #include <fstream>
-#include "../inc/JsonReader.h"
+#include "JsonReader.h"
 
 JsonReader::JsonReader(const std::string &path) : path(path) {
     ParseFile(this->path);
