@@ -7,7 +7,6 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
-#include "Logger.h"
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "stb_image.h"
@@ -17,8 +16,14 @@
 #include "Transform.h"
 #include "JsonReader.h"
 #include "Camera.h"
-#include "Scene.h"
+#include "Engine/inc/Scene.h"
+#include "Scene/Loader/YamlReader.h"
+#include "Scene/Loader/SceneLoader.h"
+#include "Scene/SceneManager.h"
+#include "Debug/Logger.h"
 
+
+// code from below should go to their corresponding files
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
     int32_t WINDOW_HEIGHT = 1080;

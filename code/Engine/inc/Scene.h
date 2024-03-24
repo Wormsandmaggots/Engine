@@ -2,13 +2,11 @@
 #define OPENGLGP_SCENE_H
 
 #include "Transform.h"
+
 #include <vector>
 
 class Scene
 {
-private:
-    std::vector<Transform*> sceneObjects;
-
 public:
     Scene() {}
     ~Scene() {}
@@ -18,12 +16,17 @@ public:
         sceneObjects.push_back(transform);
     }
 
-    void UpdateTransform(Shader shader)
+    //it can be passed through reference
+    void UpdateTransform(Shader defaultShader)
     {
         for (Transform* t : sceneObjects) {
-            t->updateWorldTransform(new glm::mat4(1.f), &shader);
+            t->updateWorldTransform(new glm::mat4(1.f), &defaultShader);
         }
     }
+
+private:
+    std::vector<Transform*> sceneObjects;
+
 };
 
 

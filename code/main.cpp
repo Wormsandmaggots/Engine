@@ -1,32 +1,36 @@
 #include <iostream>
 #include "Engine/Engine.h"
 
+
 int main() {
 
     if(GLFWInit())
     {
-        ERRORLOG("Failed to initialize GLFW");
+        LOG_ERROR("Failed to initialize GLFW");
         return -1;
     }
 
-    INFOLOG("GLFW initialized");
+    SceneManager sm;
+    sm.loadScene("res/content/maps/exampleScene.yaml");
+
+    LOG_INFO("GLFW initialized");
 
     s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
 
     if (s.window == nullptr)
     {
-        ERRORLOG("Failed to Create GLFW window");
+        LOG_ERROR("Failed to Create GLFW window");
         glfwTerminate();
         return -1;
     }
 
-    INFOLOG("GLFW window created");
+    LOG_INFO("GLFW window created");
     glfwMakeContextCurrent(s.window);
     glfwSwapInterval(1);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        ERRORLOG("Failed to initialize GLAD");
+        LOG_ERROR("Failed to initialize GLAD");
 
         glfwDestroyWindow(s.window);
         glfwTerminate();
@@ -34,7 +38,7 @@ int main() {
         return -1;
     }
 
-    INFOLOG("GLAD initialized");
+    LOG_INFO("GLAD initialized");
 
     stbi_set_flip_vertically_on_load(true);
 
@@ -68,7 +72,8 @@ Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.g
         shader.setMat4("view", s.camera.GetViewMatrix());
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
-        scene.UpdateTransform(shader);
+        //scene.UpdateTransform(shader);
+        sm.updateLoadedScenes();
 
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);

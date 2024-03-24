@@ -8,9 +8,9 @@ using msgType = spdlog::level::level_enum;
 
 //!for basic needs use those
 //!-----------------------------------
-#define ERRORLOG(msg) Logger::log(msg, msgType::err)
-#define WARNLOG(msg) Logger::log(msg, msgType::warn)
-#define INFOLOG(msg) Logger::log(msg, msgType::info)
+#define LOG_ERROR(msg) Logger::log(msg, msgType::err)
+#define LOG_WARNING(msg) Logger::log(msg, msgType::warn)
+#define LOG_INFO(msg) Logger::log(msg, msgType::info)
 //!-----------------------------------
 
 class  Logger {

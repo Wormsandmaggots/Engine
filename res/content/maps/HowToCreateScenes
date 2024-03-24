@@ -1,0 +1,19 @@
+SCENENAME: scenename -> bacause file name and scene name might be unrelated
+
+Entity: &entityName
+    Parent: *anotherEntity
+    Transform:
+        pos:
+        rot:
+        scale:
+    Components:
+        //! IF COMPONENTS ARE VERY LONG CHANGE THEM TO ANCHORS BUT FOR NOW IT DOESN'T MATTER
+--- //! this indicates end of file for yaml, but can also separate two the same names, nice
+Entity: &anotherEntity
+    Parent: *anotherEntity
+    Transform:
+        pos:
+        rot:
+        scale:
+    Components:
+        //! IF COMPONENTS ARE VERY LONG CHANGE THEM TO ANCHORS

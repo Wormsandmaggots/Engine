@@ -12,6 +12,8 @@
 
 using namespace glm;
 
+//! DIRTY FLAG!!!!!
+//! MODEL SHOULD BE DELETED FROM HERE
 class Transform
 {
 public:
@@ -22,7 +24,8 @@ public:
     glm::mat4 localTransform;
     Model* m;
     Shader* shader;
-    bool shouldTexture;
+    bool dirty = true;
+
 
     Transform* parent;
     std::vector<Transform*> children;
@@ -31,15 +34,22 @@ public:
               glm::vec3 position = vec3(0,0,0),
               glm::vec3 rotateModel = vec3(0,0,0),
               glm::vec3 scale = vec3(1,1,1),
-              bool t = false, Shader* s = nullptr)
+              Shader* s = nullptr)
     {
         this->m = m;
         this->position = position;
         this->rotateModel = rotateModel;
         this->scale = scale;
         shader = s;
+    }
 
-        shouldTexture = t;
+    Transform(const Transform& t)
+    {
+        position = t.position;
+        rotateModel = t.rotateModel;
+        scale = t.scale;
+
+        dirty = true;
     }
 
     void setModel(Model* m)
@@ -55,16 +65,19 @@ public:
     void setPosition(glm::vec3 newPosition)
     {
         position = newPosition;
-        if(parent == nullptr) return;
-
-//        position.x += parent->position.x;
-//        position.y += parent->position.y;
-//        position.z += parent->position.z;
+        dirty = true;
     }
 
     void setRotation(glm::vec3 newRotation)
     {
         rotateModel = newRotation;
+        dirty = true;
+    }
+
+    void setScale(glm::vec3 newScale)
+    {
+        scale = newScale;
+        dirty = true;
     }
 
     glm::mat4* getModel()
@@ -90,16 +103,17 @@ public:
         localTransform = transform;
     }
 
-    virtual void updateWorldTransform(glm::mat4* modelLok, Shader *sh, bool updateLocal = true)
+    virtual void updateWorldTransform(glm::mat4* modelLok, Shader *sh)
     {
-        if(updateLocal)
+        if(dirty)
         {
             this->updateLocalTransform();
             this->model = new glm::mat4(*modelLok * localTransform);
+            dirty = false;
         }
 
         for (Transform* child : children) {
-            child->updateWorldTransform(this->model, shader == nullptr ? sh : shader, updateLocal);
+            child->updateWorldTransform(this->model, shader == nullptr ? sh : shader);
         }
 
         if(sh != nullptr)
@@ -120,6 +134,8 @@ public:
         }
 
     }
+
+
 };
 
 

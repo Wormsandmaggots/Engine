@@ -1,6 +1,6 @@
 #include <map>
 #include <string>
-#include "Logger.h"
+#include "Debug/Logger.h"
 
 
 std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> Logger::console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

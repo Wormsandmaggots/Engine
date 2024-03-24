@@ -50,7 +50,7 @@ target_link_libraries(${PROJECT_NAME}
         spdlog
         glm::glm
         nlohmann_json::nlohmann_json
-        yaml-cpp::yaml-cpp
+        yaml-cpp
         freetype
         miniaudio
         glm_aabb
