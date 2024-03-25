@@ -14,7 +14,8 @@ using namespace glm;
 
 //! DIRTY FLAG!!!!!
 //! MODEL SHOULD BE DELETED FROM HERE
-class Transform
+
+class [[deprecated("This transform is unused now, try using one from Scene folder.")]] Transform
 {
 public:
     glm::vec3 position;

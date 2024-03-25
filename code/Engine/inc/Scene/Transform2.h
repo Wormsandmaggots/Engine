@@ -17,7 +17,6 @@ public:
 
     Transform2(const Transform2& t);
 
-    void updateLocalTransform();
     void updateWorldTransform(const glm::mat4 &parentWorldMatrix = {1.f});
 
     [[nodiscard]] const glm::vec3 &getLocalPosition() const;
@@ -42,6 +41,8 @@ private:
     glm::mat4 worldMatrix {1.f};
 
     bool isDirty = true;
+
+    void updateLocalTransform();
 };
 
 

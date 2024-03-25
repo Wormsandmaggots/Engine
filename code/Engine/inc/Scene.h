@@ -5,7 +5,7 @@
 
 #include <vector>
 
-class Scene
+class [[deprecated("This scene is deprecated, use one from Scene folder.")]] Scene
 {
 public:
     Scene() {}
