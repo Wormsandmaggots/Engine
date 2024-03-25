@@ -16,11 +16,17 @@ int main() {
 #pragma region TEST
     AudioManager a;
     a.init();
+
     Sound *sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
     SceneManager sm;
+
     sm.loadScene("res/content/maps/exampleScene.yaml");
     sound->play();
+
+    //!THEE WHO SHALL FIND THIS VOLUME VALUE,
+    //! BE AWARE OF CONSEQUENCES STANDING BEHIND CHANGING IT
     sound->setVolume(2.f);
+
     LOG_INFO("If u hear germans singing, that's a good sing.");
 #pragma endregion TEST
 
