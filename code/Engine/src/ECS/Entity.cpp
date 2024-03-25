@@ -9,6 +9,7 @@ int Entity::EntityCounter = 0;
 
 //!works like DFS when it comes to updating queue
 void Entity::update() {
+    //firstly update transform
     if(parent != nullptr)
     {
         transform->updateWorldTransform(parent->transform->getWorldMatrix());
@@ -18,12 +19,14 @@ void Entity::update() {
         transform->updateWorldTransform();
     }
 
-    for (Entity* child : children) {
-        child->update();
-    }
-
+    //then update components because they can change transform
     for (Component* c : components) {
         c->update();
+    }
+
+    //then update children
+    for (Entity* child : children) {
+        child->update();
     }
 }
 

@@ -21,9 +21,10 @@
 #include "Scene/Loader/SceneLoader.h"
 #include "Scene/SceneManager.h"
 #include "Debug/Logger.h"
+#include "Audio/AudioManager.h"
 
 
-// code from below should go to their corresponding files
+//CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
     int32_t WINDOW_HEIGHT = 1080;

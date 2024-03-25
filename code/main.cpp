@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Engine/Engine.h"
 
+
 int main() {
 
     if(GLFWInit())
@@ -9,10 +10,19 @@ int main() {
         return -1;
     }
 
+    LOG_INFO("GLFW initialized");
+
+    //Radek note: don't mind me, just testing
+#pragma region TEST
+    AudioManager a;
+    a.init();
+    Sound *sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
     SceneManager sm;
     sm.loadScene("res/content/maps/exampleScene.yaml");
-
-    LOG_INFO("GLFW initialized");
+    sound->play();
+    sound->setVolume(2.f);
+    LOG_INFO("If u hear germans singing, that's a good sing.");
+#pragma endregion TEST
 
     s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
 
