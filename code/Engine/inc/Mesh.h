@@ -1,91 +1,61 @@
-#ifndef OPENGLGP_MESH_H
-#define OPENGLGP_MESH_H
+#ifndef MESH_H
+#define MESH_H
+
+#include <glad/glad.h> // holds all OpenGL type declarations
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
-#include "glad/glad.h"
-#include "glm/glm.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include <string>
 #include <vector>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include "Shader.h"
 
-struct Vertex
-{
+#include "Shader.h"
+using namespace std;
+
+#define MAX_BONE_INFLUENCE 4
+
+
+struct Vertex {
+    // position
     glm::vec3 Position;
+    // normal
     glm::vec3 Normal;
+    // texCoords
     glm::vec2 TexCoords;
-    //tangent
+    // tangent
     glm::vec3 Tangent;
     // bitangent
     glm::vec3 Bitangent;
+    //bone indexes which will influence this vertex
+    int m_BoneIDs[MAX_BONE_INFLUENCE];
+    //weights from each bone
+    float m_Weights[MAX_BONE_INFLUENCE];
 };
-
-struct SVertex{
+struct SVertex {
     glm::vec3 Position;
     glm::vec2 TexCoords;
 };
 
-struct Texture
-{
+
+struct Texture {
     unsigned int id;
-    std::string type;
-    std::string path;
+    string type;
+    string path;
 };
-
-class Mesh
-{
-private:
-    unsigned int VBO, EBO;
-
-    virtual void setupMesh()
-    {
-        // create buffers/arrays
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-        // vertex normals
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-        // vertex texture coords
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-        // vertex tangent
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
-        // vertex bitangent
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
-
-        glBindVertexArray(0);
-    }
+class Mesh {
 public:
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
-
+    // mesh data
+    vector<Vertex>       vertices;
+    vector<unsigned int> indices;
+    vector<Texture>      textures;
+    unsigned int VAO;
     std::vector<SVertex>* sphereVertices;
-
     bool isGenerated = false;
 
-    unsigned int VAO;
 
-    /*  Functions  */
-    // constructor
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+
+    Mesh(vector<Vertex> vertices, vector<unsigned> indices, vector<Texture> textures)
     {
         this->vertices = vertices;
         this->indices = indices;
@@ -93,43 +63,6 @@ public:
 
         setupMesh();
     }
-
-    Mesh(bool isGenerated)
-    {
-        this->isGenerated = isGenerated;
-    }
-
-    void SetVertices(std::vector<Vertex>* vertices)
-    {
-        this->vertices = *vertices;
-
-        sphereVertices = new std::vector<SVertex>();
-
-        for (auto v : this->vertices) {
-            SVertex x;
-            x.TexCoords = v.TexCoords;
-            x.Position = v.Position;
-            sphereVertices->push_back(x);
-        }
-
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sphereVertices->size() * sizeof(SVertex), sphereVertices->data(), GL_STATIC_DRAW);
-
-    // Atrybuty pozycji wierzchołków
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, Position));
-        //włączenie odpowiednich ustawień
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, TexCoords));
-        glEnableVertexAttribArray(1);
-
-        glBindVertexArray(0);
-    }
-
-    // render the mesh
     void Draw(Shader shader, bool instanced = false, int amount = 0)
     {
         // bind appropriate textures
@@ -159,16 +92,18 @@ public:
         }
 
         // draw mesh
-        if(!isGenerated && !instanced)
+        if (!isGenerated && !instanced)
         {
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
-        } else if(!instanced){
+        }
+        else if (!instanced) {
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, sphereVertices->size());
             glBindVertexArray(0);
-        } else{
+        }
+        else {
             glBindVertexArray(VAO);
             glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, amount);
             glBindVertexArray(0);
@@ -183,8 +118,36 @@ public:
 
         glActiveTexture(GL_TEXTURE0);
     }
+private:
+    //  render data
+    unsigned int VBO, EBO;
+
+    void setupMesh()
+    {
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
+                     &indices[0], GL_STATIC_DRAW);
+
+        // vertex positions
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        // vertex normals
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+        // vertex texture coords
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+
+        glBindVertexArray(0);
+    }
 };
-
-
-
-#endif //OPENGLGP_MESH_H
+#endif

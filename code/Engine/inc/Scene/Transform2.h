@@ -10,15 +10,15 @@
 
 class Transform2 {
 private:
-    glm::vec3 localPosition {0,0,0};
-    glm::vec3 localScale {1,1,1};
-    glm::vec3 localRotation {0,0,0};
-    glm::mat4 localMatrix {1.f};
+    glm::vec3 localPosition{};
+    glm::vec3 localScale{};
+    glm::vec3 localRotation{};
+    glm::mat4 localMatrix{};
 
-    glm::vec3 worldPosition {0,0,0};
-    glm::vec3 worldScale {1,1,1};
-    glm::vec3 worldRotation {0,0,0};
-    glm::mat4 worldMatrix {1.f};
+    glm::vec3 worldPosition{};
+    glm::vec3 worldScale{};
+    glm::vec3 worldRotation{};
+    glm::mat4 worldMatrix{};
 
     bool isDirty = true;
 

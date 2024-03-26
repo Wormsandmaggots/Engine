@@ -63,12 +63,12 @@ int GLFWInit() {
 //USE THIS TO GET A TRANSFORM FROM A JSON
 JsonReader j(s.jsonSettingsFilePath);
 
-Transform *CreateTransform(std::string pathToObjectInJson) {
-    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
-                         j.ParseToVec3(pathToObjectInJson, "pos"),
-                         j.ParseToVec3(pathToObjectInJson, "rot"),
-                         j.ParseToVec3(pathToObjectInJson, "scale"));
-}
+//Transform *CreateTransform(std::string pathToObjectInJson) {
+//    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
+//                         j.ParseToVec3(pathToObjectInJson, "pos"),
+//                         j.ParseToVec3(pathToObjectInJson, "rot"),
+//                         j.ParseToVec3(pathToObjectInJson, "scale"));
+//}
 
 
 float speed = 5;

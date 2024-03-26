@@ -12,7 +12,7 @@
 #include "Debug/Logger.h"
 #include "Scene/Transform2.h"
 
-
+using namespace glm;
 namespace YAML {
     template<>
     struct convert<vec3>
@@ -42,14 +42,14 @@ namespace YAML {
         static Node encode(const Transform &rhs) {
             Node node;
             node.push_back(rhs.position);
-            node.push_back(rhs.rotateModel);
+            node.push_back(rhs.rotation);
             node.push_back(rhs.scale);
             return node;
         }
 
         static bool decode(const Node &node, Transform &rhs) {
             rhs.position = node["pos"].as<vec3>();
-            rhs.rotateModel = node["rot"].as<vec3>();
+            rhs.rotation = node["rot"].as<vec3>();
             rhs.scale = node["scale"].as<vec3>();
             return true;
         }
