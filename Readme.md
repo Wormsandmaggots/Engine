@@ -23,4 +23,6 @@ To enable color console output in clion
 - method - thisIsAMethod - (exceptions are constructor and destructor) 
 - macros - THIS_IS_A_MACRO 
 
-
+## Error situations
+- try deleting dlls from the folder where your exe is and reload cmake
+- imgui problem? check if your custom callbacks are set before imgui init

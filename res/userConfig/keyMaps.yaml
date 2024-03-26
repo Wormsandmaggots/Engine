@@ -1,0 +1,5 @@
+KeyMaps:
+  Transform:
+    - rotation: r
+    - translate: t
+    - scale: y

@@ -7,13 +7,15 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
+#include "imgui.h"
+#include "imgui_impl/imgui_impl_glfw.h"
+#include "imgui_impl/imgui_impl_opengl3.h"
+
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
 
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "stb_image.h"
-#include "imgui.h"
-#include "imgui_impl/imgui_impl_glfw.h"
-#include "imgui_impl/imgui_impl_opengl3.h"
 #include "Transform.h"
 #include "JsonReader.h"
 #include "Camera.h"
@@ -23,7 +25,7 @@
 #include "Scene/SceneManager.h"
 #include "Debug/Logger.h"
 #include "Audio/AudioManager.h"
-#include "Debug/Gizmos.h"
+#include "Editor/Gizmos.h"
 
 
 //CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
@@ -64,13 +66,7 @@ int GLFWInit()
     return 0;
 }
 
-void imgui_begin()
-{
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-}
+
 
 void init_imgui()
 {
@@ -213,6 +209,14 @@ void SetCallbacks(GLFWwindow* window)
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+}
+
+void imgui_begin()
+{
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 }
 
 #endif //ENGINE_ENGINE_H

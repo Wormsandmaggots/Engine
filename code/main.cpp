@@ -60,9 +60,10 @@ int main() {
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    SetCallbacks(s.window);
+
     init_imgui();
 
-    SetCallbacks(s.window);
 Transform* monke = CreateTransform("tire4");
 Scene scene;
 scene.addObjects(monke);
@@ -84,14 +85,16 @@ Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.g
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
-        shader.setMat4("view", s.camera.GetViewMatrix());
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = s.camera.GetViewMatrix();
+        shader.setMat4("view", view);
         shader.setMat4("projection", projection);
         scene.UpdateTransform(shader);
         //sm.updateLoadedScenes();
 
         imgui_begin();
-        Gizmos::DrawGizmos(s.camera.GetViewMatrix(), projection, *monke->model);
+        ImGuizmo::BeginFrame();
+        Gizmos::editTransform(glm::value_ptr(view), glm::value_ptr(projection), glm::value_ptr(*plane->model));
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
