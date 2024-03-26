@@ -63,12 +63,13 @@ add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp)
 
 
-set(imguizmo_SOURCE_DIR ${imguizmo_SOURCE_DIR} CACHE INTERNAL "")
-add_library(gizmos STATIC ${imguizmo_SOURCE_DIR}/ImGuizmo.cpp
-        ${imguizmo_SOURCE_DIR}/GraphEditor.cpp
-        ${imguizmo_SOURCE_DIR}/ImCurveEdit.cpp
-        ${imguizmo_SOURCE_DIR}/ImGradient.cpp
-        ${imguizmo_SOURCE_DIR}/ImSequencer.cpp)
+set(ImGuizmo_SOURCE_DIR ${ImGuizmo_SOURCE_DIR} CACHE INTERNAL "")
+add_library(gizmos STATIC
+        ${ImGuizmo_SOURCE_DIR}/ImGuizmo.cpp
+        ${ImGuizmo_SOURCE_DIR}/GraphEditor.cpp
+        ${ImGuizmo_SOURCE_DIR}/ImCurveEdit.cpp
+        ${ImGuizmo_SOURCE_DIR}/ImGradient.cpp
+        ${ImGuizmo_SOURCE_DIR}/ImSequencer.cpp)
 
 
 set_target_properties(glad
