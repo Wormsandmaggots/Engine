@@ -69,7 +69,6 @@ add_library(gizmos STATIC ${imguizmo_SOURCE_DIR}/ImGuizmo.cpp
         ${imguizmo_SOURCE_DIR}/ImCurveEdit.cpp
         ${imguizmo_SOURCE_DIR}/ImGradient.cpp
         ${imguizmo_SOURCE_DIR}/ImSequencer.cpp)
-#target_include_directories(gizmos PUBLIC ${imgui_SOURCE_DIR})
 
 
 set_target_properties(glad
