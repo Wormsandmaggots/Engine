@@ -8,7 +8,7 @@
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
-#include "Transform_old.h"
+#include "Transform.h"
 #include "JsonReader.h"
 #include "Camera.h"
 #include "Engine/inc/Scene.h"
@@ -63,11 +63,11 @@ int GLFWInit() {
 //USE THIS TO GET A TRANSFORM FROM A JSON
 JsonReader j(s.jsonSettingsFilePath);
 
-Transform_old *CreateTransform(std::string pathToObjectInJson) {
-    return new Transform_old(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
-                             j.ParseToVec3(pathToObjectInJson, "pos"),
-                             j.ParseToVec3(pathToObjectInJson, "rot"),
-                             j.ParseToVec3(pathToObjectInJson, "scale"));
+Transform *CreateTransform(std::string pathToObjectInJson) {
+    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
+                         j.ParseToVec3(pathToObjectInJson, "pos"),
+                         j.ParseToVec3(pathToObjectInJson, "rot"),
+                         j.ParseToVec3(pathToObjectInJson, "scale"));
 }
 
 

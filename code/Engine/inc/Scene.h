@@ -1,7 +1,7 @@
 #ifndef OPENGLGP_SCENE_H
 #define OPENGLGP_SCENE_H
 
-#include "Transform_old.h"
+#include "Transform.h"
 
 #include <vector>
 
@@ -11,7 +11,7 @@ public:
     Scene() {}
     ~Scene() {}
 
-    void addObjects(Transform_old* transform)
+    void addObjects(Transform* transform)
     {
         sceneObjects.push_back(transform);
     }
@@ -19,13 +19,13 @@ public:
     //it can be passed through reference
     void UpdateTransform(Shader defaultShader)
     {
-        for (Transform_old* t : sceneObjects) {
+        for (Transform* t : sceneObjects) {
             t->updateWorldTransform(new glm::mat4(1.f), &defaultShader);
         }
     }
 
 private:
-    std::vector<Transform_old*> sceneObjects;
+    std::vector<Transform*> sceneObjects;
 
 };
 

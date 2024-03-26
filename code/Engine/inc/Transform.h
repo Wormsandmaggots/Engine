@@ -1,5 +1,5 @@
-#ifndef OPENGLGP_TRANSFORM_H
-#define OPENGLGP_TRANSFORM_H
+#ifndef TRANSFORM_H
+#define TRANSFORM_H
 
 #include "glad/glad.h"
 #include "glm/glm.hpp"
@@ -15,7 +15,7 @@ using namespace glm;
 //! DIRTY FLAG!!!!!
 //! MODEL SHOULD BE DELETED FROM HERE
 
-class [[deprecated("This transform is unused now, try using one from Scene folder.")]] Transform_old
+class [[deprecated("This transform is unused now, try using one from Scene folder.")]] Transform
 {
 public:
     glm::vec3 position;
@@ -28,14 +28,14 @@ public:
     bool dirty = true;
 
 
-    Transform_old* parent;
-    std::vector<Transform_old*> children;
+    Transform* parent;
+    std::vector<Transform*> children;
 
-    Transform_old(Model* m = nullptr,
-                  glm::vec3 position = vec3(0,0,0),
-                  glm::vec3 rotateModel = vec3(0,0,0),
-                  glm::vec3 scale = vec3(1,1,1),
-                  Shader* s = nullptr)
+    Transform(Model* m = nullptr,
+              glm::vec3 position = vec3(0,0,0),
+              glm::vec3 rotateModel = vec3(0,0,0),
+              glm::vec3 scale = vec3(1,1,1),
+              Shader* s = nullptr)
     {
         this->m = m;
         this->position = position;
@@ -44,7 +44,7 @@ public:
         shader = s;
     }
 
-    Transform_old(const Transform_old& t)
+    Transform(const Transform& t)
     {
         position = t.position;
         rotateModel = t.rotateModel;
@@ -86,7 +86,7 @@ public:
         return model;
     }
 
-    void addChild(Transform_old *child)
+    void addChild(Transform *child)
     {
         children.push_back(child);
         child->parent = this;
@@ -113,7 +113,7 @@ public:
             dirty = false;
         }
 
-        for (Transform_old* child : children) {
+        for (Transform* child : children) {
             child->updateWorldTransform(this->model, shader == nullptr ? sh : shader);
         }
 

@@ -66,11 +66,11 @@ int main() {
     init_imgui();
 
     SetCallbacks(s.window);
-Transform_old* monke = CreateTransform("tire4");
+Transform* monke = CreateTransform("tire4");
 Scene scene;
 scene.addObjects(monke);
 
-    Transform_old* plane = CreateTransform("tire1");
+    Transform* plane = CreateTransform("tire1");
     scene.addObjects(plane);
   
 
