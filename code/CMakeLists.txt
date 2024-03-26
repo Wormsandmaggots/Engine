@@ -38,6 +38,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${imgui_SOURCE_DIR}
         ${ImGuizmo_SOURCE_DIR}
         ${miniaudio_SOURCE_DIR}
+        ${aabb_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
 )
 
@@ -55,7 +56,7 @@ target_link_libraries(${PROJECT_NAME}
         yaml-cpp
         freetype
         miniaudio
-        glm_aabb
+        aabb
         effolkronium_random
         gizmos
 )

@@ -28,6 +28,23 @@ int main() {
     sound->setVolume(2.f);
 
     LOG_INFO("If u hear germans singing, that's a good sing.");
+
+    glm::vec3 v = {0,0,0};
+    glm::vec3 v2 = {20,20,20};
+    Collider c1 = Collider(v, 10);
+    Collider c2 = Collider(v, 5);
+    Collider c3 = Collider(v2,5);
+
+    if(c1.CheckCollision(c2))
+    {
+        LOG_INFO("THAT COLLISION WORKS");
+    }
+
+    if(!c1.CheckCollision(c3))
+    {
+        LOG_INFO("AND THAT DIDNT COLLIDE, as expected");
+    }
+
 #pragma endregion TEST
 
     s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
@@ -70,7 +87,7 @@ scene.addObjects(monke);
 
     Transform* plane = CreateTransform("tire1");
     scene.addObjects(plane);
-  
+
 
 Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 

@@ -31,7 +31,7 @@ CPMAddPackage("gh:nlohmann/json@3.11.3")
 CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
-CPMAddPackage("gh:iauns/cpm-glm-aabb#1.0.4")
+
 
 #if one of thirdparty libraries is not building you maybe have to do smth like this below
 #and remember to add source dir to exe in code
@@ -54,7 +54,6 @@ target_include_directories(stb_image PRIVATE ${STB_IMAGE_DIR})
 
 
 set(imgui_SOURCE_DIR ${imgui_SOURCE_DIR} CACHE INTERNAL "")
-include_directories(${imgui_SOURCE_DIR})
 add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui.cpp
         ${imgui_SOURCE_DIR}/imgui_demo.cpp
@@ -70,6 +69,14 @@ add_library(gizmos STATIC
         ${ImGuizmo_SOURCE_DIR}/ImCurveEdit.cpp
         ${ImGuizmo_SOURCE_DIR}/ImGradient.cpp
         ${ImGuizmo_SOURCE_DIR}/ImSequencer.cpp)
+target_include_directories(gizmos PRIVATE ${imgui_SOURCE_DIR})
+
+
+set(aabb_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/glm-aabb CACHE INTERNAL "")
+add_library(aabb STATIC
+        ${aabb_SOURCE_DIR}/AABB.cpp)
+target_include_directories(aabb PRIVATE ${aabb_SOURCE_DIR})
+target_link_libraries(aabb glm)
 
 
 set_target_properties(glad
@@ -83,7 +90,7 @@ set_target_properties(glad
         yaml-cpp
         nlohmann_json
         freetype
-        glm_aabb
+        aabb
         miniaudio
         effolkronium_random
         PROPERTIES FOLDER "vendor")

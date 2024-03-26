@@ -9,12 +9,14 @@ ImGuizmo::MODE Gizmos::currentGizmoMode = ImGuizmo::LOCAL;
 
 void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* modelMatrix)
 {
+
     if (ImGui::IsKeyPressed('T'))
         currentGizmoOperation = ImGuizmo::TRANSLATE;
     if (ImGui::IsKeyPressed('R'))
         currentGizmoOperation = ImGuizmo::ROTATE;
     if (ImGui::IsKeyPressed('Y'))
         currentGizmoOperation = ImGuizmo::SCALE;
+
     if (ImGui::RadioButton("Translate", currentGizmoOperation == ImGuizmo::TRANSLATE))
         currentGizmoOperation = ImGuizmo::TRANSLATE;
     ImGui::SameLine();
@@ -23,6 +25,7 @@ void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* mo
     ImGui::SameLine();
     if (ImGui::RadioButton("Scale", currentGizmoOperation == ImGuizmo::SCALE))
         currentGizmoOperation = ImGuizmo::SCALE;
+
     float matrixTranslation[3], matrixRotation[3], matrixScale[3];
     ImGuizmo::DecomposeMatrixToComponents(modelMatrix, matrixTranslation, matrixRotation, matrixScale);
     ImGui::InputFloat3("Tr", matrixTranslation, "%.3f");

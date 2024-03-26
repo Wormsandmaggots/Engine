@@ -26,7 +26,7 @@
 #include "Debug/Logger.h"
 #include "Audio/AudioManager.h"
 #include "Editor/Gizmos.h"
-
+#include "Physics/Collider.h"
 
 //CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{
