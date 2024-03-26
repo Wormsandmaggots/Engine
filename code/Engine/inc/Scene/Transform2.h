@@ -9,6 +9,21 @@
 #include "glm/ext/matrix_transform.hpp"
 
 class Transform2 {
+private:
+    glm::vec3 localPosition {0,0,0};
+    glm::vec3 localScale {1,1,1};
+    glm::vec3 localRotation {0,0,0};
+    glm::mat4 localMatrix {1.f};
+
+    glm::vec3 worldPosition {0,0,0};
+    glm::vec3 worldScale {1,1,1};
+    glm::vec3 worldRotation {0,0,0};
+    glm::mat4 worldMatrix {1.f};
+
+    bool isDirty = true;
+
+    void updateLocalTransform();
+
 public:
     explicit Transform2(
             glm::vec3 localPosition = {0,0,0},
@@ -29,20 +44,7 @@ public:
     void setRotation(glm::vec3 newRotation);
     void setScale(glm::vec3 newScale);
 
-private:
-    glm::vec3 localPosition {0,0,0};
-    glm::vec3 localScale {1,1,1};
-    glm::vec3 localRotation {0,0,0};
-    glm::mat4 localMatrix {1.f};
 
-    glm::vec3 worldPosition {0,0,0};
-    glm::vec3 worldScale {1,1,1};
-    glm::vec3 worldRotation {0,0,0};
-    glm::mat4 worldMatrix {1.f};
-
-    bool isDirty = true;
-
-    void updateLocalTransform();
 };
 
 

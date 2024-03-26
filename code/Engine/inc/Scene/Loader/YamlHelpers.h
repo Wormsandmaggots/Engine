@@ -7,7 +7,7 @@
 
 #include "yaml-cpp/yaml.h"
 
-#include "Transform.h"
+#include "Transform_old.h"
 #include "ECS/Entity.h"
 #include "Debug/Logger.h"
 #include "Scene/Transform2.h"
@@ -38,8 +38,8 @@ namespace YAML {
     };
 
     template<>
-    struct convert<Transform> {
-        static Node encode(const Transform &rhs) {
+    struct convert<Transform_old> {
+        static Node encode(const Transform_old &rhs) {
             Node node;
             node.push_back(rhs.position);
             node.push_back(rhs.rotateModel);
@@ -47,7 +47,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node &node, Transform &rhs) {
+        static bool decode(const Node &node, Transform_old &rhs) {
             rhs.position = node["pos"].as<vec3>();
             rhs.rotateModel = node["rot"].as<vec3>();
             rhs.scale = node["scale"].as<vec3>();
@@ -99,7 +99,7 @@ namespace YAML {
 
         static bool decode(const Node &node, Entity &rhs) {
             rhs.setName(node["Name"].as<string>());
-            rhs.setTransform(node["Transform"].as<Transform2>());
+            rhs.setTransform(node["Transform_old"].as<Transform2>());
             return true;
         }
     };
