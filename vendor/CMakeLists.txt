@@ -24,7 +24,7 @@ find_package(OpenGL REQUIRED)
 CPMAddPackage("gh:assimp/assimp@5.3.1")
 CPMAddPackage("gh:glfw/glfw#3.4")
 CPMAddPackage("gh:g-truc/glm#1.0.1")
-CPMAddPackage("gh:ocornut/imgui@1.90.4")
+CPMAddPackage("gh:ocornut/imgui@1.88")
 CPMAddPackage("gh:gabime/spdlog@1.13.0")
 CPMAddPackage("gh:jbeder/yaml-cpp#0.8.0")
 CPMAddPackage("gh:nlohmann/json@3.11.3")
@@ -54,6 +54,7 @@ target_include_directories(stb_image PRIVATE ${STB_IMAGE_DIR})
 
 
 set(imgui_SOURCE_DIR ${imgui_SOURCE_DIR} CACHE INTERNAL "")
+include_directories(${imgui_SOURCE_DIR})
 add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui.cpp
         ${imgui_SOURCE_DIR}/imgui_demo.cpp
@@ -62,12 +63,13 @@ add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp)
 
 
-set(ImGuizmo_SOURCE_DIR ${ImGuizmo_SOURCE_DIR} CACHE INTERNAL "")
-add_library(gizmos STATIC ${ImGuizmo_SOURCE_DIR}/ImGuizmo.cpp
-        ${ImGuizmo_SOURCE_DIR}/GraphEditor.cpp
-        ${ImGuizmo_SOURCE_DIR}/ImCurveEdit.cpp
-        ${ImGuizmo_SOURCE_DIR}/ImGradient.cpp
-        ${ImGuizmo_SOURCE_DIR}/ImSequencer.cpp)
+set(imguizmo_SOURCE_DIR ${imguizmo_SOURCE_DIR} CACHE INTERNAL "")
+add_library(gizmos STATIC ${imguizmo_SOURCE_DIR}/ImGuizmo.cpp
+        ${imguizmo_SOURCE_DIR}/GraphEditor.cpp
+        ${imguizmo_SOURCE_DIR}/ImCurveEdit.cpp
+        ${imguizmo_SOURCE_DIR}/ImGradient.cpp
+        ${imguizmo_SOURCE_DIR}/ImSequencer.cpp)
+#target_include_directories(gizmos PUBLIC ${imgui_SOURCE_DIR})
 
 
 set_target_properties(glad

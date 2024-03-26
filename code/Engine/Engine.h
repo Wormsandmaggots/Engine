@@ -7,6 +7,7 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
+
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "stb_image.h"
@@ -22,6 +23,7 @@
 #include "Scene/SceneManager.h"
 #include "Debug/Logger.h"
 #include "Audio/AudioManager.h"
+#include "Debug/Gizmos.h"
 
 
 //CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL

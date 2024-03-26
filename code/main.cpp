@@ -23,8 +23,8 @@ int main() {
     sm.loadScene("res/content/maps/exampleScene.yaml");
     sound->play();
 
-    //!THEE WHO SHALL FIND THIS VOLUME VALUE,
-    //! BE AWARE OF CONSEQUENCES STANDING BEHIND CHANGING IT
+    //! THEE WHO SHALL FIND THIS VOLUME VALUE,
+    //! BE AWARE OF CONSEQUENCES STANDING BEHIND ALTERING IT
     sound->setVolume(2.f);
 
     LOG_INFO("If u hear germans singing, that's a good sing.");
@@ -87,9 +87,14 @@ Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.g
         shader.setMat4("view", s.camera.GetViewMatrix());
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
-        //scene.UpdateTransform(shader);
-        sm.updateLoadedScenes();
+        scene.UpdateTransform(shader);
+        //sm.updateLoadedScenes();
 
+        imgui_begin();
+        Gizmos::DrawGizmos(s.camera.GetViewMatrix(), projection, *monke->model);
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);
         glfwPollEvents();

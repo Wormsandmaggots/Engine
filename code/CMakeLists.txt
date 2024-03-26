@@ -36,6 +36,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${glad_SOURCE_DIR}
         ${stb_image_SOURCE_DIR}
         ${imgui_SOURCE_DIR}
+        ${imguizmo_SOURCE_DIR}
         ${miniaudio_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
 )
@@ -56,6 +57,7 @@ target_link_libraries(${PROJECT_NAME}
         miniaudio
         glm_aabb
         effolkronium_random
+        gizmos
 )
 
 
