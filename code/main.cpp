@@ -13,18 +13,18 @@ int main() {
 
     //Radek note: don't mind me, just testing
 #pragma region Audio
-//    AudioManager a;
-//    a.init();
+    AudioManager a;
+    a.init();
 
-//    Sound *sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
+    Sound *sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
 //    SceneManager sm;
 
 //    sm.loadScene("res/content/maps/exampleScene.yaml");
-//    sound->play();
+    sound->play();
 
     //! THEE WHO SHALL FIND THIS VOLUME VALUE,
     //! BE AWARE OF CONSEQUENCES STANDING BEHIND ALTERING IT
-//    sound->setVolume(2.f);
+    sound->setVolume(2.f);
 
     LOG_INFO("If u hear germans singing, that's a good sing.");
 #pragma endregion Audio
@@ -68,11 +68,26 @@ int main() {
 
     Scene2 scene("scene");
     Entity *entity = new Entity("nanosuit");
-    scene.addEntity(entity);
+    Entity *monke = new Entity("monke");
+    Entity *airplane = new Entity("airplane");
 
-    Model model("res\\content\\models\\nanosuit\\nanosuit.obj");
+    Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
+    Model* monkeModel = new Model("res\\content\\models\\monke.obj");
+    Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
+
+    entity->addComponent(model);
+    monke->addComponent(monkeModel);
+    airplane->addComponent(airplaneModel);
+
+    scene.addEntity(entity);
+    scene.addEntity(monke);
+    scene.addEntity(airplane);
+
 
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+
+    Renderer renderer(shader,scene.getSceneEntities());
+
     while (!glfwWindowShouldClose(s.window)) {
         imgui_begin();
         imgui_render();
@@ -87,13 +102,13 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
 
-
+        monke->getTransform()->setPosition(glm::vec3(5,3,1));
+        airplane->getTransform()->setPosition(glm::vec3(-5,0,1));
         shader.setMat4("view", s.camera.GetViewMatrix());
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
-        entity->getTransform()->updateWorldTransform();
-        shader.setMat4("model", entity->getTransform()->getWorldMatrix());
-        model.Draw(shader);
+
+        renderer.renderModels();
 
 
 //
@@ -105,7 +120,6 @@ int main() {
         glfwMakeContextCurrent(s.window);
         glfwPollEvents();
     }
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

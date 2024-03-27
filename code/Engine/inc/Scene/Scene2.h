@@ -19,6 +19,8 @@ public:
     void update();
     std::string getName() const;
 
+    const vector<Entity *> &getSceneEntities() const;
+
 private:
     std::string name;
     std::vector<Entity*> sceneEntities;

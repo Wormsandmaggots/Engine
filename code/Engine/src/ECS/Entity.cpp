@@ -74,3 +74,7 @@ void Entity::addChild(Entity *child) {
 std::string Entity::getName() const {
     return name;
 }
+
+std::vector<Component *> Entity::getComponents() const {
+    return components;
+}

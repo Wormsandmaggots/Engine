@@ -18,6 +18,7 @@
 #include "Debug/Logger.h"
 #include "Audio/AudioManager.h"
 #include "Debug/Gizmos.h"
+#include "Renderer/Renderer.h"
 
 struct Settings {
     int32_t WINDOW_WIDTH = 1920;

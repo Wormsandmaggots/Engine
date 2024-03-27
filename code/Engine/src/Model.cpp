@@ -1,5 +1,23 @@
 #include "Model.h"
 
+void Model::awake() {
+
+}
+
+void Model::start() {
+
+}
+
+void Model::update() {
+}
+
+void Model::onDestroy() {
+
+}
+
+string Model::serialize() {
+    return std::string();
+}
 
 Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
     loadModel(path);
@@ -8,7 +26,6 @@ Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
 void Model::Draw(Shader &shader) {
     for (auto &meshe: meshes)
         meshe.Draw(shader);
-
 
 }
 

@@ -13,7 +13,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "ECS/Component.h"
-
+#include "Renderer/Renderable.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -26,16 +26,27 @@ using namespace std;
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
 
-class Model: public Component
+class Model: public Component, public Renderable
 {
 public:
     vector<Texture> textures_loaded;
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
-
     Model(const string &path, bool gamma=false);
-    void Draw(Shader& shader);
+    void Draw(Shader& shader) override;
+
+    ~Model() override = default;
+
+    void awake() override;
+
+    void start() override;
+
+    void update() override;
+
+    void onDestroy() override;
+
+    string serialize() override;
 
 private:
     void loadModel(string const& path);
