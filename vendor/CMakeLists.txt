@@ -33,7 +33,7 @@ CPMAddPackage("gh:nlohmann/json@3.11.3")
 CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
-#CPMAddPackage("gh:rougier/freetype-gl#master")
+CPMAddPackage("gh:wolfpld/tracy#v0.10")
 
 
 #if one of thirdparty libraries is not building you maybe have to do smth like this below
@@ -82,6 +82,28 @@ target_include_directories(aabb PRIVATE ${aabb_SOURCE_DIR})
 target_link_libraries(aabb glm)
 
 
+set(ftgl_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/freetype-gl CACHE INTERNAL "")
+add_library(ftgl STATIC
+        ${ftgl_SOURCE_DIR}/distance-field.c
+        ${ftgl_SOURCE_DIR}/edtaa3func.c
+        ${ftgl_SOURCE_DIR}/font-manager.c
+        ${ftgl_SOURCE_DIR}/ftgl-utils.c
+        ${ftgl_SOURCE_DIR}/makefont.c
+        ${ftgl_SOURCE_DIR}/platform.c
+        ${ftgl_SOURCE_DIR}/text-buffer.c
+        ${ftgl_SOURCE_DIR}/texture-font.c
+        ${ftgl_SOURCE_DIR}/utf8-utils.c
+        ${ftgl_SOURCE_DIR}/vector.c
+        ${ftgl_SOURCE_DIR}/vertex-attribute.c
+        ${ftgl_SOURCE_DIR}/vertex-buffer.c)
+target_include_directories(ftgl PRIVATE
+        ${ftgl_SOURCE_DIR}
+        ${glad_SOURCE_DIR})
+target_link_libraries(ftgl
+        glad
+        freetype)
+
+
 set_target_properties(glad
         stb_image
         assimp
@@ -96,6 +118,8 @@ set_target_properties(glad
         aabb
         miniaudio
         effolkronium_random
+        ftgl
+        TracyClient
         PROPERTIES FOLDER "vendor")
 
 

@@ -1,8 +1,21 @@
+#include "windows.h"
 #include <iostream>
 #include "Engine/Engine.h"
 
+#include "tracy/TracyOpenGL.hpp"
+
 
 int main() {
+
+    STARTUPINFO si;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+
+    // Tworzenie struktury PROCESS_INFORMATION
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&pi, sizeof(pi));
+
+    CreateProcess(NULL, (LPSTR)"res/tracyExe/Tracy.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 
     if(GLFWInit())
     {
@@ -44,6 +57,7 @@ int main() {
     {
         LOG_INFO("AND THAT DIDNT COLLIDE, as expected");
     }
+
 
 #pragma endregion TEST
 
@@ -128,6 +142,7 @@ int main() {
                               glm::value_ptr(projection),
                               glm::value_ptr(monke->getTransform()->getWorldMatrix()));
 
+        FrameMark;
         renderer.renderModels();
 
         ImGui::Render();
@@ -136,6 +151,9 @@ int main() {
         glfwMakeContextCurrent(s.window);
         glfwPollEvents();
     }
+
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
