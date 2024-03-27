@@ -26,4 +26,8 @@ void Scene2::addEntities(std::vector<Entity *>& entities) {
     sceneEntities.insert(sceneEntities.end(), entities.begin(), entities.end());
 }
 
+const vector<Entity *> &Scene2::getSceneEntities() const {
+    return sceneEntities;
+}
+
 

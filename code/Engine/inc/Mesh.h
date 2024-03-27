@@ -119,9 +119,7 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, sphereVertices->size() * sizeof(SVertex), sphereVertices->data(), GL_STATIC_DRAW);
 
-    // Atrybuty pozycji wierzchołków
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, Position));
-        //włączenie odpowiednich ustawień
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, TexCoords));
         glEnableVertexAttribArray(1);
@@ -166,7 +164,7 @@ public:
             glBindVertexArray(0);
         } else if(!instanced){
             glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLES, 0, sphereVertices->size());
+            glDrawArrays(GL_TRIANGLES, 0, this->sphereVertices->size());
             glBindVertexArray(0);
         } else{
             glBindVertexArray(VAO);
@@ -184,6 +182,7 @@ public:
         glActiveTexture(GL_TEXTURE0);
     }
 };
+
 
 
 

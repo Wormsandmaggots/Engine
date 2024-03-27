@@ -26,7 +26,7 @@ public:
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] Entity* getParent() const;
     [[nodiscard]] std::vector<Entity*> getChildren() const;
-    [[nodiscard]] std::vector<Component*> getComponents() const;
+    [[nodiscard]]std::vector<Component*> getComponents()const;
 
     void setTransform(const Transform2&);
     void setName(const std::string&);

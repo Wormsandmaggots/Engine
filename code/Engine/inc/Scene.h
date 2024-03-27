@@ -1,12 +1,14 @@
-#ifndef OPENGLGP_SCENE_H
-#define OPENGLGP_SCENE_H
-
+#pragma once
 #include "Transform.h"
-
 #include <vector>
 
-class [[deprecated("This scene is deprecated, use one from Scene folder.")]] Scene
+class Scene
 {
+private:
+    std::vector<Transform*> sceneObjects;
+    unsigned int ID;
+    float rotateSpeed;
+
 public:
     Scene() {}
     ~Scene() {}
@@ -16,18 +18,11 @@ public:
         sceneObjects.push_back(transform);
     }
 
-    //it can be passed through reference
-    void UpdateTransform(Shader defaultShader)
+    void UpdateTransform(Shader shader)
     {
-        for (Transform* t : sceneObjects) {
-            t->updateWorldTransform(new glm::mat4(1.f), &defaultShader);
+        for (int i = 0; i < sceneObjects.size(); i++)
+        {
+            sceneObjects.at(i)->updateWorldTransform(glm::mat4(1.0f), shader);
         }
     }
-
-private:
-    std::vector<Transform*> sceneObjects;
-
 };
-
-
-#endif //OPENGLGP_SCENE_H

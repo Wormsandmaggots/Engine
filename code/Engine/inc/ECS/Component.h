@@ -4,14 +4,12 @@
 
 #ifndef ENGINE_COMPONENT_H
 #define ENGINE_COMPONENT_H
-
 #include "Scene/Loader/ISerializable.h"
 
 class Component : public ISerializable{
 public:
     Component() = default;
     virtual ~Component() = default;
-
     //when initialized
     virtual void awake() = 0;
     //next frame after initialization

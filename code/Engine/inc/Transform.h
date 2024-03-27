@@ -1,95 +1,62 @@
-#ifndef OPENGLGP_TRANSFORM_H
-#define OPENGLGP_TRANSFORM_H
-
-#include "glad/glad.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "Shader.h"
-#include "Model.h"
+#pragma once
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <string>
 #include <cmath>
+#include "Model.h"
 
-using namespace glm;
-
-//! DIRTY FLAG!!!!!
-//! MODEL SHOULD BE DELETED FROM HERE
-
-class [[deprecated("This transform is unused now, try using one from Scene folder.")]] Transform
+class Transform
 {
 public:
     glm::vec3 position;
+    glm::vec3 rotation;
     glm::vec3 scale;
-    glm::vec3 rotateModel;
-    glm::mat4* model;
     glm::mat4 localTransform;
-    Model* m;
-    Shader* shader;
-    bool dirty = true;
-
+    glm::mat4 worldTransform;
 
     Transform* parent;
     std::vector<Transform*> children;
 
-    Transform(Model* m = nullptr,
-              glm::vec3 position = vec3(0,0,0),
-              glm::vec3 rotateModel = vec3(0,0,0),
-              glm::vec3 scale = vec3(1,1,1),
-              Shader* s = nullptr)
+    Transform()
     {
-        this->m = m;
+        this->position = glm::vec3(0, 0, 0);
+        this->rotation = glm::vec3(0,0,0);
+        this->scale = glm::vec3(1);
+        this->worldTransform = glm::mat4(1.0f);
+        this->localTransform = glm::mat4(1.0f);
+    }
+
+    Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, Model* myModel = nullptr)
+    {
+
         this->position = position;
-        this->rotateModel = rotateModel;
+        this->rotation = rotation;
         this->scale = scale;
-        shader = s;
-    }
-
-    Transform(const Transform& t)
-    {
-        position = t.position;
-        rotateModel = t.rotateModel;
-        scale = t.scale;
-
-        dirty = true;
-    }
-
-    void setModel(Model* m)
-    {
-        this->m = m;
-    }
-
-    void setModel(glm::mat4* model)
-    {
-        this->model = model;
+        this->worldTransform = glm::mat4(1.0f);
+        this->localTransform = glm::mat4(1.0f);
     }
 
     void setPosition(glm::vec3 newPosition)
     {
-        position = newPosition;
-        dirty = true;
+        this->position = newPosition;
     }
 
     void setRotation(glm::vec3 newRotation)
     {
-        rotateModel = newRotation;
-        dirty = true;
+        this->rotation = newRotation;
     }
 
-    void setScale(glm::vec3 newScale)
+    void addChild(Transform* child)
     {
-        scale = newScale;
-        dirty = true;
-    }
-
-    glm::mat4* getModel()
-    {
-        return model;
-    }
-
-    void addChild(Transform *child)
-    {
-        children.push_back(child);
         child->parent = this;
+        children.push_back(child);
+    }
+
+    void setScale(glm::vec3 scale)
+    {
+        this->scale = scale;
     }
 
     void updateLocalTransform()
@@ -97,47 +64,22 @@ public:
         glm::mat4 transform = glm::mat4(1.0f);
 
         transform = glm::translate(transform, position);
-        transform = glm::rotate(transform, rotateModel.y, glm::vec3(0.0, 1.0, 0.0));
-        transform = glm::rotate(transform, rotateModel.x, glm::vec3(1.0, 0.0, 0.0));
-        transform = glm::rotate(transform, rotateModel.z, glm::vec3(0.0, 0.0, 1.0));
+        transform = glm::rotate(transform, rotation.y, glm::vec3(0.0, 1.0, 0.0));
+        transform = glm::rotate(transform, rotation.x, glm::vec3(1.0, 0.0, 0.0));
+        transform = glm::rotate(transform, rotation.z, glm::vec3(0.0, 0.0, 1.0));
         transform = glm::scale(transform, scale);
         localTransform = transform;
     }
 
-    virtual void updateWorldTransform(glm::mat4* modelLok, Shader *sh)
+    void updateWorldTransform(glm::mat4 modelLok, Shader shader)
     {
-        if(dirty)
-        {
-            this->updateLocalTransform();
-            this->model = new glm::mat4(*modelLok * localTransform);
-            dirty = false;
-        }
+        this->updateLocalTransform();
+        this->worldTransform = modelLok * localTransform;
 
         for (Transform* child : children) {
-            child->updateWorldTransform(this->model, shader == nullptr ? sh : shader);
+            child->updateWorldTransform(this->worldTransform, shader);
         }
 
-        if(sh != nullptr)
-        {
-            sh->use();
-            sh->setMat4("model", *this->model);
-        }
-
-        if(m != nullptr && (sh != nullptr || shader != nullptr))
-        {
-            if(shader != nullptr)
-            {
-                shader->use();
-                shader->setMat4("model", *this->model);
-            }
-
-            m->Draw(shader == nullptr ? *sh : *shader);
-        }
-
+        shader.setMat4("model", this->worldTransform);
     }
-
-
 };
-
-
-#endif //OPENGLGP_TRANSFORM_H
