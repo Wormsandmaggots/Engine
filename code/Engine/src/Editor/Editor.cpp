@@ -47,7 +47,6 @@ void Editor::drawTreeOnChildren(Entity* parent)
         {
             if(ImGui::IsItemClicked())
             {
-                LOG_INFO("CLICKED " + e->getName());
                 chosenEntity = e;
             }
 
@@ -62,7 +61,6 @@ void Editor::drawTreeOnChildren(Entity* parent)
         {
             if(ImGui::IsItemClicked())
             {
-                LOG_INFO("CLICKED " + e->getName());
                 chosenEntity = e;
             }
         }
@@ -85,7 +83,6 @@ void Editor::drawHierarchy() {
         {
             if(ImGui::IsItemClicked())
             {
-                LOG_INFO("CLICKED " + scene->getRoot()->getName());
                 chosenEntity = scene->getRoot();
             }
 
@@ -99,7 +96,6 @@ void Editor::drawHierarchy() {
         {
             if(ImGui::IsItemClicked())
             {
-                LOG_INFO("CLICKED " + scene->getRoot()->getName());
                 chosenEntity = scene->getRoot();
             }
         }
