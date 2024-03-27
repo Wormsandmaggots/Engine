@@ -53,6 +53,7 @@ void Transform2::updateLocalTransform() {
     mat = glm::rotate(mat, localRotation.x, glm::vec3(1.0, 0.0, 0.0));
     mat = glm::rotate(mat, localRotation.z, glm::vec3(0.0, 0.0, 1.0));
     mat = glm::scale(mat, localScale);
+
     localMatrix = mat;
 }
 
@@ -76,11 +77,11 @@ const glm::vec3 &Transform2::getLocalRotation() const {
     return localRotation;
 }
 
-const glm::mat4 &Transform2::getWorldMatrix()  {
+glm::mat4 &Transform2::getWorldMatrix()  {
     return worldMatrix;
 }
 
 void Transform2::setTransform(glm::mat4 mat) {
-this->worldMatrix = mat;
+    this->worldMatrix = mat;
 }
 

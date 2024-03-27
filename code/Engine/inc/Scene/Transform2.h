@@ -41,7 +41,7 @@ public:
 
     [[nodiscard]] const glm::vec3 &getLocalRotation() const;
 
-    [[nodiscard]] const glm::mat4 &getWorldMatrix();
+    [[nodiscard]] glm::mat4 &getWorldMatrix();
 
 
     void setTransform(glm::mat4 mat);

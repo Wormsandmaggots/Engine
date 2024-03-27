@@ -20,6 +20,8 @@ include(${deps}/cpm-src/cmake/CPM.cmake)
 
 find_package(OpenGL REQUIRED)
 
+set(GLEW_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/glew/lib/Release/Win32/glew32.lib)
+set(GLEW_INCLUDE_PATH  ${CMAKE_CURRENT_LIST_DIR}/glew/include)
 
 CPMAddPackage("gh:assimp/assimp@5.3.1")
 CPMAddPackage("gh:glfw/glfw#3.4")
@@ -31,6 +33,7 @@ CPMAddPackage("gh:nlohmann/json@3.11.3")
 CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
+CPMAddPackage("gh:rougier/freetype-gl#master")
 
 
 #if one of thirdparty libraries is not building you maybe have to do smth like this below

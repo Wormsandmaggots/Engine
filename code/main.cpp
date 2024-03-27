@@ -101,6 +101,9 @@ int main() {
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
     Renderer renderer(shader,scene.getSceneEntities());
 
+    monke->getTransform()->setPosition(glm::vec3(5,3,1));
+    airplane->getTransform()->setPosition(glm::vec3(-5,0,1));
+
     while (!glfwWindowShouldClose(s.window)) {
 
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -113,19 +116,18 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
 
-        monke->getTransform()->setPosition(glm::vec3(5,3,1));
-        airplane->getTransform()->setPosition(glm::vec3(-5,0,1));
-
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
-
         imgui_begin();
         ImGuizmo::BeginFrame();
 
-//        Gizmos::editTransform(glm::value_ptr(view), glm::value_ptr(projection),glm::value_ptr(worldMatrix));
+        Gizmos::editTransform(glm::value_ptr(view),
+                              glm::value_ptr(projection),
+                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
+
         renderer.renderModels();
 
         ImGui::Render();
