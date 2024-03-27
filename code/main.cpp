@@ -9,17 +9,18 @@ int main() {
         LOG_ERROR("Failed to initialize GLFW");
         return -1;
     }
+
     LOG_INFO("GLFW initialized");
 
     //Radek note: don't mind me, just testing
-#pragma region Audio
+#pragma region TEST
     AudioManager a;
     a.init();
 
     Sound *sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
-//    SceneManager sm;
+    SceneManager sm;
 
-//    sm.loadScene("res/content/maps/exampleScene.yaml");
+    sm.loadScene("res/content/maps/exampleScene.yaml");
     sound->play();
 
     //! THEE WHO SHALL FIND THIS VOLUME VALUE,
@@ -27,7 +28,6 @@ int main() {
     sound->setVolume(2.f);
 
     LOG_INFO("If u hear germans singing, that's a good sing.");
-
 
     glm::vec3 v = {0,0,0};
     glm::vec3 v2 = {20,20,20};
@@ -45,8 +45,7 @@ int main() {
         LOG_INFO("AND THAT DIDNT COLLIDE, as expected");
     }
 
-#pragma endregion Audio
-
+#pragma endregion TEST
 
     s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
 
@@ -77,15 +76,10 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDepthMask(GL_TRUE); // Enables writing into the depth buffer.
-    glDepthRange(0.0f, 1.0f); // Maps normalized z-coordinates to window coordinates.
-
-
 
     SetCallbacks(s.window);
 
     init_imgui();
-    SetCallbacks(s.window);
 
     Scene2 scene("scene");
     Entity *entity = new Entity("nanosuit");
@@ -93,7 +87,7 @@ int main() {
     Entity *airplane = new Entity("airplane");
 
     Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
-    Model* monkeModel = new Model("res\\content\\models\\monke.obj");
+    Model* monkeModel = new Model("res\\content\\models\\plane.obj");
     Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
 
     entity->addComponent(model);
@@ -104,14 +98,10 @@ int main() {
     scene.addEntity(monke);
     scene.addEntity(airplane);
 
-
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-
     Renderer renderer(shader,scene.getSceneEntities());
 
     while (!glfwWindowShouldClose(s.window)) {
-        imgui_begin();
-        imgui_render();
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
@@ -125,29 +115,26 @@ int main() {
 
         monke->getTransform()->setPosition(glm::vec3(5,3,1));
         airplane->getTransform()->setPosition(glm::vec3(-5,0,1));
-        shader.setMat4("view", s.camera.GetViewMatrix());
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
+
         imgui_begin();
         ImGuizmo::BeginFrame();
-        Gizmos::editTransform(glm::value_ptr(view), glm::value_ptr(projection), glm::value_ptr(*plane->model));
+
+//        Gizmos::editTransform(glm::value_ptr(view), glm::value_ptr(projection),glm::value_ptr(worldMatrix));
         renderer.renderModels();
 
-
-
-//
-//        ImGui::Render();
-//        Gizmos::DrawGizmos(s.camera.GetViewMatrix(), projection, *monke->model);
-//        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        imgui_end();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);
         glfwPollEvents();
     }
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

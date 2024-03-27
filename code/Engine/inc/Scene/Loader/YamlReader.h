@@ -9,6 +9,8 @@
 #include "yaml-cpp/yaml.h"
 #include "Reader.h"
 #include "Debug/Logger.h"
+#include <optional>
+
 
 class YamlReader : public Reader{
 public:
