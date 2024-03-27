@@ -16,12 +16,6 @@ public:
     glm::mat4 localTransform;
     glm::mat4 worldTransform;
 
-    bool hasModel = false;
-
-    int windowWidth = 1000;
-    int windowHeight = 1000;
-
-    Model* myModel;
     Transform* parent;
     std::vector<Transform*> children;
 
@@ -30,7 +24,6 @@ public:
         this->position = glm::vec3(0, 0, 0);
         this->rotation = glm::vec3(0,0,0);
         this->scale = glm::vec3(1);
-        this->myModel = nullptr;
         this->worldTransform = glm::mat4(1.0f);
         this->localTransform = glm::mat4(1.0f);
     }
@@ -41,7 +34,6 @@ public:
         this->position = position;
         this->rotation = rotation;
         this->scale = scale;
-        this->myModel = myModel;
         this->worldTransform = glm::mat4(1.0f);
         this->localTransform = glm::mat4(1.0f);
     }

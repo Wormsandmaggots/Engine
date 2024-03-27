@@ -9,7 +9,13 @@ Transform2::Transform2(glm::vec3 localPosition,
         glm::vec3 localScale) {
     this->localPosition = localPosition;
     this->localRotation = localRotation;
-    this->localRotation = localScale;
+    this->localScale = localScale;
+    isDirty = true;
+}
+Transform2::Transform2(){
+    this->localPosition = glm::vec3(0,0,0);
+    this->localRotation = glm::vec3(0,0,0);
+    this->localScale = glm::vec3(1,1,1);
     isDirty = true;
 }
 
@@ -73,3 +79,4 @@ const glm::vec3 &Transform2::getLocalRotation() const {
 const glm::mat4 &Transform2::getWorldMatrix() const {
     return worldMatrix;
 }
+

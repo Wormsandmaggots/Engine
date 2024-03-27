@@ -12,6 +12,7 @@
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "ECS/Component.h"
 
 #include <string>
 #include <fstream>
@@ -25,7 +26,7 @@ using namespace std;
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
 
-class Model
+class Model: public Component
 {
 public:
     vector<Texture> textures_loaded;

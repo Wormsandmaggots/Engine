@@ -66,10 +66,11 @@ int main() {
     init_imgui();
     SetCallbacks(s.window);
 
-Scene scene = Scene();
-Model model("res\\content\\models\\nanosuit\\nanosuit.obj");
-Transform transform1(glm::vec3(0), glm::vec3(0), glm::vec3(0.2));
+    Scene2 scene("scene");
+    Entity *entity = new Entity("nanosuit");
+    scene.addEntity(entity);
 
+    Model model("res\\content\\models\\nanosuit\\nanosuit.obj");
 
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
     while (!glfwWindowShouldClose(s.window)) {
@@ -90,8 +91,8 @@ Transform transform1(glm::vec3(0), glm::vec3(0), glm::vec3(0.2));
         shader.setMat4("view", s.camera.GetViewMatrix());
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
-
-        transform1.updateWorldTransform(glm::mat4(1.0f), shader);
+        entity->getTransform()->updateWorldTransform();
+        shader.setMat4("model", entity->getTransform()->getWorldMatrix());
         model.Draw(shader);
 
 
