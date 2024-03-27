@@ -78,3 +78,15 @@ std::string Entity::getName() const {
 std::vector<Component *> Entity::getComponents() const {
     return components;
 }
+
+std::vector<Entity *> Entity::getChildren() const {
+    return children;
+}
+
+Entity *Entity::getParent() const {
+    return parent;
+}
+
+void Entity::addChildren(std::vector<Entity *>& entities) {
+    children.insert(children.end(), entities.begin(), entities.end());
+}

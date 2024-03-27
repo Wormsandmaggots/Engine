@@ -21,29 +21,7 @@ public:
     YAML::Node getData() const;
 
     template<class T>
-    std::optional<T> getByPath(std::initializer_list<std::string> pathToValue) const{
-        if(data.IsNull())
-        {
-            LOG_ERROR("Before searching value, parse the file.\n");
-
-            return std::nullopt;
-        }
-
-        YAML::Node currentNode = data;
-
-        for (std::string key : pathToValue) {
-            if(!currentNode[key])
-            {
-                LOG_ERROR("I have not found a node '" + key + "' in provided path.\n");
-
-                return std::nullopt;
-            }
-
-            currentNode = currentNode[key];
-        }
-
-        return currentNode.as<T>();
-    }
+    std::optional<T> getByPath(const YAML::Node& start, std::initializer_list<std::string> pathToValue) const;
 
 private:
     YAML::Node data;

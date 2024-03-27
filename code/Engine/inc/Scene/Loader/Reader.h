@@ -13,8 +13,8 @@ public:
     virtual ~Reader() = default;
 
     virtual int parseFile(std::string) = 0;
-
 protected:
     std::string filename;
 };
+
 #endif //ENGINE_READER_H

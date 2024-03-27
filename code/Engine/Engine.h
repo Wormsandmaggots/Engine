@@ -18,7 +18,7 @@
 #include "stb_image.h"
 #include "Transform.h"
 #include "JsonReader.h"
-#include "Camera.h"
+#include "Editor/Camera.h"
 #include "Engine/inc/Scene.h"
 #include "Scene/Loader/YamlReader.h"
 #include "Scene/Loader/SceneLoader.h"

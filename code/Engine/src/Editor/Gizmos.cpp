@@ -4,27 +4,30 @@
 
 #include "Editor/Gizmos.h"
 
-ImGuizmo::OPERATION Gizmos::currentGizmoOperation = ImGuizmo::TRANSLATE;
-ImGuizmo::MODE Gizmos::currentGizmoMode = ImGuizmo::LOCAL;
+using namespace EditorLayer;
+
+ImGuizmo::OPERATION Gizmos::CurrentGizmoOperation = ImGuizmo::TRANSLATE;
+ImGuizmo::MODE Gizmos::CurrentGizmoMode = ImGuizmo::LOCAL;
 
 void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* modelMatrix)
 {
 
+    //TODO: after input module, change this
     if (ImGui::IsKeyPressed('T'))
-        currentGizmoOperation = ImGuizmo::TRANSLATE;
+        CurrentGizmoOperation = ImGuizmo::TRANSLATE;
     if (ImGui::IsKeyPressed('R'))
-        currentGizmoOperation = ImGuizmo::ROTATE;
+        CurrentGizmoOperation = ImGuizmo::ROTATE;
     if (ImGui::IsKeyPressed('Y'))
-        currentGizmoOperation = ImGuizmo::SCALE;
+        CurrentGizmoOperation = ImGuizmo::SCALE;
 
-    if (ImGui::RadioButton("Translate", currentGizmoOperation == ImGuizmo::TRANSLATE))
-        currentGizmoOperation = ImGuizmo::TRANSLATE;
+    if (ImGui::RadioButton("Translate", CurrentGizmoOperation == ImGuizmo::TRANSLATE))
+        CurrentGizmoOperation = ImGuizmo::TRANSLATE;
     ImGui::SameLine();
-    if (ImGui::RadioButton("Rotate", currentGizmoOperation == ImGuizmo::ROTATE))
-        currentGizmoOperation = ImGuizmo::ROTATE;
+    if (ImGui::RadioButton("Rotate", CurrentGizmoOperation == ImGuizmo::ROTATE))
+        CurrentGizmoOperation = ImGuizmo::ROTATE;
     ImGui::SameLine();
-    if (ImGui::RadioButton("Scale", currentGizmoOperation == ImGuizmo::SCALE))
-        currentGizmoOperation = ImGuizmo::SCALE;
+    if (ImGui::RadioButton("Scale", CurrentGizmoOperation == ImGuizmo::SCALE))
+        CurrentGizmoOperation = ImGuizmo::SCALE;
 
     float matrixTranslation[3], matrixRotation[3], matrixScale[3];
     ImGuizmo::DecomposeMatrixToComponents(modelMatrix, matrixTranslation, matrixRotation, matrixScale);
@@ -33,13 +36,13 @@ void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* mo
     ImGui::InputFloat3("Sc", matrixScale, "%.3f");
     ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, modelMatrix);
 
-    if (currentGizmoOperation != ImGuizmo::SCALE)
+    if (CurrentGizmoOperation != ImGuizmo::SCALE)
     {
-        if (ImGui::RadioButton("Local", currentGizmoMode == ImGuizmo::LOCAL))
-            currentGizmoMode = ImGuizmo::LOCAL;
+        if (ImGui::RadioButton("Local", CurrentGizmoMode == ImGuizmo::LOCAL))
+            CurrentGizmoMode = ImGuizmo::LOCAL;
         ImGui::SameLine();
-        if (ImGui::RadioButton("World", currentGizmoMode == ImGuizmo::WORLD))
-            currentGizmoMode = ImGuizmo::WORLD;
+        if (ImGui::RadioButton("World", CurrentGizmoMode == ImGuizmo::WORLD))
+            CurrentGizmoMode = ImGuizmo::WORLD;
     }
 
 //    static bool useSnap(false);
@@ -72,8 +75,8 @@ void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* mo
 
     ImGuizmo::Manipulate(viewMatrix,
                          projectionMatrix,
-                         currentGizmoOperation,
-                         currentGizmoMode,
+                         CurrentGizmoOperation,
+                         CurrentGizmoMode,
                          matrix);
 
     if (ImGuizmo::IsUsing()) {

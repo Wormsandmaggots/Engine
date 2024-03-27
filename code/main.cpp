@@ -3,10 +3,16 @@
 #include "Engine/Engine.h"
 
 #include "tracy/TracyOpenGL.hpp"
+#include "Editor/Editor.h"
 
+using namespace SceneManagement;
+
+
+//#define PROFILER
 
 int main() {
 
+#if defined(PROFILER)
     STARTUPINFO si;
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
@@ -16,6 +22,7 @@ int main() {
     ZeroMemory(&pi, sizeof(pi));
 
     CreateProcess(NULL, (LPSTR)"res/tracyExe/Tracy.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+#endif
 
     if(GLFWInit())
     {
@@ -27,6 +34,9 @@ int main() {
 
     //Radek note: don't mind me, just testing
 #pragma region TEST
+    EditorLayer::Editor editor;
+    editor.setCamera(&s.camera);
+
     AudioManager a;
     a.init();
 
@@ -136,11 +146,11 @@ int main() {
         shader.setMat4("projection", projection);
 
         imgui_begin();
-        ImGuizmo::BeginFrame();
+        editor.drawHierarchy();
 
-        Gizmos::editTransform(glm::value_ptr(view),
-                              glm::value_ptr(projection),
-                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
+//        Gizmos::editTransform(glm::value_ptr(view),
+//                              glm::value_ptr(projection),
+//                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
 
         FrameMark;
         renderer.renderModels();
@@ -152,8 +162,10 @@ int main() {
         glfwPollEvents();
     }
 
+#if defined(PROFILER)
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
+#endif
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

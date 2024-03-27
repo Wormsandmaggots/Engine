@@ -5,23 +5,28 @@
 #ifndef ENGINE_SCENEMANAGER_H
 #define ENGINE_SCENEMANAGER_H
 
-
 #include "Scene2.h"
 #include "Scene/Loader/SceneLoader.h"
 
-class SceneManager {
-public:
-    SceneManager() = default;
-    virtual ~SceneManager() = default;
+namespace SceneManagement {
 
-    void loadScene(const std::string&);
-    void unloadScene(const std::string&);
-    void updateLoadedScenes();
+    class SceneManager {
+    public:
+        static SceneManager* Instance;
+        SceneManager();
 
-private:
-    std::vector<Scene2*> loadedScenes;
-    SceneLoader sceneLoader;
-};
+        virtual ~SceneManager() = default;
 
+        void loadScene(const std::string &);
+        void unloadScene(const std::string &);
+        void updateLoadedScenes();
+
+        const std::vector<Scene2*>& getLoadedScenes() const;
+
+    private:
+        std::vector<Scene2 *> loadedScenes;
+        SceneLoader sceneLoader;
+    };
+}
 
 #endif //ENGINE_SCENEMANAGER_H

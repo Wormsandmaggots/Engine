@@ -29,7 +29,7 @@ build/*.obj
 *.lib
 
 # Executables
-*.exe
+cmake-build-debug/*.exe
 *.out
 *.app
 

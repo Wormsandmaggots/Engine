@@ -11,14 +11,17 @@
 #include "glm/gtc/type_ptr.inl"
 #include "glm/detail/type_mat4x4.hpp"
 
-class Gizmos {
-public:
-    static void editTransform(float* viewMatrix, float* projectionMatrix, float* modelMatrix);
+namespace EditorLayer {
 
-private:
-    static ImGuizmo::OPERATION currentGizmoOperation;
-    static ImGuizmo::MODE currentGizmoMode;
-};
+    class Gizmos {
+    public:
+        static void editTransform(float *viewMatrix, float *projectionMatrix, float *modelMatrix);
+        
+        static ImGuizmo::OPERATION CurrentGizmoOperation;
+        static ImGuizmo::MODE CurrentGizmoMode;
+    };
+
+}
 
 
 #endif //ENGINE_GIZMOS_H

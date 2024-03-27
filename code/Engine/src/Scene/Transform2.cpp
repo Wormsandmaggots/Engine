@@ -85,3 +85,7 @@ void Transform2::setTransform(glm::mat4 mat) {
     this->worldMatrix = mat;
 }
 
+glm::mat4 &Transform2::getLocalMatrix() {
+    return localMatrix;
+}
+

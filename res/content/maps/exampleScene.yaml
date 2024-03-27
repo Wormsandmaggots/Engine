@@ -13,7 +13,7 @@ Scene:
         scale: [1,1,1]
       Components:
 
-    - Name: testEntity2
+    - Name: &anchor2 testEntity2
       Parent: *anchor
       Transform:
         pos: [0,0,0]
@@ -21,4 +21,18 @@ Scene:
         scale: [1,1,1]
       Components:
 
+    - Name: testEntity3
+      Parent: *anchor2
+      Transform:
+        pos: [ 0,0,0 ]
+        rot: [ 0,0,0 ]
+        scale: [ 1,1,1 ]
+      Components:
+
+    - Name: unparented
+      Transform:
+        pos: [ 0,0,0 ]
+        rot: [ 0,0,0 ]
+        scale: [ 1,1,1 ]
+      Components:
 

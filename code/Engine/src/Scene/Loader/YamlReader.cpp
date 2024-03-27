@@ -23,3 +23,27 @@ int YamlReader::parseFile(std::string path) {
 YAML::Node YamlReader::getData() const {
     return data;
 }
+
+template<class T>
+std::optional<T> YamlReader::getByPath(const YAML::Node& start, std::initializer_list<std::string> pathToValue) const {
+    if(start.IsNull())
+    {
+        LOG_ERROR("Before searching value, parse the file.\n");
+
+        return std::nullopt;
+    }
+
+    YAML::Node currentNode = start;
+
+    for (const std::string& key : pathToValue) {
+        if(!currentNode[key])
+        {
+            LOG_ERROR("I have not found a node '" + key + "' in provided path.\n");
+
+            return std::nullopt;
+        }
+
+        currentNode = currentNode[key];
+    }
+    return currentNode.as<T>();
+}
