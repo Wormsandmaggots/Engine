@@ -44,13 +44,13 @@ Scene2* SceneLoader::loadScene(std::string path) {
         auto found = std::find_if(possibleParents.begin(), possibleParents.end(),
                                   [key](const Entity* parent){ return parent->getName() == key;});
 
-        if(*found != nullptr)
-        {
-            (*found.base())->addChild(unparentedEntity);
+         if (*found != nullptr)
+         {
+             (*found)->addChild(unparentedEntity);
 
-            toParent.erase(toParent.begin() + i);
-            i--;
-        }
+             toParent.erase(toParent.begin() + i);
+             i--;
+         }
 
         i++;
 

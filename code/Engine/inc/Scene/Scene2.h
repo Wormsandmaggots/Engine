@@ -12,6 +12,7 @@
 class Scene2 {
 public:
     explicit Scene2(std::string);
+    Scene2();
     virtual ~Scene2() = default;
 
     void addEntity(Entity*);

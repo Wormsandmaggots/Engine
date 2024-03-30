@@ -3,7 +3,19 @@
 //
 
 #include "Audio/Sound.h"
-#include "Math.h"
+
+template<typename T>
+constexpr void clamp(T &toClamp, T low, T high)
+{
+  toClamp = toClamp < low ? low : toClamp > high ? high : low;
+}
+
+template<typename T, typename Compare>
+constexpr void clamp(T toClamp, T low, T high, Compare compare)
+{
+  toClamp = compare(toClamp, low) < 0 ? low : compare(toClamp, high) > 0 ? high : low;
+}
+
 
 ma_sound& Sound::getSound() {
     return sound;
