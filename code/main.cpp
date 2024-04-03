@@ -7,7 +7,7 @@
 
 using namespace SceneManagement;
 
-#define PROFILER
+//#define PROFILER
 
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
     void* operator new(std::size_t count)
@@ -47,7 +47,7 @@ int main() {
 	SceneManager sm;
 
 	sm.loadScene("res/content/maps/exampleScene.yaml");
-	sound->play();
+	//sound->play();
 
 	//! THEE WHO SHALL FIND THIS VOLUME VALUE,
 	//! BE AWARE OF CONSEQUENCES STANDING BEHIND ALTERING IT
@@ -112,24 +112,29 @@ int main() {
 	Scene2 scene("scene");
 	Entity* entity = new Entity("nanosuit");
 	Entity* monke = new Entity("monke");
+    Entity* player = new Entity("player");
 	// Entity* airplane = new Entity("airplane");
 
 	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
+    Model* playerModel = new Model("res\\content\\models\\player.obj");
 	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
 
 	entity->addComponent(model);
 	monke->addComponent(monkeModel);
+    player ->addComponent(playerModel);
 	// airplane->addComponent(airplaneModel);
 
 	scene.addEntity(entity);
 	scene.addEntity(monke);
+    scene.addEntity(player);
 	// scene.addEntity(airplane);
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Renderer renderer(shader, scene.getSceneEntities());
 
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
+    player->getTransform()->setPosition(glm::vec3(-5, 3, 1));
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
 	while (!glfwWindowShouldClose(s.window))
