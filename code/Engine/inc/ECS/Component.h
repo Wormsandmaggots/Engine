@@ -5,10 +5,7 @@
 #ifndef ENGINE_COMPONENT_H
 #define ENGINE_COMPONENT_H
 #include "Scene/Loader/ISerializable.h"
-#include "Entity.h"
-
 class Entity;
-
 class Component : public ISerializable{
 public:
     Component() = default;

@@ -15,6 +15,10 @@ void Model::onDestroy() {
 
 }
 
+void Model::setParent(Entity *entity) {
+
+}
+
 string Model::serialize() {
     return std::string();
 }
@@ -139,9 +143,6 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
     return textures;
 }
 
-void Model::setParent(Entity *entity) {
-
-}
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
     string filename = string(path);
