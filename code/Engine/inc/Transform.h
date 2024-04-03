@@ -6,7 +6,7 @@
 #include <string>
 #include <cmath>
 #include "Model.h"
-
+class Model;
 class Transform
 {
 public:

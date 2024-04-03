@@ -5,6 +5,9 @@
 #ifndef ENGINE_COMPONENT_H
 #define ENGINE_COMPONENT_H
 #include "Scene/Loader/ISerializable.h"
+#include "Entity.h"
+
+class Entity;
 
 class Component : public ISerializable{
 public:
@@ -18,5 +21,6 @@ public:
     virtual void update() = 0;
     //when should be destroyed
     virtual void onDestroy() = 0;
+    virtual void setParent(Entity*) = 0;
 };
 #endif //ENGINE_COMPONENT_H

@@ -48,6 +48,8 @@ public:
 
     string serialize() override;
 
+    void setParent(Entity *entity) override;
+
 private:
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);
