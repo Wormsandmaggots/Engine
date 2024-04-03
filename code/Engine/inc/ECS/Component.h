@@ -5,9 +5,12 @@
 #ifndef ENGINE_COMPONENT_H
 #define ENGINE_COMPONENT_H
 #include "Scene/Loader/ISerializable.h"
+
 class Entity;
+class Transform2;
 class Component : public ISerializable{
 public:
+    Entity* parent;
     Component() = default;
     virtual ~Component() = default;
     //when initialized
@@ -19,5 +22,6 @@ public:
     //when should be destroyed
     virtual void onDestroy() = 0;
     virtual void setParent(Entity*) = 0;
+    virtual void setTransform(Transform2*) = 0;
 };
 #endif //ENGINE_COMPONENT_H

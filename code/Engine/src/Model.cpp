@@ -22,6 +22,9 @@ void Model::setParent(Entity *entity) {
 string Model::serialize() {
     return std::string();
 }
+void Model::setTransform(Transform2 *transform2) {
+
+}
 
 Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
     loadModel(path);

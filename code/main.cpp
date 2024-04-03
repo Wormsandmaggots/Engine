@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Editor/Editor.h"
+#include "ThirdPersonCamera.h"
 
 using namespace SceneManagement;
 
@@ -109,6 +110,8 @@ int main() {
 
 	init_imgui();
 
+    ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
+
 	Scene2 scene("scene");
 	Entity* entity = new Entity("nanosuit");
 	Entity* monke = new Entity("monke");
@@ -123,6 +126,7 @@ int main() {
 	entity->addComponent(model);
 	monke->addComponent(monkeModel);
     player ->addComponent(playerModel);
+    player->addComponent(playerCamera);
 	// airplane->addComponent(airplaneModel);
 
 	scene.addEntity(entity);
@@ -134,7 +138,8 @@ int main() {
 	Renderer renderer(shader, scene.getSceneEntities());
 
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
-    player->getTransform()->setPosition(glm::vec3(-5, 3, 1));
+    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+    player->getTransform()->setRotation(glm::vec3(0, 0, 0));
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
 	while (!glfwWindowShouldClose(s.window))
@@ -142,7 +147,7 @@ int main() {
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
-
+        scene.update();
 		processInput(s.window);
 
 		glClearColor(0.2, 0.2, 0.2, 1);
@@ -151,7 +156,8 @@ int main() {
 
 		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
 		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = s.camera.GetViewMatrix();
+		//glm::mat4 view = s.camera.GetViewMatrix();
+        glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 

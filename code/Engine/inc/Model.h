@@ -49,6 +49,8 @@ public:
 
     void setParent(Entity *entity) override;
 
+    void setTransform(Transform2 *transform2) override;
+
 private:
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);
