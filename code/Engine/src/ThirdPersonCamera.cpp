@@ -2,7 +2,7 @@
 
 ThirdPersonCamera::ThirdPersonCamera() {
     localPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    rotation = glm::vec3(0.0f, 20.0f, -90.0f); //(roll,pitch,yaw)
+    rotation = glm::vec3(0.0f, 0.0f, -90.0f); //(roll,pitch,yaw)
     worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     //transform = new Transform2(localPosition, rotation, glm::vec3(1.0f,1.0f,1.0f));
     view = glm::lookAt(localPosition,cameraTarget, worldUp);
@@ -39,20 +39,21 @@ std::string ThirdPersonCamera::serialize() {
 }
 
 float ThirdPersonCamera::calculateHorizontalDistance() {
-    return distanceFromPlayer * cos(glm::radians(rotation.y));
+    return distanceFromPlayer * cos(glm::radians(rotation.y)); //pitch
 }
 
 float ThirdPersonCamera::calculateVerticalDistance() {
-    return distanceFromPlayer * sin(glm::radians(rotation.y));
+    return distanceFromPlayer * sin(glm::radians(rotation.y)); //pitch
 }
 
 void ThirdPersonCamera::calculateCameraPosition() {
-    float offsetX = calculateHorizontalDistance() * sin(glm::radians(parent->getTransform()->getLocalRotation().y));
-    float offsetZ = calculateHorizontalDistance() * cos(glm::radians(parent->getTransform()->getLocalRotation().y));
+    float theta = parent->getTransform()->getLocalRotation().y + 180.0f; //angle around player
+    float offsetX = calculateHorizontalDistance() * sin(glm::radians(theta));
+    float offsetZ = calculateHorizontalDistance() * cos(glm::radians(theta));
     localPosition.x = cameraTarget.x - offsetX;
     localPosition.z = cameraTarget.z - offsetZ;
     localPosition.y = cameraTarget.y + calculateVerticalDistance(); //distance up
-
+    rotation.z = 180 -(parent->getTransform()->getLocalRotation().y - theta);
 }
 
 glm::mat4 ThirdPersonCamera::getView() {

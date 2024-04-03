@@ -136,14 +136,23 @@ int main() {
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Renderer renderer(shader, scene.getSceneEntities());
-
+    float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
-    player->getTransform()->setRotation(glm::vec3(0, 0, 0));
+
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
 	while (!glfwWindowShouldClose(s.window))
 	{
+        player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
+        if (glfwGetKey(s.window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            yrotation+=1;
+        }
+        if (glfwGetKey(s.window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            yrotation-=1;
+        }
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
