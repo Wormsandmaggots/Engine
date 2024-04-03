@@ -1,29 +1,31 @@
 #include "windows.h"
 #include <iostream>
+#include "Debug/Profiler.h"
 #include "Engine/Engine.h"
-
 #include "tracy/TracyOpenGL.hpp"
 #include "Editor/Editor.h"
 
 using namespace SceneManagement;
 
+#define PROFILER
 
-//#define PROFILER
-
-int main()
-{
-	
-#if defined(PROFILER)
-    STARTUPINFO si;
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-
-    // Tworzenie struktury PROCESS_INFORMATION
-    PROCESS_INFORMATION pi;
-    ZeroMemory(&pi, sizeof(pi));
-
-    CreateProcess(NULL, (LPSTR)"res/tracyExe/Tracy.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+#if defined(PROFILER) //overloading operators new and delete globally for profiling
+    void* operator new(std::size_t count)
+    {
+        auto ptr = malloc(count);
+        TracyAlloc(ptr, count);
+        return ptr;
+    }
+    void operator delete(void* ptr) noexcept
+    {
+        TracyFree(ptr);
+        free(ptr);
+    }
 #endif
+int main() {
+    #if defined(PROFILER)
+        Profiler::get().init();
+    #endif
 
 	if (GLFWInit())
 	{
@@ -136,8 +138,6 @@ int main()
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
 
-
-
 		processInput(s.window);
 
 		glClearColor(0.2, 0.2, 0.2, 1);
@@ -157,7 +157,7 @@ int main()
 		//                              glm::value_ptr(projection),
 		//                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
 
-		FrameMark;
+		Profiler::get().mark();
 		renderer.renderModels();
 
 		ImGui::Render();
@@ -168,8 +168,7 @@ int main()
 	}
 
 #if defined(PROFILER)
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
+    Profiler::get().end();
 #endif
 
 	ImGui_ImplOpenGL3_Shutdown();

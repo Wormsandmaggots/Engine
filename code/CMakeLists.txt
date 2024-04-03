@@ -27,7 +27,9 @@ source_group(TREE ${CMAKE_SOURCE_DIR}         FILES ${ASSETS_FILES})
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/src/Text/Text.cpp
         Engine/inc/Text/Text.h
-        Engine/inc/Text/Text.h)
+        Engine/inc/Text/Text.h
+        Engine/inc/Debug/Profiler.h
+        Engine/src/Debug/Profiler.cpp)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
