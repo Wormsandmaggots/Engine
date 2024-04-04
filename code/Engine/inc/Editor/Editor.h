@@ -18,15 +18,19 @@ namespace EditorLayer {
 
         Editor();
 
-        void drawHierarchy();
+        void draw();
+
         void setCamera(Camera*);
-        void drawTreeOnChildren(Entity*);
 
     private:
         std::string keyMap = "res/userConfig/keyMaps.yaml";
         Entity *chosenEntity = nullptr;
         Camera *editorCamera;
         YamlReader keyMapReader;
+
+        void drawHierarchy();
+        void drawTreeOnChildren(Entity*);
+        void chooseEntityWithMouse();
     };
 
 }

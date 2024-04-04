@@ -5,10 +5,6 @@
 #include "Engine/inc/Audio/AudioManager.h"
 #include "Core/AssetManager/AssetManager.h"
 
-AudioManager::AudioManager() {
-
-}
-
 int AudioManager::init() {
     if(ma_engine_init(nullptr, &engine) != MA_SUCCESS)
     {

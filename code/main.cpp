@@ -172,7 +172,7 @@ int main() {
 		shader.setMat4("projection", projection);
 
 		imgui_begin();
-		editor.drawHierarchy();
+		editor.draw();
 
 		//        Gizmos::editTransform(glm::value_ptr(view),
 		//                              glm::value_ptr(projection),

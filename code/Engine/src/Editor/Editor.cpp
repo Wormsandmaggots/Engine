@@ -16,8 +16,6 @@ Editor* Editor::Instance = nullptr;
 
 ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-bool first = true;
-
 
 Editor::Editor() {
     if(Editor::Instance == nullptr)
@@ -30,6 +28,11 @@ Editor::Editor() {
     }
 
     keyMapReader.parseFile(keyMap);
+}
+
+void Editor::draw() {
+    drawHierarchy();
+    chooseEntityWithMouse();
 }
 
 void Editor::drawTreeOnChildren(Entity* parent)
@@ -123,4 +126,24 @@ void Editor::drawHierarchy() {
 
 void Editor::setCamera(Camera * newCamera) {
     editorCamera = newCamera;
+}
+
+void Editor::chooseEntityWithMouse() {
+    auto[mx, my] = ImGui::GetMousePos();
+    int mouseX = (int)mx;
+    int mouseY = (int)my;
+
+    if (mouseX >= 0 && mouseY >= 0)
+    {
+        int pixelData;
+
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + 1);
+        glReadPixels(mouseX, mouseY, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+
+        LOG_INFO(to_string(pixelData));
+//        if(pixelData != -1)
+//        {
+//
+//        }
+    }
 }

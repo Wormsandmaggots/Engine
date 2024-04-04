@@ -27,7 +27,8 @@ public:
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] Entity* getParent() const;
     [[nodiscard]] std::vector<Entity*> getChildren() const;
-    [[nodiscard]] std::vector<Component*> getComponents()const;
+    [[nodiscard]] std::vector<Component*> getComponents() const;
+    [[nodiscard]] int getId() const;
 
     void setTransform(const Transform2&);
     void setName(const std::string&);
@@ -37,6 +38,7 @@ private:
     static int EntityCounter;
     std::string name = "Untitled" + std::to_string(EntityCounter);
     Transform2* transform = new Transform2;
+    int id = 0;
     Entity* parent = nullptr;
     std::vector<Entity*> children;
     std::vector<Component*> components;

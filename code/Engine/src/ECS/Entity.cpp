@@ -30,7 +30,10 @@ void Entity::update() {
     }
 }
 
-Entity::Entity(const string &name) : name(name){}
+Entity::Entity(const string &name) : name(name) {
+    id = EntityCounter;
+    EntityCounter++;
+}
 
 Transform2 *Entity::getTransform() const {
     return transform;
@@ -54,6 +57,8 @@ void Entity::setName(const string &newName) {
 Entity::Entity(const Entity &e) {
     setName(e.name + "1");
     setTransform(*e.getTransform());
+    id = EntityCounter;
+    EntityCounter++;
     parent = e.parent;
     children = e.children;
     components = e.components;
@@ -90,4 +95,8 @@ Entity *Entity::getParent() const {
 
 void Entity::addChildren(std::vector<Entity *>& entities) {
     children.insert(children.end(), entities.begin(), entities.end());
+}
+
+int Entity::getId() const {
+    return id;
 }

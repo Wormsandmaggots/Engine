@@ -11,7 +11,7 @@
 
 class AudioManager {
 public:
-    AudioManager();
+    AudioManager() = default;
     virtual ~AudioManager() = default;
 
     int init();
