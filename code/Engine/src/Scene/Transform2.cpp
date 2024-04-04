@@ -49,9 +49,9 @@ void Transform2::updateLocalTransform() {
     glm::mat4 mat = glm::mat4(1.0f);
 
     mat = glm::translate(mat, localPosition);
-    mat = glm::rotate(mat, localRotation.y, glm::vec3(0.0, 1.0, 0.0));
-    mat = glm::rotate(mat, localRotation.x, glm::vec3(1.0, 0.0, 0.0));
-    mat = glm::rotate(mat, localRotation.z, glm::vec3(0.0, 0.0, 1.0));
+    mat = glm::rotate(mat, glm::radians(localRotation.y), glm::vec3(0.0, 1.0, 0.0));
+    mat = glm::rotate(mat, glm::radians(localRotation.x), glm::vec3(1.0, 0.0, 0.0));
+    mat = glm::rotate(mat, glm::radians(localRotation.z), glm::vec3(0.0, 0.0, 1.0));
     mat = glm::scale(mat, localScale);
 
     localMatrix = mat;

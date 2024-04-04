@@ -15,8 +15,15 @@ void Model::onDestroy() {
 
 }
 
+void Model::setParent(Entity *entity) {
+
+}
+
 string Model::serialize() {
     return std::string();
+}
+void Model::setTransform(Transform2 *transform2) {
+
 }
 
 Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
@@ -138,6 +145,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
     }
     return textures;
 }
+
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
     string filename = string(path);

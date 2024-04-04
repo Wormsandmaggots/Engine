@@ -38,6 +38,7 @@ Transform2 *Entity::getTransform() const {
 
 void Entity::addComponent(Component *component) {
     components.push_back(component);
+    component->setParent(this);
 }
 
 void Entity::setTransform(const Transform2 &newTransform) {

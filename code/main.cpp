@@ -5,10 +5,11 @@
 #include "tracy/TracyOpenGL.hpp"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
+#include "ThirdPersonCamera.h"
 
 using namespace SceneManagement;
 
-#define PROFILER
+//#define PROFILER
 
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
     void* operator new(std::size_t count)
@@ -48,7 +49,7 @@ int main() {
 	SceneManager sm;
 
 	sm.loadScene("res/content/maps/exampleScene.yaml");
-	sound->play();
+	//sound->play();
 
 	//! THEE WHO SHALL FIND THIS VOLUME VALUE,
 	//! BE AWARE OF CONSEQUENCES STANDING BEHIND ALTERING IT
@@ -110,35 +111,53 @@ int main() {
 
 	init_imgui();
 
+    ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
+
 	Scene2 scene("scene");
 	Entity* entity = new Entity("nanosuit");
 	Entity* monke = new Entity("monke");
+    Entity* player = new Entity("player");
 	// Entity* airplane = new Entity("airplane");
 
 	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
+    Model* playerModel = new Model("res\\content\\models\\player.obj");
 	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
 
 	entity->addComponent(model);
 	monke->addComponent(monkeModel);
+    player ->addComponent(playerModel);
+    player->addComponent(playerCamera);
 	// airplane->addComponent(airplaneModel);
 
 	scene.addEntity(entity);
 	scene.addEntity(monke);
+    scene.addEntity(player);
 	// scene.addEntity(airplane);
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Renderer renderer(shader, scene.getSceneEntities());
-
+    float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
+    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
 	while (!glfwWindowShouldClose(s.window))
 	{
+        player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
+        if (glfwGetKey(s.window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            yrotation+=1;
+        }
+        if (glfwGetKey(s.window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            yrotation-=1;
+        }
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
-
+        scene.update();
 		processInput(s.window);
 
 		glClearColor(0.2, 0.2, 0.2, 1);
@@ -147,7 +166,8 @@ int main() {
 
 		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
 		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = s.camera.GetViewMatrix();
+		//glm::mat4 view = s.camera.GetViewMatrix();
+        glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
