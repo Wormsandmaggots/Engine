@@ -7,24 +7,21 @@
 
 #include <string>
 #include "miniaudio.h"
+#include "Core/AssetManager/Asset.h"
 
-class Sound {
+class Sound : public Asset{
 public:
-    explicit Sound(const std::string&);
+    explicit Sound(const std::string& path) : Asset(path) {};
     virtual ~Sound() = default;
 
     void play();
     void stop();
 
-    void setPath(const std::string&);
     void setVolume(float);
 
     [[nodiscard]] ma_sound& getSound();
-    [[nodiscard]] std::string getPath() const;
 
 private:
-    std::string path;
-    std::string name;
     float volume = 1;
     ma_sound sound;
 };

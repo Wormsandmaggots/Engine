@@ -15,10 +15,10 @@ public:
     virtual ~AudioManager() = default;
 
     int init();
-    void uninit();
+    void end();
 //    void playSound();
 //    void stopSound();
-    Sound* loadSound(const std::string&, const std::string&);
+    Sound* loadSound(const std::string&);
 
 private:
     ma_engine engine;

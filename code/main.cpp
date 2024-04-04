@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Editor/Editor.h"
+#include "Core/AssetManager/AssetManager.h"
 
 using namespace SceneManagement;
 
@@ -43,7 +44,7 @@ int main() {
 	AudioManager a;
 	a.init();
 
-	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3", "testSound");
+	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
 
 	sm.loadScene("res/content/maps/exampleScene.yaml");
@@ -170,6 +171,9 @@ int main() {
 #if defined(PROFILER)
     Profiler::get().end();
 #endif
+
+    a.end();
+    AssetManager::end();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
