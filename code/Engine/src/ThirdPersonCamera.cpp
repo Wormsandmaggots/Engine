@@ -47,7 +47,7 @@ float ThirdPersonCamera::calculateVerticalDistance() {
 }
 
 void ThirdPersonCamera::calculateCameraPosition() {
-    float theta = parent->getTransform()->getLocalRotation().y + 180.0f; //angle around player
+    float theta = parent->getTransform()->getLocalRotation().y; //angle around player
     float offsetX = calculateHorizontalDistance() * sin(glm::radians(theta));
     float offsetZ = calculateHorizontalDistance() * cos(glm::radians(theta));
     localPosition.x = cameraTarget.x - offsetX;
