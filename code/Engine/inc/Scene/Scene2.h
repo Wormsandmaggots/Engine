@@ -18,14 +18,13 @@ public:
     void addEntity(Entity*);
     void addEntities(std::vector<Entity*>&);
     void update();
+    void removeEntity(Entity*);
 
-    Entity* getRoot() const;
     std::string getName() const;
     const vector<Entity *> &getSceneEntities() const;
 
 private:
     std::string name;
-    Entity* root;
     std::vector<Entity*> sceneEntities;
 };
 

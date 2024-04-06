@@ -5,7 +5,13 @@
 #include "Scene/Scene2.h"
 
 void Scene2::addEntity(Entity *entity) {
+    if(entity->getParent())
+    {
+        entity->getParent()->removeChild(entity);
+    }
+
     sceneEntities.push_back(entity);
+    //root->addChild(entity);
 }
 
 void Scene2::update() {
@@ -16,8 +22,6 @@ void Scene2::update() {
 
 Scene2::Scene2(std::string sceneName) {
     name = sceneName;
-    root = new Entity("Root" + sceneName);
-    addEntity(root);
 }
 
 std::string Scene2::getName() const {
@@ -25,16 +29,16 @@ std::string Scene2::getName() const {
 }
 
 void Scene2::addEntities(std::vector<Entity *>& entities) {
-    //sceneEntities.insert(sceneEntities.end(), entities.begin(), entities.end());
-    root->addChildren(entities);
+    sceneEntities.insert(sceneEntities.end(), entities.begin(), entities.end());
+    //root->addChildren(entities);
 }
 
 const vector<Entity *> &Scene2::getSceneEntities() const {
     return sceneEntities;
 }
 
-Entity *Scene2::getRoot() const {
-    return root;
+void Scene2::removeEntity(Entity *e) {
+    sceneEntities.erase(std::remove(sceneEntities.begin(), sceneEntities.end(), e), sceneEntities.end());
 }
 
 

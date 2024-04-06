@@ -16,12 +16,13 @@ class Entity {
 public:
     explicit Entity(const std::string &name = "");
     Entity(const Entity&);
-    virtual ~Entity() = default;
+    virtual ~Entity();
 
     void update();
     void addComponent(Component*);
     void addChild(Entity*);
     void addChildren(std::vector<Entity*>&);
+    void removeChild(Entity*);
 
     [[nodiscard]] Transform2* getTransform() const;
     [[nodiscard]] std::string getName() const;

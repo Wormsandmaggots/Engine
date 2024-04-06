@@ -30,7 +30,12 @@ void Entity::update() {
     }
 }
 
-Entity::Entity(const string &name) : name(name) {
+Entity::Entity(const string &name) {
+    if(!name.empty())
+    {
+        this->name = name;
+    }
+
     id = EntityCounter;
     EntityCounter++;
 }
@@ -65,13 +70,25 @@ Entity::Entity(const Entity &e) {
 }
 
 void Entity::setParent(Entity &newParent) {
-    if(parent != nullptr) delete parent;
+    if(parent)
+    {
+        parent->removeChild(this);
+    }
 
     parent = &newParent;
+
+    parent->children.push_back(this);
 }
 
 //adds child to children of Entity and sets child's parent
 void Entity::addChild(Entity *child) {
+    if(child->parent == this) return;
+
+    if(child->parent)
+    {
+        child->parent->removeChild(child);
+    }
+
     children.push_back(child);
 
     child->parent = this;
@@ -95,8 +112,25 @@ Entity *Entity::getParent() const {
 
 void Entity::addChildren(std::vector<Entity *>& entities) {
     children.insert(children.end(), entities.begin(), entities.end());
+
+    for (Entity* e : entities) {
+        e->setParent(*this);
+    }
 }
 
 int Entity::getId() const {
     return id;
+}
+
+Entity::~Entity() {
+    for (Entity* e : children) {
+        delete e;
+    }
+
+    delete transform;
+}
+
+void Entity::removeChild(Entity *e) {
+    children.erase(std::remove(children.begin(), children.end(), e), children.end());
+    e->parent = nullptr;
 }

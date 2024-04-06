@@ -9,6 +9,7 @@
 #include "Scene/Loader/YamlReader.h"
 #include "ECS/Entity.h"
 #include "Camera.h"
+#include "Scene/Scene2.h"
 
 namespace EditorLayer {
 
@@ -25,12 +26,16 @@ namespace EditorLayer {
     private:
         std::string keyMap = "res/userConfig/keyMaps.yaml";
         Entity *chosenEntity = nullptr;
+        Scene2 *chosenScene = nullptr;
         Camera *editorCamera;
         YamlReader keyMapReader;
+        std::unordered_map<std::string, std::function<void(Entity*)>> contextMenuActions;
 
         void drawHierarchy();
         void drawTreeOnChildren(Entity*);
+        void draw(Entity*, Scene2*);
         void chooseEntityWithMouse();
+        void setContextActions();
     };
 
 }

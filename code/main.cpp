@@ -166,8 +166,8 @@ int main() {
 
 		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
 		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
-		//glm::mat4 view = s.camera.GetViewMatrix();
-        glm::mat4 view = playerCamera->getView();
+		glm::mat4 view = s.camera.GetViewMatrix();
+        //glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 

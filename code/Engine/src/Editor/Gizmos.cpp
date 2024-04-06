@@ -31,9 +31,9 @@ void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* mo
 
     float matrixTranslation[3], matrixRotation[3], matrixScale[3];
     ImGuizmo::DecomposeMatrixToComponents(modelMatrix, matrixTranslation, matrixRotation, matrixScale);
-    ImGui::InputFloat3("Tr", matrixTranslation, "%.3f");
-    ImGui::InputFloat3("Rt", matrixRotation, "%.3f");
-    ImGui::InputFloat3("Sc", matrixScale, "%.3f");
+    ImGui::InputFloat3("Position", matrixTranslation, "%.3f");
+    ImGui::InputFloat3("Rotation", matrixRotation, "%.3f");
+    ImGui::InputFloat3("Scale", matrixScale, "%.3f");
     ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, modelMatrix);
 
     if (CurrentGizmoOperation != ImGuizmo::SCALE)
