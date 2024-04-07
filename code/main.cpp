@@ -40,7 +40,7 @@ int main() {
 	//Radek note: don't mind me, just testing
 #pragma region TEST
 	EditorLayer::Editor editor;
-	editor.setCamera(&s.camera);
+    editor.init(&s.camera);
 
 	AudioManager a;
 	a.init();

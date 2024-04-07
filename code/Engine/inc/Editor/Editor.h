@@ -10,6 +10,7 @@
 #include "ECS/Entity.h"
 #include "Camera.h"
 #include "Scene/Scene2.h"
+#include "Editor/Panels/Hierarchy.h"
 
 namespace EditorLayer {
 
@@ -19,23 +20,21 @@ namespace EditorLayer {
 
         Editor();
 
+        void init(Camera*);
+        void end();
+
         void draw();
 
         void setCamera(Camera*);
 
     private:
         std::string keyMap = "res/userConfig/keyMaps.yaml";
-        Entity *chosenEntity = nullptr;
-        Scene2 *chosenScene = nullptr;
-        Camera *editorCamera;
+        Camera *editorCamera = nullptr;
         YamlReader keyMapReader;
-        std::unordered_map<std::string, std::function<void(Entity*)>> contextMenuActions;
+        Hierarchy *hierarchy = new Hierarchy();
 
-        void drawHierarchy();
-        void drawTreeOnChildren(Entity*);
-        void draw(Entity*, Scene2*);
         void chooseEntityWithMouse();
-        void setContextActions();
+        void drawMainMenu();
     };
 
 }
