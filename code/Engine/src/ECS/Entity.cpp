@@ -1,6 +1,7 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 
+
 int Entity::EntityCounter = 0;
 
 //!works like DFS when it comes to updating queue
@@ -129,4 +130,34 @@ Entity::~Entity() {
 void Entity::removeChild(Entity *e) {
     children.erase(std::remove(children.begin(), children.end(), e), children.end());
     e->parent = nullptr;
+}
+
+template<>
+Model* Entity::getComponent<Model>() const {
+    // Loop through components to find the Model component
+    for (Component* component : components) {
+        // Attempt to cast the component pointer to Model type
+        Model* modelComponent = dynamic_cast<Model*>(component);
+        if (modelComponent != nullptr) {
+            // Found the Model component, return it
+            return modelComponent;
+        }
+    }
+    // If not found, return nullptr
+    return nullptr;
+}
+
+template<>
+ThirdPersonCamera* Entity::getComponent<ThirdPersonCamera>() const {
+    // Loop through components to find the ThirdPersonCamera component
+    for (Component* component : components) {
+        // Attempt to cast the component pointer to ThirdPersonCamera type
+        ThirdPersonCamera* cameraComponent = dynamic_cast<ThirdPersonCamera*>(component);
+        if (cameraComponent != nullptr) {
+            // Found the ThirdPersonCamera component, return it
+            return cameraComponent;
+        }
+    }
+    // If not found, return nullptr
+    return nullptr;
 }

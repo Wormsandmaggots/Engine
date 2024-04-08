@@ -130,7 +130,6 @@ int main() {
     player ->addComponent(playerModel);
     player->addComponent(playerCamera);
 	// airplane->addComponent(airplaneModel);
-
 	scene.addEntity(entity);
 	scene.addEntity(monke);
     scene.addEntity(player);

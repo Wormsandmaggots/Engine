@@ -8,13 +8,9 @@ ThirdPersonCamera::ThirdPersonCamera() {
     view = glm::lookAt(localPosition,cameraTarget, worldUp);
 }
 
-void ThirdPersonCamera::awake() {
+void ThirdPersonCamera::awake() {}
 
-}
-
-void ThirdPersonCamera::start() {
-
-}
+void ThirdPersonCamera::start() {}
 
 void ThirdPersonCamera::update() {
     //transform->setPosition(parent->getTransform()->getLocalPosition());
@@ -24,9 +20,7 @@ void ThirdPersonCamera::update() {
     view = glm::lookAt(localPosition,cameraTarget, worldUp);
 }
 
-void ThirdPersonCamera::onDestroy() {
-
-}
+void ThirdPersonCamera::onDestroy() {}
 
 void ThirdPersonCamera::setParent(Entity *entity) {
     parentTransform = entity->getTransform();
@@ -59,8 +53,7 @@ void ThirdPersonCamera::calculateCameraPosition() {
 glm::mat4 ThirdPersonCamera::getView() {
     return view;
 }
-void ThirdPersonCamera::setTransform(Transform2* newTransform) {
-}
+void ThirdPersonCamera::setTransform(Transform2* newTransform) {}
 
 glm::mat4 ThirdPersonCamera::getProjection(float width, float height) {
     return glm::perspective(glm::radians(zoom), width / height, 0.1f, 100.0f);

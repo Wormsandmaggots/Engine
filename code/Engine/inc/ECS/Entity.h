@@ -9,6 +9,7 @@
 #include <vector>
 #include "Scene/Transform2.h"
 #include "Transform.h"
+#include "ThirdPersonCamera.h"
 
 class Component;
 
@@ -34,7 +35,9 @@ public:
     void setTransform(const Transform2&);
     void setName(const std::string&);
     void setParent(Entity&);
-    //Component* getComponent;
+    // Template function to get a component of a specific type
+    template<typename T>
+    T* getComponent() const;
 
 private:
     static int EntityCounter;
