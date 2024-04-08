@@ -2,8 +2,9 @@
 #include <iostream>
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
+#include "Text/Text.h"
 
-#define PROFILER
+//#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
 void* operator new(std::size_t count)
 {
@@ -112,7 +113,8 @@ int main() {
 
 	init_imgui();
 
-    ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
+    Text* testText = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    //ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
 	Scene2 scene("scene");
 	Entity* entity = new Entity("nanosuit");
@@ -128,7 +130,7 @@ int main() {
 	entity->addComponent(model);
 	monke->addComponent(monkeModel);
     player ->addComponent(playerModel);
-    player->addComponent(playerCamera);
+    //player->addComponent(playerCamera);
 	// airplane->addComponent(airplaneModel);
 	scene.addEntity(entity);
 	scene.addEntity(monke);
@@ -136,6 +138,7 @@ int main() {
 	// scene.addEntity(airplane);
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+    Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
 	Renderer renderer(shader, scene.getSceneEntities());
     float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
@@ -164,11 +167,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader.use();
 
-		/*glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
-		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);*/
-		glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
-        //glm::mat4 view = s.camera.GetViewMatrix();
-        glm::mat4 view = playerCamera->getView();
+		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
+		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        glm::mat4 view = s.camera.GetViewMatrix();
+        //glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
@@ -182,9 +185,9 @@ int main() {
 		Profiler::get().markFrame();
         Profiler::get().zoneScope();
 		renderer.renderModels();
-
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		glfwSwapBuffers(s.window);
 		glfwMakeContextCurrent(s.window);
 		glfwPollEvents();

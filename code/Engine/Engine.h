@@ -1,9 +1,3 @@
-//
-// Created by Radek on 13.03.2024.
-//
-
-//! this file should only contains includes
-
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
