@@ -1,7 +1,3 @@
-//
-// Created by Radek on 23.03.2024.
-//
-
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 

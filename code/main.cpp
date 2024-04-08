@@ -1,29 +1,30 @@
 #include "windows.h"
 #include <iostream>
 #include "Debug/Profiler.h"
-#include "Engine/Engine.h"
 #include "tracy/TracyOpenGL.hpp"
+
+#define PROFILER
+#if defined(PROFILER) //overloading operators new and delete globally for profiling
+void* operator new(std::size_t count)
+{
+    auto ptr = malloc(count);
+    TracyAlloc(ptr, count);
+    return ptr;
+}
+void operator delete(void* ptr) noexcept
+{
+    TracyFree(ptr);
+    free(ptr);
+}
+#endif
+
+#include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
 
 using namespace SceneManagement;
 
-#define PROFILER
-
-#if defined(PROFILER) //overloading operators new and delete globally for profiling
-    void* operator new(std::size_t count)
-    {
-        auto ptr = malloc(count);
-        TracyAlloc(ptr, count);
-        return ptr;
-    }
-    void operator delete(void* ptr) noexcept
-    {
-        TracyFree(ptr);
-        free(ptr);
-    }
-#endif
 int main() {
     #if defined(PROFILER)
         Profiler::get().init();

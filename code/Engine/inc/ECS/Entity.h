@@ -34,6 +34,7 @@ public:
     void setTransform(const Transform2&);
     void setName(const std::string&);
     void setParent(Entity&);
+    //Component* getComponent;
 
 private:
     static int EntityCounter;

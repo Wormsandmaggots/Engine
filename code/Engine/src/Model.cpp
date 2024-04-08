@@ -1,30 +1,19 @@
 #include "Model.h"
 
-void Model::awake() {
+void Model::awake() {}
 
-}
+void Model::start() {}
 
-void Model::start() {
+void Model::update() {}
 
-}
+void Model::onDestroy() {}
 
-void Model::update() {
-}
-
-void Model::onDestroy() {
-
-}
-
-void Model::setParent(Entity *entity) {
-
-}
+void Model::setParent(Entity *entity) {}
 
 string Model::serialize() {
     return std::string();
 }
-void Model::setTransform(Transform2 *transform2) {
-
-}
+void Model::setTransform(Transform2 *transform2) {}
 
 Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
     loadModel(path);
@@ -33,7 +22,6 @@ Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
 void Model::Draw(Shader &shader) {
     for (auto &meshe: meshes)
         meshe.Draw(shader);
-
 }
 
 void Model::loadModel(string const &path) {
