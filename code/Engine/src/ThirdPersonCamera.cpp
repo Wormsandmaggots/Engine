@@ -61,3 +61,7 @@ glm::mat4 ThirdPersonCamera::getView() {
 }
 void ThirdPersonCamera::setTransform(Transform2* newTransform) {
 }
+
+glm::mat4 ThirdPersonCamera::getProjection(float width, float height) {
+    return glm::perspective(glm::radians(zoom), width / height, 0.1f, 100.0f);
+}

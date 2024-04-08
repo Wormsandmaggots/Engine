@@ -18,7 +18,11 @@ void Profiler::end() {
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
 }
-void Profiler::mark() { //for marking frames
+void Profiler::markFrame() { //for marking frames
     FrameMark;
+}
+
+void Profiler::zoneScope() {
+    ZoneScoped;
 }
 

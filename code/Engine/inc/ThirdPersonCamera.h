@@ -1,3 +1,4 @@
+///implementation explained: https://www.youtube.com/watch?v=PoxDDZmctnU
 #ifndef ENGINE_THIRDPERSONCAMERA_H
 #define ENGINE_THIRDPERSONCAMERA_H
 
@@ -14,6 +15,7 @@ private:
     glm::vec3 cameraTarget;
     glm::vec3 worldUp;
     glm::mat4 view;
+    float zoom = 45.0f;
     float distanceFromPlayer = 5.0f;
     float calculateHorizontalDistance();
     float calculateVerticalDistance();
@@ -35,5 +37,6 @@ public:
     std::string serialize() override;
     void setTransform(Transform2*) override;
     glm::mat4 getView();
+    glm::mat4 getProjection(float width, float height);
 };
 #endif //ENGINE_THIRDPERSONCAMERA_H

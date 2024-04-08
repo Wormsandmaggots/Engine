@@ -9,7 +9,7 @@
 
 using namespace SceneManagement;
 
-//#define PROFILER
+#define PROFILER
 
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
     void* operator new(std::size_t count)
@@ -164,10 +164,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader.use();
 
-		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
-		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = s.camera.GetViewMatrix();
-        //glm::mat4 view = playerCamera->getView();
+		/*glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
+		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);*/
+		glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        //glm::mat4 view = s.camera.GetViewMatrix();
+        glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
@@ -178,7 +179,8 @@ int main() {
 		//                              glm::value_ptr(projection),
 		//                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
 
-		Profiler::get().mark();
+		Profiler::get().markFrame();
+        Profiler::get().zoneScope();
 		renderer.renderModels();
 
 		ImGui::Render();
