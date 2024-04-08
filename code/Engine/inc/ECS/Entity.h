@@ -5,10 +5,15 @@
 #ifndef ENGINE_ENTITY_H
 #define ENGINE_ENTITY_H
 
+#pragma once
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <cmath>
+#include "Model.h"
 #include <string>
 #include <vector>
 #include "Scene/Transform2.h"
-#include "Transform.h"
 #include "ThirdPersonCamera.h"
 
 class Component;

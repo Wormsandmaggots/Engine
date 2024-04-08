@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "Transform.h"
 #include <vector>
@@ -25,4 +26,4 @@ public:
             sceneObjects.at(i)->updateWorldTransform(glm::mat4(1.0f), shader);
         }
     }
-};
+};*/
