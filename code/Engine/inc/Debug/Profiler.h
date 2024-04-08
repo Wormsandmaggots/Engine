@@ -8,7 +8,10 @@ public:
     static Profiler& get();
     void init();
     void end();
-    void mark();
+    void markFrame(); //marking frames
+    ///zone represents the lifetime of a special on-stack profiler variable. Typically it would exist for the duration of a whole scope of the
+    ///profiled function, but you also can measure time spent in scopes of a for-loop or an if-branch.
+    void zoneScope();
 private:
     Profiler();
     STARTUPINFO si;

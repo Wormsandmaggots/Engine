@@ -1,29 +1,30 @@
 #include "windows.h"
 #include <iostream>
 #include "Debug/Profiler.h"
-#include "Engine/Engine.h"
 #include "tracy/TracyOpenGL.hpp"
+
+#define PROFILER
+#if defined(PROFILER) //overloading operators new and delete globally for profiling
+void* operator new(std::size_t count)
+{
+    auto ptr = malloc(count);
+    TracyAlloc(ptr, count);
+    return ptr;
+}
+void operator delete(void* ptr) noexcept
+{
+    TracyFree(ptr);
+    free(ptr);
+}
+#endif
+
+#include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
 
 using namespace SceneManagement;
 
-//#define PROFILER
-
-#if defined(PROFILER) //overloading operators new and delete globally for profiling
-    void* operator new(std::size_t count)
-    {
-        auto ptr = malloc(count);
-        TracyAlloc(ptr, count);
-        return ptr;
-    }
-    void operator delete(void* ptr) noexcept
-    {
-        TracyFree(ptr);
-        free(ptr);
-    }
-#endif
 int main() {
     #if defined(PROFILER)
         Profiler::get().init();
@@ -129,7 +130,6 @@ int main() {
     player ->addComponent(playerModel);
     player->addComponent(playerCamera);
 	// airplane->addComponent(airplaneModel);
-
 	scene.addEntity(entity);
 	scene.addEntity(monke);
     scene.addEntity(player);
@@ -164,10 +164,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader.use();
 
-		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
-		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = s.camera.GetViewMatrix();
-        //glm::mat4 view = playerCamera->getView();
+		/*glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
+		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);*/
+		glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        //glm::mat4 view = s.camera.GetViewMatrix();
+        glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
@@ -178,7 +179,8 @@ int main() {
 		//                              glm::value_ptr(projection),
 		//                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
 
-		Profiler::get().mark();
+		Profiler::get().markFrame();
+        Profiler::get().zoneScope();
 		renderer.renderModels();
 
 		ImGui::Render();

@@ -10,7 +10,7 @@ class Entity;
 class Transform2;
 class Component : public ISerializable{
 public:
-    Entity* parent;
+    Transform2* parentTransform;
     Component() = default;
     virtual ~Component() = default;
     //when initialized

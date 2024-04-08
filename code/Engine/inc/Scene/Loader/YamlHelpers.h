@@ -6,8 +6,6 @@
 #define ENGINE_YAMLHELPERS_H
 
 #include "yaml-cpp/yaml.h"
-
-#include "Transform.h"
 #include "ECS/Entity.h"
 #include "Debug/Logger.h"
 #include "Scene/Transform2.h"
@@ -33,24 +31,6 @@ namespace YAML {
             rhs.x = node[0].as<float>();
             rhs.y = node[1].as<float>();
             rhs.z = node[2].as<float>();
-            return true;
-        }
-    };
-
-    template<>
-    struct convert<Transform> {
-        static Node encode(const Transform &rhs) {
-            Node node;
-            node.push_back(rhs.position);
-            node.push_back(rhs.rotation);
-            node.push_back(rhs.scale);
-            return node;
-        }
-
-        static bool decode(const Node &node, Transform &rhs) {
-            rhs.position = node["pos"].as<vec3>();
-            rhs.rotation = node["rot"].as<vec3>();
-            rhs.scale = node["scale"].as<vec3>();
             return true;
         }
     };
