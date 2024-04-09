@@ -138,7 +138,19 @@ int main()
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
 
+        // Testowanie metod klasy Input
+        if (Input::IsKeyPressed(GLFW_KEY_A)) {
+            std::cout << "Key A is pressed" << std::endl;
+        }
 
+        if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+            std::cout << "Left mouse button is pressed" << std::endl;
+        }
+
+        /*
+        std::pair<float, float> mousePos = Input::GetMousePosition();
+        std::cout << "Mouse position: " << mousePos.first << ", " << mousePos.second << std::endl;
+         */
 
 		processInput(s.window);
 
