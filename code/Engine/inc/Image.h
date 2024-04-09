@@ -6,11 +6,18 @@
 #include "Shader.h"
 #include <stb_image.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 class Image {
 private:
     unsigned int VAO, VBO, EBO, texture;
     Shader shader;
+
+protected:
+    void updateVertices(const std::vector<float>& vertices) {
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    }
 
 public:
     Image(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath)
@@ -22,10 +29,10 @@ public:
 
         // Definicja struktury danych wierzchołków i indeksów
         float vertices[] = {
-                300.0f, 200.0f, 0.0f, 0.0f,   // lewy dolny róg
-                300.0f, 500.0f, 0.0f, 1.0f,   // lewy górny róg
-                900.0f, 500.0f, 1.0f, 1.0f,   // prawy górny róg
-                900.0f, 200.0f, 1.0f, 0.0f    // prawy dolny róg
+                300.0f, 100.0f, 0.0f, 0.0f,   // lewy dolny róg
+                300.0f, 250.0f, 0.0f, 1.0f,   // lewy górny róg
+                550.0f, 250.0f, 1.0f, 1.0f,   // prawy górny róg
+                550.0f, 100.0f, 1.0f, 0.0f    // prawy dolny róg
         };
 
         unsigned int indices[] = {

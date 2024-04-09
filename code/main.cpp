@@ -4,6 +4,7 @@
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
 #include "Image.h"
+#include "BackgroundImage.h"
 
 //#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
@@ -148,8 +149,8 @@ int main() {
     // airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
     //hud
+    BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
-
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -193,9 +194,14 @@ int main() {
         ImGui::Render();
 
         //hud - test
+        //if rectangle display queue broken, uncomment glDisabe/glEnable
+        //glDisable(GL_DEPTH_TEST);
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
         shader.setMat4("projection", orthoProjection);
+        //backgroundImage.render();
         image.render();
+        backgroundImage.render();
+        //glEnable(GL_DEPTH_TEST);
         //hud - test
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
