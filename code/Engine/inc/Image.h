@@ -11,12 +11,17 @@
 class Image {
 private:
     unsigned int VAO, VBO, EBO, texture;
-    Shader shader;
 
 protected:
+    Shader shader;
+
     void updateVertices(const std::vector<float>& vertices) {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    }
+
+    void setColor(const glm::vec3& color) {
+        shader.setVec3("color", color);
     }
 
 public:

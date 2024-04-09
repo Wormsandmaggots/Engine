@@ -5,6 +5,7 @@
 #include "Text/Text.h"
 #include "Image.h"
 #include "BackgroundImage.h"
+#include "ProgressBar.h"
 
 //#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
@@ -149,6 +150,7 @@ int main() {
     // airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
     //hud
+    ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
@@ -199,9 +201,17 @@ int main() {
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
         shader.setMat4("projection", orthoProjection);
         //backgroundImage.render();
+
+        progressBar.update(s.deltaTime); // aktualizacja paska postępu
+        progressBar.renderBar(); // renderowanie paska postępu
+
         image.render();
         backgroundImage.render();
         backgroundImage.update(s.deltaTime); // aktualizacja tła
+
+        //progressBar.update(s.deltaTime); // aktualizacja paska postępu
+        //progressBar.renderBar(); // renderowanie paska postępu
+
         //glEnable(GL_DEPTH_TEST);
         //hud - test
 
