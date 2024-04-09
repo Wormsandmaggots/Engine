@@ -30,10 +30,17 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/Text/Text.h
         Engine/inc/Input/Input.h
         Engine/inc/Input/Input.h
-        Engine/inc/Input/WindowsInput.h
-        Engine/inc/Input/WindowsInput.h
-        Engine/inc/Input/WindowsInput.cpp
-        Engine/inc/Input/WindowsInput.cpp
+        Engine/inc/Input/Event.cpp
+        Engine/inc/Input/Event.h
+        Engine/inc/Input/Event.h
+        Engine/inc/Input/Key.cpp
+        Engine/inc/Input/Key.h
+        Engine/inc/Input/Key.h
+        Engine/inc/Input/Window.cpp
+        Engine/inc/Input/Window.h
+        Engine/inc/Input/Window.h
+        Engine/inc/Input/Input.cpp
+        Engine/inc/Input/Input.cpp
 )
 
 
