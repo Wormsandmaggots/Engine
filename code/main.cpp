@@ -3,9 +3,9 @@
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
-#include "Image.h"
-#include "BackgroundImage.h"
-#include "ProgressBar.h"
+#include "Engine/inc/HUD/Image.h"
+#include "Engine/inc/HUD/BackgroundImage.h"
+#include "Engine/inc/HUD/ProgressBar.h"
 
 //#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
@@ -197,43 +197,24 @@ int main() {
         Profiler::get().zoneScope();
         renderer.renderModels();
         ImGui::Render();
-
-
-        //hud - test
-        // Zwiększamy licznik o deltaTime
-        counter += s.deltaTime;
-
-        // Jeśli licznik osiągnął wartość 10, resetujemy go do 0
-        if (counter >= 11.0f) {
-            counter = 0.0f;
-        }
-
-        // Wyświetlamy licznik na ekranie
-        testText->RenderCounter(shaderText, counter, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-
+        //hud
+        testText->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         //if rectangle display queue broken, uncomment glDisabe/glEnable
         //glDisable(GL_DEPTH_TEST);
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
         shader.setMat4("projection", orthoProjection);
-        //backgroundImage.render();
 
-        progressBar.update(s.deltaTime); // aktualizacja paska postępu
-        progressBar.renderBar(); // renderowanie paska postępu
+        progressBar.update(s.deltaTime);
+        progressBar.renderBar();
 
         image.render();
         backgroundImage.render();
-        backgroundImage.update(s.deltaTime); // aktualizacja tła
-
-        //progressBar.update(s.deltaTime); // aktualizacja paska postępu
-        //progressBar.renderBar(); // renderowanie paska postępu
-
+        backgroundImage.update(s.deltaTime);
         //glEnable(GL_DEPTH_TEST);
-        //hud - test
-
-
+        //hud end
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        testText->RenderText(shaderText,"ioio",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 
 
         glfwSwapBuffers(s.window);

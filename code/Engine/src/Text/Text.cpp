@@ -122,3 +122,20 @@ void Text::RenderText(Shader &shader, std::string text, float x, float y, float 
     glDisable(GL_BLEND);
 }
 
+void Text::RenderCounter(Shader &s, float counter, float x, float y, float scale, glm::vec3 color, float width, float height) {
+    std::string counterStr = std::to_string(static_cast<int>(counter));
+    if (counter < 10.0f) {
+        counterStr = "0" + counterStr;
+    }
+    RenderText(s, counterStr, x, y, scale, color, width, height);
+}
+
+void Text::renderAndUpdateCounter(Shader &shader, float deltaTime, float x, float y, float scale, glm::vec3 color,
+                                  float width, float height) {
+    counter += deltaTime;
+    if (counter >= 11.0f) {
+        counter = 0.0f;
+    }
+    RenderCounter(shader, counter, x, y, scale, color, width, height);
+}
+

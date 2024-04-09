@@ -1,38 +1,21 @@
-#ifndef ENGINE_IMAGE_H
-#define ENGINE_IMAGE_H
+#include "Engine/inc/HUD/Image.h"
+#include <iostream>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "Shader.h"
-#include <stb_image.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <vector>
+void Image::updateVertices(const std::vector<float>& vertices) {
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+}
 
-class Image {
-private:
-    unsigned int VAO, VBO, EBO, texture;
+void Image::setColor(const glm::vec3& color) {
+    shader.setVec3("color", color);
+}
 
-protected:
-    Shader shader;
-
-    void updateVertices(const std::vector<float>& vertices) {
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    }
-
-    void setColor(const glm::vec3& color) {
-        shader.setVec3("color", color);
-    }
-
-public:
-    Image(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath)
-            : shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str()) {
-        // Inicjalizacja VAO, VBO, EBO
+Image::Image(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath)
+            : shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str()){
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
 
-        // Definicja struktury danych wierzchołków i indeksów
         float vertices[] = {
                 300.0f, 100.0f, 0.0f, 0.0f,   // lewy dolny róg
                 300.0f, 250.0f, 0.0f, 1.0f,   // lewy górny róg
@@ -41,8 +24,8 @@ public:
         };
 
         unsigned int indices[] = {
-                0, 1, 2,   // pierwszy trójkąt
-                0, 2, 3    // drugi trójkąt
+                0, 1, 2,
+                0, 2, 3
         };
 
         glBindVertexArray(VAO);
@@ -60,18 +43,16 @@ public:
 
         glBindVertexArray(0);
 
-        // Załadowanie shaderów
         shader.use();
 
-        // Załadowanie tekstury
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-// Ustawienie parametrów tekstury
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-// Wczytanie i generowanie tekstury
+
         int width, height, nrChannels;
         unsigned char *data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
         if (data)
@@ -91,38 +72,28 @@ public:
         stbi_image_free(data);
     }
 
-    void render() {
-        // Użycie shadera
+    void Image::render() {
         shader.use();
 
-        // Ustawienie macierzy modelu, widoku i projekcji
-        glm::mat4 model = glm::mat4(1.0f); // macierz jednostkowa, nie przekształca niczego
-        glm::mat4 view = glm::mat4(1.0f); // macierz jednostkowa, nie przekształca niczego
-        glm::mat4 projection = glm::ortho(0.0f, (float)1920, 0.0f, (float)1080); // macierz ortograficzna
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::ortho(0.0f, (float)1920, 0.0f, (float)1080);
 
         shader.setMat4("model", model);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
-        // Wiązanie i aktywacja tekstury
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
-        // Wiązanie VAO
         glBindVertexArray(VAO);
 
-        // Rysowanie elementów
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
-    ~Image() {
-        // Usuwanie VAO, VBO, EBO i tekstury
+    Image::~Image() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
         glDeleteTextures(1, &texture);
     }
-};
-
-
-#endif //ENGINE_IMAGE_H

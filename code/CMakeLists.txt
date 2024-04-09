@@ -32,13 +32,13 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/src/Debug/Profiler.cpp
         Engine/inc/ThirdPersonCamera.h
         Engine/src/ThirdPersonCamera.cpp
-        Engine/src/Image.cpp
-        Engine/inc/Image.h
-        Engine/inc/Image.h
-        Engine/inc/BackgroundImage.h
-        Engine/inc/BackgroundImage.h
-        Engine/inc/ProgressBar.h
-        Engine/inc/ProgressBar.h)
+        Engine/src/HUD/Image.cpp
+        Engine/inc/HUD/Image.h
+        Engine/inc/HUD/Image.h
+        Engine/inc/HUD/BackgroundImage.h
+        Engine/inc/HUD/BackgroundImage.h
+        Engine/inc/HUD/ProgressBar.h
+        Engine/inc/HUD/ProgressBar.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
