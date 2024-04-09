@@ -7,5 +7,6 @@ uniform sampler2D texture1;
 
 void main()
 {
-    FragColor = texture(texture1, TexCoord);
+    vec2 wrappedTexCoord = fract(TexCoord); // zawijanie koordynat tekstury
+    FragColor = texture(texture1, wrappedTexCoord);
 }

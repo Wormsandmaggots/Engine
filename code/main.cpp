@@ -201,6 +201,7 @@ int main() {
         //backgroundImage.render();
         image.render();
         backgroundImage.render();
+        backgroundImage.update(s.deltaTime); // aktualizacja tła
         //glEnable(GL_DEPTH_TEST);
         //hud - test
 
