@@ -27,7 +27,13 @@ source_group(TREE ${CMAKE_SOURCE_DIR}         FILES ${ASSETS_FILES})
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/src/Text/Text.cpp
         Engine/inc/Text/Text.h
-        Engine/inc/Text/Text.h)
+        Engine/inc/Text/Text.h
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/WindowsInput.cpp
+        Engine/inc/Input/WindowsInput.h
+        Engine/inc/Input/WindowsInput.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

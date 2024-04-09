@@ -4,6 +4,7 @@
 
 #include "tracy/TracyOpenGL.hpp"
 #include "Editor/Editor.h"
+#include "Input/WindowsInput.h"
 
 using namespace SceneManagement;
 
@@ -74,6 +75,7 @@ int main()
 #pragma endregion TEST
 
 	s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
+    Input::s_Instance = new WindowsInput(s.window);
 
 	if (s.window == nullptr)
 	{
