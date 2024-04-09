@@ -154,6 +154,9 @@ int main() {
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
+    // Declare the counter variable
+    float counter = 0.0f;
+
     while (!glfwWindowShouldClose(s.window))
     {
         player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
@@ -195,7 +198,19 @@ int main() {
         renderer.renderModels();
         ImGui::Render();
 
+
         //hud - test
+        // Zwiększamy licznik o deltaTime
+        counter += s.deltaTime;
+
+        // Jeśli licznik osiągnął wartość 10, resetujemy go do 0
+        if (counter >= 11.0f) {
+            counter = 0.0f;
+        }
+
+        // Wyświetlamy licznik na ekranie
+        testText->RenderCounter(shaderText, counter, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
         //if rectangle display queue broken, uncomment glDisabe/glEnable
         //glDisable(GL_DEPTH_TEST);
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
@@ -215,8 +230,11 @@ int main() {
         //glEnable(GL_DEPTH_TEST);
         //hud - test
 
+
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+
 
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);

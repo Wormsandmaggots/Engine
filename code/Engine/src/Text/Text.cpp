@@ -121,3 +121,4 @@ void Text::RenderText(Shader &shader, std::string text, float x, float y, float 
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
 }
+

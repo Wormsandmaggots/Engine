@@ -1,7 +1,3 @@
-//
-// Created by jakub on 27.03.2024.
-//
-
 #ifndef ENGINE_TEXT_H
 #define ENGINE_TEXT_H
 
@@ -18,6 +14,19 @@ public:
     ~Text();
     void fillCharacterMap();
     void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, float w, float h);
+    //counter
+    void RenderCounter(Shader &s, float counter, float x, float y, float scale, glm::vec3 color, float width, float height) {
+        // Konwertujemy licznik na ciąg znaków
+        std::string counterStr = std::to_string(static_cast<int>(counter));
+
+        // Jeśli licznik jest mniejszy niż 10, dodajemy 0 na początku ciągu
+        if (counter < 10.0f) {
+            counterStr = "0" + counterStr;
+        }
+
+        // Wyświetlamy licznik na ekranie
+        RenderText(s, counterStr, x, y, scale, color, width, height);
+    }
 
 private:
     FT_Library ft;
