@@ -10,19 +10,34 @@
 #include <iostream>
 #include <map>
 #include "Shader.h"
+#include "ECS/Component.h"
+#include "Renderer/Renderable.h"
 #include FT_FREETYPE_H
 
-class Text {
+class Text : public Component, public Renderable {
 public:
     Text(const std::string& fontPath);
     ~Text();
     void fillCharacterMap();
-    void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, float w, float h);
+    void renderText();
+    void setParameters(std::string text, float _x, float _y, float _scale, glm::vec3 _color, float _w, float _h);
+    void awake() override;
+    void start() override;
+    void update() override;
+    void onDestroy() override;
+    void setParent(Entity *entity) override;
+    void setTransform(Transform2 *transform2) override;
+    std::string serialize() override;
+
+    void Draw(Shader &shader) override;
 
 private:
     FT_Library ft;
     FT_Face face;
-
+    Shader* shader;
+    std::string stringText;
+    float x,y,scale,w,h;
+    glm::vec3 color;
     struct Character {
         unsigned int TextureID;  // ID handle of the glyph texture
         glm::ivec2   Size;       // Size of glyph
@@ -31,6 +46,7 @@ private:
     };
 
     std::map<char, Character> Characters;
+
 };
 
 

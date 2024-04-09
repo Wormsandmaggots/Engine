@@ -113,7 +113,9 @@ int main() {
 
 	init_imgui();
 
-    Text* testText = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
+                                  (float) s.WINDOW_HEIGHT);
     //ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
 	Scene2 scene("scene");
@@ -138,7 +140,7 @@ int main() {
 	// scene.addEntity(airplane);
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-    Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
+    //Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
 	Renderer renderer(shader, scene.getSceneEntities());
     float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
@@ -187,7 +189,8 @@ int main() {
 		renderer.renderModels();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        //arcadeRenderer->renderText();
+        arcadeRenderer->update();
 		glfwSwapBuffers(s.window);
 		glfwMakeContextCurrent(s.window);
 		glfwPollEvents();
