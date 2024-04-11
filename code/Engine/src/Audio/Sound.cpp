@@ -3,19 +3,7 @@
 //
 
 #include "Audio/Sound.h"
-
-template<typename T>
-constexpr void clamp(T &toClamp, T low, T high)
-{
-  toClamp = toClamp < low ? low : toClamp > high ? high : low;
-}
-
-template<typename T, typename Compare>
-constexpr void clamp(T toClamp, T low, T high, Compare compare)
-{
-  toClamp = compare(toClamp, low) < 0 ? low : compare(toClamp, high) > 0 ? high : low;
-}
-
+#include "Core/Utils/MathUtils.h"
 
 ma_sound& Sound::getSound() {
     return sound;
@@ -32,7 +20,7 @@ void Sound::stop() {
 void Sound::setVolume(float volume) {
     this->volume = volume;
 
-    clamp<float>(this->volume, 0, 1);
+    Math::Clamp<float>(this->volume, 0, 1);
 
     ma_sound_set_volume(&sound, volume);
 }

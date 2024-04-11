@@ -20,6 +20,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "Renderer/Renderer.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ public:
 
     void start() override;
 
-    void update() override;
+    void update() override ;
 
     void onDestroy() override;
 

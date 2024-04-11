@@ -29,11 +29,9 @@ void Inspector::draw(Entity* chosenEntity, Camera* editorCamera) {
 
     ImGui::NewLine();
     ImGuizmo::BeginFrame();
-    Gizmos::editTransform(glm::value_ptr(view),
+    Gizmos::EditTransform(glm::value_ptr(view),
                           glm::value_ptr(projection),
-                          glm::value_ptr(Gizmos::CurrentGizmoMode == ImGuizmo::MODE::WORLD ?
-                                         chosenEntity->getTransform()->getWorldMatrix() :
-                                         chosenEntity->getTransform()->getLocalMatrix()));
+                          chosenEntity->getTransform());
 
     ImGui::End();
 }

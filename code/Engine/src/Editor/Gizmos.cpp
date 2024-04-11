@@ -3,14 +3,18 @@
 //
 
 #include "Editor/Gizmos.h"
+#include "Shader.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/quaternion.hpp"
 
 using namespace EditorLayer;
 
 ImGuizmo::OPERATION Gizmos::CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 ImGuizmo::MODE Gizmos::CurrentGizmoMode = ImGuizmo::LOCAL;
 
-void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* modelMatrix)
+void Gizmos::EditTransform(float* viewMatrix, float* projectionMatrix, Transform2* transform)
 {
+    float* modelMatrix = CurrentGizmoMode == ImGuizmo::LOCAL ? glm::value_ptr(transform->getLocalMatrix()) : glm::value_ptr(transform->getWorldMatrix());
 
     //TODO: after input module, change this
     if (ImGui::IsKeyPressed('T'))
@@ -82,6 +86,19 @@ void Gizmos::editTransform(float* viewMatrix, float* projectionMatrix, float* mo
     if (ImGuizmo::IsUsing()) {
         // Update object model matrix if gizmo is being used
         memcpy(modelMatrix, matrix, sizeof(float) * 16);
+
+        if(CurrentGizmoMode == ImGuizmo::LOCAL)
+        {
+            ImGuizmo::DecomposeMatrixToComponents(modelMatrix, matrixTranslation, matrixRotation, matrixScale);
+            //transform->setLocalTransform(*modelMatrix);
+            transform->setPosition(reinterpret_cast<const glm::vec<3, float> &>(matrixTranslation));
+            transform->setRotation(reinterpret_cast<const glm::vec<3, float> &>(matrixRotation));
+            transform->setScale(reinterpret_cast<const glm::vec<3, float> &>(matrixScale));
+        }
+        else
+        {
+            transform->setTransform(*modelMatrix);
+        }
     }
 
 }

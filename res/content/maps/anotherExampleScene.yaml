@@ -1,14 +1,13 @@
-#HOW TO YAML https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started
 Scene:
 
-  SceneName: exampleScene
+  SceneName: anotherExampleScene
 
   Entities:
-#names for entities should be unique to apply anchors
+    #names for entities should be unique to apply anchors
     # consider using bool to check if entity is parented
     - Name: &anchor testEntity1
       Transform:
-        pos: [0,0,0]
+        pos: [1,1,1]
         rot: [0,0,0]
         scale: [1,1,1]
       Components:

@@ -2,7 +2,7 @@
 // Created by Radek on 24.03.2024.
 //
 
-#include "Engine/inc/Scene/Transform2.h"
+#include "Scene/Transform2.h"
 
 Transform2::Transform2(glm::vec3 localPosition,
         glm::vec3 localRotation,
@@ -57,10 +57,15 @@ void Transform2::updateLocalTransform() {
     localMatrix = mat;
 }
 
+void Transform2::setLocalTransform(glm::mat4 mat) {
+    localMatrix = mat;
+    isDirty = true;
+}
+
 void Transform2::updateWorldTransform(const glm::mat4 &parentWorldMatrix) {
     if (isDirty) {
         updateLocalTransform();
-        worldMatrix = parentWorldMatrix * localMatrix;
+        worldMatrix = localMatrix * parentWorldMatrix;
         isDirty = false;
     }
 }
@@ -83,6 +88,7 @@ glm::mat4 &Transform2::getWorldMatrix()  {
 
 void Transform2::setTransform(glm::mat4 mat) {
     this->worldMatrix = mat;
+    isDirty = true;
 }
 
 glm::mat4 &Transform2::getLocalMatrix() {

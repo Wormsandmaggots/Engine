@@ -8,7 +8,7 @@
 
 class Entity;
 class Transform2;
-class Component : public ISerializable{
+class Component : ISerializable{
 public:
     Transform2* parentTransform;
     Component() = default;

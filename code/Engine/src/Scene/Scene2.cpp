@@ -41,4 +41,8 @@ void Scene2::removeEntity(Entity *e) {
     sceneEntities.erase(std::remove(sceneEntities.begin(), sceneEntities.end(), e), sceneEntities.end());
 }
 
+void Scene2::setName(const string &newName) {
+    name = newName;
+}
+
 

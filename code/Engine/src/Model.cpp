@@ -4,7 +4,7 @@ void Model::awake() {}
 
 void Model::start() {}
 
-void Model::update() {}
+void Model::update() { }
 
 void Model::onDestroy() {}
 

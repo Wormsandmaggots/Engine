@@ -12,9 +12,9 @@
 
 using namespace glm;
 namespace YAML {
+
     template<>
-    struct convert<vec3>
-    {
+    struct convert<vec3>{
         static Node encode(const vec3 &rhs) {
             Node node;
             node.push_back(rhs.x);
@@ -81,6 +81,23 @@ namespace YAML {
             rhs.setName(node["Name"].as<string>());
             rhs.setTransform(node["Transform"].as<Transform2>());
             return true;
+        }
+    };
+
+    template<>
+    struct convert<Scene2> {
+        static Node encode(const Scene2 &rhs)
+        {
+            Node node;
+            node.push_back(rhs.getName());
+            for (Entity* e : rhs.getSceneEntities()) {
+                node.push_back(*e);
+            }
+        }
+
+        static bool decode(const Node &node, Scene2 &rhs)
+        {
+            rhs.setName(node["Scene"]["SceneName"].as<std::string>());
         }
     };
 }

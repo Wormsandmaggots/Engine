@@ -19,6 +19,7 @@ namespace SceneManagement {
 
         void loadScene(const std::string &);
         void unloadScene(const std::string &);
+        void unloadScene(Scene2*);
         void updateLoadedScenes();
 
         const std::vector<Scene2*>& getLoadedScenes() const;

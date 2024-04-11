@@ -19,7 +19,8 @@ void SceneManager::unloadScene(const std::string &sceneName) {
 
     if (foundedScene != loadedScenes.end()) {
         delete *foundedScene;
-        loadedScenes.erase(foundedScene);
+        loadedScenes.erase(std::remove(loadedScenes.begin(), loadedScenes.end(), *foundedScene), loadedScenes.end());
+        //loadedScenes.erase(foundedScene);
         LOG_INFO("Scene '" + sceneName + "' has been correctly unloaded.\n");
     } else {
         LOG_ERROR("Scene '" + sceneName + "' has not been loaded before.\n");
@@ -45,4 +46,9 @@ SceneManager::SceneManager() {
 
 const std::vector<Scene2 *> &SceneManager::getLoadedScenes() const {
     return loadedScenes;
+}
+
+void SceneManager::unloadScene(Scene2* toUnload) {
+    delete toUnload;
+    loadedScenes.erase(std::remove(loadedScenes.begin(), loadedScenes.end(), toUnload), loadedScenes.end());
 }

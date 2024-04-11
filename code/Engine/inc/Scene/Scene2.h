@@ -8,20 +8,22 @@
 
 #include <string>
 #include "ECS/Entity.h"
+#include "Core/AssetManager/Asset.h"
 
 class Scene2 {
 public:
     explicit Scene2(std::string);
-    Scene2();
-    virtual ~Scene2() = default;
+    ~Scene2() = default;
 
     void addEntity(Entity*);
     void addEntities(std::vector<Entity*>&);
     void update();
     void removeEntity(Entity*);
 
-    std::string getName() const;
-    const vector<Entity *> &getSceneEntities() const;
+    void setName(const std::string&);
+
+    [[nodiscard]] std::string getName() const;
+    [[nodiscard]] const vector<Entity *> &getSceneEntities() const;
 
 private:
     std::string name;

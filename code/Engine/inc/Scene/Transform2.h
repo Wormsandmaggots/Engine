@@ -31,6 +31,7 @@ public:
     void setDirty(bool dirty);
     void setRotation(glm::vec3 newRotation);
     void setScale(glm::vec3 newScale);
+    void setLocalTransform(glm::mat4 mat);
 
 private:
     glm::vec3 localPosition=glm::vec3(0);

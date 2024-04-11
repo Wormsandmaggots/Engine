@@ -74,12 +74,19 @@ void Editor::drawMainMenu() {
         {
             if(ImGui::MenuItem("Open"))
             {
-                LOG_INFO(FileDialog::openFile(""));
+                SceneManagement::SceneManager::Instance->unloadScene(SceneManagement::SceneManager::Instance->getLoadedScenes()[0]);
+                std::string path = FileDialog::openFile("YAML Files (*.yaml;*.yml)\0*.yaml;*.yml\0All Files (*.*)\0*.*\0");
+
+                if(!path.empty())
+                {
+                    SceneManagement::SceneManager::Instance->loadScene(path);
+                }
             }
 
             if(ImGui::MenuItem("Save"))
             {
-
+                //not implemented
+                std::string path = FileDialog::saveFile("YAML Files (*.yaml;*.yml)\0*.yaml;*.yml\0All Files (*.*)\0*.*\0");
             }
 
             ImGui::EndMenu();
