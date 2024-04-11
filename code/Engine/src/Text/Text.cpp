@@ -142,7 +142,7 @@ void Text::awake() {}
 void Text::start() {}
 
 void Text::update() {
-    Draw(*shader);
+    Draw(shader);
 }
 
 void Text::onDestroy() {}
@@ -155,6 +155,9 @@ std::string Text::serialize() {
     return std::string();
 }
 
-void Text::Draw(Shader &shader) {
+void Text::Draw(Shader *errorshader) {
+    if(shader == nullptr){
+        shader == errorshader;
+    }
     renderText();
 }

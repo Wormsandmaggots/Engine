@@ -29,7 +29,7 @@ public:
     void setTransform(Transform2 *transform2) override;
     std::string serialize() override;
 
-    void Draw(Shader &shader) override;
+    void Draw(Shader *errorshader) override;
 
 private:
     FT_Library ft;
