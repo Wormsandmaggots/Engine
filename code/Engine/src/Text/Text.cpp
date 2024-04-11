@@ -16,6 +16,7 @@ Text::Text(const std::string& fontPath) {
     fillCharacterMap();
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
+    shader = new Shader("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
 }
 
 Text::~Text() {
@@ -65,7 +66,8 @@ void Text::fillCharacterMap() {
     }
 }
 
-void Text::RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, float w, float h) {
+void Text::renderText() {
+    float beginx = x;
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glm::mat4 projection = glm::ortho(0.0f, w, 0.0f, h);
@@ -79,15 +81,15 @@ void Text::RenderText(Shader &shader, std::string text, float x, float y, float 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    shader.use();
-    shader.setVec3("textColor", color.x, color.y, color.z);
-    shader.setMat4("projection", projection);
+    shader->use();
+    shader->setVec3("textColor", color.x, color.y, color.z);
+    shader->setMat4("projection", projection);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
     // iterate through all characters
     std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
+    for (c = stringText.begin(); c != stringText.end(); c++)
     {
         Character ch = Characters[*c];
 
@@ -120,4 +122,39 @@ void Text::RenderText(Shader &shader, std::string text, float x, float y, float 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
+    x = beginx;
+}
+
+void Text::setParameters(std::string text, float _x, float _y, float _scale, glm::vec3 _color, float _w, float _h) {
+    stringText = text;
+    x = _x;
+    y = _y;
+    scale = _scale;
+    color = _color;
+    w = _w;
+    h = _h;
+
+
+}
+
+void Text::awake() {}
+
+void Text::start() {}
+
+void Text::update() {
+    Draw(*shader);
+}
+
+void Text::onDestroy() {}
+
+void Text::setParent(Entity *entity) {}
+
+void Text::setTransform(Transform2 *transform2) {}
+
+std::string Text::serialize() {
+    return std::string();
+}
+
+void Text::Draw(Shader &shader) {
+    renderText();
 }
