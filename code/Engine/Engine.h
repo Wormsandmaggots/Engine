@@ -4,7 +4,7 @@
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
-
+#include "Core/AssetManager/AssetManager.h"
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 //#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
@@ -34,7 +34,6 @@ void operator delete(void* ptr) noexcept
 #include "Engine/inc/Physics/Colliders/Collider.h"
 #include "Renderer/Renderer.h"
 
-//CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
     int32_t WINDOW_HEIGHT = 1080;
@@ -56,22 +55,7 @@ struct Settings{
     float lastFrame = 0.0f;
     Camera camera;
 } s;
-
-//float speed = 5;
-///!!!!!----------------------------->
-//USE THIS TO GET A TRANSFORM FROM A JSON
-JsonReader j(s.jsonSettingsFilePath);
-
-//Transform* CreateTransform(std::string pathToObjectInJson)
-//{
-//    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
-//                         j.ParseToVec3(pathToObjectInJson, "pos"),
-//                         j.ParseToVec3(pathToObjectInJson, "rot"),
-//                         j.ParseToVec3(pathToObjectInJson, "scale"));
-//}
-
-
-
+#pragma region INITIALIZERS
 int GLFWInit()
 {
     if (!glfwInit())
@@ -137,8 +121,6 @@ void processInput(GLFWwindow *window)
     }
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
@@ -146,8 +128,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
@@ -174,8 +154,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     s.camera.canMove = button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
 }
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     //if(carMovement) return;
@@ -198,6 +176,17 @@ void imgui_begin()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
+#pragma endregion INITIALIZERS
+///!!!!!----------------------------->
+//USE THIS TO GET A TRANSFORM FROM A JSON
+JsonReader j(s.jsonSettingsFilePath);
+//Transform* CreateTransform(std::string pathToObjectInJson)
+//{
+//    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
+//                         j.ParseToVec3(pathToObjectInJson, "pos"),
+//                         j.ParseToVec3(pathToObjectInJson, "rot"),
+//                         j.ParseToVec3(pathToObjectInJson, "scale"));
+//}
 
 void init(){
     //GLFW INITIALIZATION
@@ -243,7 +232,20 @@ void init(){
         Profiler::get().init();
     #endif
 }
+void update(){
+    #if defined(PROFILER)
+        Profiler::get().markFrame();
+                Profiler::get().zoneScope();
+    #endif
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(s.window);
+        glfwMakeContextCurrent(s.window);
+        glfwPollEvents();
+}
 void end(){
+    AssetManager::end();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
