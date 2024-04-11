@@ -23,6 +23,9 @@ void operator delete(void* ptr) noexcept
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
+#include "Physics/ColliderComponent.h"
+#include "Physics/CollisionManager.h"
+#include "Editor/Gizmos.h"
 
 using namespace SceneManagement;
 
@@ -43,6 +46,7 @@ int main() {
 #pragma region TEST
 	EditorLayer::Editor editor;
     editor.init(&s.camera);
+    CollisionManager cm;
 
 	AudioManager a;
 	a.init();
@@ -58,23 +62,6 @@ int main() {
 	sound->setVolume(2.f);
 
 	LOG_INFO("If u hear germans singing, that's a good sing.");
-
-	glm::vec3 v = {0, 0, 0};
-	glm::vec3 v2 = {20, 20, 20};
-	Collider c1 = Collider(v, 10);
-	Collider c2 = Collider(v, 5);
-	Collider c3 = Collider(v2, 5);
-
-
-	if (c1.CheckCollision(c2))
-	{
-		LOG_INFO("THAT COLLISION WORKS");
-	}
-
-	if (!c1.CheckCollision(c3))
-	{
-		LOG_INFO("AND THAT DIDNT COLLIDE, as expected");
-	}
 
 
 #pragma endregion TEST
@@ -104,15 +91,15 @@ int main() {
 
 	LOG_INFO("GLAD initialized");
 
-	
+
+	//    stbi_set_flip_vertically_on_load(true);
+
+	glEnable(GL_DEPTH_TEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	SetCallbacks(s.window);
 
 	init_imgui();
-
-	Renderer renderer;
-	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-	renderer.init();
-
 
     Text* testText = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     //ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
@@ -123,9 +110,16 @@ int main() {
     Entity* player = new Entity("player");
 	// Entity* airplane = new Entity("airplane");
 
-	Model *model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
+	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
     Model* playerModel = new Model("res\\content\\models\\player.obj");
+    Model* sphere = new Model("res/content/models/sphere/untitled.obj");
+
+    ColliderComponent* cc1 = new ColliderComponent();
+    ColliderComponent* cc2 = new ColliderComponent();
+
+    cc1->start();
+    cc2->start();
 	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
 
 	entity->addComponent(model);
@@ -138,29 +132,42 @@ int main() {
     scene.addEntity(player);
 	// scene.addEntity(airplane);
 
+	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+    Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
-    
-	float yrotation = 0;
+	Renderer renderer;
+    renderer.init();
+
+    float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+
+    sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
+    sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
+
+    sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(sphere);
+    sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(sphere);
+
+    cc1->parentTransform = sm.getLoadedScenes()[0]->getSceneEntities()[0]->getTransform();
+    cc2->parentTransform = sm.getLoadedScenes()[0]->getSceneEntities()[1]->getTransform();
 
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
 	while (!glfwWindowShouldClose(s.window))
 	{
-        player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
-        if (glfwGetKey(s.window, GLFW_KEY_S) == GLFW_PRESS)
-        {
-            yrotation+=1;
-        }
-        if (glfwGetKey(s.window, GLFW_KEY_A) == GLFW_PRESS)
-        {
-            yrotation-=1;
-        }
+        //EditorLayer::Gizmos::Clear();
+//        player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
+//        if (glfwGetKey(s.window, GLFW_KEY_S) == GLFW_PRESS)
+//        {
+//            yrotation+=1;
+//        }
+//        if (glfwGetKey(s.window, GLFW_KEY_A) == GLFW_PRESS)
+//        {
+//            yrotation-=1;
+//        }
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
-        scene.update();
 		processInput(s.window);
 
 		glClearColor(0.2, 0.2, 0.2, 1);
@@ -174,25 +181,35 @@ int main() {
         //glm::mat4 view = playerCamera->getView();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
+        collisionTestShader.use();
+        collisionTestShader.setMat4("view", view);
+        collisionTestShader.setMat4("projection", projection);
+        collisionTestShader.setVec3("color", cc1->color);
 
-		imgui_begin();
+        renderer.renderModels(sm.getLoadedScenes()[0]->getSceneEntities());
+
+        imgui_begin();
 		editor.draw();
+        sm.updateLoadedScenes();
+        //scene.update();
 
-		//        Gizmos::editTransform(glm::value_ptr(view),
-		//                              glm::value_ptr(projection),
-		//                              glm::value_ptr(monke->getTransform()->getWorldMatrix()));
+        cm.update();
+
+        if(cc1->germansSing)
+        {
+            sound->play();
+        }
+        else
+        {
+            sound->stop();
+        }
 
 		Profiler::get().markFrame();
         Profiler::get().zoneScope();
-		renderer.shader->use();
-		renderer.shader->setMat4("view", view);
-		renderer.shader->setMat4("projection", projection);
 
-		Renderer::Render(model);
-		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        //testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		glfwSwapBuffers(s.window);
 		glfwMakeContextCurrent(s.window);
 		glfwPollEvents();
@@ -201,11 +218,10 @@ int main() {
 #if defined(PROFILER)
     Profiler::get().end();
 #endif
-	
+
     a.end();
     AssetManager::end();
 
-	renderer.end();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
