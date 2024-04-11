@@ -3,8 +3,9 @@
 
 class Renderable
 {
+
 public:
-    virtual void Draw(Shader& shader) = 0; // Pure virtual function
+    virtual void Draw(Shader* shader)=0;
 };
 
 #endif //ENGINE_RENDERABLE_H

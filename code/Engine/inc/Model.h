@@ -33,7 +33,7 @@ public:
     string directory;
     bool gammaCorrection;
     Model(const string &path, bool gamma=false);
-    void Draw(Shader& shader) override;
+    void Draw(Shader* shader) override;
 
     ~Model() override = default;
 

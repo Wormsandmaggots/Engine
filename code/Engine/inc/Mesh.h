@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "Shader.h"
+#include "ECS/Component.h"
 
 struct Vertex
 {

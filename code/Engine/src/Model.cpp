@@ -19,9 +19,10 @@ Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
     loadModel(path);
 }
 
-void Model::Draw(Shader &shader) {
+void Model::Draw(Shader *shader) {
+    shader->setMat4("model", glm::mat4(1));
     for (auto &meshe: meshes)
-        meshe.Draw(shader);
+        meshe.Draw(*shader);
 }
 
 void Model::loadModel(string const &path) {

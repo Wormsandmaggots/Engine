@@ -104,14 +104,15 @@ int main() {
 
 	LOG_INFO("GLAD initialized");
 
-	//    stbi_set_flip_vertically_on_load(true);
-
-	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
+	
 	SetCallbacks(s.window);
 
 	init_imgui();
+
+	Renderer renderer;
+	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+	renderer.init();
+
 
     Text* testText = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     //ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
@@ -122,7 +123,7 @@ int main() {
     Entity* player = new Entity("player");
 	// Entity* airplane = new Entity("airplane");
 
-	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
+	Model *model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
     Model* playerModel = new Model("res\\content\\models\\player.obj");
 	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
@@ -137,10 +138,9 @@ int main() {
     scene.addEntity(player);
 	// scene.addEntity(airplane);
 
-	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
-	Renderer renderer(shader, scene.getSceneEntities());
-    float yrotation = 0;
+    
+	float yrotation = 0;
 	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
@@ -184,7 +184,12 @@ int main() {
 
 		Profiler::get().markFrame();
         Profiler::get().zoneScope();
-		renderer.renderModels();
+		renderer.shader->use();
+		renderer.shader->setMat4("view", view);
+		renderer.shader->setMat4("projection", projection);
+
+		Renderer::Render(model);
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         testText->RenderText(shaderText,"dupa",100,100,1.0f,glm::vec3(0.5, 0.8f, 0.2f),(float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
@@ -196,10 +201,11 @@ int main() {
 #if defined(PROFILER)
     Profiler::get().end();
 #endif
-
+	
     a.end();
     AssetManager::end();
 
+	renderer.end();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

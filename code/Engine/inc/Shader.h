@@ -96,6 +96,10 @@ public:
             glDeleteShader(geometry);
 
     }
+
+    Shader();
+
+
     // activate the shader
     // ------------------------------------------------------------------------
     void use()
