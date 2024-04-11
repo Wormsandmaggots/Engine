@@ -126,7 +126,7 @@ int main() {
 
 	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
-    Model* playerModel = new Model("res\\content\\models\\player.obj");
+    Model* playerModel = new Model("res\\content\\models\\player\\character_base.obj");
 	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
 
 	entity->addComponent(model);
