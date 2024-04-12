@@ -28,10 +28,6 @@ void ThirdPersonCamera::setParent(Entity *entity) {
     cameraTarget = parentTransform->getLocalPosition();
 }
 
-std::string ThirdPersonCamera::serialize() {
-    return std::string();
-}
-
 float ThirdPersonCamera::calculateHorizontalDistance() {
     return distanceFromPlayer * cos(glm::radians(rotation.y)); //pitch
 }

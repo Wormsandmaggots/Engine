@@ -4,23 +4,16 @@ void Model::awake() {}
 
 void Model::start() {}
 
-void Model::update() { }
+void Model::update() { Renderer::Render(this); }
 
 void Model::onDestroy() {}
-
-void Model::setParent(Entity *entity) {}
-
-string Model::serialize() {
-    return std::string();
-}
-void Model::setTransform(Transform2 *transform2) {}
 
 Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
     loadModel(path);
 }
 
 void Model::Draw(Shader *shader) {
-    shader->setMat4("model", glm::mat4(1));
+    shader->setMat4("model", parentTransform->getWorldMatrix());
     for (auto &meshe: meshes)
         meshe.Draw(*shader);
 }

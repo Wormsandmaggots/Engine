@@ -17,15 +17,11 @@ public:
 
     void awake() override{};
     void onDestroy() override{};
-    std::string serialize() override{};
-    void setParent(Entity *) override{};
-    void setTransform(Transform2 *) override{};
     void update() override;
 
     Collider *getCollider() const;
 
     //!TEST ONLY
-    bool germansSing = false;
     glm::vec3 color = glm::vec3(0,1,0);
 
 private:

@@ -114,7 +114,7 @@ int main() {
 
 	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
 	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
-    Model* playerModel = new Model("res\\content\\models\\player.obj");
+    Model* playerModel = new Model("res\\content\\models\\player/character_base.obj");
     Model* sphere = new Model("res/content/models/sphere/untitled.obj");
 
     ColliderComponent* cc1 = new ColliderComponent();
@@ -149,9 +149,6 @@ int main() {
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(sphere);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(sphere);
-
-    cc1->parentTransform = sm.getLoadedScenes()[0]->getSceneEntities()[0]->getTransform();
-    cc2->parentTransform = sm.getLoadedScenes()[0]->getSceneEntities()[1]->getTransform();
 
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
@@ -188,7 +185,9 @@ int main() {
         collisionTestShader.setMat4("projection", projection);
         collisionTestShader.setVec3("color", cc1->color);
 
-        renderer.renderModels(sm.getLoadedScenes()[0]->getSceneEntities());
+        Renderer::shader->use();
+        Renderer::shader->setMat4("view", view);
+        Renderer::shader->setMat4("projection", projection);
 
         imgui_begin();
 		editor.draw();
@@ -196,15 +195,6 @@ int main() {
         //scene.update();
 
         cm.update();
-
-        if(cc1->germansSing)
-        {
-            sound->play();
-        }
-        else
-        {
-            sound->stop();
-        }
 
 		Profiler::get().markFrame();
         Profiler::get().zoneScope();

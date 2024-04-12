@@ -27,7 +27,6 @@ public:
     void onDestroy() override;
     void setParent(Entity *entity) override;
     void setTransform(Transform2 *transform2) override;
-    std::string serialize() override;
 
     void Draw(Shader *errorshader) override;
 

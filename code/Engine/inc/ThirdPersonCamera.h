@@ -34,7 +34,6 @@ public:
 
     void setParent(Entity *entity) override;
 
-    std::string serialize() override;
     void setTransform(Transform2*) override;
     glm::mat4 getView();
     glm::mat4 getProjection(float width, float height);

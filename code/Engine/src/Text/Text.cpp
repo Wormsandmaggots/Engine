@@ -151,10 +151,6 @@ void Text::setParent(Entity *entity) {}
 
 void Text::setTransform(Transform2 *transform2) {}
 
-std::string Text::serialize() {
-    return std::string();
-}
-
 void Text::Draw(Shader *errorshader) {
     if(shader == nullptr){
         shader == errorshader;
