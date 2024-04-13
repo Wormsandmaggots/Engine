@@ -9,10 +9,10 @@ public:
     BackgroundImage(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath)
             : Image(vertexShaderPath, fragmentShaderPath, texturePath) {
         std::vector<float> vertices = {
-                0.0f, 0.0f, 0.0f, 0.0f,
-                0.0f, 1080.0f, 0.0f, 1.0f,
-                1920.0f, 1080.0f, 1.0f, 1.0f,
-                1920.0f, 0.0f, 1.0f, 0.0f
+                300.0f, 100.0f, 0.0f, 0.0f,
+                300.0f, 150.0f, 0.0f, 1.0f,
+                600.0f, 150.0f, 1.0f, 1.0f,
+                600.0f, 100.0f, 1.0f, 0.0f
         };
 
         updateVertices(vertices);
@@ -25,10 +25,10 @@ public:
         }
 
         std::vector<float> vertices = {
-                0.0f, 0.0f, 0.0f + textureOffset, 0.0f,
-                0.0f, 1080.0f, 0.0f + textureOffset, 1.0f,
-                1920.0f, 1080.0f, 1.0f + textureOffset, 1.0f,
-                1920.0f, 0.0f, 1.0f + textureOffset, 0.0f
+                300.0f, 100.0f, 0.0f + textureOffset, 0.0f,
+                300.0f, 150.0f, 0.0f + textureOffset, 1.0f,
+                600.0f, 150.0f,  1.0f + textureOffset, 1.0f,
+                600.0f, 100.0f,  1.0f + textureOffset, 0.0f
         };
 
         updateVertices(vertices);
