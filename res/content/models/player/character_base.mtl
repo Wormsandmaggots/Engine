@@ -29,10 +29,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd kołniezyk/kołniezyk_Bake1_PBR_Diffuse.png
-map_Ks kołniezyk/kołniezyk_Bake1_PBR_Specular.png
-map_Ns kołniezyk/kołniezyk_Bake1_PBR_Roughness.png
-map_refl kołniezyk/kołniezyk_Bake1_PBR_Metalness.png
+map_Kd kolniezyk/kolniezyk_Bake1_PBR_Diffuse.png
+map_Ks kolniezyk/kolniezyk_Bake1_PBR_Specular.png
+map_Ns kolniezyk/kolniezyk_Bake1_PBR_Roughness.png
+map_refl kolniezyk/kolniezyk_Bake1_PBR_Metalness.png
 
 newmtl pants_Baked
 Ka 1.000000 1.000000 1.000000

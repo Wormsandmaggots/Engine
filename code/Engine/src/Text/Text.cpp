@@ -151,6 +151,16 @@ void Text::setParent(Entity *entity) {}
 
 void Text::setTransform(Transform2 *transform2) {}
 
+Shader* Text::getShader()
+{
+    return shader;
+}
+
+Transform2* Text::getTransform()
+{
+    return parentTransform;
+}
+
 void Text::Draw(Shader *errorshader) {
     if(shader == nullptr){
         shader == errorshader;

@@ -19,7 +19,6 @@
 #include "Audio/AudioManager.h"
 #include "Editor/Gizmos.h"
 #include "Engine/inc/Physics/Colliders/Collider.h"
-#include "Renderer/Renderer.h"
 
 //CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{

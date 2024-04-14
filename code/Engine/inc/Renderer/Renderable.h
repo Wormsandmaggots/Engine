@@ -5,6 +5,8 @@ class Renderable
 {
 
 public:
+    virtual Shader* getShader() = 0;
+    virtual Transform2* getTransform() = 0;
     virtual void Draw(Shader* shader)=0;
 };
 

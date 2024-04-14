@@ -27,7 +27,8 @@ public:
     void onDestroy() override;
     void setParent(Entity *entity) override;
     void setTransform(Transform2 *transform2) override;
-
+    Shader* getShader() override;
+    Transform2* getTransform()override;
     void Draw(Shader *errorshader) override;
 
 private:

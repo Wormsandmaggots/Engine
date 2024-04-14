@@ -101,48 +101,32 @@ int main() {
 
 	init_imgui();
 
+	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
+	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
+
+	Renderer renderer(&shader);
+
+	renderer.addShader(&collisionTestShader);
+	renderer.addShader(&shaderText);
+
+	renderer.init();
+
+	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
+	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
+
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
                                   (float) s.WINDOW_HEIGHT);
-    //ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
-
-	Scene2 scene("scene");
-	Entity* entity = new Entity("nanosuit");
-	Entity* monke = new Entity("monke");
-    Entity* player = new Entity("player");
-	// Entity* airplane = new Entity("airplane");
-
-	Model* model = new Model("res\\content\\models\\nanosuit\\nanosuit.obj");
-	Model* monkeModel = new Model("res\\content\\models\\plane.obj");
-    Model* playerModel = new Model("res\\content\\models\\player/character_base.obj");
-    Model* sphere = new Model("res/content/models/sphere/untitled.obj");
+    ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
     ColliderComponent* cc1 = new ColliderComponent();
     ColliderComponent* cc2 = new ColliderComponent();
 
     cc1->start();
     cc2->start();
-	// Model* airplaneModel = new Model("res\\content\\models\\aircraft\\airplane.obj");
-
-	entity->addComponent(model);
-	monke->addComponent(monkeModel);
-    player ->addComponent(playerModel);
-    //player->addComponent(playerCamera);
-	// airplane->addComponent(airplaneModel);
-	scene.addEntity(entity);
-	scene.addEntity(monke);
-    scene.addEntity(player);
-	// scene.addEntity(airplane);
-
-	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-    Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
-    Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
-	Renderer renderer;
-    renderer.init();
 
     float yrotation = 0;
-	monke->getTransform()->setPosition(glm::vec3(5, 3, 1));
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
@@ -150,7 +134,9 @@ int main() {
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(sphere);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(sphere);
 
-	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
+	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
+	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
+
 
 	while (!glfwWindowShouldClose(s.window))
 	{
@@ -171,27 +157,19 @@ int main() {
 
 		glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		shader.use();
 
-		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),
-		                                        (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 view = s.camera.GetViewMatrix();
+
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
-        glm::mat4 view = s.camera.GetViewMatrix();
-        //glm::mat4 view = playerCamera->getView();
-		shader.setMat4("view", view);
-		shader.setMat4("projection", projection);
-        collisionTestShader.use();
-        collisionTestShader.setMat4("view", view);
-        collisionTestShader.setMat4("projection", projection);
-        collisionTestShader.setVec3("color", cc1->color);
-
-        Renderer::shader->use();
-        Renderer::shader->setMat4("view", view);
-        Renderer::shader->setMat4("projection", projection);
+		//glm::mat4 view = playerCamera->getView();
 
         imgui_begin();
 		editor.draw();
-        sm.updateLoadedScenes();
+        
+		
+		renderer.updateProjectionAndView(projection, view);
+		sm.updateLoadedScenes();
         //scene.update();
 
         cm.update();
@@ -213,6 +191,7 @@ int main() {
 #endif
 
     a.end();
+	renderer.end();
     AssetManager::end();
 
 	ImGui_ImplOpenGL3_Shutdown();

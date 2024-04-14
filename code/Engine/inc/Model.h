@@ -33,7 +33,7 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
-    Model(const string &path, bool gamma=false);
+    Model(const string &path,Shader* shader=nullptr, bool gamma=false);
     void Draw(Shader* shader) override;
 
     ~Model() override = default;
@@ -45,7 +45,12 @@ public:
     void update() override ;
 
     void onDestroy() override;
+
+    Shader* getShader()override;
+    Transform2* getTransform()override;
 private:
+    Shader* defaultShader;
+
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);
     vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);

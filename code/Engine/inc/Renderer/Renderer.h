@@ -4,16 +4,24 @@
 #include <vector>
 #include "ECS/Entity.h"
 #include "Shader.h"
+#include "Renderer/Renderable.h"
+#include <Debug/Logger.h>
+
+
+
 class Renderer{
 public:
-    Renderer();
+    Renderer(Shader* defaultShader);
     void init();
+    void update();
     void end();
+    void addShader(Shader* shader);
     void static Render(Renderable* renderable);
     virtual ~Renderer() = default;
-    inline static Shader* shader;
-
-    //1) statyczna metoda render() if ma mesh to ten shader jak nie to deafultowy shader;
+    inline static Shader* defaultShader;
+    std::vector<Shader*> shaders;
+    void updateProjectionAndView(glm::mat4 view, glm::mat4 projection);
+   
     //3) frame buffer do post procesow 
     //2) instance render
 

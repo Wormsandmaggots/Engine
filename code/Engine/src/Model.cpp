@@ -4,16 +4,32 @@ void Model::awake() {}
 
 void Model::start() {}
 
-void Model::update() { Renderer::Render(this); }
+void Model::update() { 
+
+    Renderer::Render(this); 
+
+}
 
 void Model::onDestroy() {}
 
-Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
+Shader* Model::getShader()
+{
+    return defaultShader;
+}
+
+Transform2* Model::getTransform()
+{
+    return parentTransform;
+}
+
+
+Model::Model(const string& path, Shader* shader, bool gamma)
+{
+    defaultShader = shader;
     loadModel(path);
 }
 
 void Model::Draw(Shader *shader) {
-    shader->setMat4("model", parentTransform->getWorldMatrix());
     for (auto &meshe: meshes)
         meshe.Draw(*shader);
 }
