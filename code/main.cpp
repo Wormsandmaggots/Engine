@@ -26,6 +26,8 @@ void operator delete(void* ptr) noexcept
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
+#include "Input/Input.h"
+#include "Input/DebugInput.h"
 
 using namespace SceneManagement;
 
@@ -101,6 +103,10 @@ int main() {
 
 	init_imgui();
 
+    glfwSetKeyCallback(s.window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        Input::getInstance().keyCallback(window, key, scancode, action, mods);
+    });
+
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
                                   (float) s.WINDOW_HEIGHT);
@@ -152,6 +158,10 @@ int main() {
 
 	// airplane->getTransform()->setPosition(glm::vec3(-5, 0, 1));
 
+    //HID - test
+    DebugInput debugInput;
+    //HID - test
+
 	while (!glfwWindowShouldClose(s.window))
 	{
         //EditorLayer::Gizmos::Clear();
@@ -167,9 +177,10 @@ int main() {
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
-		processInput(s.window);
+        debugInput.interpretInput(s.window, s.camera, s.deltaTime);
 
-		glClearColor(0.2, 0.2, 0.2, 1);
+
+        glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader.use();
 
@@ -206,6 +217,9 @@ int main() {
 		glfwSwapBuffers(s.window);
 		glfwMakeContextCurrent(s.window);
 		glfwPollEvents();
+
+        //for input
+        Input::getInstance().endFrame();
 	}
 
 #if defined(PROFILER)

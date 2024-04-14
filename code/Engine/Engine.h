@@ -113,7 +113,7 @@ static void glfw_error_callback(int error, const char* description)
 
 float speed = 5;
 
-void processInput(GLFWwindow *window)
+/*void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -147,7 +147,7 @@ void processInput(GLFWwindow *window)
     {
         s.camera.ProcessKeyboard(DOWN, s.deltaTime);
     }
-}
+}*/
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+/*void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
@@ -185,23 +185,23 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 
     s.camera.canMove = button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
-}
+}*/
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+/*void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     //if(carMovement) return;
 
     s.camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
+}*/
 
 void SetCallbacks(GLFWwindow* window)
 {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    //glfwSetCursorPosCallback(window, mouse_callback);
+    //glfwSetScrollCallback(window, scroll_callback);
+    //glfwSetMouseButtonCallback(window, mouse_button_callback);
 }
 
 void imgui_begin()
