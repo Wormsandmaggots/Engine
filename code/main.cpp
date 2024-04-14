@@ -102,11 +102,20 @@ int main() {
 	SetCallbacks(s.window);
 
 	init_imgui();
-
+/*
+    //keyboard
     glfwSetKeyCallback(s.window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         Input::getInstance().keyCallback(window, key, scancode, action, mods);
     });
+    //mouse
+    glfwSetCursorPosCallback(s.window, [](GLFWwindow* window, double xpos, double ypos) {
+        Input::getInstance().mouseCallback(window, xpos, ypos);
+    });
 
+    glfwSetMouseButtonCallback(s.window, [](GLFWwindow* window, int button, int action, int mods) {
+        Input::getInstance().mouseButtonCallback(window, button, action, mods);
+    });
+*/
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
                                   (float) s.WINDOW_HEIGHT);
@@ -219,7 +228,7 @@ int main() {
 		glfwPollEvents();
 
         //for input
-        Input::getInstance().endFrame();
+        //Input::getInstance().endFrame();
 	}
 
 #if defined(PROFILER)
