@@ -62,19 +62,7 @@ public:
     bool isKeyHeld(int key) {
         return keys[key] && !keysReleased[key];
     }
-/*
-    // didn't work
-    //
-    bool wasPressedLastFrame(int key) {
-        return keysLastFrame[key] && !keys[key];
-    }
 
-    void endFrame() {
-        for (const auto& key : keys) {
-            keysLastFrame[key.first] = key.second;
-        }
-    }
-*/
     bool isShortcutPressed(const std::vector<int>& keys) {
         for (int key : keys) {
             if (!isKeyPressed(key)) {
