@@ -26,6 +26,7 @@ void operator delete(void* ptr) noexcept
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
+#include "Input/DebugInput.h"
 
 using namespace SceneManagement;
 
@@ -101,6 +102,13 @@ int main() {
 
 	init_imgui();
 
+    //HID - test
+    Input::getInstance().initializeController(GLFW_JOYSTICK_1);
+
+    //HID - test
+    DebugInput debugInput;
+    //HID - test
+
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
@@ -153,7 +161,7 @@ int main() {
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
-		processInput(s.window);
+        debugInput.interpretInput(s.window, s.camera, s.deltaTime);
 
 		glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

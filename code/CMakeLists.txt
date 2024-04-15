@@ -31,7 +31,12 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/Debug/Profiler.h
         Engine/src/Debug/Profiler.cpp
         Engine/inc/ThirdPersonCamera.h
-        Engine/src/ThirdPersonCamera.cpp)
+        Engine/src/ThirdPersonCamera.cpp
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/Input.h
+        Engine/inc/Input/DebugInput.h
+        Engine/inc/Input/DebugInput.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

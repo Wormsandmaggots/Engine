@@ -19,6 +19,7 @@
 #include "Audio/AudioManager.h"
 #include "Editor/Gizmos.h"
 #include "Engine/inc/Physics/Colliders/Collider.h"
+#include "Input/Input.h"
 
 //CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{
@@ -112,41 +113,6 @@ static void glfw_error_callback(int error, const char* description)
 
 float speed = 5;
 
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    //if(carMovement) return;
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    {
-
-        s.camera.ProcessKeyboard(FORWARD, s.deltaTime);
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-
-        s.camera.ProcessKeyboard(BACKWARD, s.deltaTime);
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    {
-        s.camera.ProcessKeyboard(LEFT, s.deltaTime);
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    {
-
-        s.camera.ProcessKeyboard(RIGHT, s.deltaTime);
-    }
-    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    {
-        s.camera.ProcessKeyboard(UP, s.deltaTime);
-    }
-    if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-    {
-        s.camera.ProcessKeyboard(DOWN, s.deltaTime);
-    }
-}
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
@@ -157,50 +123,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
-    float xpos = static_cast<float>(xposIn);
-    float ypos = static_cast<float>(yposIn);
-
-    if (s.firstMouse)
-    {
-        s.lastX = xpos;
-        s.lastY = ypos;
-        s.firstMouse = false;
-    }
-
-    float xoffset = xpos - s.lastX;
-    float yoffset = s.lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    s.lastX = xpos;
-    s.lastY = ypos;
-
-    s.camera.ProcessMouseMovement(xoffset, yoffset);
-}
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-
-    s.camera.canMove = button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
-}
-
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    //if(carMovement) return;
-
-    s.camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
-
 void SetCallbacks(GLFWwindow* window)
 {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    Input::getInstance().setupInputCallbacks(window);
 }
 
 void imgui_begin()
