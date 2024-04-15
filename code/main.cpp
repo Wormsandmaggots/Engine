@@ -102,6 +102,10 @@ int main() {
 	SetCallbacks(s.window);
 
 	init_imgui();
+
+    //HID - test
+    Input::getInstance().initializeController(GLFW_JOYSTICK_1);
+
 /*
     //keyboard
     glfwSetKeyCallback(s.window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {

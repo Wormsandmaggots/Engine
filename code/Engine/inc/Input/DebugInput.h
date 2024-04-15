@@ -46,6 +46,11 @@ public:
             LOG_INFO("B was pressed in the last frame");
         }*/
 
+        //controller
+        if (input.getControllerButtonState(GLFW_JOYSTICK_1, 0) == GLFW_PRESS) {
+            LOG_INFO("Square button on the controller is pressed");
+        }
+
         // Mouse
         // Pobieramy stan prawego przycisku myszy
         //int state = input.getMouseState(window, GLFW_MOUSE_BUTTON_RIGHT);

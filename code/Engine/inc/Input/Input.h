@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include "GLFW/glfw3.h"
+#include "Debug/Logger.h"
 
 class Input {
 public:
@@ -130,6 +131,25 @@ public:
 
     void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
         scrollY += yoffset;
+    }
+
+    //controller
+    void initializeController(int joystick) {
+        if (glfwJoystickPresent(joystick)) {
+            LOG_INFO("Controller detected");
+        } else {
+            LOG_WARNING("No controller detected");
+        }
+    }
+
+    int getControllerButtonState(int joystick, int button) const {
+        int count;
+        const unsigned char* buttons = glfwGetJoystickButtons(joystick, &count);
+        if (button < count) {
+            return buttons[button];
+        } else {
+            return GLFW_RELEASE;
+        }
     }
 
 
