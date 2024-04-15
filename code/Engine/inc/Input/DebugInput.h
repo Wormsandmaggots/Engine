@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "Input.h"
 #include "Editor/Camera.h"
+#include "Debug/Logger.h"
 
 class DebugInput {
 public:
@@ -44,33 +45,52 @@ public:
         /*if (input.wasPressedLastFrame(GLFW_KEY_B)) {
             LOG_INFO("B was pressed in the last frame");
         }*/
-        //mouse
-        double lastX = input.getMouseX();
-        double lastY = input.getMouseY();
 
-        if (input.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
-            double xoffset = input.getMouseX() - lastX;
-            double yoffset = lastY - input.getMouseY(); // reversed since y-coordinates range from bottom to top
-            lastX = input.getMouseX();
-            lastY = input.getMouseY();
-            camera.ProcessMouseMovement(xoffset, yoffset);
-        }
+        // Mouse
+        // Pobieramy stan prawego przycisku myszy
+        //int state = input.getMouseState(window, GLFW_MOUSE_BUTTON_RIGHT);
+        int state = input.isMouseRightButtonPressed();
 
-        if (input.isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
-            double yoffset = lastY - input.getMouseY(); // reversed since y-coordinates range from bottom to top
-            lastY = input.getMouseY();
-            camera.ProcessMouseScroll(yoffset);
+        // Jeśli prawy przycisk myszy jest wciśnięty
+        if (state == true) {
+            // Jeśli to jest pierwsze wciśnięcie przycisku myszy, zainicjuj wartości lastMouseX i lastMouseY
+            if (!camera.canMove) {
+                std::tie(lastMouseX, lastMouseY) = input.getCursorPosition(window);
+            }
+
+            // Ustawiamy flagę canMove na true
             camera.canMove = true;
+
+            // Pobieramy aktualną pozycję myszy
+            double mouseX, mouseY;
+            std::tie(mouseX, mouseY) = input.getCursorPosition(window);
+
+            // Obliczamy różnicę w pozycji myszy między bieżącą a poprzednią klatką
+            float xoffset = static_cast<float>(mouseX - lastMouseX);
+            float yoffset = static_cast<float>(lastMouseY - mouseY); // reversed since y-coordinates range from bottom to top
+
+            // Aktualizujemy pozycję myszy dla następnej klatki
+            lastMouseX = mouseX;
+            lastMouseY = mouseY;
+
+            // Przekazujemy różnicę w pozycji myszy do metody ProcessMouseMovement klasy Camera
+            camera.ProcessMouseMovement(xoffset, yoffset);
         } else {
+            // Jeśli prawy przycisk myszy nie jest wciśnięty, ustawiamy flagę canMove na false
             camera.canMove = false;
         }
 
-        double scrollY = input.getScrollY();
-        camera.ProcessMouseScroll(scrollY);
+        // Pobieramy offset scrolla
+        double scrollOffsetY = input.getScrollOffsetY();
+
+        // Przekazujemy offset scrolla do metody ProcessMouseScroll klasy Camera
+        camera.ProcessMouseScroll(scrollOffsetY);
     }
 
-    //mouse
+private:
 
+    double lastMouseX = 0.0;
+    double lastMouseY = 0.0;
 
 };
 #endif

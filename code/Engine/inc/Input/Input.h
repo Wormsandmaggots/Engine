@@ -2,6 +2,7 @@
 #define ENGINE_INPUT_H
 
 #include <unordered_map>
+#include <vector>
 #include "GLFW/glfw3.h"
 
 class Input {
@@ -22,7 +23,11 @@ public:
         });
 
         glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
-            getInstance().mouseButtonCallback(window, button, action, mods);
+            if (button == GLFW_MOUSE_BUTTON_LEFT) {
+                getInstance().mouseLeftButton = action == GLFW_PRESS;
+            } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+                getInstance().mouseRightButton = action == GLFW_PRESS;
+            }
         });
 
         glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
@@ -79,46 +84,54 @@ public:
     }
 
     //mouse
+    double getMouseX() const {
+        return mouseX;
+    }
+
+    double getMouseY() const {
+        return mouseY;
+    }
+
+
+    std::pair<double, double> getCursorPosition(GLFWwindow* window) const {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        return std::make_pair(x, y);
+    }
+
     void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
         mouseX = xpos;
         mouseY = ypos;
     }
 
-    void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-        if (button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT) {
-            if (action == GLFW_PRESS) {
-                mouseButtons[button] = true;
-                mouseButtonsReleased[button] = false;
-            } else if (action == GLFW_RELEASE) {
-                mouseButtons[button] = false;
-                mouseButtonsReleased[button] = true;
-            }
-        }
+    bool isMouseLeftButtonPressed() const {
+        return mouseLeftButton;
     }
 
-    double getMouseX() {
-        return mouseX;
+    bool isMouseRightButtonPressed() const {
+        return mouseRightButton;
     }
 
-    double getMouseY() {
-        return mouseY;
+    int getMouseState(GLFWwindow* window, int button) const {
+        return glfwGetMouseButton(window, button);
     }
 
-    bool isMouseButtonPressed(int button) {
-        return mouseButtons[button];
+    //scroll
+
+    double getScrollY() const {
+        return scrollY;
     }
 
-    bool isMouseButtonReleased(int button) {
-        return !mouseButtons[button] && mouseButtonsReleased[button];
+    double getScrollOffsetY() const {
+        double offset = scrollY - lastScrollY;
+        lastScrollY = scrollY;
+        return offset;
     }
 
     void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-        scrollY = yoffset;
+        scrollY += yoffset;
     }
 
-    double getScrollY() {
-        return scrollY;
-    }
 
 private:
     //keyboard
@@ -127,10 +140,15 @@ private:
     //std::unordered_map<int, bool> keysLastFrame;
 
     //mouse
-    double mouseX, mouseY;
-    double scrollY;
-    std::unordered_map<int, bool> mouseButtons;
-    std::unordered_map<int, bool> mouseButtonsReleased;
+    double mouseX = 0.0;
+    double mouseY = 0.0;
+
+    bool mouseLeftButton = false;
+    bool mouseRightButton = false;
+
+    //scroll
+    double scrollY = 0.0;
+    mutable double lastScrollY = 0.0;
 
     Input() {}
     Input(const Input&) = delete;
