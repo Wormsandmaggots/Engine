@@ -27,6 +27,8 @@ void operator delete(void* ptr) noexcept
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
+#include "HUD/ProgressBar.h"
+#include "HUD/BackgroundImage.h"
 
 using namespace SceneManagement;
 
@@ -113,7 +115,15 @@ int main() {
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
 
-	Renderer renderer(&shader);
+    //TODO: Kuba: Czy to może tutaj zostać?
+
+    //HUD
+    ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
+    BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
+    Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
+
+
+    Renderer renderer(&shader);
 
 	renderer.addShader(&collisionTestShader);
 	renderer.addShader(&shaderText);
@@ -124,6 +134,8 @@ int main() {
 	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+
     arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
                                   (float) s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
@@ -144,14 +156,6 @@ int main() {
 
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
-
-    //TODO: Kuba: Czy to może tutaj zostać?
-    /*
-    //HUD
-    ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
-    BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
-    Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
-     */
 
 	while (!glfwWindowShouldClose(s.window))
 	{
@@ -196,11 +200,10 @@ int main() {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //arcadeRenderer->renderText();
 
-        /*
+
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
         //hud
-        testText->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        //if rectangle display queue broken, uncomment glDisabe/glEnable
+        counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
         //glDisable(GL_DEPTH_TEST);
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
         shader.setMat4("projection", orthoProjection);
@@ -213,7 +216,7 @@ int main() {
         backgroundImage.update(s.deltaTime);
         //glEnable(GL_DEPTH_TEST);
         //hud end
-         */
+
 
         arcadeRenderer->update();
 		glfwSwapBuffers(s.window);
