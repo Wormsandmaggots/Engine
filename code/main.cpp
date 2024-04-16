@@ -59,16 +59,7 @@ int main() {
 
     cc1->start();
     cc2->start();
-
-	entity->addComponent(model);
-    player ->addComponent(playerModel);
-    entity->getComponent<Model>();
-	scene.addEntity(entity);
-    scene.addEntity(player);
-
-	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-    Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
-	Renderer renderer;
+    
     renderer.init();
 
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
@@ -115,12 +106,7 @@ int main() {
 		renderer.updateProjectionAndView(projection, view);
 		sm.updateLoadedScenes();
         //scene.update();
-
         cm.update();
-
-		Profiler::get().markFrame();
-        Profiler::get().zoneScope();
-
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //arcadeRenderer->renderText();
@@ -148,7 +134,6 @@ int main() {
 
         cm.update();
         arcadeRenderer->update();
-
         update();
 	}
     a.end();
