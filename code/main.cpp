@@ -74,7 +74,6 @@ int main() {
     
     renderer.init();
 
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
@@ -84,8 +83,10 @@ int main() {
 
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
+    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
-	while (!glfwWindowShouldClose(s.window))
+
+    while (!glfwWindowShouldClose(s.window))
 	{
         //EditorLayer::Gizmos::Clear();
 
