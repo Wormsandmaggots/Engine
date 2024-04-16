@@ -4,21 +4,6 @@
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
 
-//#define PROFILER
-#if defined(PROFILER) //overloading operators new and delete globally for profiling
-void* operator new(std::size_t count)
-{
-    auto ptr = malloc(count);
-    TracyAlloc(ptr, count);
-    return ptr;
-}
-void operator delete(void* ptr) noexcept
-{
-    TracyFree(ptr);
-    free(ptr);
-}
-#endif
-
 #include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
@@ -31,76 +16,17 @@ void operator delete(void* ptr) noexcept
 using namespace SceneManagement;
 
 int main() {
-    #if defined(PROFILER)
-        Profiler::get().init();
-    #endif
-
-	if (GLFWInit())
-	{
-		LOG_ERROR("Failed to initialize GLFW");
-		return -1;
-	}
-
-	LOG_INFO("GLFW initialized");
-
-	//Radek note: don't mind me, just testing
-#pragma region TEST
+    init();
 	EditorLayer::Editor editor;
     editor.init(&s.camera);
     CollisionManager cm;
-
 	AudioManager a;
 	a.init();
-
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
-
 	sm.loadScene("res/content/maps/exampleScene.yaml");
-	//sound->play();
-
-	//! THEE WHO SHALL FIND THIS VOLUME VALUE,
-	//! BE AWARE OF CONSEQUENCES STANDING BEHIND ALTERING IT
 	sound->setVolume(2.f);
 
-	LOG_INFO("If u hear germans singing, that's a good sing.");
-
-
-#pragma endregion TEST
-
-	s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
-
-	if (s.window == nullptr)
-	{
-		LOG_ERROR("Failed to Create GLFW window");
-		glfwTerminate();
-		return -1;
-	}
-
-	LOG_INFO("GLFW window created");
-	glfwMakeContextCurrent(s.window);
-	glfwSwapInterval(1);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		LOG_ERROR("Failed to initialize GLAD");
-
-		glfwDestroyWindow(s.window);
-		glfwTerminate();
-
-		return -1;
-	}
-
-	LOG_INFO("GLAD initialized");
-
-
-	//    stbi_set_flip_vertically_on_load(true);
-
-	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	SetCallbacks(s.window);
-
-	init_imgui();
 
     //HID - test
     //TODO: Kuba: Czy to może tutaj zostać?
@@ -134,7 +60,18 @@ int main() {
     cc1->start();
     cc2->start();
 
-    float yrotation = 0;
+	entity->addComponent(model);
+    player ->addComponent(playerModel);
+    entity->getComponent<Model>();
+	scene.addEntity(entity);
+    scene.addEntity(player);
+
+	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
+    Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
+	Renderer renderer;
+    renderer.init();
+
+    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
@@ -156,15 +93,7 @@ int main() {
 	while (!glfwWindowShouldClose(s.window))
 	{
         //EditorLayer::Gizmos::Clear();
-//        player->getTransform()->setRotation(glm::vec3(0, yrotation, 0));
-//        if (glfwGetKey(s.window, GLFW_KEY_S) == GLFW_PRESS)
-//        {
-//            yrotation+=1;
-//        }
-//        if (glfwGetKey(s.window, GLFW_KEY_A) == GLFW_PRESS)
-//        {
-//            yrotation-=1;
-//        }
+
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
@@ -215,27 +144,15 @@ int main() {
         //hud end
          */
 
+        sm.updateLoadedScenes();
+
+        cm.update();
         arcadeRenderer->update();
-		glfwSwapBuffers(s.window);
-		glfwMakeContextCurrent(s.window);
-		glfwPollEvents();
+
+        update();
 	}
-
-#if defined(PROFILER)
-    Profiler::get().end();
-#endif
-
     a.end();
-	renderer.end();
-    AssetManager::end();
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
-	glfwDestroyWindow(s.window);
-	glfwTerminate();
-
-
+	end();
 	return 0;
 }

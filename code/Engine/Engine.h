@@ -4,9 +4,22 @@
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
-
+#include "Core/AssetManager/AssetManager.h"
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-
+//#define PROFILER
+#if defined(PROFILER) //overloading operators new and delete globally for profiling
+void* operator new(std::size_t count)
+{
+    auto ptr = malloc(count);
+    TracyAlloc(ptr, count);
+    return ptr;
+}
+void operator delete(void* ptr) noexcept
+{
+    TracyFree(ptr);
+    free(ptr);
+}
+#endif
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "stb_image.h"
@@ -21,7 +34,6 @@
 #include "Engine/inc/Physics/Colliders/Collider.h"
 #include "Input/Input.h"
 
-//CODE FROM BELOW SHOULD GO TO THEIR CORRESPONDING FILES IS USEFUL
 struct Settings{
     int32_t WINDOW_WIDTH  = 1920;
     int32_t WINDOW_HEIGHT = 1080;
@@ -33,19 +45,17 @@ struct Settings{
     int32_t GL_VERSION_MAJOR = 4;
     int32_t GL_VERSION_MINOR = 6;
 
-    //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     std::string jsonSettingsFilePath = "res/content/maps/ExampleNotWorkingScene.json";
 
     float lastX = WINDOW_WIDTH / 2.0f;
     float lastY = WINDOW_HEIGHT / 2.0f;
     bool firstMouse = true;
-    //Camera camera;
 
     float deltaTime = 0.0f;	// time between current frame and last frame
     float lastFrame = 0.0f;
     Camera camera;
 } s;
-
+#pragma region INITIALIZERS
 int GLFWInit()
 {
     if (!glfwInit())
@@ -59,8 +69,6 @@ int GLFWInit()
     return 0;
 }
 
-
-
 void init_imgui()
 {
     // Setup Dear ImGui binding
@@ -73,38 +81,8 @@ void init_imgui()
     ImGui_ImplGlfw_InitForOpenGL(s.window, true);
     ImGui_ImplOpenGL3_Init(s.glsl_version);
 
-    // Setup style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
-
-    // Load Fonts
-    // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-    // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-    // - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-    // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-    // - Read 'misc/fonts/README.txt' for more instructions and details.
-    // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-    //IM_ASSERT(font != NULL);
 }
-
-
-///!!!!!----------------------------->
-//USE THIS TO GET A TRANSFORM FROM A JSON
-JsonReader j(s.jsonSettingsFilePath);
-
-//Transform* CreateTransform(std::string pathToObjectInJson)
-//{
-//    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
-//                         j.ParseToVec3(pathToObjectInJson, "pos"),
-//                         j.ParseToVec3(pathToObjectInJson, "rot"),
-//                         j.ParseToVec3(pathToObjectInJson, "scale"));
-//}
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -114,8 +92,6 @@ static void glfw_error_callback(int error, const char* description)
 float speed = 5;
 
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
@@ -136,5 +112,81 @@ void imgui_begin()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
+#pragma endregion INITIALIZERS
+///!!!!!----------------------------->
+//USE THIS TO GET A TRANSFORM FROM A JSON
+JsonReader j(s.jsonSettingsFilePath);
+//Transform* CreateTransform(std::string pathToObjectInJson)
+//{
+//    return new Transform(new Model(j.ParseToString(pathToObjectInJson, "modelPath")),
+//                         j.ParseToVec3(pathToObjectInJson, "pos"),
+//                         j.ParseToVec3(pathToObjectInJson, "rot"),
+//                         j.ParseToVec3(pathToObjectInJson, "scale"));
+//}
 
+void init(){
+    //GLFW INITIALIZATION
+    if (GLFWInit())
+    {
+        LOG_ERROR("Failed to initialize GLFW");
+        exit(-1);
+    }
+    LOG_INFO("GLFW initialized");
+
+    //CREATING WINDOW
+    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
+    if (s.window == nullptr)
+    {
+        LOG_ERROR("Failed to Create GLFW window");
+        glfwTerminate();
+        exit(-1);
+    }
+    LOG_INFO("GLFW window created");
+    glfwMakeContextCurrent(s.window);
+    glfwSwapInterval(1); //how often buffers will swap
+
+    //GLAD INITIALIZING
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        LOG_ERROR("Failed to initialize GLAD");
+        glfwDestroyWindow(s.window);
+        glfwTerminate();
+        exit(-1);
+    }
+    LOG_INFO("GLAD initialized");
+
+    //SETTING OPENGL PARAMETERS
+    glEnable(GL_DEPTH_TEST); //enabling deoth tests
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //determines how OpenGL renders the edges and interiors of polygons
+    SetCallbacks(s.window);//setting the callback functions for the window
+
+    //INITIALIZING IMGUI
+    init_imgui();
+
+    //INITIALIZING PROFILER
+    #if defined(PROFILER)
+        Profiler::get().init();
+    #endif
+}
+void update(){
+    #if defined(PROFILER)
+        Profiler::get().markFrame();
+                Profiler::get().zoneScope();
+    #endif
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(s.window);
+        glfwMakeContextCurrent(s.window);
+        glfwPollEvents();
+}
+void end(){
+    AssetManager::end();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(s.window);
+    glfwTerminate();
+}
 #endif //ENGINE_ENGINE_H
