@@ -36,7 +36,15 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/Input/Input.h
         Engine/inc/Input/Input.h
         Engine/inc/Input/DebugInput.h
-        Engine/inc/Input/DebugInput.h)
+        Engine/inc/Input/DebugInput.h
+        Engine/src/HUD/Image.cpp
+        Engine/inc/HUD/Image.h
+        Engine/inc/HUD/Image.h
+        Engine/src/HUD/Image.cpp
+        Engine/inc/HUD/BackgroundImage.h
+        Engine/inc/HUD/BackgroundImage.h
+        Engine/inc/HUD/ProgressBar.h
+        Engine/inc/HUD/ProgressBar.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

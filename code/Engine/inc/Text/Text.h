@@ -31,6 +31,10 @@ public:
     Transform2* getTransform()override;
     void Draw(Shader *errorshader) override;
 
+    //counter
+    void RenderCounter(Shader &s, float counter, float x, float y, float scale, glm::vec3 color, float width, float height);
+    void renderAndUpdateCounter(Shader &shader, float deltaTime, float x, float y, float scale, glm::vec3 color, float width, float height);
+
 private:
     FT_Library ft;
     FT_Face face;
@@ -46,6 +50,9 @@ private:
     };
 
     std::map<char, Character> Characters;
+
+    // counter for hud counter rendering
+    float counter = 0.0f;
 
 };
 
