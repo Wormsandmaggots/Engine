@@ -168,13 +168,13 @@ void Text::Draw(Shader *errorshader) {
     renderText();
 }
 
-//TODO: Huba: Naprawię to  - czym zastąpić RenderText???
 void Text::RenderCounter(Shader &s, float counter, float x, float y, float scale, glm::vec3 color, float width, float height) {
     std::string counterStr = std::to_string(static_cast<int>(counter));
     if (counter < 10.0f) {
         counterStr = "0" + counterStr;
     }
-    //RenderText(s, counterStr, x, y, scale, color, width, height);
+    setParameters(counterStr, x, y, scale, color, width, height);
+    Draw(&s);
 }
 
 void Text::renderAndUpdateCounter(Shader &shader, float deltaTime, float x, float y, float scale, glm::vec3 color,
