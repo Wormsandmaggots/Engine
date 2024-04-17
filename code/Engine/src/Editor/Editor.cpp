@@ -7,6 +7,7 @@
 #include "Editor/Editor.h"
 #include "Scene/SceneManager.h"
 #include "Editor/Panels/FileDialog.h"
+#include "Editor/YamlWriter.h"
 
 
 using namespace EditorLayer;
@@ -74,19 +75,23 @@ void Editor::drawMainMenu() {
         {
             if(ImGui::MenuItem("Open"))
             {
-                SceneManagement::SceneManager::Instance->unloadScene(SceneManagement::SceneManager::Instance->getLoadedScenes()[0]);
                 std::string path = FileDialog::openFile("YAML Files (*.yaml;*.yml)\0*.yaml;*.yml\0All Files (*.*)\0*.*\0");
 
                 if(!path.empty())
                 {
+                    SceneManagement::SceneManager::Instance->unloadScene(SceneManagement::SceneManager::Instance->getLoadedScenes()[0]);
                     SceneManagement::SceneManager::Instance->loadScene(path);
                 }
             }
 
-            if(ImGui::MenuItem("Save"))
+            if(ImGui::MenuItem("Save", "CTRL+S"))
             {
-                //not implemented
                 std::string path = FileDialog::saveFile("YAML Files (*.yaml;*.yml)\0*.yaml;*.yml\0All Files (*.*)\0*.*\0");
+
+                if(!path.empty())
+                {
+                    YamlWriter::WriteTo(SceneManagement::SceneManager::Instance->getLoadedScenes()[0], path);
+                }
             }
 
             ImGui::EndMenu();

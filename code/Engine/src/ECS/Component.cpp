@@ -14,3 +14,7 @@ void Component::setParent(Entity *e) {
 void Component::setTransform(Transform2 *t) {
     parentTransform = t;
 }
+
+void Component::convertToYaml(YAML::Emitter &) {
+    
+}

@@ -5,6 +5,7 @@
 #include "Physics/Colliders/Collider.h"
 #include "Physics/CollisionDetection.h"
 #include "Physics/CollisionManager.h"
+#include "Physics/ColliderComponent.h"
 
 using namespace ColliderShapes;
 
@@ -85,6 +86,29 @@ void Collider::setOnCollisionStart(const std::function<void(ColliderComponent *)
 
 const std::function<void(ColliderComponent *)> &Collider::getOnCollisionStart() const {
     return onCollisionStart;
+}
+
+ColliderType Collider::getColliderType() const {
+    return colliderType;
+}
+
+void Collider::setColliderType(ColliderType colliderType) {
+    Collider::colliderType = colliderType;
+}
+
+void Collider::setColliderShape(Shape *colliderShape) {
+    delete this->colliderShape;
+    this->colliderShape = colliderShape;
+}
+
+Collider::Collider(ColliderComponent *owner) {
+    this->owner = owner;
+
+    setOnCollisionStart([this](ColliderComponent* c){this->owner->onCollisionStart(c);});
+    setOnCollision([this](ColliderComponent* c){this->owner->onCollision(c);});
+    setOnCollisionExit([this](ColliderComponent* c){this->owner->onCollisionExit(c);});
+
+    CollisionManager::AddCollider(this);
 }
 
 //void Collider2::setOnCollision(void (ColliderComponent::*func)(ColliderComponent *)) {

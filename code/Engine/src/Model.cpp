@@ -1,4 +1,6 @@
 #include "Model.h"
+#include "imgui.h"
+#include "Editor/Panels/FileDialog.h"
 
 void Model::awake() {}
 
@@ -26,6 +28,7 @@ Transform2* Model::getTransform()
 Model::Model(const string& path, Shader* shader, bool gamma)
 {
     defaultShader = shader;
+    this->path = path;
     loadModel(path);
 }
 
@@ -142,6 +145,47 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
         }
     }
     return textures;
+}
+
+void Model::convertToYaml(YAML::Emitter &emitter) {
+    emitter << YAML::Key << "Type" << YAML::Value << "Model";
+
+    emitter << YAML::Key << "Path" << YAML::Value << path;
+}
+
+void Model::setPath(std::string path) {
+    this->path = path;
+}
+
+Model::Model(const Model &another) {
+    this->path = another.path;
+    this->defaultShader = another.defaultShader;
+    loadModel(another.path);
+}
+
+void Model::drawEditor() {
+    ImGui::Text("Model");
+
+    if(ImGui::Button(path.c_str()))
+    {
+        std::string newPath = FileDialog::openFile("");
+
+        if(!newPath.empty())
+        {
+            setPath(newPath);
+            textures_loaded.clear();
+            meshes.clear();
+            loadModel(newPath);
+        }
+    }
+
+    ImGui::NewLine();
+}
+
+Model::Model() {
+    path = "res/content/models/sphere/untitled.obj";
+    defaultShader = nullptr;
+    loadModel(path);
 }
 
 

@@ -67,7 +67,7 @@ add_library(imgui STATIC
 
 set(ImGuizmo_SOURCE_DIR ${ImGuizmo_SOURCE_DIR} CACHE INTERNAL "")
 add_library(gizmos STATIC
-        ${ImGuizmo_SOURCE_DIR}/ImGuizmo.cpp
+        imguizmo/ImGuizmo.cpp
         ${ImGuizmo_SOURCE_DIR}/GraphEditor.cpp
         ${ImGuizmo_SOURCE_DIR}/ImCurveEdit.cpp
         ${ImGuizmo_SOURCE_DIR}/ImGradient.cpp

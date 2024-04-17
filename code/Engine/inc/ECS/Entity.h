@@ -20,15 +20,20 @@ class Component;
 
 class Entity {
 public:
+    static void ResetCounter();
     explicit Entity(const std::string &name = "");
     Entity(const Entity&);
     virtual ~Entity();
 
     void update();
+    void updateTransform();
+    void setDirtyTree();
     void addComponent(Component*);
     void addChild(Entity*);
     void addChildren(std::vector<Entity*>&);
     void removeChild(Entity*);
+    void removeComponent(Component*);
+    void removeComponent(int);
 
     [[nodiscard]] Transform2* getTransform() const;
     [[nodiscard]] std::string getName() const;
@@ -42,6 +47,7 @@ public:
     void setParent(Entity&);
     // Template function to get a component of a specific type
     template<typename T>
+
     T* getComponent() const {
         // Loop through components to find the Model component
         for (Component* component : components) {
@@ -56,6 +62,17 @@ public:
         return nullptr;
     }
     //T* getComponent() const;
+    
+    void toYaml(YAML::Emitter&);
+
+    template<typename T, typename... Args>
+    void addComponent(Args&&... args) {
+        T* newComponent = new T(std::forward<Args>(args)...);
+        newComponent->setParent(this);
+        components.push_back(newComponent);}
+
+    void drawEditor();
+
 
 private:
     static int EntityCounter;

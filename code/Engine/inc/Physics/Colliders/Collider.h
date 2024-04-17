@@ -18,6 +18,7 @@ enum ColliderType{
 class Collider {
 public:
     explicit Collider(ColliderShapes::Shape *colliderShape = nullptr, ColliderType colliderType = TRIGGER);
+    Collider(ColliderComponent*);
     virtual ~Collider();
 
     bool checkCollision(const Collider&);
@@ -26,19 +27,22 @@ public:
     void setOnCollisionExit(const std::function<void(ColliderComponent *)> &onCollisionExit);
     void setOnCollisionStart(const std::function<void(ColliderComponent *)> &onCollisionStart);
     void setOwner(ColliderComponent*);
+    void setColliderType(ColliderType colliderType);
+    void setColliderShape(ColliderShapes::Shape *colliderShape);
 
     [[nodiscard]] ColliderComponent *getOwner() const;
     [[nodiscard]] const std::function<void(ColliderComponent*)> &getOnCollision() const;
     [[nodiscard]] const std::function<void(ColliderComponent *)> &getOnCollisionExit() const;
     [[nodiscard]] const std::function<void(ColliderComponent *)> &getOnCollisionStart() const;
     [[nodiscard]] ColliderShapes::Shape *getColliderShape() const;
+    [[nodiscard]] ColliderType getColliderType() const;
 
     bool collided = false;
     ColliderComponent* collidedWith;
 
 private:
     ColliderShapes::Shape *colliderShape = new ColliderShapes::Sphere(glm::vec3(0.f), glm::vec3(0.f), 0.7102f);
-    ColliderType colliderType;
+    ColliderType colliderType = TRIGGER;
     ColliderComponent* owner = nullptr;
     std::function<void(ColliderComponent*)> onCollision = nullptr;
     std::function<void(ColliderComponent*)> onCollisionExit = nullptr;

@@ -19,6 +19,9 @@ public:
     virtual ~Transform2() = default;
 
     void updateWorldTransform(const glm::mat4 &parentWorldMatrix = glm::mat4(1));
+    void translate(glm::vec3);
+    void scale(glm::vec3);
+    void rotate(glm::vec3);
 
     [[nodiscard]] const glm::vec3 &getLocalPosition() const;
     [[nodiscard]] const glm::vec3 &getLocalScale() const;
@@ -34,9 +37,9 @@ public:
     void setLocalTransform(glm::mat4 mat);
 
 private:
-    glm::vec3 localPosition=glm::vec3(0);
-    glm::vec3 localScale=glm::vec3(1);
-    glm::vec3 localRotation=glm::vec3(0);
+    glm::vec3 localPosition=glm::vec3(0.f);
+    glm::vec3 localScale=glm::vec3(1.f);
+    glm::vec3 localRotation=glm::vec3(0.f);
     glm::mat4 localMatrix = glm::mat4(1.f);
 
     glm::vec3 worldPosition;

@@ -15,6 +15,7 @@
 #include "glad/glad.h"
 #include "glm/detail/type_quat.hpp"
 #include "Shader.h"
+#include "ECS/Entity.h"
 
 namespace EditorLayer {
 
@@ -23,7 +24,7 @@ namespace EditorLayer {
         static ImGuizmo::OPERATION CurrentGizmoOperation;
         static ImGuizmo::MODE CurrentGizmoMode;
 
-        static void EditTransform(float *viewMatrix, float *projectionMatrix, Transform2*);
+        static void EditTransform(float *viewMatrix, float *projectionMatrix, Entity*);
     };
 
 }

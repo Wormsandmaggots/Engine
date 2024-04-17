@@ -23,14 +23,17 @@ namespace ColliderShapes {
     struct Shape {
         glm::vec3 position{0.f};
         glm::vec3 offset{0.f};
+        glm::vec3 size{0.f};
 
-        Shape(const glm::vec3& position, const glm::vec3& offset) : position(position), offset(offset) {}
+        Shape(const glm::vec3& position, const glm::vec3& offset, const glm::vec3& size = glm::vec3(0.f)):
+        position(position), offset(offset), size(size) {}
 
         virtual ~Shape() = default;
 
         [[nodiscard]] virtual AABB getAABB() const = 0;
         [[nodiscard]] virtual float getRadius() const = 0;
         [[nodiscard]] virtual ColliderShapeType getType() const = 0;
+        virtual void setRadius(float r) {};
         virtual void draw() {};
     };
 
@@ -52,17 +55,20 @@ namespace ColliderShapes {
             return radius;
         }
 
+        void setRadius(float r) override{
+            radius = r;
+        }
+
         [[nodiscard]] ColliderShapeType getType() const override {
             return ColliderShapeType::SPHERE;
         }
     };
 
     struct Box : public Shape {
-        glm::vec3 size{0.f};
         const float boundingCircleRadius;
 
         Box(const glm::vec3& position, const glm::vec3& offset, const glm::vec3& size)
-                : Shape(position, offset), size(size), boundingCircleRadius(glm::length(size) * 0.5f) {}
+                : Shape(position, offset, size), boundingCircleRadius(glm::length(size) * 0.5f) {}
 
         ~Box() override = default;
 

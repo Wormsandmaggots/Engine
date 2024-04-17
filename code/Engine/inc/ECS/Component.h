@@ -5,6 +5,8 @@
 #ifndef ENGINE_COMPONENT_H
 #define ENGINE_COMPONENT_H
 
+#include "yaml-cpp/emitter.h"
+
 class Entity;
 class Transform2;
 class Component {
@@ -23,5 +25,7 @@ public:
     virtual void onDestroy() = 0;
     virtual void setParent(Entity* e);
     virtual void setTransform(Transform2* t);
+    virtual void convertToYaml(YAML::Emitter&);
+    virtual void drawEditor() {};
 };
 #endif //ENGINE_COMPONENT_H

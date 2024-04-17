@@ -1,5 +1,4 @@
 #include "windows.h"
-#include <iostream>
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
@@ -26,9 +25,10 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
-	sm.loadScene("res/content/maps/exampleScene.yaml");
-	sound->setVolume(2.f);
 
+	sm.loadScene("res/content/maps/test.yaml");
+
+	sound->setVolume(2.f);
 
     //HID - test
     //TODO: Kuba: Czy to może tutaj zostać?
@@ -36,6 +36,8 @@ int main() {
     //HID - test
     DebugInput debugInput;
     //HID - test
+
+#pragma endregion TEST
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
@@ -74,22 +76,12 @@ int main() {
     
     renderer.init();
 
-
-    sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
-    sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
-
-    sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(sphere);
-    sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(sphere);
-
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
-
     while (!glfwWindowShouldClose(s.window))
 	{
-        //EditorLayer::Gizmos::Clear();
-
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
@@ -105,11 +97,11 @@ int main() {
 		//glm::mat4 view = playerCamera->getView();
 
         imgui_begin();
-		editor.draw();
-        
+        editor.draw();
 		
 		renderer.updateProjectionAndView(projection, view);
-		sm.updateLoadedScenes();
+
+        sm.updateLoadedScenes();
         //scene.update();
         cm.update();
 		ImGui::Render();
@@ -120,7 +112,6 @@ int main() {
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
         //hud
         counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
-        //glDisable(GL_DEPTH_TEST);
         glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
         shader.setMat4("projection", orthoProjection);
 
@@ -130,9 +121,6 @@ int main() {
         image.render();
         backgroundImage.render();
         backgroundImage.update(s.deltaTime);
-        //glEnable(GL_DEPTH_TEST);
-        //hud end
-
 
         sm.updateLoadedScenes();
 

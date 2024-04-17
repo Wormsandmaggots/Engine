@@ -1,5 +1,7 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
+#include "yaml-cpp/yaml.h"
+#include "imgui.h"
 
 
 int Entity::EntityCounter = 0;
@@ -7,14 +9,7 @@ int Entity::EntityCounter = 0;
 //!works like DFS when it comes to updating queue
 void Entity::update() {
     //firstly update transform
-    if(parent != nullptr)
-    {
-        transform->updateWorldTransform(parent->transform->getWorldMatrix());
-    }
-    else
-    {
-        transform->updateWorldTransform();
-    }
+    updateTransform();
 
     //then update components because they can change transform
     for (Component* c : components) {
@@ -130,6 +125,116 @@ Entity::~Entity() {
 void Entity::removeChild(Entity *e) {
     children.erase(std::remove(children.begin(), children.end(), e), children.end());
     e->parent = nullptr;
+}
+
+void Entity::toYaml(YAML::Emitter &emitter) {
+
+    emitter << YAML::BeginMap << YAML::Key << "Name" << YAML::Anchor(to_string(id)) << YAML::Value << name;
+
+    if(parent != nullptr)
+    {
+        emitter << YAML::Key << "Parent" << YAML::Alias(to_string(parent->id));
+    }
+
+    float pos[3] = {transform->getLocalPosition().x,
+                    transform->getLocalPosition().y,
+                    transform->getLocalPosition().z};
+
+    float rot[3] = {transform->getLocalRotation().x,
+                    transform->getLocalRotation().y,
+                    transform->getLocalRotation().z};
+
+    float scale[3] = {transform->getLocalScale().x,
+                    transform->getLocalScale().y,
+                    transform->getLocalScale().z};
+
+    emitter << YAML::Key << "Transform" << YAML::BeginMap;
+    emitter << YAML::Key << "pos" << YAML::Flow << YAML::BeginSeq << pos[0] << pos[1] << pos[2] << YAML::EndSeq;
+    emitter << YAML::Key << "rot" << YAML::Flow << YAML::BeginSeq << rot[0] << rot[1] << rot[2] << YAML::EndSeq;
+    emitter << YAML::Key << "scale" << YAML::Flow << YAML::BeginSeq << scale[0] << scale[1] << scale[2] << YAML::EndSeq;
+    emitter << YAML::EndMap;
+
+    emitter << YAML::Key << "Components" << YAML::BeginSeq;
+
+    for(Component* c : components)
+    {
+        emitter << YAML::BeginMap;
+        c->convertToYaml(emitter);
+        emitter << YAML::EndMap;
+    }
+
+    emitter << YAML::EndSeq;
+
+    emitter << YAML::EndMap;
+
+    for (Entity* e : children) {
+        e->toYaml(emitter);
+    }
+}
+
+void Entity::drawEditor() {
+    int i = 0;
+    for (Component* c : components) {
+        c->drawEditor();
+        ImGui::Button("Remove component");
+        if(ImGui::IsItemClicked())
+        {
+            removeComponent(i);
+        }
+
+        ImGui::Separator();
+        i++;
+    }
+}
+
+void Entity::removeComponent(Component *c) {
+    components.erase(std::remove(components.begin(), components.end(), c), components.end());
+
+    delete c;
+}
+
+
+void Entity::updateTransform() {
+    if(parent != nullptr)
+    {
+        transform->updateWorldTransform(parent->transform->getWorldMatrix());
+    }
+    else
+    {
+        transform->updateWorldTransform();
+    }
+}
+
+void Entity::setDirtyTree() {
+    for (Entity* e : children) {
+        e->transform->setDirty(true);
+        e->setDirtyTree();
+    }
+}
+
+void Entity::ResetCounter() {
+    EntityCounter = 0;
+}
+
+void Entity::removeComponent(int i) {
+    Component* c = components.at(i);
+    components.erase(components.begin() + i);
+    delete c;
+}
+
+template<>
+Model* Entity::getComponent<Model>() const {
+    // Loop through components to find the Model component
+    for (Component* component : components) {
+        // Attempt to cast the component pointer to Model type
+        Model* modelComponent = dynamic_cast<Model*>(component);
+        if (modelComponent != nullptr) {
+            // Found the Model component, return it
+            return modelComponent;
+        }
+    }
+    // If not found, return nullptr
+    return nullptr;
 }
 
 

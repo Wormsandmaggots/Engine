@@ -10,6 +10,7 @@ using namespace SceneManagement;
 SceneManager* SceneManager::Instance = nullptr;
 
 void SceneManager::loadScene(const string &path) {
+    Entity::ResetCounter();
     loadedScenes.push_back(sceneLoader.loadScene(path));
 }
 

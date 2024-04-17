@@ -59,6 +59,7 @@ void Transform2::updateLocalTransform() {
 
 void Transform2::setLocalTransform(glm::mat4 mat) {
     localMatrix = mat;
+    //ImGuizmo::DecomposeMatrixToComponents(localMatrix, matrixTranslation, matrixRotation, matrixScale);
     isDirty = true;
 }
 
@@ -93,5 +94,20 @@ void Transform2::setTransform(glm::mat4 mat) {
 
 glm::mat4 &Transform2::getLocalMatrix() {
     return localMatrix;
+}
+
+void Transform2::translate(glm::vec3 t) {
+    localPosition += t;
+    isDirty = true;
+}
+
+void Transform2::scale(glm::vec3 s) {
+    localScale += s;
+    isDirty = true;
+}
+
+void Transform2::rotate(glm::vec3 r) {
+    localRotation += r;
+    isDirty = true;
 }
 

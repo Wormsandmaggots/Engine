@@ -10,6 +10,9 @@
 
 class ColliderComponent : public Component{
 public:
+    ColliderComponent() = default;
+    ~ColliderComponent() override;
+
     void start() override;
     virtual void onCollision(ColliderComponent*);
     virtual void onCollisionExit(ColliderComponent*);
@@ -18,14 +21,17 @@ public:
     void awake() override{};
     void onDestroy() override{};
     void update() override;
+    void convertToYaml(YAML::Emitter &) override;
 
     Collider *getCollider() const;
 
     //!TEST ONLY
     glm::vec3 color = glm::vec3(0,1,0);
 
+    void drawEditor() override;
+
 private:
-    Collider* collider = new Collider(nullptr);
+    Collider* collider = new Collider(this);
 };
 
 

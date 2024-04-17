@@ -12,6 +12,8 @@ Scene:
         rot: [0,0,0]
         scale: [1,1,1]
       Components:
+        - Type: ColliderComponent
+
 
     - Name: &anchor2 testEntity2
       Parent: *anchor

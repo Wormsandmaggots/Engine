@@ -33,6 +33,8 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
+    Model();
+    Model(const Model&);
     Model(const string &path,Shader* shader=nullptr, bool gamma=false);
     void Draw(Shader* shader) override;
 
@@ -48,8 +50,13 @@ public:
 
     Shader* getShader()override;
     Transform2* getTransform()override;
+
+    void convertToYaml(YAML::Emitter &) override;
+    void drawEditor() override;
+    void setPath(std::string);
 private:
     Shader* defaultShader;
+    std::string path;
 
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);

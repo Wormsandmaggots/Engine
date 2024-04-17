@@ -6,8 +6,21 @@
 #include "imgui.h"
 #include "ImGuizmo.h"
 #include "Editor/Gizmos.h"
+#include "Physics/ColliderComponent.h"
 
 using namespace EditorLayer;
+
+std::unordered_map<std::string, std::function<void(Entity*)>> addComponents = {
+        {"ColliderComponent", [](Entity* e) {
+            Component* c = new ColliderComponent();
+            c->setParent(e);
+            e->addComponent(c);}},
+        {"Model", [](Entity* e) {
+            Component* c = new Model();
+            c->setParent(e);
+            e->addComponent(c);
+        }}
+};
 
 void Inspector::draw(Entity* chosenEntity, Camera* editorCamera) {
 
@@ -31,7 +44,28 @@ void Inspector::draw(Entity* chosenEntity, Camera* editorCamera) {
     ImGuizmo::BeginFrame();
     Gizmos::EditTransform(glm::value_ptr(view),
                           glm::value_ptr(projection),
-                          chosenEntity->getTransform());
+                          chosenEntity);
+
+    ImGui::Separator();
+
+    chosenEntity->drawEditor();
+
+    if(ImGui::Button("Add component"))
+        ImGui::OpenPopup("AddComponent");
+
+    if(ImGui::BeginPopup("AddComponent"))
+    {
+        for (auto element : addComponents) {
+
+            if(ImGui::Selectable(element.first.c_str()))
+            {
+                element.second(chosenEntity);
+                ImGui::CloseCurrentPopup();
+            }
+        }
+
+        ImGui::EndPopup();
+    }
 
     ImGui::End();
 }

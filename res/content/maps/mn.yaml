@@ -1,0 +1,49 @@
+Scene:
+  SceneName: exampleScene
+  Entities:
+    - Name: &0 testEntity1
+      Transform:
+        pos: [0, 0, 0]
+        rot: [0, 0, 0]
+        scale: [0, 0, 0]
+      Components:
+        - Type: ColliderComponent
+          ColliderType: 1
+          Offset: [0, 0, 0]
+          Radius: 0.700999975
+    - Name: &1 testEntity2
+      Parent: *0
+      Transform:
+        pos: [0, 0, 0]
+        rot: [0, 0, 0]
+        scale: [0, 0, 0]
+      Components:
+        - Type: Model
+          Path: res\content\models\player\character_base.obj
+    - Name: &2 testEntity3
+      Parent: *1
+      Transform:
+        pos: [-3.02657509, -1.78656805, -2.6603899]
+        rot: [-3.02657509, -1.78656805, -2.6603899]
+        scale: [-3.02657509, -1.78656805, -2.6603899]
+      Components:
+        - Type: Model
+          Path: res/content/models/sphere/untitled.obj
+    - Name: &3 unparented
+      Transform:
+        pos: [0, 0, 0]
+        rot: [0, 0, 0]
+        scale: [0, 0, 0]
+      Components:
+        - Type: ColliderComponent
+          ColliderType: 1
+          Offset: [0, 0, 0]
+          Radius: 0.700999975
+    - Name: &4 player
+      Transform:
+        pos: [-5, -2, 1]
+        rot: [-5, -2, 1]
+        scale: [-5, -2, 1]
+      Components:
+        - Type: Model
+          Path: res\content\models\player\character_base.obj

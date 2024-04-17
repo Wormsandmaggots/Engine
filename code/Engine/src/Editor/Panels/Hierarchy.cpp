@@ -78,7 +78,6 @@ void Hierarchy::draw(Camera* editorCamera) {
                 ImGui::EndDragDropTarget();
             }
         }
-
     }
 
     ImGui::End();
