@@ -150,7 +150,9 @@ void Gizmos::EditTransform(float* viewMatrix, float* projectionMatrix, Entity* e
 
         if(CurrentGizmoOperation == ImGuizmo::SCALE && glm::length(sc) > e)
         {
-            transform->scale(sc);
+            ImGuizmo::DecomposeMatrixToComponents(matrix,matrixTranslation, matrixRotation, matrixScale);
+            //LOG_INFO(utils::mat4ToString(delta));
+            transform->setScale(glm::vec3(matrixScale[0], matrixScale[1], matrixScale[2]));
             changed = true;
         }
     }

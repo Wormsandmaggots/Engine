@@ -25,9 +25,6 @@ public:
 
     Collider *getCollider() const;
 
-    //!TEST ONLY
-    glm::vec3 color = glm::vec3(0,1,0);
-
     void drawEditor() override;
 
 private:

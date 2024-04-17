@@ -28,13 +28,9 @@ void ColliderComponent::update() {
 }
 
 void ColliderComponent::onCollisionExit(ColliderComponent *another) {
-    LOG_INFO("no collision");
-    color = glm::vec3(0,1,0);
 }
 
 void ColliderComponent::onCollisionStart(ColliderComponent *) {
-    LOG_INFO("collision started");
-    color = glm::vec3(1.0f, 0.0f, 0.0f);
 }
 
 Collider *ColliderComponent::getCollider() const {
