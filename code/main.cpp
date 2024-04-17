@@ -73,8 +73,6 @@ int main() {
 
     cc1->start();
     cc2->start();
-    
-    renderer.init();
 
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);

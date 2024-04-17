@@ -115,6 +115,12 @@ int Entity::getId() const {
 }
 
 Entity::~Entity() {
+
+    while(!components.empty())
+    {
+        removeComponent(0);
+    }
+
     for (Entity* e : children) {
         delete e;
     }

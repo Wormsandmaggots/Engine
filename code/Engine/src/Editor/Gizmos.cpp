@@ -7,11 +7,10 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
 #include "ECS/Entity.h"
+#include "Core/Utils/StringUtils.h"
 
 using namespace EditorLayer;
 
-#include "Core/Utils/StringUtils.h"
-#include "GLFW/glfw3.h"
 
 ImGuizmo::OPERATION Gizmos::CurrentGizmoOperation = ImGuizmo::TRANSLATE;
 ImGuizmo::MODE Gizmos::CurrentGizmoMode = ImGuizmo::WORLD;
