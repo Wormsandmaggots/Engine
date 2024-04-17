@@ -61,7 +61,8 @@ void ColliderComponent::convertToYaml(YAML::Emitter &emitter) {
 void ColliderComponent::drawEditor() {
     ImGui::Text("Collider component");
 
-    char* types[2] = {"Box", "Sphere"};
+    const char* types[2] = {"Box", "Sphere"};
+    
 
     static int currentItem = collider->getColliderShape()->getType() == ColliderShapes::ColliderShapeType::BOX ? 0 : 1;
 
