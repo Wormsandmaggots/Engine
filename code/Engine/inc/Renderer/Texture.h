@@ -9,13 +9,12 @@
 class Texture {
 private:
 public:
-	uint32_t textureID = 0;
+	uint32_t textureID;
 	std::string textureName;
 	std::string texturePath;
 
 
 	explicit Texture(const std::string& path,const std::string& name);
-	~Texture();
 	void bind();
 	void unbind();
 };
