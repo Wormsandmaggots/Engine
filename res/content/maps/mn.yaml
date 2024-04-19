@@ -19,7 +19,7 @@ Scene:
         scale: [0, 0, 0]
       Components:
         - Type: Model
-          Path: res\content\models\player\character_base.obj
+          Path: res/content/models/player/character_base.obj
     - Name: &2 testEntity3
       Parent: *1
       Transform:
@@ -46,4 +46,4 @@ Scene:
         scale: [-5, -2, 1]
       Components:
         - Type: Model
-          Path: res\content\models\player\character_base.obj
+          Path: res/content/models/player/character_base.obj

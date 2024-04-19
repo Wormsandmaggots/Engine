@@ -15,7 +15,7 @@ public:
 
     virtual ~Asset() = default;
 
-    virtual void load() {};
+    virtual void load(){};
 
     [[nodiscard]] std::string getPath() const { return path; }
     //[[nodiscard]] int getReferenceCount() const { return references; }

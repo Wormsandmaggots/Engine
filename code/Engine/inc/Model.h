@@ -21,6 +21,7 @@
 #include <map>
 #include <vector>
 #include "Renderer/Renderer.h"
+#include "Renderer/Texture.h"
 
 using namespace std;
 

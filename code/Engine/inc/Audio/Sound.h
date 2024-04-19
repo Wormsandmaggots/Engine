@@ -8,6 +8,7 @@
 #include <string>
 #include "miniaudio.h"
 #include "Core/AssetManager/Asset.h"
+#include "Debug/Logger.h"
 
 class Sound : public Asset{
 public:
@@ -16,6 +17,7 @@ public:
 
     void play();
     void stop();
+    void load()override {};
 
     void setVolume(float);
 

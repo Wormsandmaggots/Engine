@@ -13,7 +13,7 @@
 #include "Input/DebugInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
-
+#include "Renderer/MaterialAsset.h"
 using namespace SceneManagement;
 
 int main() {
@@ -58,8 +58,8 @@ int main() {
 
 	renderer.init();
 
-	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
+    Model* player = new Model("res/content/models/player/character_base.obj");
+
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -71,12 +71,15 @@ int main() {
     ColliderComponent* cc1 = new ColliderComponent();
     ColliderComponent* cc2 = new ColliderComponent();
 
+    //MaterialAsset material("C:\\gierki\\pbl\\Engine\\res\\content\\materials\\material.json");
+    //MaterialAsset material("res/content/materials/material.json");
+
     cc1->start();
     cc2->start();
 
-	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
-	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+	//sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
+	//sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
+    //player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -105,6 +108,8 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //arcadeRenderer->renderText();
+
+
 
 
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie

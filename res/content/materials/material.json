@@ -1,0 +1,12 @@
+{
+    "vertexShader": "res/content/shaders/vertex.glsl",
+    "fragmentShader": "res/content/shaders/fragment.glsl",
+    "uniforms": [],
+    "textures": [
+        {
+            "name": "textureDiffuse",
+            "index": 0,
+            "path": "res/textures/palletes/building_pallete.png"
+        }
+    ]
+}

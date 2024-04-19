@@ -13,15 +13,13 @@
 #include <vector>
 #include "Shader.h"
 #include "ECS/Component.h"
-
+#include "Renderer/Texture.h"
 struct Vertex
 {
     glm::vec3 Position;
     glm::vec3 Normal;
     glm::vec2 TexCoords;
-    //tangent
     glm::vec3 Tangent;
-    // bitangent
     glm::vec3 Bitangent;
 };
 
@@ -30,18 +28,11 @@ struct SVertex{
     glm::vec2 TexCoords;
 };
 
-struct Texture
-{
-    unsigned int id;
-    std::string type;
-    std::string path;
-};
 
 class Mesh
 {
 private:
-    unsigned int VBO, EBO;
-
+    unsigned int VBO, EBO, instanceBuffer;
     virtual void setupMesh()
     {
         // create buffers/arrays
@@ -80,27 +71,25 @@ public:
 
     std::vector<SVertex>* sphereVertices;
 
+    unsigned int instances;
+
     bool isGenerated = false;
 
     unsigned int VAO;
 
     /*  Functions  */
     // constructor
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, unsigned int numberOfInstances = 1, std::vector<glm::mat4> instancedMatrix = {})
     {
         this->vertices = vertices;
         this->indices = indices;
         this->textures = textures;
-
+        instances = numberOfInstances;
         setupMesh();
     }
 
-    Mesh(bool isGenerated)
-    {
-        this->isGenerated = isGenerated;
-    }
 
-    void SetVertices(std::vector<Vertex>* vertices)
+    /*void SetVertices(std::vector<Vertex>* vertices)
     {
         this->vertices = *vertices;
 
@@ -126,7 +115,7 @@ public:
         glEnableVertexAttribArray(1);
 
         glBindVertexArray(0);
-    }
+    }*/
 
     // render the mesh
     void Draw(Shader shader, bool instanced = false, int amount = 0)
@@ -141,7 +130,7 @@ public:
             glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
-            std::string name = textures[i].type;
+            std::string name = textures[i].textureName;
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
             else if (name == "texture_specular")
@@ -154,7 +143,7 @@ public:
             // now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
 
-            glBindTexture(GL_TEXTURE_2D, textures[i].id);
+            glBindTexture(GL_TEXTURE_2D, textures[i].textureID);
         }
 
         // draw mesh
