@@ -49,7 +49,10 @@ int main() {
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
-
+    
+    MaterialAsset material("res/content/materials/color.json");
+    material.bindMaterial();
+    material.unbindMaterial();
 
     Renderer renderer(&shader);
 
@@ -59,7 +62,6 @@ int main() {
 	renderer.init();
 
     Model* player = new Model("res/content/models/player/character_base.obj");
-
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -71,8 +73,9 @@ int main() {
     ColliderComponent* cc1 = new ColliderComponent();
     ColliderComponent* cc2 = new ColliderComponent();
 
-    //MaterialAsset material("C:\\gierki\\pbl\\Engine\\res\\content\\materials\\material.json");
-    //MaterialAsset material("res/content/materials/material.json");
+
+    /*MaterialAsset material("res/content/materials/material.json");
+    material.bindMaterial();*/
 
     cc1->start();
     cc2->start();
@@ -91,7 +94,8 @@ int main() {
 		glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+	
+        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);

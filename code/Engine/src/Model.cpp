@@ -21,6 +21,7 @@ Shader* Model::getShader()
 
 Transform2* Model::getTransform()
 {
+    
     return parentTransform;
 }
 

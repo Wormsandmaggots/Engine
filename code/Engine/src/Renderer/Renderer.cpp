@@ -1,4 +1,5 @@
 #include "Renderer/Renderer.h"
+#include <Renderer/MaterialAsset.h>
 
 
 
@@ -34,6 +35,8 @@ void Renderer::addShader(Shader* shader)
 
 void Renderer::Render(Renderable *renderable)
 {
+
+	
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();

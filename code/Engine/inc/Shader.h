@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include "Debug/Logger.h"
+
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -163,6 +165,22 @@ public:
     void setMat4(const std::string& name, const glm::mat4& mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
+    bool doesUniformExist(const std::string& name) const {
+        return GetUniformLocation(name, false) != -1;
+    }
+
+    int32_t GetUniformLocation(const std::string& name, bool isShowingError) const {
+        
+        int32_t uniformLocation = glGetUniformLocation(ID, name.c_str());
+
+        if (uniformLocation == -1) {
+            if (isShowingError) LOG_WARNING("Uniform: " + name + " not found");
+            return -1;
+        }
+
+        return uniformLocation;
     }
 
 private:

@@ -6,7 +6,7 @@
         {
             "name": "textureDiffuse",
             "index": 0,
-            "path": "res/textures/palletes/building_pallete.png"
+            "path": "res/content/textures/nodes.png"
         }
     ]
 }
