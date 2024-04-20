@@ -29,6 +29,7 @@ Model::Model(const string& path, Shader* shader, bool gamma)
     loadModel(path);
 }
 
+//TODO:
 void Model::Draw(Shader *shader) {
     for (auto &meshe: meshes)
         meshe.Draw(*shader);

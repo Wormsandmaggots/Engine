@@ -14,6 +14,7 @@
 #include "Input/DebugInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
+#include "Light/Light.h"
 
 using namespace SceneManagement;
 
@@ -28,36 +29,42 @@ int main() {
 	SceneManager sm;
 	sm.loadScene("res/content/maps/exampleScene.yaml");
 	sound->setVolume(2.f);
-
+    //TODO: oddaj do innej klasy
+    glm::vec3 lightPos(-10.0f, 0.0f, 30.0f);
 
     //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
+    //Dowywalenia to do innego pliku
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
     DebugInput debugInput;
     //HID - test
 
+    //TODO: shader declaration
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
-
-    //TODO: Kuba: Czy to może tutaj zostać?
+    Shader lightShader("res/content/shaders/vertex_light.glsl", "res/content/shaders/fragment_light.glsl");
+    Shader lampShader("res/content/shaders/lamp_vertex.glsl", "res/content/shaders/lamp_fragment.glsl");
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
-
+    //TODO: podpinanie shadera po renderer:
     Renderer renderer(&shader);
 
 	renderer.addShader(&collisionTestShader);
 	renderer.addShader(&shaderText);
 
-	renderer.init();
+    renderer.addShader(&lightShader);
+    renderer.addShader(&lampShader);
 
+//TODO: deklaracja modelu i shadera
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
+	Model* player = new Model("res\\content\\models\\player\\character_base.obj",&lightShader);
+
+    Model* lamp = new Model("res\\content\\models\\lamp\\lamp.obj", &lampShader);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -71,9 +78,8 @@ int main() {
 
     cc1->start();
     cc2->start();
-    
+    //TODO: inicjalizacja renderera
     renderer.init();
-
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
@@ -84,6 +90,10 @@ int main() {
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+//TODO: montowanie obiektu na scenie
+    sm.getLoadedScenes()[0]->addEntity(new Entity("lamp"));
+    sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(lamp);
+    lamp->getTransform()->setPosition(glm::vec3(-10, 0, 30));
 
 
     while (!glfwWindowShouldClose(s.window))
@@ -106,9 +116,14 @@ int main() {
 
         imgui_begin();
 		editor.draw();
-        
-		
-		renderer.updateProjectionAndView(projection, view);
+
+        Light light(&lightShader);
+        light.setLightColors(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+        //to mogę owinąć w funkcję klasy Light
+        //można to dać poza pętlę, ale zostawiam tak, jakby było trzeba to aktualizować kiedyś
+        lightShader.setVec3("lightPos", lightPos);
+
+        renderer.updateProjectionAndView(projection, view);
 		sm.updateLoadedScenes();
         //scene.update();
         cm.update();

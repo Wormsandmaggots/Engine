@@ -25,26 +25,8 @@ source_group(TREE ${CMAKE_SOURCE_DIR}         FILES ${ASSETS_FILES})
 
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
-        Engine/src/Text/Text.cpp
-        Engine/inc/Text/Text.h
-        Engine/inc/Text/Text.h
-        Engine/inc/Debug/Profiler.h
-        Engine/src/Debug/Profiler.cpp
-        Engine/inc/ThirdPersonCamera.h
-        Engine/src/ThirdPersonCamera.cpp
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/DebugInput.h
-        Engine/inc/Input/DebugInput.h
-        Engine/src/HUD/Image.cpp
-        Engine/inc/HUD/Image.h
-        Engine/inc/HUD/Image.h
-        Engine/src/HUD/Image.cpp
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/ProgressBar.h
-        Engine/inc/HUD/ProgressBar.h)
+        Engine/inc/Light/Light.h
+)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

@@ -1,6 +1,9 @@
 #ifndef ENGINE_RENDERABLE_H
 #define ENGINE_RENDERABLE_H
 
+#include "Shader.h"
+#include "Scene/Transform2.h"
+
 class Renderable
 {
 
