@@ -52,6 +52,10 @@ int main() {
     
     MaterialAsset material("res/content/materials/color.json");
 
+
+        
+       
+
     Renderer renderer(&shader);
 
 	renderer.addShader(&collisionTestShader);
@@ -64,29 +68,26 @@ int main() {
 
     Model* player = new Model("res/content/models/player/character_base.obj");
     Model* sphere = new Model("res/content/models/sphere/untitled.obj",&material);
-    //Model* sphere = new Model("res/content/models/sphere/untitled.obj",&colorShader);
-    /*colorShader.use();
-    colorShader.setVec4("color", glm::vec4(1, 0, 0, 1));*/
+    
+      
+
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
-    arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,
-                                  (float) s.WINDOW_HEIGHT);
+    arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
     ColliderComponent* cc1 = new ColliderComponent();
     ColliderComponent* cc2 = new ColliderComponent();
-
-
-    /*MaterialAsset material("res/content/materials/material.json");
-    material.bindMaterial();*/
 
     cc1->start();
     cc2->start();
 
 	sm.getLoadedScenes()[0]->addEntity(new Entity("sphere"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(sphere);
-    sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+    sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setPosition(glm::vec3(0, 0, -4));
+    sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setRotation(glm::vec3(0, -90, -30));
+
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -115,7 +116,7 @@ int main() {
         cm.update();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        //arcadeRenderer->renderText();
+        arcadeRenderer->renderText();
 
 
 

@@ -59,7 +59,7 @@ public:
 private:
     Shader* modelShader;
     std::string path;
-    MaterialAsset * material;
+    MaterialAsset * material=nullptr;
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);
     vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);

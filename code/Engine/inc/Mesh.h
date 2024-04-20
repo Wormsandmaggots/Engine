@@ -88,35 +88,6 @@ public:
         setupMesh();
     }
 
-
-    /*void SetVertices(std::vector<Vertex>* vertices)
-    {
-        this->vertices = *vertices;
-
-        sphereVertices = new std::vector<SVertex>();
-
-        for (auto v : this->vertices) {
-            SVertex x;
-            x.TexCoords = v.TexCoords;
-            x.Position = v.Position;
-            sphereVertices->push_back(x);
-        }
-
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sphereVertices->size() * sizeof(SVertex), sphereVertices->data(), GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, Position));
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(SVertex), (void*)offsetof(SVertex, TexCoords));
-        glEnableVertexAttribArray(1);
-
-        glBindVertexArray(0);
-    }*/
-
     // render the mesh
     void Draw(Shader shader, bool instanced = false, int amount = 0)
     {
@@ -144,8 +115,9 @@ public:
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
             textures[i].bind();
 
-            //glBindTexture(GL_TEXTURE_2D, textures[i].textureID);
         }
+
+
 
         // draw mesh
         if(!isGenerated && !instanced)
@@ -170,7 +142,6 @@ public:
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
-        glActiveTexture(GL_TEXTURE0);
     }
 };
 

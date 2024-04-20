@@ -6,7 +6,6 @@ Texture::Texture(const std::string& path, const std::string& name)
     textureName = name;
     texturePath = path;
 
-    glGenTextures(1, &textureID);
     
     int width, height, numberOfComponents;
     //stbi_set_flip_vertically_on_load(true);
