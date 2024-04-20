@@ -37,7 +37,8 @@ void Renderer::Render(Renderable *renderable)
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();
-		defaultShader->setMat4("model", renderable->getTransform()->getWorldMatrix());
+		defaultShader->setMat4("model", renderable->getTransform()->getLocalMatrix());
+        defaultShader->setMat3("normalMatrix", glm::transpose(glm::inverse(glm::mat3(renderable->getTransform()->getWorldMatrix()))));
 		renderable->Draw(defaultShader);
 	}
 	else {

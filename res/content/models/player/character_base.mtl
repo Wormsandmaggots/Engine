@@ -8,9 +8,8 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd body/body_Bake1_PBR_Diffuse.png
-map_Ks body/body_Bake1_PBR_Specular.png
+map_Ks body/body_Bake1_PBR_Metalness.png
 map_Ns body/body_Bake1_PBR_Roughness.png
-map_refl body/body_Bake1_PBR_Metalness.png
 
 newmtl boots_Baked
 Ka 1.000000 1.000000 1.000000
@@ -19,20 +18,19 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd boots/boots_Bake1_PBR_Diffuse.png
-map_Ks boots/boots_Bake1_PBR_Specular.png
+map_Ks boots/boots_Bake1_PBR_Metalness.png
 map_Ns boots/boots_Bake1_PBR_Roughness.png
-map_refl boots/boots_Bake1_PBR_Metalness.png
 
-newmtl kołniezyk_Baked
+
+newmtl kolniezyk_Baked
 Ka 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
 map_Kd kolniezyk/kolniezyk_Bake1_PBR_Diffuse.png
-map_Ks kolniezyk/kolniezyk_Bake1_PBR_Specular.png
+map_Ks kolniezyk/kolniezyk_Bake1_PBR_Metalness.png
 map_Ns kolniezyk/kolniezyk_Bake1_PBR_Roughness.png
-map_refl kolniezyk/kolniezyk_Bake1_PBR_Metalness.png
 
 newmtl pants_Baked
 Ka 1.000000 1.000000 1.000000
@@ -41,9 +39,8 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd pants/pants_Bake1_PBR_Diffuse.png
-map_Ks pants/pants_Bake1_PBR_Specular.png
+map_Ks pants/pants_Bake1_PBR_Metalness.png
 map_Ns pants/pants_Bake1_PBR_Roughness.png
-map_refl pants/pants_Bake1_PBR_Metalness.png
 
 newmtl suit_Baked.001
 Ka 1.000000 1.000000 1.000000
@@ -52,6 +49,5 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd suit/suit_Bake1_PBR_Diffuse.png
-map_Ks suit/suit_Bake1_PBR_Specular.png
+map_Ks suit/suit_Bake1_PBR_Metalness.png
 map_Ns suit/suit_Bake1_PBR_Roughness.png
-map_refl suit/suit_Bake1_PBR_Metalness.png

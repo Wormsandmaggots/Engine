@@ -56,8 +56,10 @@ int main() {
 
 	renderer.init();
 
+    Model* club = new Model("res\\content\\models\\club\\club3.obj");
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
+
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -75,16 +77,24 @@ int main() {
     renderer.init();
 
 
-    sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
+ /*   sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(cc2);
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(sphere);
     sm.getLoadedScenes()[0]->getSceneEntities()[1]->addComponent(sphere);
-
+*/
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
+    sm.getLoadedScenes()[0]->addEntity(new Entity("club"));
+    sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(club);
+    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
+    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+    sm.getLoadedScenes()[0]->addEntity(new Entity("sphere"));
+    sm.getLoadedScenes()[0]->getSceneEntities()[4]->addComponent(sphere);
+    sphere->getTransform()->setPosition(glm::vec3(0.0f, 7.0f, 0.0f));
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -94,8 +104,7 @@ int main() {
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-
-		glClearColor(0.2, 0.2, 0.2, 1);
+        glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
@@ -109,7 +118,8 @@ int main() {
         
 		
 		renderer.updateProjectionAndView(projection, view);
-		sm.updateLoadedScenes();
+        shader.setVec3("camPos",s.camera.Position);
+        sm.updateLoadedScenes();
         //scene.update();
         cm.update();
 		ImGui::Render();
