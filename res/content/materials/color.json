@@ -6,8 +6,8 @@
       "type": "vec4",
       "name": "color",
       "value": [
-        1.0,
         0.0,
+        1.0,
         0.0,
         1.0
       ]
@@ -15,8 +15,8 @@
   ],
   "textures": [
     {
-      "name": "texture",
-      "index": 0,
+      "name": "nodes",
+      "index": 1,
       "path": "res/content/textures/nodes.png"
     }
   ]

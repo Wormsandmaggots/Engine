@@ -16,7 +16,7 @@ void Model::onDestroy() {}
 
 Shader* Model::getShader()
 {
-    return defaultShader;
+    return modelShader;
 }
 
 Transform2* Model::getTransform()
@@ -28,8 +28,30 @@ Transform2* Model::getTransform()
 
 Model::Model(const string& path, Shader* shader, bool gamma)
 {
-    defaultShader = shader;
+    modelShader = shader;
     this->path = path;
+    loadModel(path);
+}
+
+Model::Model(const string& path, MaterialAsset* material)
+{
+    this->path = path;
+    modelShader = material->getShader();
+    this->material = material;
+    material->bindMaterial();
+    loadModel(path);
+    material->unbindMaterial();
+}
+
+Model::Model(const Model& another) {
+    this->path = another.path;
+    this->modelShader = another.modelShader;
+    loadModel(another.path);
+}
+
+Model::Model() {
+    path = "res/content/models/sphere/untitled.obj";
+    modelShader = nullptr;
     loadModel(path);
 }
 
@@ -155,11 +177,7 @@ void Model::setPath(std::string path) {
     this->path = path;
 }
 
-Model::Model(const Model &another) {
-    this->path = another.path;
-    this->defaultShader = another.defaultShader;
-    loadModel(another.path);
-}
+
 
 void Model::drawEditor() {
     ImGui::Text("Model");
@@ -180,11 +198,7 @@ void Model::drawEditor() {
     ImGui::NewLine();
 }
 
-Model::Model() {
-    path = "res/content/models/sphere/untitled.obj";
-    defaultShader = nullptr;
-    loadModel(path);
-}
+
 
 
 //unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {

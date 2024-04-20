@@ -42,7 +42,7 @@ int main() {
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
-
+    Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -51,18 +51,22 @@ int main() {
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
     
     MaterialAsset material("res/content/materials/color.json");
-    material.bindMaterial();
-    material.unbindMaterial();
 
     Renderer renderer(&shader);
 
 	renderer.addShader(&collisionTestShader);
-	renderer.addShader(&shaderText);
+    renderer.addShader(&shaderText);
+    renderer.addShader(&colorShader);
+    renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
 	renderer.init();
 
-    Model* player = new Model("res/content/models/player/character_base.obj");
 
+    Model* player = new Model("res/content/models/player/character_base.obj");
+    Model* sphere = new Model("res/content/models/sphere/untitled.obj",&material);
+    //Model* sphere = new Model("res/content/models/sphere/untitled.obj",&colorShader);
+    /*colorShader.use();
+    colorShader.setVec4("color", glm::vec4(1, 0, 0, 1));*/
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -80,9 +84,9 @@ int main() {
     cc1->start();
     cc2->start();
 
-	//sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
-	//sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
-    //player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+	sm.getLoadedScenes()[0]->addEntity(new Entity("sphere"));
+	sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(sphere);
+    sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     while (!glfwWindowShouldClose(s.window))
 	{

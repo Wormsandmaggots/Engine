@@ -22,6 +22,7 @@
 #include <vector>
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"
+#include "Renderer/MaterialAsset.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ public:
     Model();
     Model(const Model&);
     Model(const string &path,Shader* shader=nullptr, bool gamma=false);
+    Model(const string& path, MaterialAsset* material);
     void Draw(Shader* shader) override;
 
     ~Model() override = default;
@@ -55,9 +57,9 @@ public:
     void drawEditor() override;
     void setPath(std::string);
 private:
-    Shader* defaultShader;
+    Shader* modelShader;
     std::string path;
-
+    MaterialAsset * material;
     void loadModel(string const& path);
     void processNode(aiNode* node, const aiScene* scene);
     vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);

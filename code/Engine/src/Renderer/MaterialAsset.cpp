@@ -154,7 +154,7 @@ void MaterialAsset::unbindMaterial()
 
 void MaterialAsset::Vec4Uniform::ApplyValue(Shader* shader)
 {
-    shader->setVec3(name, value);
+    shader->setVec4(name, value);
 }
 
 std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::Vec4Uniform::Clone()
@@ -168,8 +168,8 @@ std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::Vec4Uniform::Clone()
 void MaterialAsset::TextureUniform::ApplyValue(Shader* shader)
 {
     glActiveTexture(GL_TEXTURE0 + index);
-    shader->setInt(name, index);
     textureAsset->bind();
+    shader->setInt(name, index);
 }
 
 std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::TextureUniform::Clone() {
