@@ -133,7 +133,6 @@ int main() {
 
 // end: Obliczanie znormalizowanegej macierzy modelu
 
-        lightShader.setVec3("viewPos", s.camera.getPosition());
 //end: light
         renderer.updateProjectionAndView(projection, view);
         //obliczanie macierzy normalnej modelu, zrób za każdym razem gdy zmieniam jego położenie
