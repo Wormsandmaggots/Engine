@@ -13,7 +13,7 @@ void Hierarchy::draw(Camera* editorCamera) {
     ImGui::ShowDemoWindow();
     ImGui::Begin("Hierarchy");
 
-    for(Scene2* scene : SceneManagement::SceneManager::Instance->getLoadedScenes()) {
+    for(Scene* scene : SceneManagement::SceneManager::Instance->getLoadedScenes()) {
         ImGuiTreeNodeFlags currentFlags = flags;
 
         if (ImGui::TreeNodeEx(scene->getName().c_str(), currentFlags))
@@ -93,7 +93,7 @@ void Hierarchy::draw(Camera* editorCamera) {
     }
 }
 
-void Hierarchy::drawTreeNode(Entity* parent, Scene2* currentScene)
+void Hierarchy::drawTreeNode(Entity* parent, Scene* currentScene)
 {
     ImGuiTreeNodeFlags currentFlags = flags;
 

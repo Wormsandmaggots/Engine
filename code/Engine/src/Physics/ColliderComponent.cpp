@@ -4,7 +4,7 @@
 
 #include "Physics/ColliderComponent.h"
 #include "Debug/Logger.h"
-#include "Scene/Transform2.h"
+#include "Scene/Transform.h"
 #include "Editor/Gizmos.h"
 
 void ColliderComponent::start() {

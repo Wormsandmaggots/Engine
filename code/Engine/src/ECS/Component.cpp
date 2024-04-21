@@ -11,7 +11,7 @@ void Component::setParent(Entity *e) {
 }
 
 
-void Component::setTransform(Transform2 *t) {
+void Component::setTransform(Transform *t) {
     parentTransform = t;
 }
 

@@ -3,7 +3,7 @@
 #define ENGINE_THIRDPERSONCAMERA_H
 
 #include "ECS/Component.h"
-#include "Scene/Transform2.h"
+#include "Scene/Transform.h"
 #include <string>
 #include "ECS/Entity.h"
 
@@ -34,7 +34,7 @@ public:
 
     void setParent(Entity *entity) override;
 
-    void setTransform(Transform2*) override;
+    void setTransform(Transform*) override;
     glm::mat4 getView();
     glm::mat4 getProjection(float width, float height);
 };

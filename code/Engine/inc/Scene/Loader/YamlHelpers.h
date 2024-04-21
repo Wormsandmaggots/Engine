@@ -8,8 +8,8 @@
 #include "yaml-cpp/yaml.h"
 #include "ECS/Entity.h"
 #include "Debug/Logger.h"
-#include "Scene/Transform2.h"
-#include "Scene/Scene2.h"
+#include "Scene/Transform.h"
+#include "Scene/Scene.h"
 #include "Physics/ColliderComponent.h"
 
 using namespace glm;
@@ -68,8 +68,8 @@ namespace YAML {
     };
 
     template<>
-    struct convert<Transform2> {
-        static Node encode(const Transform2 &rhs) {
+    struct convert<Transform> {
+        static Node encode(const Transform &rhs) {
             Node node;
             node.push_back(rhs.getLocalPosition());
             node.push_back(rhs.getLocalRotation());
@@ -77,7 +77,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node &node, Transform2 &rhs) {
+        static bool decode(const Node &node, Transform &rhs) {
             rhs.setPosition(node["pos"].as<vec3>());
             rhs.setRotation(node["rot"].as<vec3>());
             rhs.setScale(node["scale"].as<vec3>());
@@ -99,7 +99,7 @@ namespace YAML {
 
         static bool decode(const Node &node, Entity &rhs) {
             rhs.setName(node["Name"].as<string>());
-            rhs.setTransform(node["Transform"].as<Transform2>());
+            rhs.setTransform(node["Transform"].as<Transform>());
 
             tempStruct thisShit;
 

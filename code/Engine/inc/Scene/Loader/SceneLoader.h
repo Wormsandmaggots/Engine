@@ -6,14 +6,14 @@
 #define ENGINE_SCENELOADER_H
 
 #include "YamlReader.h"
-#include "Engine/inc/Scene/Scene2.h"
+#include "Scene/Scene.h"
 
 class SceneLoader {
 public:
     SceneLoader() = default;
     virtual ~SceneLoader() = default;
 
-    [[nodiscard]] Scene2* loadScene(std::string path);
+    [[nodiscard]] Scene* loadScene(std::string path);
 
 private:
     YamlReader reader;

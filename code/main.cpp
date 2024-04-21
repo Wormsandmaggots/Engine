@@ -13,7 +13,7 @@
 #include "Input/DebugInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
-#include "Renderer/MaterialAsset.h"
+#include "Renderer/Material.h"
 using namespace SceneManagement;
 
 int main() {
@@ -50,7 +50,7 @@ int main() {
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
     
-    MaterialAsset material("res/content/materials/color.json");
+    Material material("res/content/materials/color.json");
 
 
         

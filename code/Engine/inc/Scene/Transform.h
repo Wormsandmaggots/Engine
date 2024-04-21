@@ -8,15 +8,15 @@
 #include "glm/matrix.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
-class Transform2 {
+class Transform {
 public:
-    Transform2();
-    Transform2(glm::vec3 localPosition,
+    Transform();
+    Transform(glm::vec3 localPosition,
                glm::vec3 localRotation,
                glm::vec3 localScale);
-    Transform2(const Transform2 &t);
+    Transform(const Transform &t);
 
-    virtual ~Transform2() = default;
+    virtual ~Transform() = default;
 
     void updateWorldTransform(const glm::mat4 &parentWorldMatrix = glm::mat4(1));
     void translate(glm::vec3);

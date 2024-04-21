@@ -32,7 +32,7 @@ Entity::Entity(const string &name) {
     EntityCounter++;
 }
 
-Transform2 *Entity::getTransform() const {
+Transform *Entity::getTransform() const {
     return transform;
 }
 
@@ -41,10 +41,10 @@ void Entity::addComponent(Component *component) {
     component->setParent(this);
 }
 
-void Entity::setTransform(const Transform2 &newTransform) {
+void Entity::setTransform(const Transform &newTransform) {
     delete transform;
 
-    transform = new Transform2(newTransform);
+    transform = new Transform(newTransform);
 }
 
 void Entity::setName(const string &newName) {

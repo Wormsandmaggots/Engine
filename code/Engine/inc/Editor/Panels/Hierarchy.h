@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <functional>
 #include "imgui.h"
-#include "Scene/Scene2.h"
+#include "Scene/Scene.h"
 #include "ECS/Entity.h"
 #include "Editor/Camera.h"
 
@@ -26,18 +26,18 @@ private:
 
     //chosen is set after clicking on one node
     Entity *chosenEntity = nullptr;
-    Scene2 *chosenScene = nullptr;
+    Scene *chosenScene = nullptr;
 
     //obviously after dragging
     Entity *draggedEntity = nullptr;
 
     //for a popup menu
     Entity* contextMenuEntity = nullptr;
-    Scene2* contextMenuScene = nullptr;
+    Scene* contextMenuScene = nullptr;
     bool showContextPopup = false;
     std::unordered_map<std::string, std::function<void(void)>> contextMenuActions;
 
-    void drawTreeNode(Entity*, Scene2*);
+    void drawTreeNode(Entity*, Scene*);
     void drawContextMenuPopup();
 };
 

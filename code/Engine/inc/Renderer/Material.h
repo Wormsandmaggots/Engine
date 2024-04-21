@@ -10,7 +10,7 @@
 
 using json = nlohmann::json;
 
-class MaterialAsset {
+class Material {
     struct Uniform {
         std::string name;
         virtual void ApplyValue(Shader* shader) = 0;
@@ -50,7 +50,7 @@ class MaterialAsset {
     std::vector<std::unique_ptr<Uniform>> uniforms;
 
 public:
-    MaterialAsset(const std::string& path);
+    Material(const std::string& path);
     void SetFloat(const std::string& name, float value);
     void SetInt(const std::string& name, int value);
     void SetVec4(const std::string& name, glm::vec4 value);

@@ -149,14 +149,14 @@ void Text::onDestroy() {}
 
 void Text::setParent(Entity *entity) {}
 
-void Text::setTransform(Transform2 *transform2) {}
+void Text::setTransform(Transform *transform2) {}
 
 Shader* Text::getShader()
 {
     return shader;
 }
 
-Transform2* Text::getTransform()
+Transform* Text::getTransform()
 {
     return parentTransform;
 }

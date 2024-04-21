@@ -26,9 +26,9 @@ public:
     void update() override;
     void onDestroy() override;
     void setParent(Entity *entity) override;
-    void setTransform(Transform2 *transform2) override;
+    void setTransform(Transform *transform2) override;
     Shader* getShader() override;
-    Transform2* getTransform()override;
+    Transform* getTransform()override;
     void Draw(Shader *errorshader) override;
 
     //counter

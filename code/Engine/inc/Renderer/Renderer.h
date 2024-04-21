@@ -5,6 +5,7 @@
 #include "ECS/Entity.h"
 #include "Shader.h"
 #include "Renderer/Renderable.h"
+#include "Renderer/Material.h"
 #include <Debug/Logger.h>
 
 

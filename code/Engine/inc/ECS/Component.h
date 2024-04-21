@@ -8,10 +8,10 @@
 #include "yaml-cpp/emitter.h"
 
 class Entity;
-class Transform2;
+class Transform;
 class Component {
 public:
-    Transform2* parentTransform;
+    Transform* parentTransform;
     Entity* parentEntity;
     Component() = default;
     virtual ~Component() = default;
@@ -24,7 +24,7 @@ public:
     //when should be destroyed
     virtual void onDestroy() = 0;
     virtual void setParent(Entity* e);
-    virtual void setTransform(Transform2* t);
+    virtual void setTransform(Transform* t);
     virtual void convertToYaml(YAML::Emitter&);
     virtual void drawEditor() {};
 };

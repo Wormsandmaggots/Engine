@@ -10,10 +10,10 @@
 #include "ECS/Entity.h"
 #include "Core/AssetManager/Asset.h"
 
-class Scene2 {
+class Scene {
 public:
-    explicit Scene2(std::string);
-    ~Scene2() = default;
+    explicit Scene(std::string);
+    ~Scene() = default;
 
     void addEntity(Entity*);
     void addEntities(std::vector<Entity*>&);

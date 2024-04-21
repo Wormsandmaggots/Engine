@@ -5,7 +5,7 @@
 #ifndef ENGINE_SCENEMANAGER_H
 #define ENGINE_SCENEMANAGER_H
 
-#include "Scene2.h"
+#include "Scene.h"
 #include "Scene/Loader/SceneLoader.h"
 
 namespace SceneManagement {
@@ -19,13 +19,13 @@ namespace SceneManagement {
 
         void loadScene(const std::string &);
         void unloadScene(const std::string &);
-        void unloadScene(Scene2*);
+        void unloadScene(Scene*);
         void updateLoadedScenes();
 
-        const std::vector<Scene2*>& getLoadedScenes() const;
+        const std::vector<Scene*>& getLoadedScenes() const;
 
     private:
-        std::vector<Scene2 *> loadedScenes;
+        std::vector<Scene *> loadedScenes;
         SceneLoader sceneLoader;
     };
 }

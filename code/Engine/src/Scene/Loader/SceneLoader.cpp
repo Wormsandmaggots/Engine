@@ -8,11 +8,11 @@
 
 using namespace std;
 
-Scene2* SceneLoader::loadScene(std::string path) {
+Scene* SceneLoader::loadScene(std::string path) {
     reader.parseFile(path);
     YAML::Node data = reader.getData();
 
-    Scene2* s = new Scene2(data["Scene"]["SceneName"].as<string>());
+    Scene* s = new Scene(data["Scene"]["SceneName"].as<string>());
 
     std::vector<std::pair<std::string, Entity*>> toParent;
     std::vector<Entity*> possibleParents;

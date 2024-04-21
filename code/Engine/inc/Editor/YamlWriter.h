@@ -8,13 +8,13 @@
 #include <string>
 #include "yaml-cpp/node/node.h"
 
-class Scene2;
+class Scene;
 
 class YamlWriter {
 public:
     static void WriteTo(std::string path, YAML::Node toWrite);
-    static void WriteTo(const Scene2&);
-    static void WriteTo(Scene2*, std::string);
+    static void WriteTo(const Scene&);
+    static void WriteTo(Scene*, std::string);
 private:
     static std::string lastlySavedScene;
 };

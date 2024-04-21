@@ -16,7 +16,7 @@ void SceneManager::loadScene(const string &path) {
 
 void SceneManager::unloadScene(const std::string &sceneName) {
     auto foundedScene = std::find_if(loadedScenes.begin(), loadedScenes.end(),
-                           [&sceneName](const Scene2* scene) { return scene->getName() == sceneName; });
+                           [&sceneName](const Scene* scene) { return scene->getName() == sceneName; });
 
     if (foundedScene != loadedScenes.end()) {
         delete *foundedScene;
@@ -29,7 +29,7 @@ void SceneManager::unloadScene(const std::string &sceneName) {
 }
 
 void SceneManager::updateLoadedScenes() {
-    for (Scene2 *scene : loadedScenes) {
+    for (Scene *scene : loadedScenes) {
         scene->update();
     }
 }
@@ -45,11 +45,11 @@ SceneManager::SceneManager() {
     }
 }
 
-const std::vector<Scene2 *> &SceneManager::getLoadedScenes() const {
+const std::vector<Scene *> &SceneManager::getLoadedScenes() const {
     return loadedScenes;
 }
 
-void SceneManager::unloadScene(Scene2* toUnload) {
+void SceneManager::unloadScene(Scene* toUnload) {
     delete toUnload;
     loadedScenes.erase(std::remove(loadedScenes.begin(), loadedScenes.end(), toUnload), loadedScenes.end());
 }

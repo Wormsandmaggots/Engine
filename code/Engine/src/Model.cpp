@@ -1,7 +1,5 @@
 #include "Model.h"
-#include "imgui.h"
-#include "Editor/Panels/FileDialog.h"
-#include <GLFW/glfw3.h>
+
 
 void Model::awake() {}
 
@@ -18,7 +16,7 @@ Shader* Model::getShader()
     return modelShader;
 }
 
-Transform2* Model::getTransform()
+Transform* Model::getTransform()
 {
     
     return parentTransform;
@@ -34,7 +32,7 @@ Model::Model(const string& path, Shader* shader, bool gamma)
     loadModel(path);
 }
 
-Model::Model(const string& path, MaterialAsset* material)
+Model::Model(const string& path, Material* material)
 {
     this->path = path;
     modelShader = material->getShader();

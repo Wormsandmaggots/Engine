@@ -2,9 +2,9 @@
 // Created by Radek on 24.03.2024.
 //
 
-#include "Scene/Scene2.h"
+#include "Scene/Scene.h"
 
-void Scene2::addEntity(Entity *entity) {
+void Scene::addEntity(Entity *entity) {
     if(entity->getParent())
     {
         entity->getParent()->removeChild(entity);
@@ -14,34 +14,34 @@ void Scene2::addEntity(Entity *entity) {
     //root->addChild(entity);
 }
 
-void Scene2::update() {
+void Scene::update() {
     for (Entity* e : sceneEntities) {
         e->update();
     }
 }
 
-Scene2::Scene2(std::string sceneName) {
+Scene::Scene(std::string sceneName) {
     name = sceneName;
 }
 
-std::string Scene2::getName() const {
+std::string Scene::getName() const {
     return name;
 }
 
-void Scene2::addEntities(std::vector<Entity *>& entities) {
+void Scene::addEntities(std::vector<Entity *>& entities) {
     sceneEntities.insert(sceneEntities.end(), entities.begin(), entities.end());
     //root->addChildren(entities);
 }
 
-const vector<Entity *> &Scene2::getSceneEntities() const {
+const vector<Entity *> &Scene::getSceneEntities() const {
     return sceneEntities;
 }
 
-void Scene2::removeEntity(Entity *e) {
+void Scene::removeEntity(Entity *e) {
     sceneEntities.erase(std::remove(sceneEntities.begin(), sceneEntities.end(), e), sceneEntities.end());
 }
 
-void Scene2::setName(const string &newName) {
+void Scene::setName(const string &newName) {
     name = newName;
 }
 

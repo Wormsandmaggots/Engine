@@ -13,7 +13,7 @@
 #include "Model.h"
 #include <string>
 #include <vector>
-#include "Scene/Transform2.h"
+#include "Scene/Transform.h"
 #include "ThirdPersonCamera.h"
 
 class Component;
@@ -35,14 +35,14 @@ public:
     void removeComponent(Component*);
     void removeComponent(int);
 
-    [[nodiscard]] Transform2* getTransform() const;
+    [[nodiscard]] Transform* getTransform() const;
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] Entity* getParent() const;
     [[nodiscard]] std::vector<Entity*> getChildren() const;
     [[nodiscard]] std::vector<Component*> getComponents() const;
     [[nodiscard]] int getId() const;
 
-    void setTransform(const Transform2&);
+    void setTransform(const Transform&);
     void setName(const std::string&);
     void setParent(Entity&);
     // Template function to get a component of a specific type
@@ -77,7 +77,7 @@ public:
 private:
     static int EntityCounter;
     std::string name = "Untitled" + std::to_string(EntityCounter);
-    Transform2* transform = new Transform2;
+    Transform* transform = new Transform;
     int id = 0;
     Entity* parent = nullptr;
     std::vector<Entity*> children;

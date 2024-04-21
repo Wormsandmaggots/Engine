@@ -9,7 +9,7 @@
 #include "Scene/Loader/YamlReader.h"
 #include "ECS/Entity.h"
 #include "Camera.h"
-#include "Scene/Scene2.h"
+#include "Scene/Scene.h"
 #include "Editor/Panels/Hierarchy.h"
 
 namespace EditorLayer {

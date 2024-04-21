@@ -4,7 +4,7 @@
 
 #include <fstream>
 #include "Editor/YamlWriter.h"
-#include "Scene/Scene2.h"
+#include "Scene/Scene.h"
 #include "yaml-cpp/yaml.h"
 #include "Scene/Loader/YamlHelpers.h"
 
@@ -14,7 +14,7 @@ void YamlWriter::WriteTo(std::string path, YAML::Node toWrite) {
     std::ofstream file(path);
 }
 
-void YamlWriter::WriteTo(const Scene2 &sceneToSave) {
+void YamlWriter::WriteTo(const Scene &sceneToSave) {
     lastlySavedScene = sceneToSave.getName();
 
     YAML::Emitter emitter;
@@ -26,7 +26,7 @@ void YamlWriter::WriteTo(const Scene2 &sceneToSave) {
     }
 }
 
-void YamlWriter::WriteTo(Scene2* sceneToSave, std::string path) {
+void YamlWriter::WriteTo(Scene* sceneToSave, std::string path) {
     std::ofstream file(path);
 
     lastlySavedScene = sceneToSave->getName();

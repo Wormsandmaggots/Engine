@@ -1,8 +1,8 @@
-#include "Renderer/MaterialAsset.h"
+#include "Renderer/Material.h"
 
 
 
-MaterialAsset::MaterialAsset(const std::string& path) : materialPath(path)
+Material::Material(const std::string& path) : materialPath(path)
 {
     // Read and parse JSON file
     std::ifstream file(path);
@@ -30,7 +30,7 @@ MaterialAsset::MaterialAsset(const std::string& path) : materialPath(path)
 }
 
 
-void MaterialAsset::SetFloat(const std::string& name, float value) {
+void Material::SetFloat(const std::string& name, float value) {
     if (!shader->doesUniformExist(name)) {
         SPDLOG_ERROR("Uniform: " + name + " not found");
         return;
@@ -44,7 +44,7 @@ void MaterialAsset::SetFloat(const std::string& name, float value) {
     uniforms.push_back(std::move(newUniform));
 }
 
-void MaterialAsset::SetInt(const std::string& name, int value) {
+void Material::SetInt(const std::string& name, int value) {
     if (!shader->doesUniformExist(name)) {
         SPDLOG_ERROR("Uniform: " + name + " not found");
         return;
@@ -58,7 +58,7 @@ void MaterialAsset::SetInt(const std::string& name, int value) {
     uniforms.push_back(std::move(newUniform));
 }
 
-void MaterialAsset::SetVec4(const std::string& name, glm::vec4 value) {
+void Material::SetVec4(const std::string& name, glm::vec4 value) {
     if (!shader->doesUniformExist(name)) {
         SPDLOG_ERROR("Uniform: " + name + " not found");
         return;
@@ -75,7 +75,7 @@ void MaterialAsset::SetVec4(const std::string& name, glm::vec4 value) {
 
 
 
-void MaterialAsset::SetTexture(const std::string& name,Texture* texture)
+void Material::SetTexture(const std::string& name,Texture* texture)
  {
         if (!shader->doesUniformExist(name)) {
             SPDLOG_ERROR("Uniform: " + name + " not found");
@@ -89,13 +89,13 @@ void MaterialAsset::SetTexture(const std::string& name,Texture* texture)
         uniforms.push_back(std::move(newUniform));
  }
 
-void MaterialAsset::RemoveUniform(const std::string& name) {
+void Material::RemoveUniform(const std::string& name) {
     uniforms.erase(std::remove_if(uniforms.begin(), uniforms.end(),
         [name](const std::unique_ptr<Uniform>& uniform) { return uniform->name == name; }),
         uniforms.end());
 }
 
-void MaterialAsset::ParseTextures(const json& materialJson) {
+void Material::ParseTextures(const json& materialJson) {
     for (const auto& jsonTexture : materialJson["textures"]) {
         std::string path = jsonTexture["path"].get<std::string>();
 
@@ -108,7 +108,7 @@ void MaterialAsset::ParseTextures(const json& materialJson) {
     }
 }
 
-void MaterialAsset::ParseUniforms(const json& materialJson)
+void Material::ParseUniforms(const json& materialJson)
 {
     for (const auto& jsonUniform : materialJson["uniforms"]) {
         std::string type = jsonUniform["type"].get<std::string>();
@@ -133,13 +133,13 @@ void MaterialAsset::ParseUniforms(const json& materialJson)
     }
 }
 
-Shader* MaterialAsset::getShader()
+Shader* Material::getShader()
 {
     return shader;
 }
 
 
-void MaterialAsset::bindMaterial()
+void Material::bindMaterial()
 {
     shader->use();
     for (const auto& uniform : uniforms) {
@@ -147,33 +147,33 @@ void MaterialAsset::bindMaterial()
     }
 }
 
-void MaterialAsset::unbindMaterial()
+void Material::unbindMaterial()
 {
     glUseProgram(0);
 }
 
-void MaterialAsset::Vec4Uniform::ApplyValue(Shader* shader)
+void Material::Vec4Uniform::ApplyValue(Shader* shader)
 {
     shader->setVec4(name, value);
 }
 
-std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::Vec4Uniform::Clone()
+std::unique_ptr<Material::Uniform> Material::Vec4Uniform::Clone()
 {
-    auto clone = std::make_unique<MaterialAsset::Vec4Uniform>();
+    auto clone = std::make_unique<Material::Vec4Uniform>();
     clone->name = name;
     clone->value = value;
 
     return std::move(clone);
 }
-void MaterialAsset::TextureUniform::ApplyValue(Shader* shader)
+void Material::TextureUniform::ApplyValue(Shader* shader)
 {
     glActiveTexture(GL_TEXTURE0 + index);
     textureAsset->bind();
     shader->setInt(name, index);
 }
 
-std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::TextureUniform::Clone() {
-    auto clone = std::make_unique<MaterialAsset::TextureUniform>();
+std::unique_ptr<Material::Uniform> Material::TextureUniform::Clone() {
+    auto clone = std::make_unique<Material::TextureUniform>();
     clone->name = name;
     clone->textureAsset = textureAsset;
     clone->index = index;
@@ -181,28 +181,28 @@ std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::TextureUniform::Clone() {
     return std::move(clone);
 }
 
-void MaterialAsset::FloatUniform::ApplyValue(Shader* shader)
+void Material::FloatUniform::ApplyValue(Shader* shader)
 {
     shader->setFloat(name, value);
 }
 
-std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::FloatUniform::Clone()
+std::unique_ptr<Material::Uniform> Material::FloatUniform::Clone()
 {
-    auto clone = std::make_unique<MaterialAsset::FloatUniform>();
+    auto clone = std::make_unique<Material::FloatUniform>();
     clone->name = name;
     clone->value = value;
 
     return std::move(clone);
 }
 
-void MaterialAsset::IntUniform::ApplyValue(Shader* shader)
+void Material::IntUniform::ApplyValue(Shader* shader)
 {
     shader->setInt(name, value);
 }
 
-std::unique_ptr<MaterialAsset::Uniform> MaterialAsset::IntUniform::Clone()
+std::unique_ptr<Material::Uniform> Material::IntUniform::Clone()
 {
-    auto clone = std::make_unique<MaterialAsset::IntUniform>();
+    auto clone = std::make_unique<Material::IntUniform>();
     clone->name = name;
     clone->value = value;
 

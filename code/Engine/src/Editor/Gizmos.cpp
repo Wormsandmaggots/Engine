@@ -18,7 +18,7 @@ ImGuizmo::MODE Gizmos::CurrentGizmoMode = ImGuizmo::WORLD;
 void Gizmos::EditTransform(float* viewMatrix, float* projectionMatrix, Entity* entity)
 {
     static Entity* cachedEntity = entity;
-    static Transform2* transform = cachedEntity->getTransform();
+    static Transform* transform = cachedEntity->getTransform();
     static glm::mat4* world = new glm::mat4(transform->getWorldMatrix());
     static glm::mat4* local = new glm::mat4(transform->getLocalMatrix());
     static float e = 0.01f;
