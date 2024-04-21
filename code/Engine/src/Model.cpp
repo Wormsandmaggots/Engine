@@ -145,6 +145,30 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
     return textures;
 }
 
+glm::mat4 Model::getModelMatrixInWorldSpace() {
+    Transform2* transform = this->getTransform();
+
+    // Pobierz skale, rotację i translację
+    glm::vec3 scale = transform->getLocalScale();
+    glm::quat rotation = transform->getLocalRotation();
+    glm::vec3 translation = transform->getLocalPosition();
+
+    // Zbuduj macierz transformacji modelu
+    glm::mat4 model = glm::mat4(1.0f); // macierz jednostkowa
+    model = glm::translate(model, translation); // translacja
+    model *= glm::mat4_cast(rotation); // rotacja
+    model = glm::scale(model, scale); // skala
+
+    // Pobierz macierz świata
+    glm::mat4 worldMatrix = transform->getWorldMatrix();
+
+    // Przelicz macierz modelu na układ współrzędnych świata
+    glm::mat4 modelInWorldSpace = worldMatrix * model;
+
+    return modelInWorldSpace;
+}
+
+
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
     string filename = string(path);

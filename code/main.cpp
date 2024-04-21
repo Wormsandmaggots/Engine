@@ -39,7 +39,6 @@ int main() {
     DebugInput debugInput;
     //HID - test
 
-    //TODO: shader declaration
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
@@ -51,7 +50,6 @@ int main() {
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
-    //TODO: podpinanie shadera po renderer:
     Renderer renderer(&shader);
 
 	renderer.addShader(&collisionTestShader);
@@ -60,7 +58,6 @@ int main() {
     renderer.addShader(&lightShader);
     renderer.addShader(&lampShader);
 
-//TODO: deklaracja modelu i shadera
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	Model* player = new Model("res\\content\\models\\player\\character_base.obj",&lightShader);
 
@@ -78,7 +75,7 @@ int main() {
 
     cc1->start();
     cc2->start();
-    //TODO: inicjalizacja renderera
+
     renderer.init();
 
     sm.getLoadedScenes()[0]->getSceneEntities()[0]->addComponent(cc1);
@@ -90,7 +87,7 @@ int main() {
 	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
 	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
-//TODO: montowanie obiektu na scenie
+
     sm.getLoadedScenes()[0]->addEntity(new Entity("lamp"));
     sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(lamp);
     lamp->getTransform()->setPosition(glm::vec3(-10, 0, 30));
@@ -117,13 +114,28 @@ int main() {
         imgui_begin();
 		editor.draw();
 
+        //TODO: Kuba: uprzątnij kod świateł
         Light light(&lightShader);
         light.setLightColors(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
         //to mogę owinąć w funkcję klasy Light
         //można to dać poza pętlę, ale zostawiam tak, jakby było trzeba to aktualizować kiedyś
         lightShader.setVec3("lightPos", lightPos);
 
+//Obliczanie znormalizowanegej macierzy modelu
+
+// Pobierz macierz transformacji dla obiektu "player"
+        glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
+// Obliczanie macierzy normalnej
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+
+// Przekazanie macierzy normalnej do shadera
+        lightShader.setMat3("normalMatrix", normalMatrix);
+
+// end: Obliczanie znormalizowanegej macierzy modelu
+
         renderer.updateProjectionAndView(projection, view);
+        //obliczanie macierzy normalnej modelu, zrób za każdym razem gdy zmieniam jego położenie
+
 		sm.updateLoadedScenes();
         //scene.update();
         cm.update();
@@ -131,8 +143,6 @@ int main() {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //arcadeRenderer->renderText();
 
-
-        //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
         //hud
         counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
         //glDisable(GL_DEPTH_TEST);

@@ -9,6 +9,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 
 #include "Mesh.h"
 #include "Shader.h"
@@ -48,6 +51,8 @@ public:
 
     Shader* getShader()override;
     Transform2* getTransform()override;
+    //for lights
+    glm::mat4 getModelMatrixInWorldSpace();
 private:
     Shader* defaultShader;
 
