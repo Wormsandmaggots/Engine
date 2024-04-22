@@ -40,6 +40,7 @@ int main() {
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
+    Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
 
     //TODO: Kuba: Czy to może tutaj zostać?
 
@@ -53,12 +54,13 @@ int main() {
 
 	renderer.addShader(&collisionTestShader);
 	renderer.addShader(&shaderText);
+    renderer.addShader(&shaderPbr);
 
 	renderer.init();
 
-    Model* club = new Model("res\\content\\models\\club\\club3.obj");
+    Model* club = new Model("res\\content\\models\\club\\club3.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	Model* player = new Model("res\\content\\models\\player\\character_base.obj");
+	Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
 
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -119,9 +121,9 @@ int main() {
         
 		
 		renderer.updateProjectionAndView(projection, view);
-        shader.use();
-        shader.setVec3("camPos",s.camera.Position);
-        shader.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        shaderPbr.use();
+        shaderPbr.setVec3("camPos",s.camera.Position);
+        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
