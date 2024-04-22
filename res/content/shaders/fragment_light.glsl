@@ -10,6 +10,7 @@ uniform sampler2D texture_diffuse1;
 uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPos;
+uniform vec3 direction;
 
 
 void main()
@@ -20,7 +21,9 @@ void main()
 
     // diffuse
     vec3 norm = normalize(TransformedNormal);
-    vec3 lightDir = normalize(lightPos - FragPos);
+    //vec3 lightDir = normalize(lightPos - FragPos);
+    //for directional light
+    vec3 lightDir = normalize(-direction);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 

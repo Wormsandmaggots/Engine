@@ -119,7 +119,9 @@ int main() {
         light.setLightColors(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
         //to mogę owinąć w funkcję klasy Light
         //można to dać poza pętlę, ale zostawiam tak, jakby było trzeba to aktualizować kiedyś
-        lightShader.setVec3("lightPos", lightPos);
+        //to do podstawowego modelu Phonga: //lightShader.setVec3("lightPos", lightPos);
+        //swiatlo kierunkowe:
+        lightShader.setVec3("direction", -0.2f, -1.0f, -0.3f);
 
 //Obliczanie znormalizowanegej macierzy modelu
 
