@@ -39,7 +39,8 @@ void Renderer::Render(Renderable *renderable)
 		defaultShader->use();
 		defaultShader->setMat4("model", renderable->getTransform()->getLocalMatrix());
         defaultShader->setMat3("normalMatrix", glm::transpose(glm::inverse(glm::mat3(renderable->getTransform()->getWorldMatrix()))));
-		renderable->Draw(defaultShader);
+        //defaultShader->setVec3("lightPos",glm::vec3(1,0,0));
+        renderable->Draw(defaultShader);
 	}
 	else {
 		renderable->getShader()->use();

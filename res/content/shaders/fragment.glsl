@@ -5,12 +5,14 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
+
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_metalic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_normal1;
 // lights
 uniform vec3 camPos;
+uniform vec3 lightPos;
 
 vec3 lightPosition = vec3(0.0f, 7.0f, 0.0f);
 
@@ -96,9 +98,9 @@ F0 = mix(F0, albedo, metallic);
 vec3 Lo = vec3(0.0);
 
 // calculate light radiance
-vec3 L = normalize(lightPosition - WorldPos);
+vec3 L = normalize(lightPos - WorldPos);
 vec3 H = normalize(V + L);
-float distance = length(lightPosition - WorldPos);
+float distance = length(lightPos - WorldPos);
 float attenuation = 1.0 / (distance * distance);
 vec3 radiance = lightColor * attenuation;
 

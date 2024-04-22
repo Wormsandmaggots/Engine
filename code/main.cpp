@@ -94,7 +94,7 @@ int main() {
 
     sm.getLoadedScenes()[0]->addEntity(new Entity("sphere"));
     sm.getLoadedScenes()[0]->getSceneEntities()[4]->addComponent(sphere);
-    sphere->getTransform()->setPosition(glm::vec3(0.0f, 7.0f, 0.0f));
+    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -110,6 +110,7 @@ int main() {
 		glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
+        std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		//glm::mat4 view = playerCamera->getView();
 
@@ -118,7 +119,9 @@ int main() {
         
 		
 		renderer.updateProjectionAndView(projection, view);
+        shader.use();
         shader.setVec3("camPos",s.camera.Position);
+        shader.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
@@ -129,17 +132,17 @@ int main() {
 
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
         //hud
-        counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
+        //counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
         //glDisable(GL_DEPTH_TEST);
-        glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
-        shader.setMat4("projection", orthoProjection);
+        //glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
+        //shader.setMat4("projection", orthoProjection);
 
-        progressBar.update(s.deltaTime);
-        progressBar.renderBar();
+        //progressBar.update(s.deltaTime);
+        //progressBar.renderBar();
 
-        image.render();
-        backgroundImage.render();
-        backgroundImage.update(s.deltaTime);
+        //image.render();
+       // backgroundImage.render();
+        //backgroundImage.update(s.deltaTime);
         //glEnable(GL_DEPTH_TEST);
         //hud end
 
