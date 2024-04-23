@@ -88,7 +88,6 @@ int main() {
     sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setPosition(glm::vec3(0, 0, -4));
     sm.getLoadedScenes()[0]->getSceneEntities()[3]->getTransform()->setRotation(glm::vec3(0, -90, -30));
 
-
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
