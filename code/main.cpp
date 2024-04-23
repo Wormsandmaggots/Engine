@@ -119,14 +119,16 @@ int main() {
         light.setLightColors(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
         //to mogę owinąć w funkcję klasy Light
         //można to dać poza pętlę, ale zostawiam tak, jakby było trzeba to aktualizować kiedyś
-        lightShader.setVec3("lightPos", lightPos);
+        lightShader.setVec3("light.position", lightPos);
         //swiatlo kierunkowe:
-        lightShader.setVec3("direction", -0.2f, -1.0f, -0.3f);
+        lightShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
         
         //seting distance that light travels
-        lightShader.setFloat("constant", 1.0f);
-        lightShader.setFloat("linear", 0.0014f);
-        lightShader.setFloat("quadratic", 0.000007f);
+        lightShader.setFloat("light.constant", 1.0f);
+        lightShader.setFloat("light.linear", 0.0014f);
+        lightShader.setFloat("light.quadratic", 0.000007f);
+
+        lightShader.setFloat("material.shininess", 32.0f);
 
 //Obliczanie znormalizowanegej macierzy modelu
 

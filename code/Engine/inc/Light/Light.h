@@ -9,8 +9,8 @@ public:
 
     void setLightColors(const glm::vec3& objectColor, const glm::vec3& lightColor) {
         shader->use();
-        shader->setVec3("objectColor", objectColor);
-        shader->setVec3("lightColor", lightColor);
+        shader->setVec3("light.objectColor", objectColor);
+        shader->setVec3("light.lightColor", lightColor);
     }
 
 private:
