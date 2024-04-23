@@ -110,9 +110,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         vector<Texture> specularMaps = loadMaterialTextures(material,
                                                             aiTextureType_SPECULAR, "texture_metalic");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-        /*vector<Texture> metalnessMaps = loadMaterialTextures(material,
-                                                             aiTextureType_UNKNOWN, "texture_metalness");
-        textures.insert(textures.end(), metalnessMaps.begin(), metalnessMaps.end());*/
+        vector<Texture> ambientMaps = loadMaterialTextures(material,
+                                                             aiTextureType_AMBIENT, "texture_ambient");
+        textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
         vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_SHININESS, "texture_roughness"); // Load roughness map textures
         textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
         vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal"); // Load roughness map textures

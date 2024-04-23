@@ -41,7 +41,7 @@ int main() {
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
-
+    Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -55,13 +55,15 @@ int main() {
 	renderer.addShader(&collisionTestShader);
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
+    renderer.addShader(&shaderCel);
 
 	renderer.init();
 
-    Model* club = new Model("res\\content\\models\\club\\club3.obj", &shaderPbr);
+    Model* club = new Model("res\\content\\models\\club2\\club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-
+	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
+    Model* player = new Model("res\\content\\models\\nanosuit\\nanosuit.obj", &shaderPbr);
+    Model* player2 = new Model("res\\content\\models\\random.fbx", &shaderPbr);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -98,6 +100,9 @@ int main() {
     sm.getLoadedScenes()[0]->getSceneEntities()[4]->addComponent(sphere);
     sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
 
+    sm.getLoadedScenes()[0]->addEntity(new Entity("player2"));
+    sm.getLoadedScenes()[0]->getSceneEntities()[5]->addComponent(player2);
+    player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
     while (!glfwWindowShouldClose(s.window))
 	{
         //EditorLayer::Gizmos::Clear();

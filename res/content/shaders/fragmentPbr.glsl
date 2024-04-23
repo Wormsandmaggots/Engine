@@ -5,22 +5,18 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
-
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_metalic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_normal1;
+uniform sampler2D texture_ambient1;
 // lights
 uniform vec3 camPos;
 uniform vec3 lightPos;
 
 vec3 lightColor = vec3(150.0f, 150.0f, 150.0f);
 const float PI = 3.14159265359;
-// ----------------------------------------------------------------------------
-// Easy trick to get tangent-normals to world-space to keep PBR code simplified.
-// Don't worry if you don't get what's going on; you generally want to do normal
-// mapping the usual way for performance anyways; I do plan make a note of this
-// technique somewhere later in the normal mapping tutorial.
+
 vec3 getNormalFromMap()
 {
     vec3 tangentNormal = texture(texture_normal1, TexCoords).xyz * 2.0 - 1.0;
@@ -37,7 +33,7 @@ vec3 getNormalFromMap()
 
     return normalize(TBN * tangentNormal);
 }
-// -----------
+
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
     float a = roughness*roughness;
@@ -51,7 +47,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
 
     return nom / denom;
 }
-// ----------------------------------------------------------------------------
+
 float GeometrySchlickGGX(float NdotV, float roughness)
 {
     float r = (roughness + 1.0);
@@ -62,7 +58,7 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 
     return nom / denom;
 }
-// ----------------------------------------------------------------------------
+
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 {
     float NdotV = max(dot(N, V), 0.0);
@@ -72,19 +68,36 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 
     return ggx1 * ggx2;
 }
-// ----------------------------------------------------------------------------
+
 vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
-// ----------------------------------------------------------------------------
+
+float celValue(float value){
+    if(value < 0.05) return 0.1;
+    if(value < 0.15) return 0.2;
+    if(value < 0.25) return 0.3;
+    if(value < 0.5) return 0.4;
+    if(value < 0.75) return 0.7;
+    return 1;
+}
+
+vec3 cel(vec3 color){
+    color.x = celValue(color.x);
+    color.y = celValue(color.y);
+    color.z = celValue(color.z);
+    return color;
+}
 void main()
 {
 vec3 albedo     = pow(texture(texture_diffuse1, TexCoords).rgb, vec3(2.2));
 float metallic  = texture(texture_metalic1, TexCoords).r;
 float roughness = texture(texture_roughness1, TexCoords).r;
+float ao        = texture(texture_ambient1, TexCoords).r;
 
-vec3 N = getNormalFromMap();
+//vec3 N = getNormalFromMap();
+vec3 N = normalize(Normal);
 vec3 V = normalize(camPos - WorldPos);
 
 // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0
@@ -92,7 +105,7 @@ vec3 V = normalize(camPos - WorldPos);
 vec3 F0 = vec3(0.04);
 F0 = mix(F0, albedo, metallic);
 
-// reflectance equation
+// init reflectance equation
 vec3 Lo = vec3(0.0);
 
 // calculate light radiance
@@ -113,9 +126,7 @@ vec3 specular = numerator / denominator;
 
 // kS is equal to Fresnel
 vec3 kS = F;
-// for energy conservation, the diffuse and specular light can't
-// be above 1.0 (unless the surface emits light); to preserve this
-// relationship the diffuse component (kD) should equal 1.0 - kS.
+// energy conservation
 vec3 kD = vec3(1.0) - kS;
 // multiply kD by the inverse metalness such that only non-metals
 // have diffuse lighting, or a linear blend if partly metal (pure metals
@@ -126,11 +137,9 @@ kD *= 1.0 - metallic;
 float NdotL = max(dot(N, L), 0.0);
 
 // add to outgoing radiance Lo
-Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 
-// ambient lighting (note that the next IBL tutorial will replace
-// this ambient lighting with environment lighting).
-vec3 ambient = vec3(0.03) * albedo;
+vec3 ambient = vec3(0.03) * albedo * ao;
 
 vec3 color = ambient + Lo;
 
@@ -139,5 +148,7 @@ color = color / (color + vec3(1.0));
 // gamma correct
 color = pow(color, vec3(1.0/2.2));
 
+vec3 finalColor = cel(color);
 FragColor = vec4(color, 1.0);
+//FragColor = vec4(finalColor, 1.0); // THIS IF U WANT TO USE CEL SHADING
 }
