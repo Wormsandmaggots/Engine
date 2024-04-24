@@ -1,3 +1,7 @@
+/*If you want to use this shader remember about those uniforms
+shaderPbr.use();
+shaderPbr.setVec3("camPos",s.camera.Position);
+shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());*/
 #version 460 core
 out vec4 FragColor;
 
@@ -96,8 +100,8 @@ float metallic  = texture(texture_metalic1, TexCoords).r;
 float roughness = texture(texture_roughness1, TexCoords).r;
 float ao        = texture(texture_ambient1, TexCoords).r;
 
-//vec3 N = getNormalFromMap();
-vec3 N = normalize(Normal);
+vec3 N = getNormalFromMap();
+//vec3 N = normalize(Normal);
 vec3 V = normalize(camPos - WorldPos);
 
 // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0

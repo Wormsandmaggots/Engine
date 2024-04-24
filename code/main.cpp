@@ -157,7 +157,7 @@ int main() {
         sm.updateLoadedScenes();
 
         cm.update();
-        arcadeRenderer->update();
+        //arcadeRenderer->update();
         update();
 	}
     a.end();
