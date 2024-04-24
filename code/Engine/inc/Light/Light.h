@@ -24,16 +24,18 @@ public:
         lightShader.setFloat("material.shininess", 30.0f);
         //kierunkowe
         lightShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3);
+        /*
         lightShader.setVec3("dirLight.ambient", 0.2f, 0.2f, 0.2f);
         lightShader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
         lightShader.setVec3("dirLight.specular", 0.6f, 0.6f, 0.6f);
-/*for maximizing spotlight
+         */
+//for maximizing spotlight
         lightShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
         lightShader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
         lightShader.setVec3("dirLight.specular", 0.4f, 0.4f, 0.4f);
-*/
+
         //punktowe
-        lightShader.setVec3("pointLights[0].position", 100,100,100);
+        lightShader.setVec3("pointLights[0].position", 15.0f,6.0f,43.0f);
         lightShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
         lightShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
         lightShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
@@ -41,7 +43,7 @@ public:
         lightShader.setFloat("pointLights[0].linear", 0.09f);
         lightShader.setFloat("pointLights[0].quadratic", 0.032f);
 
-        lightShader.setVec3("pointLights[1].position", 0,0,0);
+        lightShader.setVec3("pointLights[1].position", -12.0f,6.0f,43.0f);
         lightShader.setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
         lightShader.setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
         lightShader.setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);

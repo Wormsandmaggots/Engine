@@ -48,7 +48,7 @@ struct SpotLight {
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 1 //nie może być zera
+#define NR_POINT_LIGHTS 2 //nie może być zera
 
 uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
@@ -70,14 +70,14 @@ void main()
     vec4 specularColor = texture(texture_specular1, TexCoords);
 
     // phase 1: directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir, textureColor, specularColor);
+     vec3 result = CalcDirLight(dirLight, norm, viewDir, textureColor, specularColor);
 
     // phase 2: point lights
-    //for(int i = 0; i < NR_POINT_LIGHTS; i++)
-    //result += CalcPointLight(pointLights[i], norm, FragPos, viewDir, textureColor, specularColor);
+    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    result += CalcPointLight(pointLights[i], norm, FragPos, viewDir, textureColor, specularColor);
 
     // phase 3: spot light
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir, textureColor, specularColor);
+    //result += CalcSpotLight(spotLight, norm, FragPos, viewDir, textureColor, specularColor);
 
     FragColor = vec4(result, 1.0);
 }
@@ -114,9 +114,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     vec3 ambient = light.ambient * textureColor.rgb;
     vec3 diffuse = light.diffuse * diff * textureColor.rgb;
     vec3 specular = light.specular * spec * specularColor.rgb;
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
+    ambient *= attenuation*50;
+    diffuse *= attenuation*50;
+    specular *= attenuation*50;
     return (ambient + diffuse + specular);
 }
 

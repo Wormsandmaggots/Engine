@@ -109,6 +109,7 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(new Entity("player2"));
     sm.getLoadedScenes()[0]->getSceneEntities()[5]->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+
     while (!glfwWindowShouldClose(s.window))
 	{
         //EditorLayer::Gizmos::Clear();
