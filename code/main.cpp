@@ -124,18 +124,29 @@ int main() {
         lightShader.setVec3("lightColor", lightColor);
 */
         //light
+        /* //for static lamp
         lightShader.setVec3("light.position", lightPos); //to zostawiam gdyby lammpa miała się przemieszczać
-        lightShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-        lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-        lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        lightShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+*/
+        lightShader.setVec3("light.position", s.camera.Position); //to zostawiam gdyby lammpa miała się przemieszczać
+        lightShader.setVec3("light.direction", s.camera.Front);
 
+        lightShader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+        lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+        lightShader.setVec3("light.specular", 0.6f, 0.6f, 0.6f);
+
+        lightShader.setFloat("light.constant",  1.0f);
+        lightShader.setFloat("light.linear",    0.0014f);
+        lightShader.setFloat("light.quadratic", 0.000007f);
+
+        lightShader.setFloat("light.cutOff", glm::cos(glm::radians(15.5f)));
         //material
         /*
         lightShader.setVec3("material.ambient", 1.0f, 0.0f, 1.0f);
         lightShader.setVec3("material.diffuse", 1.0f, 0.0f, 1.0f);
         lightShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
          */
-        lightShader.setFloat("material.shininess", 32.0f);
+        lightShader.setFloat("material.shininess", 1.0f);
 
         //Obliczanie znormalizowanegej macierzy modelu player
         glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
