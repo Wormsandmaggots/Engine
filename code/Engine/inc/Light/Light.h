@@ -3,17 +3,33 @@
 
 #include "Shader.h"
 
-class Light {
+class Light : public Component {
 public:
-    Light(Shader* shader) : shader(shader) {}
+    Shader& lightShader;
 
-    void setLightColors(const glm::vec3& objectColor, const glm::vec3& lightColor) {
-        shader->use();
-        shader->setVec3("objectColor", objectColor);
-        shader->setVec3("lightColor", lightColor);
+    Light(Shader& shader) : lightShader(shader) {}
+
+    virtual ~Light() = default;
+
+    void awake() override {
+        // Implementacja metody awake
     }
 
-private:
-    Shader* shader;
+    void start() override {
+        // Implementacja metody start
+    }
+
+    void update() override {
+        lightShader.use();
+        lightShader.setFloat("material.shininess", 1.0f);
+        lightShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3);
+        lightShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+        lightShader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
+        lightShader.setVec3("dirLight.specular", 0.6f, 0.6f, 0.6f);
+    }
+
+    void onDestroy() override {
+        // Implementacja metody onDestroy
+    }
 };
-#endif //ENGINE_LIGHT_H
+#endif

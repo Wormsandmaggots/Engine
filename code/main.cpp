@@ -29,9 +29,6 @@ int main() {
 	SceneManager sm;
 	sm.loadScene("res/content/maps/exampleScene.yaml");
 	sound->setVolume(2.f);
-    //TODO: oddaj do innej klasy
-    glm::vec3 lightPos(-10.0f, 0.0f, 30.0f);
-
 
     //HID - test
     //Dowywalenia to do innego pliku
@@ -58,6 +55,8 @@ int main() {
 
     renderer.addShader(&lightShader);
     renderer.addShader(&lampShader);
+
+    Light light(lightShader);
 
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	Model* player = new Model("res\\content\\models\\player\\character_base.obj",&lightShader);
@@ -117,41 +116,16 @@ int main() {
 
 //light
         //TODO: Kuba: uprzątnij kod świateł
-        lightShader.use();
-        //light
-        /* //for static lamp
-        lightShader.setVec3("light.position", lightPos); //to zostawiam gdyby lammpa miała się przemieszczać
-        lightShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
-        */
-        /*
-        lightShader.setVec3("light.position", s.camera.Position); //to zostawiam gdyby lammpa miała się przemieszczać
-        lightShader.setVec3("light.direction", s.camera.Front);
-
-        lightShader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
-        lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-        lightShader.setVec3("light.specular", 0.6f, 0.6f, 0.6f);
-
-        lightShader.setFloat("light.constant",  1.0f);
-        lightShader.setFloat("light.linear",    0.0014f);
-        lightShader.setFloat("light.quadratic", 0.000007f);
-
-        lightShader.setFloat("light.cutOff", glm::cos(glm::radians(15.5f)));
-         */
-        lightShader.setFloat("material.shininess", 1.0f);
-
-        lightShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3);
-
-        lightShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
-        lightShader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
-        lightShader.setVec3("dirLight.specular", 0.6f, 0.6f, 0.6f);
-
+        light.update();
+//TODO: implement this in future version
+/*
         //Obliczanie znormalizowanegej macierzy modelu player
         glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
         // Obliczanie macierzy normalnej
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
         // Przekazanie macierzy normalnej do shadera
         lightShader.setMat3("normalMatrix", normalMatrix);
-
+*/
 //end: light
 
         renderer.updateProjectionAndView(projection, view);

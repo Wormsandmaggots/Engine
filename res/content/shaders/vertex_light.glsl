@@ -11,12 +11,13 @@ out vec3 ViewPos;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat3 normalMatrix;
+//uniform mat3 normalMatrix; //for future implementation
 
 void main()
 {
     TexCoords = aTexCoords;
-    TransformedNormal = normalMatrix * aNormal;
+    //TransformedNormal = normalMatrix * aNormal;
+    TransformedNormal = mat3(transpose(inverse(model))) * aNormal;
     FragPos = vec3(model * vec4(aPos, 1.0));
     ViewPos = vec3(view * model * vec4(aPos, 1.0));
     gl_Position = projection * view * model * vec4(aPos, 1.0);
