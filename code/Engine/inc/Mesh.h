@@ -94,6 +94,7 @@ public:
         // bind appropriate textures
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
+        unsigned int metalnessNr = 1;
         unsigned int normalNr = 1;
         unsigned int ambientNr = 1;
         unsigned int roughnessNr = 1;
@@ -106,8 +107,10 @@ public:
             std::string name = textures[i].textureName;
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
-            else if (name == "texture_metalic")
+            else if (name == "texture_specular")
                 number = std::to_string(specularNr++);
+            else if (name == "texture_metalic")
+                number = std::to_string(metalnessNr++);
             else if (name == "texture_normal")
                 number = std::to_string(normalNr++);
             else if (name == "texture_ambient")
@@ -118,11 +121,9 @@ public:
                 number = std::to_string(displacementNr++);
             // now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
-            textures[i].bind();
+            //textures[i].bind();
 
         }
-
-
 
         // draw mesh
         if(!isGenerated && !instanced)

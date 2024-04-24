@@ -84,22 +84,27 @@ int main() {
     cc1->start();
     cc2->start();
 
-	sm.getLoadedScenes()[0]->addEntity(new Entity("player"));
-	sm.getLoadedScenes()[0]->getSceneEntities()[2]->addComponent(player);
+    Entity* player1 = new Entity("player");
+	sm.getLoadedScenes()[0]->addEntity(player1);
+    player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
-    sm.getLoadedScenes()[0]->addEntity(new Entity("club"));
-    sm.getLoadedScenes()[0]->getSceneEntities()[3]->addComponent(club);
+    Entity* club1 = new Entity("club");
+    sm.getLoadedScenes()[0]->addEntity(club1);
+    club1->addComponent(club);
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
     club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
-    sm.getLoadedScenes()[0]->addEntity(new Entity("sphere"));
-    sm.getLoadedScenes()[0]->getSceneEntities()[4]->addComponent(sphere);
+    Entity* sphere1 = new Entity("sphere");
+    sm.getLoadedScenes()[0]->addEntity(sphere1);
+    sphere1->addComponent(sphere);
     sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
 
-    sm.getLoadedScenes()[0]->addEntity(new Entity("player2"));
-    sm.getLoadedScenes()[0]->getSceneEntities()[5]->addComponent(player2);
+    Entity* player3 = new Entity("player2");
+    sm.getLoadedScenes()[0]->addEntity(player3);
+    player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -119,11 +124,11 @@ int main() {
 
         imgui_begin();
         editor.draw();
-		
-		renderer.updateProjectionAndView(projection, view);
+
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+		renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
