@@ -9,27 +9,17 @@ in vec3 ViewPos;
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 
-//uniform vec3 objectColor;
-//uniform vec3 lightColor;
-//uniform vec3 lightPos;
-
 struct Light {
     vec3 position;
-
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
-
-uniform Light light;
-
 struct Material {
-    //vec3 ambient;
-    //vec3 diffuse;
-    //vec3 specular;
     float shininess;
 };
 
+uniform Light light;
 uniform Material material;
 
 void main()
