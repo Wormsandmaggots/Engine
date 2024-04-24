@@ -114,19 +114,7 @@ int main() {
         imgui_begin();
 		editor.draw();
 
-//light
-        //TODO: Kuba: uprzątnij kod świateł
         light.update();
-//TODO: implement this in future version
-/*
-        //Obliczanie znormalizowanegej macierzy modelu player
-        glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
-        // Obliczanie macierzy normalnej
-        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
-        // Przekazanie macierzy normalnej do shadera
-        lightShader.setMat3("normalMatrix", normalMatrix);
-*/
-//end: light
 
         renderer.updateProjectionAndView(projection, view);
         //obliczanie macierzy normalnej modelu, zrób za każdym razem gdy zmieniam jego położenie

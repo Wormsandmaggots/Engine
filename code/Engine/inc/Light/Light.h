@@ -33,3 +33,13 @@ public:
     }
 };
 #endif
+
+//TODO: implement this in future version
+/*
+        //Obliczanie znormalizowanegej macierzy modelu player
+        glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
+        // Obliczanie macierzy normalnej
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+        // Przekazanie macierzy normalnej do shadera
+        lightShader.setMat3("normalMatrix", normalMatrix);
+*/
