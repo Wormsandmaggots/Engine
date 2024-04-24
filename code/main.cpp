@@ -67,10 +67,10 @@ int main() {
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
 
-    Model* club = new Model("res\\content\\models\\club2\\club2.obj", &shaderPbr);
+    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res\\content\\models\\random.fbx", &shaderPbr);
+    Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -118,7 +118,7 @@ int main() {
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
-        std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
+        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		//glm::mat4 view = playerCamera->getView();
 
@@ -132,8 +132,8 @@ int main() {
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+//		ImGui::Render();
+//		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         arcadeRenderer->renderText();
 
 
@@ -156,9 +156,9 @@ int main() {
         //hud end
 
 
-        sm.updateLoadedScenes();
-
-        cm.update();
+//        sm.updateLoadedScenes();
+//
+//        cm.update();
         //arcadeRenderer->update();
         update();
 	}

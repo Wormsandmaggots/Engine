@@ -121,7 +121,7 @@ public:
                 number = std::to_string(displacementNr++);
             // now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
-            //textures[i].bind();
+            textures[i].bind();
 
         }
 
