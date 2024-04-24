@@ -117,12 +117,23 @@ int main() {
 //light
         //TODO: Kuba: uprzątnij kod świateł
         lightShader.use();
+/*      //depraciated
         glm::vec3 objectColor(1.0f, 0.0f, 1.0f);
         glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-
         lightShader.setVec3("objectColor", objectColor);
         lightShader.setVec3("lightColor", lightColor);
-        lightShader.setVec3("lightPos", lightPos); //to zostawiam gdyby lammpa miała się przemieszczać
+*/
+        //light
+        lightShader.setVec3("light.position", lightPos); //to zostawiam gdyby lammpa miała się przemieszczać
+        lightShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+        lightShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+        lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+        //material
+        lightShader.setVec3("material.ambient", 1.0f, 0.0f, 1.0f);
+        lightShader.setVec3("material.diffuse", 1.0f, 0.0f, 1.0f);
+        lightShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        lightShader.setFloat("material.shininess", 32.0f);
 
         //Obliczanie znormalizowanegej macierzy modelu player
         glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
