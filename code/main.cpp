@@ -14,6 +14,7 @@
 #include "Input/DebugInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
+#include "Light/Light.h"
 
 using namespace SceneManagement;
 
@@ -42,7 +43,8 @@ int main() {
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
-    //TODO: Kuba: Czy to może tutaj zostać?
+    Shader lightShader("res/content/shaders/vertex_light.glsl", "res/content/shaders/fragment_light.glsl");
+    Shader lampShader("res/content/shaders/lamp_vertex.glsl", "res/content/shaders/lamp_fragment.glsl");
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
@@ -56,14 +58,18 @@ int main() {
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
+    renderer.addShader(&lightShader);
+    renderer.addShader(&lampShader);
 
 	renderer.init();
 
-    Model* club = new Model("res\\content\\models\\club2\\club2.obj", &shaderPbr);
+    Light light(lightShader);
+
+    Model* club = new Model("res\\content\\models\\club2\\club2.obj", &lightShader);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player = new Model("res\\content\\models\\nanosuit\\nanosuit.obj", &shaderPbr);
-    Model* player2 = new Model("res\\content\\models\\random.fbx", &shaderPbr);
+	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &lightShader);
+    Model* player = new Model("res\\content\\models\\nanosuit\\nanosuit.obj", &lightShader);
+    Model* player2 = new Model("res\\content\\models\\random.fbx", &lightShader);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -152,7 +158,7 @@ int main() {
         //backgroundImage.update(s.deltaTime);
         //glEnable(GL_DEPTH_TEST);
         //hud end
-
+        light.update();
 
         sm.updateLoadedScenes();
 
