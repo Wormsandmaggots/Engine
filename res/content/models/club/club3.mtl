@@ -1,0 +1,66 @@
+# Blender 3.6.4 MTL File: 'club3.blend'
+# www.blender.org
+
+newmtl Cube.001_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.001/Cube.001_Bake1_PBR_Diffuse.png
+map_Ks Cube.001/Cube.001_Bake1_PBR_Metalness.png
+map_Ns Cube.001/Cube.001_Bake1_PBR_Roughness.png
+map_Ke Cube.001/Cube.001_Bake1_PBR_Emission.png
+
+newmtl Cube.003_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.003/Cube.003_Bake1_PBR_Diffuse.png
+map_Ks Cube.003/Cube.003_Bake1_PBR_Metalness.png
+map_Ns Cube.003/Cube.003_Bake1_PBR_Roughness.png
+map_Ke Cube.003/Cube.003_Bake1_PBR_Emission.png
+
+newmtl club_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd club/club_Bake1_PBR_Diffuse.png
+map_Ks club/club_Bake1_PBR_Metalness.png
+map_Ns club/club_Bake1_PBR_Roughness.png
+map_Ke club/club_Bake1_PBR_Emission.png
+map_bump club/club_Bake1_PBR_Normal.png
+
+newmtl discoSphere_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd discoSphere/discoSphere_Bake1_PBR_Diffuse.png
+map_Ks discoSphere/discoSphere_Bake1_PBR_Metalness.png
+map_Ns discoSphere/discoSphere_Bake1_PBR_Roughness.png
+map_Ke discoSphere/discoSphere_Bake1_PBR_Emission.png
+map_bump club/discoSphere_Bake1_PBR_Normal.png
+
+newmtl floor_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd floor/floor_Bake1_PBR_Diffuse.png
+map_Ks floor/floor_Bake1_PBR_Metalness.png
+map_Ns floor/floor_Bake1_PBR_Roughness.png
+map_Ke floor/floor_Bake1_PBR_Emission.png
+map_bump floor/club_Bake1_PBR_Normal.png
+
+newmtl roof_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd roof/roof_Bake1_PBR_Diffuse.png
+map_Ks roof/roof_Bake1_PBR_Metalness.png
+map_Ns roof/roof_Bake1_PBR_Roughness.png
+map_Ke roof/roof_Bake1_PBR_Emission.png
+map_bump club/roof_Bake1_PBR_Normal.png

@@ -1,0 +1,428 @@
+# Blender 3.6.4 MTL File: 'finalClubfrApplied_b4floor_endfornow_fked.blend'
+# www.blender.org
+
+newmtl Circle_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Circle/Circle_Bake1_PBR_Diffuse.png
+map_Ks Circle/Circle_Bake1_PBR_Specular.png
+map_Ns Circle/Circle_Bake1_PBR_Roughness.png
+map_Pm Circle/Circle_Bake1_PBR_Metalness.png
+map_Ke Circle/Circle_Bake1_PBR_Emission.png
+norm Circle/Circle_Bake1_PBR_Normal.png
+
+newmtl Cube.001_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.001/Cube.001_Bake1_PBR_Diffuse.png
+map_Ks Cube.001/Cube.001_Bake1_PBR_Specular.png
+map_Ns Cube.001/Cube.001_Bake1_PBR_Roughness.png
+map_Pm Cube.001/Cube.001_Bake1_PBR_Metalness.png
+map_Ke Cube.001/Cube.001_Bake1_PBR_Emission.png
+norm Cube.001/Cube.001_Bake1_PBR_Normal.png
+
+newmtl Cube.001_Baked_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Diffuse.png
+map_Ks Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Specular.png
+map_Ns Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Roughness.png
+map_Pm Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Metalness.png
+map_Ke Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Emission.png
+norm Cube.001_Baked/Cube.001_Baked_Bake1_PBR_Normal.png
+
+newmtl Cube.002_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.002/Cube.002_Bake1_PBR_Diffuse.png
+map_Ks Cube.002/Cube.002_Bake1_PBR_Specular.png
+map_Ns Cube.002/Cube.002_Bake1_PBR_Roughness.png
+map_Pm Cube.002/Cube.002_Bake1_PBR_Metalness.png
+map_Ke Cube.002/Cube.002_Bake1_PBR_Emission.png
+norm Cube.002/Cube.002_Bake1_PBR_Normal.png
+
+newmtl Cube.002_Baked_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Diffuse.png
+map_Ks Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Specular.png
+map_Ns Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Roughness.png
+map_Pm Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Metalness.png
+map_Ke Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Emission.png
+norm Cube.002_Baked/Cube.002_Baked_Bake1_PBR_Normal.png
+
+newmtl Cube.003_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.003/Cube.003_Bake1_PBR_Diffuse.png
+map_Ks Cube.003/Cube.003_Bake1_PBR_Specular.png
+map_Ns Cube.003/Cube.003_Bake1_PBR_Roughness.png
+map_Pm Cube.003/Cube.003_Bake1_PBR_Metalness.png
+map_Ke Cube.003/Cube.003_Bake1_PBR_Emission.png
+norm Cube.003/Cube.003_Bake1_PBR_Normal.png
+
+newmtl Cube.004_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.004/Cube.004_Bake1_PBR_Diffuse.png
+map_Ks Cube.004/Cube.004_Bake1_PBR_Specular.png
+map_Ns Cube.004/Cube.004_Bake1_PBR_Roughness.png
+map_Pm Cube.004/Cube.004_Bake1_PBR_Metalness.png
+map_Ke Cube.004/Cube.004_Bake1_PBR_Emission.png
+norm Cube.004/Cube.004_Bake1_PBR_Normal.png
+
+newmtl Cube.005_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.005/Cube.005_Bake1_PBR_Diffuse.png
+map_Ks Cube.005/Cube.005_Bake1_PBR_Specular.png
+map_Ns Cube.005/Cube.005_Bake1_PBR_Roughness.png
+map_Pm Cube.005/Cube.005_Bake1_PBR_Metalness.png
+map_Ke Cube.005/Cube.005_Bake1_PBR_Emission.png
+norm Cube.005/Cube.005_Bake1_PBR_Normal.png
+
+newmtl Cube.006_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.006/Cube.006_Bake1_PBR_Diffuse.png
+map_Ks Cube.006/Cube.006_Bake1_PBR_Specular.png
+map_Ns Cube.006/Cube.006_Bake1_PBR_Roughness.png
+map_Pm Cube.006/Cube.006_Bake1_PBR_Metalness.png
+map_Ke Cube.006/Cube.006_Bake1_PBR_Emission.png
+norm Cube.006/Cube.006_Bake1_PBR_Normal.png
+
+newmtl Cube.007_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.007/Cube.007_Bake1_PBR_Diffuse.png
+map_Ks Cube.007/Cube.007_Bake1_PBR_Specular.png
+map_Ns Cube.007/Cube.007_Bake1_PBR_Roughness.png
+map_Pm Cube.007/Cube.007_Bake1_PBR_Metalness.png
+map_Ke Cube.007/Cube.007_Bake1_PBR_Emission.png
+norm Cube.007/Cube.007_Bake1_PBR_Normal.png
+
+newmtl Cube.008_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.008/Cube.008_Bake1_PBR_Diffuse.png
+map_Ks Cube.008/Cube.008_Bake1_PBR_Specular.png
+map_Ns Cube.008/Cube.008_Bake1_PBR_Roughness.png
+map_Pm Cube.008/Cube.008_Bake1_PBR_Metalness.png
+map_Ke Cube.008/Cube.008_Bake1_PBR_Emission.png
+norm Cube.008/Cube.008_Bake1_PBR_Normal.png
+
+newmtl Cube.009_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.009/Cube.009_Bake1_PBR_Diffuse.png
+map_Ks Cube.009/Cube.009_Bake1_PBR_Specular.png
+map_Ns Cube.009/Cube.009_Bake1_PBR_Roughness.png
+map_Pm Cube.009/Cube.009_Bake1_PBR_Metalness.png
+map_Ke Cube.009/Cube.009_Bake1_PBR_Emission.png
+norm Cube.009/Cube.009_Bake1_PBR_Normal.png
+
+newmtl Cube.010_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.010/Cube.010_Bake1_PBR_Diffuse.png
+map_Ks Cube.010/Cube.010_Bake1_PBR_Specular.png
+map_Ns Cube.010/Cube.010_Bake1_PBR_Roughness.png
+map_Pm Cube.010/Cube.010_Bake1_PBR_Metalness.png
+map_Ke Cube.010/Cube.010_Bake1_PBR_Emission.png
+norm Cube.010/Cube.010_Bake1_PBR_Normal.png
+
+newmtl Cube.011_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.011/Cube.011_Bake1_PBR_Diffuse.png
+map_Ks Cube.011/Cube.011_Bake1_PBR_Specular.png
+map_Ns Cube.011/Cube.011_Bake1_PBR_Roughness.png
+map_Pm Cube.011/Cube.011_Bake1_PBR_Metalness.png
+map_Ke Cube.011/Cube.011_Bake1_PBR_Emission.png
+norm Cube.011/Cube.011_Bake1_PBR_Normal.png
+
+newmtl Cube.012_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.012/Cube.012_Bake1_PBR_Diffuse.png
+map_Ks Cube.012/Cube.012_Bake1_PBR_Specular.png
+map_Ns Cube.012/Cube.012_Bake1_PBR_Roughness.png
+map_Pm Cube.012/Cube.012_Bake1_PBR_Metalness.png
+map_Ke Cube.012/Cube.012_Bake1_PBR_Emission.png
+norm Cube.012/Cube.012_Bake1_PBR_Normal.png
+
+newmtl Cube.013_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube.013/Cube.013_Bake1_PBR_Diffuse.png
+map_Ks Cube.013/Cube.013_Bake1_PBR_Specular.png
+map_Ns Cube.013/Cube.013_Bake1_PBR_Roughness.png
+map_Pm Cube.013/Cube.013_Bake1_PBR_Metalness.png
+map_Ke Cube.013/Cube.013_Bake1_PBR_Emission.png
+norm Cube.013/Cube.013_Bake1_PBR_Normal.png
+
+newmtl Cube_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube/Cube_Bake1_PBR_Diffuse.png
+map_Ks Cube/Cube_Bake1_PBR_Specular.png
+map_Ns Cube/Cube_Bake1_PBR_Roughness.png
+map_Pm Cube/Cube_Bake1_PBR_Metalness.png
+map_Ke Cube/Cube_Bake1_PBR_Emission.png
+norm Cube/Cube_Bake1_PBR_Normal.png
+
+newmtl Cube_Baked_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cube_Baked/Cube_Baked_Bake1_PBR_Diffuse.png
+map_Ks Cube_Baked/Cube_Baked_Bake1_PBR_Specular.png
+map_Ns Cube_Baked/Cube_Baked_Bake1_PBR_Roughness.png
+map_Pm Cube_Baked/Cube_Baked_Bake1_PBR_Metalness.png
+map_Ke Cube_Baked/Cube_Baked_Bake1_PBR_Emission.png
+norm Cube_Baked/Cube_Baked_Bake1_PBR_Normal.png
+
+newmtl Cylinder_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Cylinder/Cylinder_Bake1_PBR_Diffuse.png
+map_Ks Cylinder/Cylinder_Bake1_PBR_Specular.png
+map_Ns Cylinder/Cylinder_Bake1_PBR_Roughness.png
+map_Pm Cylinder/Cylinder_Bake1_PBR_Metalness.png
+map_Ke Cylinder/Cylinder_Bake1_PBR_Emission.png
+norm Cylinder/Cylinder_Bake1_PBR_Normal.png
+
+newmtl Material.005
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.006
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.186284 0.067211 0.093468
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.011
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.571125 0.017642 0.439657
+Ks 0.500000 0.500000 0.500000
+Ke 3.598086 0.111142 2.769839
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl RampL_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd RampL/RampL_Bake1_PBR_Diffuse.png
+map_Ks RampL/RampL_Bake1_PBR_Specular.png
+map_Ns RampL/RampL_Bake1_PBR_Roughness.png
+map_Pm RampL/RampL_Bake1_PBR_Metalness.png
+map_Ke RampL/RampL_Bake1_PBR_Emission.png
+norm RampL/RampL_Bake1_PBR_Normal.png
+
+newmtl RampPhillar_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd RampPhillar/RampPhillar_Bake1_PBR_Diffuse.png
+map_Ks RampPhillar/RampPhillar_Bake1_PBR_Specular.png
+map_Ns RampPhillar/RampPhillar_Bake1_PBR_Roughness.png
+map_Pm RampPhillar/RampPhillar_Bake1_PBR_Metalness.png
+map_Ke RampPhillar/RampPhillar_Bake1_PBR_Emission.png
+norm RampPhillar/RampPhillar_Bake1_PBR_Normal.png
+
+newmtl Sphere_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Sphere/Sphere_Bake1_PBR_Diffuse.png
+map_Ks Sphere/Sphere_Bake1_PBR_Specular.png
+map_Ns Sphere/Sphere_Bake1_PBR_Roughness.png
+map_Pm Sphere/Sphere_Bake1_PBR_Metalness.png
+map_Ke Sphere/Sphere_Bake1_PBR_Emission.png
+norm Sphere/Sphere_Bake1_PBR_Normal.png
+
+newmtl Text_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Text/Text_Bake1_PBR_Diffuse.png
+map_Ks Text/Text_Bake1_PBR_Specular.png
+map_Ns Text/Text_Bake1_PBR_Roughness.png
+map_Pm Text/Text_Bake1_PBR_Metalness.png
+map_Ke Text/Text_Bake1_PBR_Emission.png
+norm Text/Text_Bake1_PBR_Normal.png
+
+newmtl dancingCube_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd dancingCube/dancingCube_Bake1_PBR_Diffuse.png
+map_Ks dancingCube/dancingCube_Bake1_PBR_Specular.png
+map_Ns dancingCube/dancingCube_Bake1_PBR_Roughness.png
+map_Pm dancingCube/dancingCube_Bake1_PBR_Metalness.png
+map_Ke dancingCube/dancingCube_Bake1_PBR_Emission.png
+norm dancingCube/dancingCube_Bake1_PBR_Normal.png
+
+newmtl floor_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd floor/floor_Bake1_PBR_Diffuse.png
+map_Ks floor/floor_Bake1_PBR_Specular.png
+map_Ns floor/floor_Bake1_PBR_Roughness.png
+map_Pm floor/floor_Bake1_PBR_Metalness.png
+map_Ke floor/floor_Bake1_PBR_Emission.png
+norm floor/floor_Bake1_PBR_Normal.png
+
+newmtl kloda1.001_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd kloda1.001/kloda1.001_Bake1_PBR_Diffuse.png
+map_Ks kloda1.001/kloda1.001_Bake1_PBR_Specular.png
+map_Ns kloda1.001/kloda1.001_Bake1_PBR_Roughness.png
+map_Pm kloda1.001/kloda1.001_Bake1_PBR_Metalness.png
+map_Ke kloda1.001/kloda1.001_Bake1_PBR_Emission.png
+norm kloda1.001/kloda1.001_Bake1_PBR_Normal.png
+
+newmtl kloda1.002_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd kloda1.002/kloda1.002_Bake1_PBR_Diffuse.png
+map_Ks kloda1.002/kloda1.002_Bake1_PBR_Specular.png
+map_Ns kloda1.002/kloda1.002_Bake1_PBR_Roughness.png
+map_Pm kloda1.002/kloda1.002_Bake1_PBR_Metalness.png
+map_Ke kloda1.002/kloda1.002_Bake1_PBR_Emission.png
+norm kloda1.002/kloda1.002_Bake1_PBR_Normal.png
+
+newmtl kloda1.003_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd kloda1.003/kloda1.003_Bake1_PBR_Diffuse.png
+map_Ks kloda1.003/kloda1.003_Bake1_PBR_Specular.png
+map_Ns kloda1.003/kloda1.003_Bake1_PBR_Roughness.png
+map_Pm kloda1.003/kloda1.003_Bake1_PBR_Metalness.png
+map_Ke kloda1.003/kloda1.003_Bake1_PBR_Emission.png
+norm kloda1.003/kloda1.003_Bake1_PBR_Normal.png
+
+newmtl kloda1_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd kloda1/kloda1_Bake1_PBR_Diffuse.png
+map_Ks kloda1/kloda1_Bake1_PBR_Specular.png
+map_Ns kloda1/kloda1_Bake1_PBR_Roughness.png
+map_Pm kloda1/kloda1_Bake1_PBR_Metalness.png
+map_Ke kloda1/kloda1_Bake1_PBR_Emission.png
+norm kloda1/kloda1_Bake1_PBR_Normal.png
+
+newmtl led.001_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd led.001/led.001_Bake1_PBR_Diffuse.png
+map_Ks led.001/led.001_Bake1_PBR_Specular.png
+map_Ns led.001/led.001_Bake1_PBR_Roughness.png
+map_Pm led.001/led.001_Bake1_PBR_Metalness.png
+map_Ke led.001/led.001_Bake1_PBR_Emission.png
+norm led.001/led.001_Bake1_PBR_Normal.png
+
+newmtl led_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd led/led_Bake1_PBR_Diffuse.png
+map_Ks led/led_Bake1_PBR_Specular.png
+map_Ns led/led_Bake1_PBR_Roughness.png
+map_Pm led/led_Bake1_PBR_Metalness.png
+map_Ke led/led_Bake1_PBR_Emission.png
+norm led/led_Bake1_PBR_Normal.png
+
+newmtl roof_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd roof/roof_Bake1_PBR_Diffuse.png
+map_Ks roof/roof_Bake1_PBR_Specular.png
+map_Ns roof/roof_Bake1_PBR_Roughness.png
+map_Pm roof/roof_Bake1_PBR_Metalness.png
+map_Ke roof/roof_Bake1_PBR_Emission.png
+norm roof/roof_Bake1_PBR_Normal.png
+
+newmtl wholeClub_Baked
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd wholeClub/wholeClub_Bake1_PBR_Diffuse.png
+map_Ks wholeClub/wholeClub_Bake1_PBR_Specular.png
+map_Ns wholeClub/wholeClub_Bake1_PBR_Roughness.png
+map_Pm wholeClub/wholeClub_Bake1_PBR_Metalness.png
+map_Ke wholeClub/wholeClub_Bake1_PBR_Emission.png
+norm wholeClub/wholeClub_Bake1_PBR_Normal.png
