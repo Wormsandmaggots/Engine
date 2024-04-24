@@ -114,26 +114,25 @@ int main() {
         imgui_begin();
 		editor.draw();
 
+//light
         //TODO: Kuba: uprzątnij kod świateł
-        Light light(&lightShader);
-        light.setLightColors(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-        //to mogę owinąć w funkcję klasy Light
-        //można to dać poza pętlę, ale zostawiam tak, jakby było trzeba to aktualizować kiedyś
-        lightShader.setVec3("lightPos", lightPos);
+        lightShader.use();
+        glm::vec3 objectColor(1.0f, 0.0f, 1.0f);
+        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
-//Obliczanie znormalizowanegej macierzy modelu
+        lightShader.setVec3("objectColor", objectColor);
+        lightShader.setVec3("lightColor", lightColor);
+        lightShader.setVec3("lightPos", lightPos); //to zostawiam gdyby lammpa miała się przemieszczać
 
-// Pobierz macierz transformacji dla obiektu "player"
+        //Obliczanie znormalizowanegej macierzy modelu player
         glm::mat4 model = sm.getLoadedScenes()[0]->getSceneEntities()[2]->getComponent<Model>()->getModelMatrixInWorldSpace();
-// Obliczanie macierzy normalnej
+        // Obliczanie macierzy normalnej
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
-
-// Przekazanie macierzy normalnej do shadera
+        // Przekazanie macierzy normalnej do shadera
         lightShader.setMat3("normalMatrix", normalMatrix);
 
-// end: Obliczanie znormalizowanegej macierzy modelu
-
 //end: light
+
         renderer.updateProjectionAndView(projection, view);
         //obliczanie macierzy normalnej modelu, zrób za każdym razem gdy zmieniam jego położenie
 
