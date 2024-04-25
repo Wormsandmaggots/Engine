@@ -44,7 +44,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/HUD/BackgroundImage.h
         Engine/inc/HUD/BackgroundImage.h
         Engine/inc/HUD/ProgressBar.h
-        Engine/inc/HUD/ProgressBar.h)
+        Engine/inc/HUD/ProgressBar.h
+        Engine/inc/Frustum.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

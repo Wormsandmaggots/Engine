@@ -29,6 +29,39 @@ public:
     [[nodiscard]] glm::mat4 &getWorldMatrix();
     [[nodiscard]] glm::mat4 &getLocalMatrix();
 
+    //for frustum culling TODO: refactor to fit convention
+    glm::vec3 getGlobalScale() const {
+        // Compute the global scale by transforming the local scale with the world matrix
+        glm::vec4 localScale4(localScale, 1.0f);
+        glm::vec4 globalScale4 = worldMatrix * localScale4;
+        return glm::vec3(globalScale4);
+    }
+
+    glm::mat4 getModelMatrix() const {
+        // The model matrix is the world matrix in this case
+        return worldMatrix;
+    }
+
+    glm::vec3 getRight() const {
+        return glm::vec3(localMatrix[0]);
+    }
+
+    glm::vec3 getUp() const {
+        return glm::vec3(localMatrix[1]);
+    }
+
+    glm::vec3 getForward() const {
+        return glm::vec3(localMatrix[2]);
+    }
+
+    glm::vec3 getPosition() const {
+        return localPosition;
+    }
+
+    glm::vec3 getScale() const {
+        return localScale;
+    }
+
     void setTransform(glm::mat4 mat);
     void setPosition(glm::vec3 newPosition);
     void setDirty(bool dirty);

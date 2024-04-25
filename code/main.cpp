@@ -14,6 +14,7 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "Frustum.h"
 using namespace SceneManagement;
 
 int main() {
