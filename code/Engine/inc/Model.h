@@ -30,6 +30,7 @@ using namespace std;
 class Model: public Component, public Renderable
 {
 public:
+    bool isVisible = false;
     vector<Texture> textures_loaded;
     vector<Mesh>    meshes;
     string directory;

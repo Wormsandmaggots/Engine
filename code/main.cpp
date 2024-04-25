@@ -71,7 +71,7 @@ int main() {
     Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+    Model* player2 = new Model("res/content/models/nanosuit/nanosuit.obj", &shaderPbr);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -106,6 +106,10 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
+    FrustumCulling frustumCulling;
+    FrustumCulling::AABB aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
+
+
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -129,7 +133,33 @@ int main() {
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-		renderer.updateProjectionAndView(projection, view);
+
+        // Define and initialize aspect, fovY, zNear, and zFar according to your camera settings
+        float aspect = (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT;
+        float fovY = glm::radians(s.camera.Zoom);
+        float zNear = 0.1f;
+        float zFar = 100.0f;
+
+        FrustumCulling::Frustum camFrustum = frustumCulling.createFrustumFromCamera(s.camera, aspect, fovY, zNear, zFar);
+
+        for (auto& entity : sm.getAllEntities()) {
+            Model* model = entity->getComponent<Model>();
+            if (model) {
+                // Generowanie lokalnego bounding boxa dla modelu
+                FrustumCulling::AABB localAABB = aabb.generateAABB(*model);
+                // Przekształcanie lokalnego bounding boxa do globalnych współrzędnych
+                FrustumCulling::AABB globalAABB = aabb.getGlobalAABB(*(entity->getTransform()), localAABB);
+                // Sprawdzanie, czy globalny bounding box jest widoczny na ekranie
+                if (globalAABB.isOnFrustum(camFrustum, *(entity->getTransform()))) {
+                    model->isVisible = true;
+                } else {
+                    model->isVisible = false;
+                }
+            }
+        }
+
+
+        renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();

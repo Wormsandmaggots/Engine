@@ -22,6 +22,15 @@ namespace SceneManagement {
         void unloadScene(Scene2*);
         void updateLoadedScenes();
 
+        std::vector<Entity*> getAllEntities() const {
+            std::vector<Entity*> allEntities;
+            for (const auto& scene : loadedScenes) {
+                const auto& sceneEntities = scene->getSceneEntities();
+                allEntities.insert(allEntities.end(), sceneEntities.begin(), sceneEntities.end());
+            }
+            return allEntities;
+        }
+
         const std::vector<Scene2*>& getLoadedScenes() const;
 
     private:

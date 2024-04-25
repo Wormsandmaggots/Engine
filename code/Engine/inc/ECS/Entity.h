@@ -47,22 +47,20 @@ public:
     void setParent(Entity&);
     // Template function to get a component of a specific type
     template<typename T>
-
     T* getComponent() const {
-        // Loop through components to find the Model component
+        // Loop through components to find the T component
         for (Component* component : components) {
-            // Attempt to cast the component pointer to Model type
-            T* tComponent = dynamic_cast<T*>(component);
-            if (tComponent != nullptr) {
-                // Found the Model component, return it
-                return tComponent;
+            // Attempt to cast the component pointer to T type
+            T* specificComponent = dynamic_cast<T*>(component);
+            if (specificComponent != nullptr) {
+                // Found the T component, return it
+                return specificComponent;
             }
         }
         // If not found, return nullptr
         return nullptr;
     }
-    //T* getComponent() const;
-    
+
     void toYaml(YAML::Emitter&);
 
     template<typename T, typename... Args>

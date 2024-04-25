@@ -2,13 +2,14 @@
 #include "imgui.h"
 #include "Editor/Panels/FileDialog.h"
 #include <GLFW/glfw3.h>
+#include "Text/Text.h"
 
 void Model::awake() {}
 
 void Model::start() {}
 
 void Model::update() { 
-    Renderer::Render(this); 
+    Renderer::Render(this);
 }
 
 void Model::onDestroy() {}
@@ -61,7 +62,7 @@ Model::Model() {
 
     loadModel(path);
 }
-
+/*
 void Model::Draw(Shader *shader) {
 
     if(material!=nullptr)
@@ -74,7 +75,22 @@ void Model::Draw(Shader *shader) {
     material->unbindMaterial();
 
 }
+*/
 
+void Model::Draw(Shader *shader) {
+    if (!isVisible) {
+        return;
+    }
+    if(material!=nullptr)
+        material->bindMaterial();
+
+    for (auto &meshe: meshes) {
+        meshe.Draw(*shader);
+    }
+
+    if (material != nullptr)
+        material->unbindMaterial();
+}
 void Model::loadModel(string const &path) {
     // read file via ASSIMP
     Assimp::Importer importer;

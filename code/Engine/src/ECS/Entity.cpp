@@ -228,19 +228,5 @@ void Entity::removeComponent(int i) {
     delete c;
 }
 
-template<>
-Model* Entity::getComponent<Model>() const {
-    // Loop through components to find the Model component
-    for (Component* component : components) {
-        // Attempt to cast the component pointer to Model type
-        Model* modelComponent = dynamic_cast<Model*>(component);
-        if (modelComponent != nullptr) {
-            // Found the Model component, return it
-            return modelComponent;
-        }
-    }
-    // If not found, return nullptr
-    return nullptr;
-}
 
 
