@@ -62,14 +62,14 @@ int main() {
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
-    Model* player = new Model("res/content/models/player/character_base.obj");
+    //Model* player = new Model("res/content/models/player/character_base.obj");
     
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
 
     Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
-	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
+	//Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/nanosuit/nanosuit.obj", &shaderPbr);
 
@@ -87,8 +87,8 @@ int main() {
 
     Entity* player1 = new Entity("player");
 	sm.getLoadedScenes()[0]->addEntity(player1);
-    player1->addComponent(player);
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+    //player1->addComponent(player);
+    //player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
@@ -96,15 +96,15 @@ int main() {
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
     club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
-    Entity* sphere1 = new Entity("sphere");
+   /* Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
     sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
+    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));*/
 
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
-    player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+    //player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
     FrustumCulling frustumCulling;
     FrustumCulling::AABB aabb(glm::vec3(-1.0f), glm::vec3(1.0f));
@@ -132,7 +132,7 @@ int main() {
 
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        //shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 
         // Define and initialize aspect, fovY, zNear, and zFar according to your camera settings
         float aspect = (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT;
@@ -158,11 +158,12 @@ int main() {
             }
         }
 
-
+        Model::drawCount = 0;
         renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
+        std::cout<<"number of models:"<<Model::drawCount<<endl;
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         arcadeRenderer->renderText();

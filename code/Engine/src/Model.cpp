@@ -8,8 +8,12 @@ void Model::awake() {}
 
 void Model::start() {}
 
+int Model::drawCount = 0;
+
 void Model::update() { 
     Renderer::Render(this);
+    //std::cout<<"number of models"<<drawCount<<endl;
+    //drawCount = 0;
 }
 
 void Model::onDestroy() {}
@@ -81,6 +85,7 @@ void Model::Draw(Shader *shader) {
     if (!isVisible) {
         return;
     }
+    drawCount++;
     if(material!=nullptr)
         material->bindMaterial();
 

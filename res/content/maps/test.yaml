@@ -18,8 +18,8 @@ Scene:
         rot: [0, 0, 0]
         scale: [1, 1, 1]
       Components:
-        - Type: Model
-          Path: res/content/models/player/character_base.obj
+        #- Type: Model
+         # Path: res/content/models/random.fbx
     - Name: &2 testEntity3
       Parent: *1
       Transform:
@@ -44,5 +44,4 @@ Scene:
         rot: [0, 0, 0]
         scale: [1, 1, 1]
       Components:
-        - Type: Model
-          Path: res/content\models/player/character_base.obj
+
