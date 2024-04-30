@@ -61,7 +61,7 @@ int main() {
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
-    Model* player = new Model("res/content/models/player/character_base.obj");
+    Model* player = new Model("res/content/models/Character_rig/Character_base_rigged.fbx");
     
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
