@@ -45,7 +45,7 @@ int main() {
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
-    //TODO: Kuba: Czy to może tutaj zostać?
+    Shader shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl");
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
@@ -60,8 +60,9 @@ int main() {
 	renderer.addShader(&collisionTestShader);
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
+    renderer.addShader(&shaderRig);
 
-    Model* player = new Model("res/content/models/Character_rig/Character_base_rigged.fbx");
+    Model* player = new Model("res/content/models/character_rigged/Character_base_rig.fbx", &shader);
     
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
