@@ -81,6 +81,7 @@ void Model::loadModel(string const &path) {
     const aiScene *scene = importer.ReadFile(path,
                                              aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
                                              aiProcess_CalcTangentSpace);
+    modelScene = new aiScene(*scene);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
@@ -272,4 +273,16 @@ void Model::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* 
             SetVertexBoneData(vertices[vertexId], boneID, weight);
         }
     }
+}
+
+const aiScene* Model::getScene() {
+    return modelScene;
+}
+
+const std::map<string, BoneInfo> Model::getMap() {
+    return m_BoneInfoMap;
+}
+
+std::string Model::getPath() {
+    return path;
 }

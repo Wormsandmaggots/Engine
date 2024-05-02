@@ -64,6 +64,9 @@ public:
     void convertToYaml(YAML::Emitter &) override;
     void drawEditor() override;
     void setPath(std::string);
+    const aiScene* getScene();
+    std::string getPath();
+    const std::map<string, BoneInfo> getMap();
 private:
     Shader* modelShader;
     std::string path;
@@ -75,6 +78,7 @@ private:
 
     std::map<string, BoneInfo> m_BoneInfoMap;
     int m_BoneCounter = 0;
+    const aiScene* modelScene;
 
     auto& GetBoneInfoMap();
     int& GetBoneCount();

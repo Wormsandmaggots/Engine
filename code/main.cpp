@@ -7,6 +7,7 @@
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
+#include "RigPrep.h"
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
@@ -62,8 +63,8 @@ int main() {
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
     renderer.addShader(&shaderRig);
 
-    Model* player = new Model("res/content/models/character_rigged/Character_base_rig.fbx", &shader);
-    
+    Model* player = new Model("res/content/models/Character_rigged/Character_base_rig.fbx", &shaderRig);
+    RigPrep* playerRig = new RigPrep(player);
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
@@ -125,7 +126,11 @@ int main() {
 
         imgui_begin();
         editor.draw();
-
+        shaderRig.use();
+        playerRig->update();
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
