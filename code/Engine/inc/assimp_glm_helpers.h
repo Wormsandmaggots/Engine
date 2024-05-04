@@ -31,4 +31,10 @@ public:
     {
         return glm::quat(pOrientation.w, pOrientation.x, pOrientation.y, pOrientation.z);
     }
+
+    static inline glm::vec3 GetTransformFromMatrix(const glm::mat4& matrixTransform)
+    {
+        glm::vec3 position = glm::vec3(matrixTransform[3]);
+        return position;
+    }
 };

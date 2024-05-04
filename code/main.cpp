@@ -2,7 +2,6 @@
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
-
 #include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
@@ -15,6 +14,7 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+
 using namespace SceneManagement;
 
 int main() {
@@ -90,6 +90,7 @@ int main() {
 	sm.getLoadedScenes()[0]->addEntity(player1);
     player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+    player->getTransform()->setScale(glm::vec3(0.003f, 0.003f, 0.003f));
 
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
@@ -106,7 +107,7 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
-
+    bool f = true;
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -131,6 +132,9 @@ int main() {
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+
+        f = false;
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
