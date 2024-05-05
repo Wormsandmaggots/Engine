@@ -33,6 +33,7 @@ public:
         if (input.isKeyPressed(GLFW_KEY_E)) {
             camera.ProcessKeyboard(DOWN, deltaTime);
         }
+
         // functional
         if (input.isKeyPressed(GLFW_KEY_ESCAPE)) {
             //Deltion pending
@@ -81,6 +82,19 @@ public:
         camera.ProcessMouseScroll(scrollOffsetY);
     }
 
+    int interpretIKInput(GLFWwindow *window, Camera& camera, float deltaTime) {
+        Input &input = Input::getInstance();
+        ///USED TO DEBUG IK
+        if(input.isKeyPressed(GLFW_KEY_O)){
+            return -1;
+        }
+        else if(input.isKeyPressed(GLFW_KEY_P)){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
 private:
 
     double lastMouseX = 0.0;

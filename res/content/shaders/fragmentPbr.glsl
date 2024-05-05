@@ -1,7 +1,7 @@
 /*If you want to use this shader remember about those uniforms
 shaderPbr.use();
 shaderPbr.setVec3("camPos",s.camera.Position);
-shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());*/
+shaderPbr.setVec3("lightPos",sphere->getLocalTransform()->getLocalPosition());*/
 #version 460 core
 out vec4 FragColor;
 

@@ -65,6 +65,7 @@ int main() {
 
     Model* player = new Model("res/content/models/Character_rigged/Character_base_rig.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
+    int offset = 0;
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
@@ -114,21 +115,22 @@ int main() {
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        offset += debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
-        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
+        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getLocalTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		//glm::mat4 view = playerCamera->getView();
 
         imgui_begin();
         editor.draw();
         shaderRig.use();
-        playerRig->update();
+        ///OFFSET FOR DEBUG
+        playerRig->update(offset);
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
