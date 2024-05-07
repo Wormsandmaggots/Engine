@@ -51,10 +51,14 @@ public:
     void unbind();
 
     int readPixel(int, int, int);
+
+    void drawQuad() const;
+
+    int getTexture() const;
 private:
     unsigned int fbo;
     unsigned int texture;
-
+    unsigned int quadVAO, quadVBO;
 };
 
 

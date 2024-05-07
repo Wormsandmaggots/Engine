@@ -14,6 +14,7 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "Renderer/FrameBuffer.h"
 using namespace SceneManagement;
 
 int main() {
@@ -37,14 +38,13 @@ int main() {
     DebugInput debugInput;
     //HID - test
 
-#pragma endregion TEST
-
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+    Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -105,12 +105,19 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
+    screenShader.use();
+    screenShader.setInt("screenTexture", 0);
+
+    FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        fb->bind();
+
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -136,7 +143,10 @@ int main() {
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         arcadeRenderer->renderText();
 
+        fb->unbind();
 
+        screenShader.use();
+        fb->drawQuad();
 
 
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
