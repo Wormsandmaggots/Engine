@@ -5,6 +5,8 @@
 #include "AABB.hpp"
 
 class AABBComponent : public CPM_GLM_AABB_NS::AABB, public Component {
+
+
     void awake() override {
         // Implementacja metody awake
     }

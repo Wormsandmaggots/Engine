@@ -15,7 +15,7 @@
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
-//#include "AABB.hpp"
+#include "Frustum.h"
 #include "AABBComponent.h"
 using namespace SceneManagement;
 
@@ -28,7 +28,7 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
-    CPM_GLM_AABB_NS::AABB* aabb = new CPM_GLM_AABB_NS::AABB();
+    //CPM_GLM_AABB_NS::AABB* aabb = new CPM_GLM_AABB_NS::AABB();
 
 	sm.loadScene("res/content/maps/test.yaml");
 
@@ -63,6 +63,7 @@ int main() {
 	renderer.addShader(&collisionTestShader);
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
+
 
     Model* player = new Model("res/content/models/player/character_base.obj");
     
@@ -122,6 +123,29 @@ int main() {
 
 // Dodajemy komponent AABB do naszego modelu
     sphere1->addComponent(aabbComponent);
+
+    // Ustawiamy punkty graniczne dla naszego modelu
+// Zakładamy, że funkcja `getModelBounds` zwraca minimalne i maksymalne punkty modelu
+    std::pair<glm::vec3, glm::vec3> playerBounds = player2->getModelBounds();
+
+// Tworzymy nowy komponent AABB
+    AABBComponent* playerAabbComponent = new AABBComponent();
+
+// Ustawiamy granice dla naszego AABB
+    playerAabbComponent->extend(playerBounds.first);
+    playerAabbComponent->extend(playerBounds.second);
+
+// Dodajemy komponent AABB do naszego modelu
+    player3->addComponent(playerAabbComponent);
+
+    // Parametry frustum
+    float aspect = s.WINDOW_WIDTH / s.WINDOW_HEIGHT; // Zakładamy, że s.WINDOW_WIDTH i s.WINDOW_HEIGHT to szerokość i wysokość okna
+    float fovY = glm::radians(45.0f); // Pionowe pole widzenia w radianach
+    float zNear = 0.1f; // Bliska płaszczyzna odcięcia
+    float zFar = 100.0f; // Daleka płaszczyzna odcięcia
+
+// Tworzenie frustum
+    Frustum frustum = createFrustumFromCamera(s.camera, aspect, fovY, zNear, zFar);
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
