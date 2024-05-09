@@ -62,7 +62,7 @@ Model::Model() {
     loadModel(path);
 }
 
-void Model::Draw(Shader *shader) {
+/*void Model::Draw(Shader *shader) {
 
     if(material!=nullptr)
         material->bindMaterial();
@@ -73,6 +73,19 @@ void Model::Draw(Shader *shader) {
     if (material != nullptr)
     material->unbindMaterial();
 
+}*/
+void Model::Draw(Shader *shader) {
+    // Only render the model if it is visible
+    if (isVisible) {
+        if(material!=nullptr)
+            material->bindMaterial();
+
+        for (auto &meshe: meshes)
+            meshe.Draw(*shader);
+
+        if (material != nullptr)
+            material->unbindMaterial();
+    }
 }
 
 void Model::loadModel(string const &path) {

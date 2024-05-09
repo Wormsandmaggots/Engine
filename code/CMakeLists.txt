@@ -48,7 +48,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/AABBComponent.h
         Engine/inc/Frustum.h
         Engine/inc/FrusutmCulling.h
-        Engine/inc/SceneRenderer.h)
+        Engine/inc/SceneRenderer.h
+        Engine/inc/Frustum.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
