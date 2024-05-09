@@ -26,7 +26,10 @@ public:
     [[nodiscard]] const glm::vec3 &getLocalPosition() const;
     [[nodiscard]] const glm::vec3 &getLocalScale() const;
     [[nodiscard]] const glm::vec3 &getLocalRotation() const;
-    [[nodiscard]] glm::mat4 &getWorldMatrix();
+    //[[nodiscard]] glm::mat4 &getWorldMatrix();
+    [[nodiscard]] const glm::mat4 &getWorldMatrix() const {
+        return worldMatrix;
+    }
     [[nodiscard]] glm::mat4 &getLocalMatrix();
 
     void setTransform(glm::mat4 mat);
@@ -35,6 +38,18 @@ public:
     void setRotation(glm::vec3 newRotation);
     void setScale(glm::vec3 newScale);
     void setLocalTransform(glm::mat4 mat);
+
+    glm::vec3 getRight() const {
+        return glm::normalize(glm::cross(getUp(), getForward()));
+    }
+
+    glm::vec3 getUp() const {
+        return glm::vec3(0, 1, 0); // Assuming that the up direction is along the positive y-axis
+    }
+
+    glm::vec3 getForward() const {
+        return glm::normalize(glm::vec3(getWorldMatrix()[2])); // Assuming that the forward direction is the z-axis
+    }
 
 
 private:

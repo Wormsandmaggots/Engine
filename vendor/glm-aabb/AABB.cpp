@@ -2,7 +2,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/component_wise.hpp>
 
-namespace CPM_GLM_AABB_NS {
 
 AABB::AABB()
 {
@@ -201,5 +200,4 @@ bool AABB::isSimilarTo(const AABB& b, glm::float32_t diff) const
   return true;
 }
 
-} // namespace CPM_GLM_AABB_NS
 

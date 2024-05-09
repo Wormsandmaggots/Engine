@@ -5,7 +5,7 @@
 #include "glad/glad.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
+#include "Frustum.h"
 #include <vector>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
@@ -30,6 +30,7 @@ const float ZOOM        =  45.0f;
 class Camera
 {
 public:
+    Frustum getFrustum();
     // camera Attributes
     glm::vec3 Position;
     glm::vec3 Front;

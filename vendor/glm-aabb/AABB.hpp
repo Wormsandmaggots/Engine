@@ -3,7 +3,6 @@
 
 #include <glm/glm.hpp>
 
-namespace CPM_GLM_AABB_NS {
 
 /// Standalone axis aligned bounding box implemented built on top of GLM.
 class AABB
@@ -23,7 +22,25 @@ public:
   AABB(const AABB& aabb);
   ~AABB();
 
-  /// Set the AABB as NULL (not set).
+    glm::vec3 center;  // Środek AABB
+    glm::vec3 extents; // "Pół długości" krawędzi AABB
+
+    template <typename T>
+    bool isOnOrForwardPlane(const T& plane) const
+    {
+        // Compute the projection interval radius of b onto L(t) = b.c + t * p.n
+        const float r = extents.x * std::abs(plane.normal.x) +
+                        extents.y * std::abs(plane.normal.y) +
+                        extents.z * std::abs(plane.normal.z);
+
+        return -r <= plane.getSignedDistanceToPlane(center);
+    }
+
+    AABB(const glm::vec3& center, float newIi, float newIj, float newIk)
+            : center(center), extents(newIi, newIj, newIk) {}
+
+
+    /// Set the AABB as NULL (not set).
   void setNull()      {mMin = glm::vec3(1.0); mMax = glm::vec3(-1.0);}
 
   /// Returns true if AABB is NULL (not set).
@@ -103,7 +120,4 @@ private:
   glm::vec3 mMin;   ///< Minimum point.
   glm::vec3 mMax;   ///< Maximum point.
 };
-
-} // namespace CPM_GLM_AABB_NS 
-
 #endif 

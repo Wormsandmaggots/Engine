@@ -47,7 +47,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/HUD/ProgressBar.h
         Engine/inc/AABBComponent.h
         Engine/inc/Frustum.h
-        Engine/inc/FrusutmCulling.h)
+        Engine/inc/FrusutmCulling.h
+        Engine/inc/SceneRenderer.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

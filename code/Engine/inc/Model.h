@@ -23,6 +23,8 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"
 #include "Renderer/MaterialAsset.h"
+#include "AABB.hpp"
+#include "AABBComponent.h"
 
 using namespace std;
 
@@ -30,6 +32,9 @@ using namespace std;
 class Model: public Component, public Renderable
 {
 public:
+    AABB getAABB();
+    bool isVisible = false;
+
     vector<Texture> textures_loaded;
     vector<Mesh>    meshes;
     string directory;

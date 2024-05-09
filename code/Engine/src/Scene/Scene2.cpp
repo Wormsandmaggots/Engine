@@ -1,7 +1,3 @@
-//
-// Created by Radek on 24.03.2024.
-//
-
 #include "Scene/Scene2.h"
 
 void Scene2::addEntity(Entity *entity) {
@@ -14,9 +10,27 @@ void Scene2::addEntity(Entity *entity) {
     //root->addChild(entity);
 }
 
-void Scene2::update() {
+/*void Scene2::update() {
     for (Entity* e : sceneEntities) {
         e->update();
+    }
+}*/
+
+void Scene2::update() {
+    // Get the camera's frustum
+    Frustum camFrustum = camera->getFrustum();
+
+    // Iterate over all entities in the scene
+    for (Entity* entity : sceneEntities) {
+        // Get the model component of the entity
+        Model* model = entity->getComponent<Model>();
+        if (model != nullptr) {
+            // Get the AABB of the model
+            AABB modelAABB = model->getAABB();
+
+            // Check if the model's AABB is in the frustum
+            model->isVisible = frustumCulling->isOnFrustum(camFrustum, modelAABB);
+        }
     }
 }
 

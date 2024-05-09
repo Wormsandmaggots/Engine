@@ -8,14 +8,18 @@
 
 class FrustumCulling {
 public:
-    static bool isOnFrustum(const Frustum& camFrustum, const Transform2& transform, const AABBComponent& aabbComponent) {
-        // Get global scale thanks to our transform
-        const glm::vec3 globalCenter{ transform.getModelMatrix() * glm::vec4(aabbComponent.center, 1.f) };
+    glm::vec3 center;  // Center of the AABB
+    glm::vec3 extents; // Extents of the AABB
+
+    bool isOnFrustum(const Frustum& camFrustum, Transform2 transform) const
+    {
+        // Get global center thanks to our transform
+        const glm::vec3 globalCenter{ transform.getWorldMatrix() * glm::vec4(center, 1.f) };
 
         // Scaled orientation
-        const glm::vec3 right = transform.getRight() * aabbComponent.extents.x;
-        const glm::vec3 up = transform.getUp() * aabbComponent.extents.y;
-        const glm::vec3 forward = transform.getForward() * aabbComponent.extents.z;
+        const glm::vec3 right = transform.getRight() * extents.x;
+        const glm::vec3 up = transform.getUp() * extents.y;
+        const glm::vec3 forward = transform.getForward() * extents.z;
 
         const float newIi = std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, right)) +
                             std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, up)) +

@@ -17,6 +17,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Frustum.h"
 #include "AABBComponent.h"
+#include "AABB.hpp"
 using namespace SceneManagement;
 
 int main() {
@@ -28,6 +29,7 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
+    FrustumView frustumView;
     //CPM_GLM_AABB_NS::AABB* aabb = new CPM_GLM_AABB_NS::AABB();
 
 	sm.loadScene("res/content/maps/test.yaml");
@@ -118,8 +120,10 @@ int main() {
     AABBComponent* aabbComponent = new AABBComponent();
 
 // Ustawiamy granice dla naszego AABB
+    // Ustawiamy granice dla naszego AABB
     aabbComponent->extend(bounds.first);
     aabbComponent->extend(bounds.second);
+
 
 // Dodajemy komponent AABB do naszego modelu
     sphere1->addComponent(aabbComponent);
@@ -138,6 +142,20 @@ int main() {
 // Dodajemy komponent AABB do naszego modelu
     player3->addComponent(playerAabbComponent);
 
+    // Ustawiamy punkty graniczne dla naszego modelu
+// Zakładamy, że funkcja `getModelBounds` zwraca minimalne i maksymalne punkty modelu
+    std::pair<glm::vec3, glm::vec3> clubBounds = club->getModelBounds();
+
+// Tworzymy nowy komponent AABB
+    AABBComponent* clubAabbComponent = new AABBComponent();
+
+// Ustawiamy granice dla naszego AABB
+    clubAabbComponent->extend(clubBounds.first);
+    clubAabbComponent->extend(clubBounds.second);
+
+// Dodajemy komponent AABB do naszego modelu
+    club1->addComponent(clubAabbComponent);
+
     // Parametry frustum
     float aspect = s.WINDOW_WIDTH / s.WINDOW_HEIGHT; // Zakładamy, że s.WINDOW_WIDTH i s.WINDOW_HEIGHT to szerokość i wysokość okna
     float fovY = glm::radians(45.0f); // Pionowe pole widzenia w radianach
@@ -145,7 +163,7 @@ int main() {
     float zFar = 100.0f; // Daleka płaszczyzna odcięcia
 
 // Tworzenie frustum
-    Frustum frustum = createFrustumFromCamera(s.camera, aspect, fovY, zNear, zFar);
+    Frustum frustum = frustumView.createFrustumFromCamera(s.camera, aspect, fovY, zNear, zFar);
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);

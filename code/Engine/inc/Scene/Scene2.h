@@ -9,10 +9,19 @@
 #include <string>
 #include "ECS/Entity.h"
 #include "Core/AssetManager/Asset.h"
+#include "FrusutmCulling.h"
+#include "Frustum.h"
+#include "Editor/Camera.h"
 
 class Scene2 {
 public:
-    explicit Scene2(std::string);
+    //explicit Scene2(std::string);
+
+    Scene2(std::string sceneName) : name(sceneName) {
+        // Initialize camera here
+        camera = new Camera();
+    }
+
     ~Scene2() = default;
 
     void addEntity(Entity*);
@@ -28,6 +37,8 @@ public:
 private:
     std::string name;
     std::vector<Entity*> sceneEntities;
+    Camera* camera;
+    FrustumCulling* frustumCulling;
 };
 
 
