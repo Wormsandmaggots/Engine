@@ -25,18 +25,19 @@ void Scene2::update() {
         // Get the model component of the entity
         Model* model = entity->getComponent<Model>();
         if (model != nullptr) {
-            // Get the AABB of the model
-            AABB modelAABB = model->getAABB();
+            // Get the Transform2 of the model
+            Transform2 modelTransform = *(model->getTransform());
 
-            // Check if the model's AABB is in the frustum
+            // Check if the model's Transform2 is in the frustum
+            AABB modelAABB = model->getAABB();
             model->isVisible = frustumCulling->isOnFrustum(camFrustum, modelAABB);
         }
     }
 }
 
-Scene2::Scene2(std::string sceneName) {
+/*Scene2::Scene2(std::string sceneName) {
     name = sceneName;
-}
+}*/
 
 std::string Scene2::getName() const {
     return name;
