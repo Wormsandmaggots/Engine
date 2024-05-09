@@ -4,7 +4,7 @@
 #include "imgui.h"
 
 
-int Entity::EntityCounter = 0;
+unsigned int Entity::EntityCounter = 0;
 
 //!works like DFS when it comes to updating queue
 void Entity::update() {

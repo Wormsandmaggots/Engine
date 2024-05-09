@@ -12,7 +12,7 @@
 #include <optional>
 
 
-class YamlReader : public Reader{
+class YamlReader : public Reader {
 public:
     YamlReader() = default;
     ~YamlReader() override = default;

@@ -15,6 +15,7 @@
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
+#include "Renderer/SSAO.h"
 using namespace SceneManagement;
 
 int main() {
@@ -53,10 +54,13 @@ int main() {
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
     
     MaterialAsset material("res/content/materials/color.json");
-  
 
-    Renderer renderer(&shader);
+    SSAO ssao;
+    ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+    Renderer renderer(&ssao.shaderGeometryPass);
     renderer.init();
+
 	renderer.addShader(&collisionTestShader);
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
@@ -66,11 +70,12 @@ int main() {
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
+    renderer.addShader(&ssao.shaderGeometryPass);
 
-    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
-	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
+    Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
+	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+    Model* player2 = new Model("res/content/models/random.fbx", &ssao.shaderGeometryPass);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -95,10 +100,12 @@ int main() {
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
     club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
+    glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
+
     Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
     sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
+    sphere->getTransform()->setPosition(lightPos);
 
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
@@ -108,15 +115,29 @@ int main() {
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
-    FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+    //FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+    glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
+
+    static float linear    = 0.09f;
+    static float quadratic = 0.032f;
+    static float power = 1;
+    static float kernelSize = 64;
+    static float radius = 0.5f;
+    static float bias = 0.025f;
+    static bool onlySSAO = true;
+    static vec2 range(2,2);
+    static float mul = 4;
+    static float texelSize = 1;
 
     while (!glfwWindowShouldClose(s.window))
 	{
+        imgui_begin();
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        fb->bind();
+        //fb->bind();
 
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -129,24 +150,111 @@ int main() {
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
 		//glm::mat4 view = playerCamera->getView();
 
-        imgui_begin();
-        editor.draw();
+
+
+        ImGui::Begin("SSAO");
+
+        {
+            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
+            ImGui::DragFloat("linear", &linear);
+            ImGui::DragFloat("quadratic", &quadratic);
+            ImGui::DragFloat("power", &power);
+            ImGui::DragFloat("kernelSize", &kernelSize);
+            ImGui::DragFloat("radius", &radius);
+            ImGui::DragFloat("bias", &bias);
+            ImGui::DragFloat2("range", glm::value_ptr(range));
+            ImGui::DragFloat("multiplier", &mul);
+            ImGui::DragFloat("texel size", &texelSize);
+            ImGui::Checkbox("Only SSAO", &onlySSAO);
+        }
+
+        ImGui::End();
 
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        ssao.shaderGeometryPass.use();
+        ssao.shaderGeometryPass.setBool("invertedNormals", false);
+        ssao.shaderGeometryPass.setBool("onlySSAO", onlySSAO);
 		renderer.updateProjectionAndView(projection, view);
+        glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        editor.draw();
         sm.updateLoadedScenes();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ssao.shaderSSAO.use();
+        ssao.shaderSSAO.setFloat("power", power);
+        ssao.shaderSSAO.setFloat("kernelSize", kernelSize);
+        ssao.shaderSSAO.setFloat("radius", radius);
+        ssao.shaderSSAO.setFloat("bias", bias);
+        // Send kernel + rotation
+        for (unsigned int i = 0; i < 64; ++i)
+        {
+            if(i > kernelSize)
+            {
+                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", vec3(0));
+            }
+            else
+                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", ssao.ssaoKernel[i]);
+        }
+
+        ssao.shaderSSAO.setMat4("projection", projection);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, ssao.noiseTexture);
+        ssao.renderQuad();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoBlurFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ssao.shaderSSAOBlur.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBuffer);
+        ssao.shaderSSAOBlur.setInt("rangeX", range.x);
+        ssao.shaderSSAOBlur.setInt("rangeY", range.y);
+        ssao.shaderSSAOBlur.setFloat("mul", mul);
+        ssao.shaderSSAOBlur.setFloat("texelSize", texelSize);
+        ssao.renderQuad();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        ssao.shaderLightingPass.use();
+        // send light relevant uniforms
+        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
+        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
+        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
+        // Update attenuation parameters
+
+
+        ssao.shaderLightingPass.setFloat("light.Linear", linear);
+        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
+        glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
+        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
+        ssao.renderQuad();
         //scene.update();
+
         cm.update();
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        arcadeRenderer->renderText();
+        //arcadeRenderer->renderText();
 
-        fb->unbind();
+        //fb->unbind();
 
-        screenShader.use();
-        fb->drawQuad();
+        //screenShader.use();
+        //fb->drawQuad();
 
 
         //TODO: Kuba: Muszę poprawić renderowanie textu u siebie

@@ -13,7 +13,7 @@ void Renderer::init()
 {
 	//    stbi_set_flip_vertically_on_load(true);
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }
 

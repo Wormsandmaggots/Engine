@@ -7,8 +7,6 @@
 #include "Renderer/Renderable.h"
 #include <Debug/Logger.h>
 
-
-
 class Renderer{
 public:
     Renderer(Shader* defaultShader);

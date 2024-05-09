@@ -75,7 +75,7 @@ public:
 
 
 private:
-    static int EntityCounter;
+    static unsigned int EntityCounter;
     std::string name = "Untitled" + std::to_string(EntityCounter);
     Transform2* transform = new Transform2;
     int id = 0;

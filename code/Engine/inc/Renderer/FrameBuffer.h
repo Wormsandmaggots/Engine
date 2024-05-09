@@ -45,7 +45,7 @@ class FrameBuffer {
 public:
     FramebufferSpecification Specification;
 
-    FrameBuffer(int,int);
+    FrameBuffer(int,int,int = 0);
 
     void bind();
     void unbind();

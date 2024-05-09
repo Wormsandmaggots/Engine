@@ -156,8 +156,8 @@ void init(){
     LOG_INFO("GLAD initialized");
 
     //SETTING OPENGL PARAMETERS
-    glEnable(GL_DEPTH_TEST); //enabling deoth tests
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //determines how OpenGL renders the edges and interiors of polygons
+//    glEnable(GL_DEPTH_TEST); //enabling deoth tests
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //determines how OpenGL renders the edges and interiors of polygons
     SetCallbacks(s.window);//setting the callback functions for the window
 
     //INITIALIZING IMGUI
