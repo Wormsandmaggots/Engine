@@ -56,6 +56,22 @@ public:
     void convertToYaml(YAML::Emitter &) override;
     void drawEditor() override;
     void setPath(std::string);
+
+    //for frustum culling
+    std::pair<glm::vec3, glm::vec3> getModelBounds() {
+        glm::vec3 minBounds = glm::vec3(FLT_MAX);
+        glm::vec3 maxBounds = glm::vec3(-FLT_MAX);
+
+        // Przechodzimy przez wszystkie wierzchołki modelu
+        for (const auto& mesh : this->meshes) {
+            for (const auto& vertex : mesh.vertices) {
+                minBounds = glm::min(minBounds, vertex.Position);
+                maxBounds = glm::max(maxBounds, vertex.Position);
+            }
+        }
+
+        return {minBounds, maxBounds};
+    }
 private:
     Shader* modelShader;
     std::string path;

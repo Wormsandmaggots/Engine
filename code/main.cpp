@@ -15,6 +15,8 @@
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
+//#include "AABB.hpp"
+#include "AABBComponent.h"
 using namespace SceneManagement;
 
 int main() {
@@ -26,6 +28,7 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
+    CPM_GLM_AABB_NS::AABB* aabb = new CPM_GLM_AABB_NS::AABB();
 
 	sm.loadScene("res/content/maps/test.yaml");
 
@@ -104,6 +107,21 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+
+    //frustum
+    // Ustawiamy punkty graniczne dla naszego modelu
+// Zakładamy, że funkcja `getModelBounds` zwraca minimalne i maksymalne punkty modelu
+    std::pair<glm::vec3, glm::vec3> bounds = sphere->getModelBounds();
+
+// Tworzymy nowy komponent AABB
+    AABBComponent* aabbComponent = new AABBComponent();
+
+// Ustawiamy granice dla naszego AABB
+    aabbComponent->extend(bounds.first);
+    aabbComponent->extend(bounds.second);
+
+// Dodajemy komponent AABB do naszego modelu
+    sphere1->addComponent(aabbComponent);
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
