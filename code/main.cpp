@@ -107,7 +107,7 @@ int main() {
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
-    player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+    player3->getTransform()->setPosition(glm::vec3(-7, -2, 1));
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
 	{

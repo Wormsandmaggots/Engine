@@ -30,6 +30,7 @@ public:
         m_FinalBoneMatrices.resize(m_BoneInfoMap.size());
         rootBone = new Bone();
         ReadHierarchyData(scene->mRootNode, rootBone, NULL);
+        //adjustBoneTransformations(rootBone);
         CalculateBoneTransform(glm::mat4(1.0f), rootBone, 1.0f);
     }
     ~RigPrep()= default;
@@ -89,10 +90,17 @@ public:
     void rotateBone(int offset){
         float angle = offset;
         std::cout << angle <<std::endl;
-        glm::vec3 axis = glm::vec3(0.0f,0.0f,1.0f);
+        glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f);
         Bone* forearm = bones["mixamorig:RightForeArm"];
-        glm::mat4  mat = glm::rotate(forearm->getModelTransform(), glm::radians(angle), axis);
-        forearm->setModelTransform(mat);
+
+        // Create a rotation matrix for the desired rotation
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis);
+
+        // Apply the rotation to the current transformation matrix
+        glm::mat4 newModelTransform = rotationMatrix * forearm->getModelTransform();
+
+        // Update the bone's model transform
+        forearm->setModelTransform(newModelTransform);
 
         glm::mat4 parentModelMatrix = forearm->getParent()->getModelTransform();
         glm::mat3 parentRotationPart = glm::mat3(parentModelMatrix);
@@ -106,8 +114,8 @@ public:
     }
 
     void update(int offset){
-        //ik("mixamorig:RightHand");
-        rotateBone(offset);
+        ik("mixamorig:RightHand");
+        //rotateBone(offset);
         calculateVertices(glm::mat4(1.0f), rootBone);
     }
 
@@ -128,7 +136,7 @@ public:
         std::cout << "NOWA KLATKA"<<std::endl;
         for(int j = 0; j <1; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kosci ktora manewrujemy jako pierwsza
-            for (int i =0; i <1; i++) { //petla by przejsc 3 poprzednie kosci
+            for (int i =0; i <2; i++) { //petla by przejsc 3 poprzednie kosci
                 glm::vec3 e_i = glm::vec3(endEffector - secondToLast->getModelPosition());
                 glm::vec3 t_i = glm::vec3(target - secondToLast->getModelPosition()); //odejmowanie w dobrym kierunku
                 e_i = glm::normalize(e_i);
@@ -138,8 +146,14 @@ public:
                     glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
                     axis = glm::normalize(axis);
                     //obrot macierzy modelSpace
-                    glm::mat4  mat = glm::rotate(secondToLast->getModelTransform(), angle, axis);
-                    secondToLast->setModelTransform(mat);
+                    //SPOSOB 1 - TYM SPOSOBEM NAPIERDALA W KOLKO
+                    //glm::mat4  mat = glm::rotate(secondToLast->getModelTransform(), angle, axis);
+                    //secondToLast->setModelTransform(mat);
+                    //SPOSOB 2 - TYM SPOSOBEM TYLKO SIE KRECI
+                    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+                    glm::mat4 newModelTransform = rotationMatrix * secondToLast->getModelTransform();
+                    secondToLast->setModelTransform(newModelTransform);
+
 
                     //przygotowanie macierzy odwrotnej do macierzy rotacji rodzica
                     glm::mat4 parentModelMatrix = secondToLast->getParent()->getModelTransform();
@@ -212,6 +226,22 @@ public:
             glm::mat4 modelSpaceTransformation = parent->getModelTransform() * child->getLocalTransform();
             child->setModelTransform(modelSpaceTransformation);
             updateChildren(child); // Recursively update children
+        }
+    }
+    void adjustBoneTransformations(Bone* bone) { //swapping z and y axis
+        glm::mat4 transform = bone->getLocalTransform();
+        transform = glm::transpose(transform);
+        glm::mat4 adjustedTransform = glm::mat4(
+                transform[0], // X axis remains unchanged
+                transform[2], // Z axis becomes Y axis
+                transform[1], // Y axis becomes Z axis
+                transform[3]  // Translation remains unchanged
+        );
+        transform = glm::transpose(adjustedTransform);
+        bone->setLocalTransform(transform);
+
+        for (Bone* child : bone->getChildren()) {
+            adjustBoneTransformations(child);
         }
     }
 private:

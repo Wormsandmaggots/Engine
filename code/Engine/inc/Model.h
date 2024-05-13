@@ -67,6 +67,7 @@ public:
     const aiScene* getScene();
     std::string getPath();
     const std::map<string, BoneInfo> getMap();
+    void adjustCoordinateSystem();
 private:
     Shader* modelShader;
     std::string path;

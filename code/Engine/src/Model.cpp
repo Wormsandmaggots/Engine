@@ -286,3 +286,4 @@ const std::map<string, BoneInfo> Model::getMap() {
 std::string Model::getPath() {
     return path;
 }
+
