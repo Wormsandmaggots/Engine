@@ -146,8 +146,8 @@ public:
                 e_i = glm::normalize(e_i);
                 t_i = glm::normalize(t_i);
                 float angle = glm::acos(glm::dot(e_i,t_i)); //kąt wychodzi prawidłowy
-                float distanceToTarget = glm::length(endEffector - target);
-                if(distanceToTarget > 1.0f){
+                std::cout << angle << std::endl;
+                if(fabs(angle) > 0.4f){
                     glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
                     axis = glm::normalize(axis);
                     //obrot macierzy modelSpace
@@ -177,7 +177,7 @@ public:
 
                     updateChildren(secondToLast);
                     endEffector = limbBone ->getModelPosition();
-                    std::cout <<  endEffector.x << " " <<endEffector.y << " "<<endEffector.z << std::endl;
+                    //std::cout <<  endEffector.x << " " <<endEffector.y << " "<<endEffector.z << std::endl;
                 }
                 secondToLast = secondToLast->getParent();
             }
