@@ -65,6 +65,7 @@ int main() {
 
     Model* player = new Model("res/content/models/Character_rigged/Character_base_rig.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
+
     int offset = 0;
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
@@ -73,7 +74,8 @@ int main() {
     Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+    Model* player2 = new Model("res/content/models/gowno.fbx", &shaderPbr);
+
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -104,10 +106,10 @@ int main() {
     sphere1->addComponent(sphere);
     sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
 
-    Entity* player3 = new Entity("player2");
-    sm.getLoadedScenes()[0]->addEntity(player3);
-    player3->addComponent(player2);
-    player3->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+    //Entity* player3 = new Entity("player2");
+    //sm.getLoadedScenes()[0]->addEntity(player3);
+    //player3->addComponent(player2);
+    //player3->getTransform()->setPosition(glm::vec3(0, 0, 0));
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
 	{

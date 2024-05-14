@@ -1,7 +1,6 @@
 #ifndef ENGINE_RIGPREP_H
 #define ENGINE_RIGPREP_H
-//!class that is a merge between Animation and Animator from LearnOpenGl
-//!prepares hierarchy of bones and converts vectors from local to global space based on this hierarchy
+//!prepares hierarchy of bones and converts vectors from local to model space based on this hierarchy
 //!as a result we get a mat4 ready to be passed to shader
 #include <glm/glm.hpp>
 #include <map>
@@ -25,12 +24,9 @@ public:
                                                  aiProcess_CalcTangentSpace);
         m_BoneInfoMap = model->getMap();
         assert(scene && scene->mRootNode);
-        //aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
-        //globalTransformation = globalTransformation.Inverse();
         m_FinalBoneMatrices.resize(m_BoneInfoMap.size());
         rootBone = new Bone();
         ReadHierarchyData(scene->mRootNode, rootBone, NULL);
-        //adjustBoneTransformations(rootBone);
         CalculateBoneTransform(glm::mat4(1.0f), rootBone, 1.0f);
     }
     ~RigPrep()= default;
@@ -114,7 +110,7 @@ public:
     }
 
     void update(int offset){
-        ik("mixamorig:RightHand");
+        ik("mixamorig:RightHand",offset);
         //rotateBone(offset);
         calculateVertices(glm::mat4(1.0f), rootBone);
     }
@@ -125,32 +121,44 @@ public:
     {
         return m_FinalBoneMatrices;
     }
+
 ///IK Z MACIERZAMI
-    void ik(std::string limb){
-        glm::vec3 target = glm::vec3(-124, 688, -23);
+    void ik(std::string limb, int offset){
+        glm::vec3 target = glm::vec3(-40, 1000, -23);
         Bone* limbBone;
+
         if(bones.find(limb)!=bones.end()){ //searching for limb in our bones
             limbBone = bones[limb];
         }
+        //glm::vec3 target = limbBone->getModelPosition();
+        //if(offset != prevOffset){
+        //    target = target + vec3(offset, offset,0);
+        //}
+        //std::cout <<  target.x << " " <<target.y << " "<<target.z << std::endl;
+        //std::cout << offset <<std::endl;
         glm::vec3 endEffector = limbBone ->getModelPosition();
         std::cout << "NOWA KLATKA"<<std::endl;
         for(int j = 0; j <1; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kosci ktora manewrujemy jako pierwsza
-            for (int i =0; i <2; i++) { //petla by przejsc 3 poprzednie kosci
+            for (int i =0; i <3; i++) { //petla by przejsc 3 poprzednie kosci
                 glm::vec3 e_i = glm::vec3(endEffector - secondToLast->getModelPosition());
                 glm::vec3 t_i = glm::vec3(target - secondToLast->getModelPosition()); //odejmowanie w dobrym kierunku
                 e_i = glm::normalize(e_i);
                 t_i = glm::normalize(t_i);
                 float angle = glm::acos(glm::dot(e_i,t_i)); //kąt wychodzi prawidłowy
-                if(fabs(angle) >0.01f){
+                float distanceToTarget = glm::length(endEffector - target);
+                if(distanceToTarget > 1.0f){
                     glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
                     axis = glm::normalize(axis);
                     //obrot macierzy modelSpace
-                    //SPOSOB 1 - TYM SPOSOBEM NAPIERDALA W KOLKO
+                    //SPOSOB 1
                     //glm::mat4  mat = glm::rotate(secondToLast->getModelTransform(), angle, axis);
                     //secondToLast->setModelTransform(mat);
-                    //SPOSOB 2 - TYM SPOSOBEM TYLKO SIE KRECI
+                    //SPOSOB 2 - w sumie to outcome taki sam
                     glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+                    rotationMatrix[0] = glm::normalize(rotationMatrix[0]);
+                    rotationMatrix[1] = glm::normalize(rotationMatrix[1]);
+                    rotationMatrix[2] = glm::normalize(rotationMatrix[2]);
                     glm::mat4 newModelTransform = rotationMatrix * secondToLast->getModelTransform();
                     secondToLast->setModelTransform(newModelTransform);
 
@@ -162,6 +170,9 @@ public:
 
                     //dopasowanie localSpace na podstawie zmian wprowadzonych w modelSpace
                     glm::mat4 newLocalMatrix = glm::mat4(invParentRotationPart) * secondToLast->getModelTransform(); //oblicza sie prawidlowo
+                    newLocalMatrix[0] = glm::normalize(newLocalMatrix[0]);
+                    newLocalMatrix[1] = glm::normalize(newLocalMatrix[1]);
+                    newLocalMatrix[2] = glm::normalize(newLocalMatrix[2]);
                     secondToLast->setLocalTransform(newLocalMatrix);
 
                     updateChildren(secondToLast);
@@ -171,9 +182,9 @@ public:
                 secondToLast = secondToLast->getParent();
             }
         }
-
+        prevOffset = offset;
     }
-/*
+    /*
     ///IK Z KWATERNIONAMI, to nie jest dobrze
     void ik(std::string limb){
         glm::vec3 target = glm::vec3(-124, 688, -23);
@@ -199,16 +210,17 @@ public:
                     glm::mat4 mat = secondToLast->getModelTransform() * glm::toMat4(rotationQuat);
                     secondToLast->setModelTransform(mat);
 
+
                     glm::mat4 parentModelMatrix = secondToLast->getParent()->getModelTransform();
                     glm::quat parentRotationQuat = glm::quat_cast(glm::mat3(parentModelMatrix));
-                    glm::quat invParentRotationQuat = glm::conjugate(parentRotationQuat);
+                    glm::quat invParentRotationQuat = glm::inverse(parentRotationQuat);
                     glm::quat localQuat = glm::quat_cast(secondToLast->getModelTransform());
 
 
                     glm::quat newLocalQuat = invParentRotationQuat * localQuat;
 
                     // Adjust the local matrix using the inverted parent rotation part
-                    glm::mat4 newLocalMatrix =  secondToLast->getModelTransform() * glm::mat4(newLocalQuat);
+                    glm::mat4 newLocalMatrix =  glm::mat4(newLocalQuat) * secondToLast->getModelTransform();
                     secondToLast->setLocalTransform(newLocalMatrix);
 
                     updateChildren(secondToLast);
@@ -220,6 +232,50 @@ public:
         }
 
     }*/
+/*
+//ik lokalnie
+    void ik(std::string limb, int offset){
+        Bone* limbBone;
+        if(bones.find(limb)!=bones.end()){ //searching for limb in our bones
+            limbBone = bones[limb];
+        }
+        glm::vec3 target = limbBone->getLocalPosition();
+        if(offset != prevOffset){
+            target = target + vec3(offset/10, offset/10,0);
+        }
+        std::cout << offset <<std::endl;
+        glm::vec3 endEffector = limbBone ->getLocalPosition();
+        std::cout <<  endEffector.x << " " <<endEffector.y << " "<<endEffector.z << std::endl;
+        std::cout << "NOWA KLATKA"<<std::endl;
+        for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
+            Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kosci ktora manewrujemy jako pierwsza
+            for (int i =0; i <3; i++) { //petla by przejsc 3 poprzednie kosci
+                glm::vec3 e_i = glm::vec3(endEffector - secondToLast->getLocalPosition());
+                glm::vec3 t_i = glm::vec3(target - secondToLast->getLocalPosition()); //odejmowanie w dobrym kierunku
+                e_i = glm::normalize(e_i);
+                t_i = glm::normalize(t_i);
+                float angle = glm::acos(glm::dot(e_i,t_i)); //kąt wychodzi prawidłowy
+                if(fabs(angle) >0.01f){
+                    glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
+                    axis = glm::normalize(axis);
+                    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+                    glm::mat4 newLocalTransform = rotationMatrix * secondToLast->getLocalTransform();
+                    secondToLast->setLocalTransform(newLocalTransform);
+
+                    //dopasowanie localSpace na podstawie zmian wprowadzonych w modelSpace
+                    glm::mat4 newModelMatrix =secondToLast->getLocalTransform() * secondToLast->getParent()->getModelTransform();
+                    secondToLast->setModelTransform(newModelMatrix);
+
+                    updateChildren(secondToLast);
+
+                }
+                secondToLast = secondToLast->getParent();
+            }
+            endEffector = limbBone ->getLocalPosition();
+        }
+        prevOffset = offset;
+    }*/
+
     void updateChildren(Bone* parent) {
         for(Bone* child : parent->getChildren()) {
             // Update the child bone's transformation
@@ -228,27 +284,12 @@ public:
             updateChildren(child); // Recursively update children
         }
     }
-    void adjustBoneTransformations(Bone* bone) { //swapping z and y axis
-        glm::mat4 transform = bone->getLocalTransform();
-        transform = glm::transpose(transform);
-        glm::mat4 adjustedTransform = glm::mat4(
-                transform[0], // X axis remains unchanged
-                transform[2], // Z axis becomes Y axis
-                transform[1], // Y axis becomes Z axis
-                transform[3]  // Translation remains unchanged
-        );
-        transform = glm::transpose(adjustedTransform);
-        bone->setLocalTransform(transform);
-
-        for (Bone* child : bone->getChildren()) {
-            adjustBoneTransformations(child);
-        }
-    }
 private:
     Bone* rootBone;
     std::map<std::string, BoneInfo> m_BoneInfoMap;
     std::vector<glm::mat4> m_FinalBoneMatrices;
     std::map<std::string,Bone*> bones;
     Model* rigsModel;
+    int prevOffset;
 };
 #endif //ENGINE_RIGPREP_H
