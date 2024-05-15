@@ -14,6 +14,7 @@
 #include "Shader.h"
 #include "ECS/Component.h"
 #include "Renderer/Texture.h"
+#include "AABB.hpp"
 struct Vertex
 {
     glm::vec3 Position;
@@ -32,6 +33,7 @@ struct SVertex{
 class Mesh
 {
 private:
+    CPM_GLM_AABB_NS::AABB aabb;
     unsigned int VBO, EBO, instanceBuffer;
     virtual void setupMesh()
     {
@@ -79,13 +81,18 @@ public:
 
     /*  Functions  */
     // constructor
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, unsigned int numberOfInstances = 1, std::vector<glm::mat4> instancedMatrix = {})
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, CPM_GLM_AABB_NS::AABB aabb, unsigned int numberOfInstances = 1, std::vector<glm::mat4> instancedMatrix = {})
     {
         this->vertices = vertices;
         this->indices = indices;
         this->textures = textures;
+        this->aabb = aabb; // Przypisujemy AABB do pola aabb
         instances = numberOfInstances;
         setupMesh();
+    }
+
+    CPM_GLM_AABB_NS::AABB getAABB() const {
+        return aabb; // Zwracamy AABB siatki
     }
 
     // render the mesh
@@ -149,6 +156,7 @@ public:
         }
 
     }
+
 };
 
 

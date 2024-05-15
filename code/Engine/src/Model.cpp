@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Editor/Panels/FileDialog.h"
 #include <GLFW/glfw3.h>
+#include "AABB.hpp"
 
 void Model::awake() {}
 
@@ -91,7 +92,7 @@ void Model::loadModel(string const &path) {
     // process ASSIMP's root node recursively
     processNode(scene->mRootNode, scene);
 }
-
+/*
 // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
 void Model::processNode(aiNode *node, const aiScene *scene) {
     // process each mesh located at the current node
@@ -107,7 +108,26 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
     }
 
 }
+*/
+void Model::processNode(aiNode *node, const aiScene *scene) {
+    // Tworzymy jedną instancję modelAABB przed pętlą.
+    CPM_GLM_AABB_NS::AABB modelAABB;
 
+    // process each mesh located at the current node
+    for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+        aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+        Mesh processedMesh = processMesh(mesh, scene);
+        meshes.push_back(processedMesh);
+
+        // Rozszerzamy AABB modelu o AABB siatki.
+        modelAABB.extend(processedMesh.getAABB());
+    }
+    // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
+    for (unsigned int i = 0; i < node->mNumChildren; i++) {
+        processNode(node->mChildren[i], scene);
+    }
+}
+/*
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     vector<Vertex> vertices;
     vector<unsigned int> indices;
@@ -167,7 +187,80 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
     return Mesh(vertices, indices, textures);
 }
+*/
 
+
+Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+    vector<Vertex> vertices;
+    vector<unsigned int> indices;
+    vector<Texture> textures;
+
+    // Ustalamy początkowe wartości min i max na pierwszy wierzchołek siatki.
+    glm::vec3 min = glm::vec3(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
+    glm::vec3 max = min;
+
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        Vertex vertex;
+        glm::vec3 vector;
+        vector.x = mesh->mVertices[i].x;
+        vector.y = mesh->mVertices[i].y;
+        vector.z = mesh->mVertices[i].z;
+        vertex.Position = vector;
+
+        // Aktualizujemy min i max.
+        min = glm::min(min, vector);
+        max = glm::max(max, vector);
+
+        vector.x = mesh->mNormals[i].x;
+        vector.y = mesh->mNormals[i].y;
+        vector.z = mesh->mNormals[i].z;
+        vertex.Normal = vector;
+
+        if (mesh->mTextureCoords[0]) // czy siatka zawiera współrzędne tekstury?
+        {
+            glm::vec2 vec;
+            vec.x = mesh->mTextureCoords[0][i].x;
+            vec.y = mesh->mTextureCoords[0][i].y;
+            vertex.TexCoords = vec;
+        } else {
+            vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+        }
+        vertices.push_back(vertex);
+    }
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; j++)
+            indices.push_back(face.mIndices[j]);
+    }
+    if (mesh->mMaterialIndex >= 0) {
+        aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
+        vector<Texture> diffuseMaps = loadMaterialTextures(material,aiTextureType_DIFFUSE, "texture_diffuse");
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+        vector<Texture> specularMaps = loadMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular");
+        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        vector<Texture> metalnessMaps = loadMaterialTextures(material,
+                                                             aiTextureType_METALNESS, "texture_metalic");
+        textures.insert(textures.end(), metalnessMaps.begin(), metalnessMaps.end());
+        vector<Texture> ambientMaps = loadMaterialTextures(material,
+                                                           aiTextureType_AMBIENT, "texture_ambient");
+        textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
+        vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_SHININESS, "texture_roughness");
+        textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
+        vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+        vector<Texture> displacementMaps = loadMaterialTextures(material,
+                                                                aiTextureType_DISPLACEMENT, "texture_displacement");
+        textures.insert(textures.end(), displacementMaps.begin(), displacementMaps.end());
+    }
+
+    // Tworzymy AABB dla siatki.
+    CPM_GLM_AABB_NS::AABB aabb(min, max);
+
+    // Tworzymy siatkę z AABB.
+    return Mesh(vertices, indices, textures, aabb);
+}
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
 // the required info is returned as a Texture struct.
 vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {
