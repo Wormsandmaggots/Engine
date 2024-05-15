@@ -1,5 +1,7 @@
 #ifndef PROFILER_H
 #define PROFILER_H
+
+#include <string>
 #include "Editor/Camera.h"
 
 class Profiler {
@@ -12,6 +14,7 @@ public:
     ///zone represents the lifetime of a special on-stack profiler variable. Typically it would exist for the duration of a whole scope of the
     ///profiled function, but you also can measure time spent in scopes of a for-loop or an if-branch.
     void zoneScope();
+    void zoneScope(std::string name);
 private:
     Profiler();
     STARTUPINFO si;

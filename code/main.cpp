@@ -180,10 +180,9 @@ int main() {
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         editor.draw();
+
         sm.updateLoadedScenes();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
         glClear(GL_COLOR_BUFFER_BIT);
         ssao.shaderSSAO.use();

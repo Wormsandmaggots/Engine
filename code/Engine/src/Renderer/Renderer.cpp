@@ -1,5 +1,6 @@
 #include "Renderer/Renderer.h"
 #include <Renderer/MaterialAsset.h>
+#include <tracy/Tracy.hpp>
 
 
 
@@ -36,8 +37,7 @@ void Renderer::addShader(Shader* shader)
 
 void Renderer::Render(Renderable *renderable)
 {
-
-	
+    ZoneScopedN("Render");
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();
