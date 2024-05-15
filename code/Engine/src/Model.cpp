@@ -71,6 +71,12 @@ void Model::Draw(Shader *shader) {
     for (auto &meshe: meshes)
         meshe.Draw(*shader);
 
+    // Generuj i rysuj AABB dla każdego mesha
+    for (auto &meshe: meshes) {
+        Mesh aabbMesh = meshe.generateAABBBoundingBoxMesh(meshe.getAABB());
+        aabbMesh.Draw(*shader); // Użyj innego shadera do rysowania AABB
+    }
+
     if (material != nullptr)
     material->unbindMaterial();
 

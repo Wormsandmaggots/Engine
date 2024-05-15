@@ -95,6 +95,16 @@ public:
         return aabb; // Zwracamy AABB siatki
     }
 
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+    {
+        this->vertices = vertices;
+        this->indices = indices;
+        // Ustawiamy domyślne wartości dla innych pól
+        this->aabb = CPM_GLM_AABB_NS::AABB(); // Domyślny AABB
+        this->instances = 1; // Domyślna liczba instancji
+        setupMesh();
+    }
+
     // render the mesh
     void Draw(Shader shader, bool instanced = false, int amount = 0)
     {
@@ -155,6 +165,33 @@ public:
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
+    }
+
+    Mesh generateAABBBoundingBoxMesh(const CPM_GLM_AABB_NS::AABB& aabb) {
+        glm::vec3 min = aabb.getMin();
+        glm::vec3 max = aabb.getMax();
+
+        // Wierzchołki dla AABB
+        std::vector<Vertex> vertices = {
+                {{min.x, min.y, min.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{max.x, min.y, min.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{max.x, max.y, min.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{min.x, max.y, min.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{min.x, min.y, max.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{max.x, min.y, max.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{max.x, max.y, max.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{min.x, max.y, max.z}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}
+        };
+
+        // Indeksy dla AABB
+        std::vector<unsigned int> indices = {
+                0, 1, 1, 2, 2, 3, 3, 0, // dolna ściana
+                4, 5, 5, 6, 6, 7, 7, 4, // górna ściana
+                0, 4, 1, 5, 2, 6, 3, 7  // krawędzie boczne
+        };
+
+        // Tworzymy siatkę bez tekstur
+        return Mesh(vertices, indices);
     }
 
 };
