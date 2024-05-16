@@ -7,6 +7,7 @@ namespace CPM_GLM_AABB_NS {
 
 /// Standalone axis aligned bounding box implemented built on top of GLM.
 class AABB
+
 {
 public:
   /// Builds a null AABB.

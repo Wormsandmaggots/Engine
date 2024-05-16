@@ -167,7 +167,7 @@ int main() {
                     totalAABBObjects++; // Zwiększ licznik obiektów z AABB
 
                     // Sprawdź, czy AABB jest wewnątrz Frustum
-                    if (frustum.isBoxInFrustum(aabbComponent->getAABB())) {
+                    if (aabbComponent->isOnFrustum(frustum, *(aabbComponent->getTransform()))) {
                         objectsInFrustum++; // Zwiększ licznik obiektów wewnątrz Frustum
                     }
                 }

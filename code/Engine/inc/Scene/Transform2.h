@@ -28,7 +28,23 @@ public:
     [[nodiscard]] const glm::vec3 &getLocalRotation() const;
     [[nodiscard]] glm::mat4 &getWorldMatrix();
     [[nodiscard]] glm::mat4 &getLocalMatrix();
+//forFrustum
+    [[nodiscard]] glm::mat4 getModelMatrix() const {
+        return worldMatrix;
+    }
 
+    [[nodiscard]] glm::vec3 getRight() const {
+        return glm::vec3(worldMatrix[0]);
+    }
+
+    [[nodiscard]] glm::vec3 getUp() const {
+        return glm::vec3(worldMatrix[1]);
+    }
+
+    [[nodiscard]] glm::vec3 getForward() const {
+        return glm::vec3(-worldMatrix[2]);
+    }
+//forFrustum
     void setTransform(glm::mat4 mat);
     void setPosition(glm::vec3 newPosition);
     void setDirty(bool dirty);
