@@ -137,15 +137,17 @@ public:
         //}
         glm::vec3 endEffector = limbBone ->getModelPosition();
         std::cout << "NOWA KLATKA"<<std::endl;
-        for(int j = 0; j <3; j++){ //petla by zwiekszyc dokladnosc wyniku
+        for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kowsci ktora manewrujemy jako pierwsza
-            for (int i =0; i <3; i++) { //petla by przejsc 3 poprzednie kosci
+            for (int i =0; i <2; i++) { //petla by przejsc 3 poprzednie kosci
                 glm::vec3 e_i = glm::vec3(endEffector - secondToLast->getModelPosition());
                 glm::vec3 t_i = glm::vec3(target - secondToLast->getModelPosition()); //odejmowanie w dobrym kierunku
                 e_i = glm::normalize(e_i);
                 t_i = glm::normalize(t_i);
+                //std::cout << " e_i: " << e_i.x << " " << e_i.y << " " << e_i.z << std::endl;
+                //std::cout << " t_i: " << t_i.x << " " << t_i.y << " " << t_i.z << std::endl;
                 float angle = glm::acos(glm::dot(e_i,t_i)); //kąt wychodzi prawidłowy
-                if(fabs(angle) > 0.2f){
+                if(fabs(angle) > 0.1f){
                     glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
                     if( glm::pow(glm::length(axis),2) > 0.0f){
                         axis = glm::normalize(axis);
@@ -184,6 +186,8 @@ public:
 
                         updateChildren(secondToLast);
                         endEffector = limbBone ->getModelPosition();
+                        std::cout << "Bone" << secondToLast ->getName() << std::endl;
+                        std::cout << "End effector: ";
                         std::cout << endEffector.x << " " << endEffector.y << " " << endEffector.z << std::endl;
                     }
 
