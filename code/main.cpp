@@ -138,15 +138,7 @@ int main() {
 		glm::mat4 view = s.camera.GetViewMatrix();
         //glm::mat4 view = s.camera.GetViewMatrix();
         glm::mat4 projection2 = s.camera.GetProjection();
-        frustum.update(projection2 * view);
-
-        // Przejdź przez wszystkie obiekty w scenie
-        int totalAABBObjects = 0;
-        int objectsInFrustum = 0;
-
-
-        std::cout << "Liczba obiektów z AABB na scenie: " << totalAABBObjects << " ";
-        std::cout << "Liczba obiektów z AABB wewnątrz Frustum: " << objectsInFrustum << std::endl;
+        //frustum.update(projection2 * view);
 
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
@@ -157,14 +149,10 @@ int main() {
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-		renderer.updateProjectionAndView(projection, view);
+
         frustum.update(projection * view);
-
-        sm.updateLoadedScenes();
-
-        // Przejdź przez wszystkie obiekty w scenie
-        totalAABBObjects = 0;
-        objectsInFrustum = 0;
+        int totalAABBObjects = 0;
+        int objectsInFrustum = 0;
 
         for (Scene2* scene : sm.getLoadedScenes()) {
             const std::vector<Entity*>& entities = scene->getSceneEntities();
@@ -181,9 +169,12 @@ int main() {
                 }
             }
         }
-
         std::cout << "Liczba obiektów z AABB na scenie: " << totalAABBObjects << " ";
         std::cout << "Liczba obiektów z AABB wewnątrz Frustum: " << objectsInFrustum << std::endl;
+
+		renderer.updateProjectionAndView(projection, view);
+
+        sm.updateLoadedScenes();
 
 
         //scene.update();
