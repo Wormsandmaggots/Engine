@@ -150,7 +150,11 @@ int main() {
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 
-        frustum.update(projection2 * view);
+        float aspect = (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT;
+        float fovY = glm::radians(glm::radians(s.camera.Zoom));
+        float zNear = 0.1f;
+        float zFar = 100.0f;
+        frustum.update(s.camera, aspect, fovY, zNear, zFar);
         int totalAABBObjects = 0;
         int objectsInFrustum = 0;
 
