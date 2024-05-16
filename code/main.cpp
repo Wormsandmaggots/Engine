@@ -150,7 +150,7 @@ int main() {
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 
-        frustum.update(projection * view);
+        frustum.update(projection2 * view);
         int totalAABBObjects = 0;
         int objectsInFrustum = 0;
 
