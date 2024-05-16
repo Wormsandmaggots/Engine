@@ -14,6 +14,12 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "AABBComponent.h"
+#include "AABB.hpp"
+#include "FrustumReady.h"
+#include "LineRenderer.h"
+#include "Frustum.h"
+
 using namespace SceneManagement;
 
 int main() {
@@ -25,8 +31,15 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
+    Frustum frustum;
+
+
 
 	sm.loadScene("res/content/maps/test.yaml");
+
+    // Utwórz instancję klasy FrustumReady
+    FrustumReady frustumReady;
+    LineRenderer lineRenderer;
 
 	sound->setVolume(2.f);
 
@@ -105,18 +118,35 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
+    // Wywołaj metodę addAABBToEntitiesWithModel dla każdej załadowanej sceny
+    for (Scene2* scene : sm.getLoadedScenes()) {
+        frustumReady.addAABBToEntitiesWithModel(scene);
+    }
+
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
+        //glm::mat4 view = s.camera.GetViewMatrix();
+        glm::mat4 projection2 = s.camera.GetProjection();
+        frustum.update(projection2 * view);
+
+        // Przejdź przez wszystkie obiekty w scenie
+        int totalAABBObjects = 0;
+        int objectsInFrustum = 0;
+
+
+        std::cout << "Liczba obiektów z AABB na scenie: " << totalAABBObjects << " ";
+        std::cout << "Liczba obiektów z AABB wewnątrz Frustum: " << objectsInFrustum << std::endl;
 
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
@@ -124,42 +154,48 @@ int main() {
 
         imgui_begin();
         editor.draw();
-
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 		renderer.updateProjectionAndView(projection, view);
+        frustum.update(projection * view);
+
         sm.updateLoadedScenes();
+
+        // Przejdź przez wszystkie obiekty w scenie
+        totalAABBObjects = 0;
+        objectsInFrustum = 0;
+
+        for (Scene2* scene : sm.getLoadedScenes()) {
+            const std::vector<Entity*>& entities = scene->getSceneEntities();
+            for (Entity* entity : entities) {
+                // Pobierz komponent AABB obiektu
+                AABBComponent* aabbComponent = entity->getComponent<AABBComponent>();
+                if (aabbComponent != nullptr) {
+                    totalAABBObjects++; // Zwiększ licznik obiektów z AABB
+
+                    // Sprawdź, czy AABB jest wewnątrz Frustum
+                    if (frustum.isBoxInFrustum(aabbComponent->getAABB())) {
+                        objectsInFrustum++; // Zwiększ licznik obiektów wewnątrz Frustum
+                    }
+                }
+            }
+        }
+
+        std::cout << "Liczba obiektów z AABB na scenie: " << totalAABBObjects << " ";
+        std::cout << "Liczba obiektów z AABB wewnątrz Frustum: " << objectsInFrustum << std::endl;
+
+
         //scene.update();
+
+
+
         cm.update();
+
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         arcadeRenderer->renderText();
 
-
-
-
-        //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
-        //hud
-        //counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
-        //glDisable(GL_DEPTH_TEST);
-        //glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
-        //shader.setMat4("projection", orthoProjection);
-
-        //progressBar.update(s.deltaTime);
-        //progressBar.renderBar();
-
-        //image.render();
-       // backgroundImage.render();
-        //backgroundImage.update(s.deltaTime);
-        //glEnable(GL_DEPTH_TEST);
-        //hud end
-
-
-//        sm.updateLoadedScenes();
-//
-//        cm.update();
-        //arcadeRenderer->update();
         update();
 	}
     a.end();

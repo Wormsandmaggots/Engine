@@ -56,6 +56,15 @@ public:
     void convertToYaml(YAML::Emitter &) override;
     void drawEditor() override;
     void setPath(std::string);
+
+    std::vector<glm::vec3> getVertices() const {
+        std::vector<glm::vec3> allVertices;
+        for (const Mesh& mesh : meshes) {
+            std::vector<glm::vec3> meshVertices = mesh.getVertices();
+            allVertices.insert(allVertices.end(), meshVertices.begin(), meshVertices.end());
+        }
+        return allVertices;
+    }
 private:
     Shader* modelShader;
     std::string path;

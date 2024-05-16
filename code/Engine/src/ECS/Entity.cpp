@@ -228,7 +228,7 @@ void Entity::removeComponent(int i) {
     delete c;
 }
 
-template<>
+/*template<>
 Model* Entity::getComponent<Model>() const {
     // Loop through components to find the Model component
     for (Component* component : components) {
@@ -241,6 +241,6 @@ Model* Entity::getComponent<Model>() const {
     }
     // If not found, return nullptr
     return nullptr;
-}
+}*/
 
 

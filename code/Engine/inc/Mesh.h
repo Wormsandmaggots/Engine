@@ -149,6 +149,14 @@ public:
         }
 
     }
+
+    std::vector<glm::vec3> getVertices() const {
+        std::vector<glm::vec3> verticesPositions;
+        for (const Vertex& vertex : vertices) {
+            verticesPositions.push_back(vertex.Position);
+        }
+        return verticesPositions;
+    }
 };
 
 
