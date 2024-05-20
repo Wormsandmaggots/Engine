@@ -7,6 +7,7 @@
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
 #include "RigPrep.h"
+#include "Animation/InverseKinematics.h"
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
@@ -65,17 +66,18 @@ int main() {
 
     Model* player = new Model("res/content/models/Character_rigged/Character_base_rig.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
+    InverseKinematics* playerIK = new InverseKinematics(playerRig);
 
     int offset = 0;
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
 
-    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
+    //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/gowno.fbx", &shaderPbr);
-
+    Model* player2 = new Model("res/content/models/npc1/robot_animation.fbx", &shaderPbr);
+    //RigPrep* npcRig = new RigPrep(player2);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -94,22 +96,23 @@ int main() {
     player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
     player->getTransform()->setScale(glm::vec3(0.003f, 0.003f, 0.003f));
-
+/*
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
     club1->addComponent(club);
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
     club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
+*/
     Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
     sphere1->addComponent(sphere);
     sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
-
-    //Entity* player3 = new Entity("player2");
-    //sm.getLoadedScenes()[0]->addEntity(player3);
-    //player3->addComponent(player2);
-    //player3->getTransform()->setPosition(glm::vec3(0, 0, 0));
+/*
+    Entity* player3 = new Entity("player2");
+    sm.getLoadedScenes()[0]->addEntity(player3);
+    player3->addComponent(player2);
+    player2->getTransform()->setPosition(glm::vec3(0, 0, 0));
+    */
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -131,12 +134,20 @@ int main() {
         imgui_begin();
         editor.draw();
         shaderRig.use();
-        ///OFFSET FOR DEBUG
+
+        ///IK
+        playerIK->update(offset);
         playerRig->update(offset);
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-
+/*
+        ///ANIMATIONS
+        npcRig->update(offset);
+        auto transforms = npcRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+*/
 
         f = false;
         shaderPbr.use();

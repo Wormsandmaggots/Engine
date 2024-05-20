@@ -48,6 +48,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/assimp_glm_helpers.h
         Engine/inc/RigPrep.h
         Engine/inc/Animation/Bone.h
+        Engine/inc/Animation/AnimBone.h
+        Engine/inc/Animation/InverseKinematics.h
 )
 
 
