@@ -55,7 +55,7 @@ int main() {
     MaterialAsset material("res/content/materials/color.json");
   
 
-    Renderer renderer(&shader);
+    Renderer renderer(&depthShader);
     renderer.init();
 	renderer.addShader(&collisionTestShader);
     renderer.addShader(&colorShader);
