@@ -128,6 +128,10 @@ int main() {
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        shaderPbr.setVec3("spotLightPos",glm::vec3(0,0,0));
+        shaderPbr.setVec3("spotLightDir", glm::vec3(1, 1, 1));
+        shaderPbr.setFloat("cutOff", glm::cos(glm::radians(12.5f)));
+        shaderPbr.setFloat("outerCutOff", glm::cos(glm::radians(17.5f)));
 		renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
