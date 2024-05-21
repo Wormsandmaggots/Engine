@@ -31,7 +31,6 @@ int main() {
 	sound->setVolume(2.f);
 
     //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
     DebugInput debugInput;
@@ -43,8 +42,9 @@ int main() {
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
-    Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
+   // Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+    Shader depthShader("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -64,13 +64,48 @@ int main() {
     Model* player = new Model("res/content/models/player/character_base.obj");
     
 	renderer.addShader(&shaderText);
-    renderer.addShader(&shaderPbr);
+  //  renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
+    renderer.addShader(&depthShader);
 
+
+//shadowmap
+    // Rozmiar mapy cieni
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+// Tworzenie obiektu framebuffer
+    unsigned int depthMapFBO;
+    glGenFramebuffers(1, &depthMapFBO);
+
+// Tworzenie tekstury 2D do przechowywania mapy głębokości
+    unsigned int depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+// Przypisanie tekstury do framebuffera
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //shadowmap end
+/*
     Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+*/
+    Model* club = new Model("res/content/models/club2/club2.obj", &depthShader);
+    Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &depthShader);
+    //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &depthShader);
+    Model* player2 = new Model("res/content/models/random.fbx", &depthShader);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -111,6 +146,27 @@ int main() {
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        /*//depthmap
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        float near_plane = 1.0f, far_plane = 7.5f;
+        glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+        glm::vec3 lightPos = sphere->getTransform()->getLocalPosition();
+
+        glm::mat4 lightView = glm::lookAt(lightPos,
+                                          glm::vec3(0.0f, 0.0f, 0.0f),
+                                          glm::vec3(0.0f, 1.0f, 0.0f));
+
+        glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+        depthShader.use();
+        depthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+        depthShader.setInt("depthMap", 0);
+        //domyślny framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+*/
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -118,48 +174,43 @@ int main() {
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
-        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
-		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
-		//glm::mat4 view = playerCamera->getView();
 
         imgui_begin();
         editor.draw();
 
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        //depthmap
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        float near_plane = 1.0f, far_plane = 7.5f;
+        glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+        glm::vec3 lightPos = sphere->getTransform()->getLocalPosition();
+
+        glm::mat4 lightView = glm::lookAt(lightPos,
+                                          glm::vec3(0.0f, 0.0f, 0.0f),
+                                          glm::vec3(0.0f, 1.0f, 0.0f));
+
+        glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+        depthShader.use();
+        depthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+        depthShader.setInt("depthMap", 0);
+        //domyślny framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+        //shaderPbr.use();
+        //shaderPbr.setVec3("camPos",s.camera.Position);
+        //shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 		renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
-        //scene.update();
+
         cm.update();
-//		ImGui::Render();
-//		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         arcadeRenderer->renderText();
 
-
-
-
-        //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
-        //hud
-        //counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
-        //glDisable(GL_DEPTH_TEST);
-        //glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
-        //shader.setMat4("projection", orthoProjection);
-
-        //progressBar.update(s.deltaTime);
-        //progressBar.renderBar();
-
-        //image.render();
-       // backgroundImage.render();
-        //backgroundImage.update(s.deltaTime);
-        //glEnable(GL_DEPTH_TEST);
-        //hud end
-
-
-//        sm.updateLoadedScenes();
-//
-//        cm.update();
-        //arcadeRenderer->update();
         update();
 	}
     a.end();
