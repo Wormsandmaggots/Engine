@@ -67,7 +67,12 @@ void Model::Draw(Shader *shader) {
     if(material!=nullptr)
         material->bindMaterial();
 
+    glm::mat4 modelMatrix = parentTransform->getWorldMatrix();
+    shader->use();
+    shader->setMat4("model", modelMatrix);
+
     for (auto &meshe: meshes)
+
         meshe.Draw(*shader);
 
     if (material != nullptr)

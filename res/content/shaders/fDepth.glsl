@@ -2,5 +2,5 @@
 
 void main()
 {
-    // gl_FragDepth jest automatycznie ustawiane na wartość z bufora głębi
+    // gl_FragDepth = gl_FragCoord.z;
 }
