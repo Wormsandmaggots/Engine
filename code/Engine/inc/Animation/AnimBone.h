@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <string>
 #include "glm/glm.hpp"
@@ -24,7 +25,7 @@ struct KeyScale
     float timeStamp;
 };
 
-class Bone
+class AnimBone
 {
 private:
     std::vector<KeyPosition> m_Positions;
@@ -41,7 +42,7 @@ private:
 public:
 
 /*reads keyframes from aiNodeAnim*/
-    Bone(const std::string& name, int ID, const aiNodeAnim* channel)
+    AnimBone(const std::string& name, int ID, const aiNodeAnim* channel)
             :
             m_Name(name),
             m_ID(ID),

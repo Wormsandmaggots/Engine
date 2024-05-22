@@ -15,6 +15,8 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "Animation/Animation.h"
+#include "Animation/Animator.h"
 
 using namespace SceneManagement;
 
@@ -76,9 +78,9 @@ int main() {
     //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/npc1/robot_animation.fbx", &shaderPbr);
-    //RigPrep* npcRig = new RigPrep(player2);
-
+    Model* player2 = new Model("res/content/models/npc1/robot_animation.fbx", &shaderRig);
+    Animation* npcAnimation = new Animation("res/content/models/npc1/robot_animation.fbx", player2);
+    Animator* animator = new Animator(npcAnimation);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -90,13 +92,13 @@ int main() {
 
     cc1->start();
     cc2->start();
-
+/*
     Entity* player1 = new Entity("player");
 	sm.getLoadedScenes()[0]->addEntity(player1);
     player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
     player->getTransform()->setScale(glm::vec3(0.003f, 0.003f, 0.003f));
-/*
+
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
     club1->addComponent(club);
@@ -107,12 +109,13 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(sphere1);
     sphere1->addComponent(sphere);
     sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
-/*
+
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
     player2->getTransform()->setPosition(glm::vec3(0, 0, 0));
-    */
+    player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
+
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -121,9 +124,10 @@ int main() {
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         offset += debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
+        animator->UpdateAnimation(s.deltaTime);
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
 
@@ -134,20 +138,20 @@ int main() {
         imgui_begin();
         editor.draw();
         shaderRig.use();
-
+/*
         ///IK
         playerIK->update(offset);
         playerRig->update(offset);
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-/*
+*/
+
         ///ANIMATIONS
-        npcRig->update(offset);
-        auto transforms = npcRig->GetFinalBoneMatrices();
+        auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-*/
+
 
         f = false;
         shaderPbr.use();

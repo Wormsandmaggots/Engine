@@ -66,8 +66,13 @@ public:
     void setPath(std::string);
     const aiScene* getScene();
     std::string getPath();
-    const std::map<string, BoneInfo> getMap();
-    void adjustCoordinateSystem();
+    std::map<string, BoneInfo> getMap();
+    auto& GetBoneInfoMap();
+    int& GetBoneCount();
+    void SetVertexBoneDataToDefault(Vertex& vertex);
+    void SetVertexBoneData(Vertex& vertex, int boneID, float weight);
+    void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
+
 private:
     Shader* modelShader;
     std::string path;
@@ -80,13 +85,6 @@ private:
     std::map<string, BoneInfo> m_BoneInfoMap;
     int m_BoneCounter = 0;
     const aiScene* modelScene;
-
-    auto& GetBoneInfoMap();
-    int& GetBoneCount();
-    void SetVertexBoneDataToDefault(Vertex& vertex);
-    void SetVertexBoneData(Vertex& vertex, int boneID, float weight);
-    void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
-
 };
 
 

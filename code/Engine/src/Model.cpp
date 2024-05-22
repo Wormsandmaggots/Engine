@@ -279,7 +279,7 @@ const aiScene* Model::getScene() {
     return modelScene;
 }
 
-const std::map<string, BoneInfo> Model::getMap() {
+std::map<string, BoneInfo> Model::getMap() {
     return m_BoneInfoMap;
 }
 
