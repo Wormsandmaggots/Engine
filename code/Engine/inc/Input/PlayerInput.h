@@ -17,16 +17,16 @@ public:
             if (buttonState == GLFW_PRESS) {
                 switch (button) {
                     case 0:
-                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed");
+                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed"); //A
                         break;
                     case 1:
-                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Cross is pressed");
+                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Cross is pressed"); //B
                         break;
                     case 2:
-                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Circle  is pressed");
+                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Circle  is pressed"); //X
                         break;
                     case 3:
-                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Triangle is pressed");
+                        LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Triangle is pressed"); //Y
                         break;
                 }
             }

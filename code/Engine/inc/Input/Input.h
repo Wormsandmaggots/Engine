@@ -122,9 +122,19 @@ public:
     }
 
     //controller
+    //variables to store the initial joystick positions
+    //std::array<std::array<float, 2>, 2> initialJoystickPositions = {{{0.0f, 0.0f}, {0.0f, 0.0f}}};
+
     void initializeController(int joystick) {
         if (glfwJoystickPresent(joystick)) {
             LOG_INFO("Controller detected");
+
+            // Get the initial joystick positions
+            /*for (int axis = 0; axis < 2; ++axis) {
+                auto [x, y] = getControllerJoystickState(joystick, axis);
+                initialJoystickPositions[axis][0] = x;
+                initialJoystickPositions[axis][1] = y;
+            }*/
         } else {
             LOG_WARNING("No controller detected");
         }
@@ -141,8 +151,6 @@ public:
         }
     }
 
-    //joysticks
-    /*
     std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
         //deadzone paramteter
         //deadzone is a value that is used to ignore small values of the joystick
@@ -157,26 +165,9 @@ public:
             if (std::abs(x) < deadZone) x = 0.0f;
             if (std::abs(y) < deadZone) y = 0.0f;
 
-            return std::make_pair(x, y);
-        } else {
-            return std::make_pair(0.0f, 0.0f);
-        }
-    }
-     */
-
-    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
-        //deadzone paramteter
-        //deadzone is a value that is used to ignore small values of the joystick
-        float deadZone = 0.4f;
-        int count;
-        const float* axes = glfwGetJoystickAxes(joystick, &count);
-        if (axis < count) {
-            float x = axes[axis * 2];
-            float y = axes[axis * 2 + 1];
-
-            // Apply dead zone
-            if (std::abs(x) < deadZone) x = 0.0f;
-            if (std::abs(y) < deadZone) y = 0.0f;
+            // Subtract the initial joystick positions from the current positions
+            //x -= initialJoystickPositions[axis][0];
+            //y -= initialJoystickPositions[axis][1];
 
             return std::make_pair(x, y);
         } else {

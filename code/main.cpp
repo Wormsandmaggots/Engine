@@ -36,12 +36,13 @@ int main() {
     //HID - test
     DebugInput debugInput;
     PlayerInput playerInput(GLFW_JOYSTICK_1);
+    PlayerInput playerInput1(GLFW_JOYSTICK_2);
     //HID - test
 
 #pragma endregion TEST
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
-	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
+	/*Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
 	Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
@@ -53,12 +54,12 @@ int main() {
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
     
-    MaterialAsset material("res/content/materials/color.json");
+    MaterialAsset material("res/content/materials/color.json");*/
   
 
     Renderer renderer(&shader);
     renderer.init();
-	renderer.addShader(&collisionTestShader);
+	/*renderer.addShader(&collisionTestShader);
     renderer.addShader(&colorShader);
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
@@ -66,9 +67,9 @@ int main() {
     
 	renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
-    renderer.addShader(&shaderCel);
+    renderer.addShader(&shaderCel);*/
 
-    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
+    /*Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
@@ -105,7 +106,7 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
-
+*/
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -113,6 +114,7 @@ int main() {
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
+        playerInput1.interpretInput();
 
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
