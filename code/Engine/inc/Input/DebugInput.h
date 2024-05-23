@@ -47,9 +47,9 @@ public:
 
 
         //controller
-        if (input.getControllerButtonState(GLFW_JOYSTICK_1, 0) == GLFW_PRESS) {
+        /*if (input.getControllerButtonState(GLFW_JOYSTICK_1, 0) == GLFW_PRESS) {
             LOG_INFO("Square button on the controller is pressed");
-        }
+        }*/
 
         // Mouse
         int state = input.isMouseRightButtonPressed();

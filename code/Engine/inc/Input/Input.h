@@ -130,6 +130,7 @@ public:
         }
     }
 
+    //buttons and bumpers
     int getControllerButtonState(int joystick, int button) const {
         int count;
         const unsigned char* buttons = glfwGetJoystickButtons(joystick, &count);
@@ -137,6 +138,60 @@ public:
             return buttons[button];
         } else {
             return GLFW_RELEASE;
+        }
+    }
+
+    //joysticks
+    /*
+    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+        //deadzone paramteter
+        //deadzone is a value that is used to ignore small values of the joystick
+        float deadZone = 0.4f;
+        int count;
+        const float* axes = glfwGetJoystickAxes(joystick, &count);
+        if (axis < count) {
+            float x = axes[axis * 2];
+            float y = axes[axis * 2 + 1];
+
+            // Apply dead zone
+            if (std::abs(x) < deadZone) x = 0.0f;
+            if (std::abs(y) < deadZone) y = 0.0f;
+
+            return std::make_pair(x, y);
+        } else {
+            return std::make_pair(0.0f, 0.0f);
+        }
+    }
+     */
+
+    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+        //deadzone paramteter
+        //deadzone is a value that is used to ignore small values of the joystick
+        float deadZone = 0.4f;
+        int count;
+        const float* axes = glfwGetJoystickAxes(joystick, &count);
+        if (axis < count) {
+            float x = axes[axis * 2];
+            float y = axes[axis * 2 + 1];
+
+            // Apply dead zone
+            if (std::abs(x) < deadZone) x = 0.0f;
+            if (std::abs(y) < deadZone) y = 0.0f;
+
+            return std::make_pair(x, y);
+        } else {
+            return std::make_pair(0.0f, 0.0f);
+        }
+    }
+
+    //triggers
+    float getControllerTriggerState(int joystick, int trigger) const {
+        int count;
+        const float* axes = glfwGetJoystickAxes(joystick, &count);
+        if (trigger < count) {
+            return axes[trigger];
+        } else {
+            return -1.0f;
         }
     }
 
