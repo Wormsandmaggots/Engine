@@ -114,7 +114,7 @@ int main() {
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
-        playerInput1.interpretInput();
+        //playerInput1.interpretInput();
 
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
