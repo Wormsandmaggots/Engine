@@ -151,7 +151,7 @@ public:
         }
     }
 
-    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+    /*std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
         //deadzone paramteter
         //deadzone is a value that is used to ignore small values of the joystick
         float deadZone = 0.4f;
@@ -173,14 +173,40 @@ public:
         } else {
             return std::make_pair(0.0f, 0.0f);
         }
+    }*/
+
+    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+        GLFWgamepadstate state;
+        if (glfwGetGamepadState(joystick, &state)) {
+            float x = state.axes[axis * 2];
+            float y = state.axes[axis * 2 + 1];
+
+            // Apply dead zone
+            float deadZone = 0.4f;
+            if (std::abs(x) < deadZone) x = 0.0f;
+            if (std::abs(y) < deadZone) y = 0.0f;
+
+            return std::make_pair(x, y);
+        } else {
+            return std::make_pair(0.0f, 0.0f);
+        }
     }
 
     //triggers
-    float getControllerTriggerState(int joystick, int trigger) const {
+    /*float getControllerTriggerState(int joystick, int trigger) const {
         int count;
         const float* axes = glfwGetJoystickAxes(joystick, &count);
-        if (trigger < count) {
-            return axes[trigger];
+        if (trigger + 4 < count) {
+            return axes[trigger + 4];
+        } else {
+            return -1.0f;
+        }
+    }*/
+
+    float getControllerTriggerState(int joystick, int trigger) const {
+        GLFWgamepadstate state;
+        if (glfwGetGamepadState(joystick, &state)) {
+            return state.axes[trigger + 4]; // Triggers are usually axes 4 and 5
         } else {
             return -1.0f;
         }

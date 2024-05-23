@@ -38,6 +38,12 @@ public:
             std::string joystickSide = (axis == 0) ? "Left" : "Right";
             LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(x) + ", y=" + std::to_string(y));
         }
+        // Interpret trigger state
+        for (int trigger = 0; trigger < 2; ++trigger) {
+            float triggerValue = input.getControllerTriggerState(joystickId, trigger);
+            std::string triggerSide = (trigger == 0) ? "Left" : "Right";
+            //LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + triggerSide + " Trigger Value: " + std::to_string(triggerValue));
+        }
     }
 
 private:
