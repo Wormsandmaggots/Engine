@@ -77,9 +77,9 @@ int main() {
 
     //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/npc1/robot_animation.fbx", &shaderRig);
-    Animation* npcAnimation = new Animation("res/content/models/npc1/robot_animation.fbx", player2);
+    Model* player2 = new Model("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", &shaderRig);
+    Animation* npcAnimation = new Animation("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", player2);
+    RigPrep* npcRig = new RigPrep(player2);
     Animator* animator = new Animator(npcAnimation);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -113,8 +113,8 @@ int main() {
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
-    player2->getTransform()->setPosition(glm::vec3(0, 0, 0));
     player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
+    player2->getTransform()->setPosition(glm::vec3(-1.0f, 7.0f, 0.0f));
 
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
@@ -140,13 +140,13 @@ int main() {
         shaderRig.use();
 /*
         ///IK
-        playerIK->update(offset);
+        //playerIK->update(offset);
         playerRig->update(offset);
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-*/
 
+*/
         ///ANIMATIONS
         auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
