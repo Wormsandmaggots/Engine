@@ -44,15 +44,7 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/HUD/BackgroundImage.h
         Engine/inc/HUD/BackgroundImage.h
         Engine/inc/HUD/ProgressBar.h
-        Engine/inc/HUD/ProgressBar.h
-        Engine/inc/assimp_glm_helpers.h
-        Engine/inc/RigPrep.h
-        Engine/inc/Animation/Bone.h
-        Engine/inc/Animation/AnimBone.h
-        Engine/inc/Animation/InverseKinematics.h
-        Engine/inc/Animation/Animation.h
-        Engine/inc/Animation/Animator.h
-)
+        Engine/inc/HUD/ProgressBar.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)

@@ -1,7 +1,7 @@
 /*If you want to use this shader remember about those uniforms
 shaderPbr.use();
 shaderPbr.setVec3("camPos",s.camera.Position);
-shaderPbr.setVec3("lightPos",sphere->getLocalTransform()->getLocalPosition());*/
+shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());*/
 #version 460 core
 out vec4 FragColor;
 
@@ -18,7 +18,7 @@ uniform sampler2D texture_ambient1;
 uniform vec3 camPos;
 uniform vec3 lightPos;
 
-vec3 lightColor = vec3(300.0f, 300.0f, 300.0f);
+vec3 lightColor = vec3(150.0f, 150.0f, 150.0f);
 const float PI = 3.14159265359;
 
 vec3 getNormalFromMap()

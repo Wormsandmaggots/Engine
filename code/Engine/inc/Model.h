@@ -26,15 +26,7 @@
 
 using namespace std;
 
-struct BoneInfo
-{
-    /*id is index in finalBoneMatrices*/
-    int id;
 
-    /*offset matrix transforms vertex from model space to bone space*/
-    glm::mat4 offset;
-
-};
 class Model: public Component, public Renderable
 {
 public:
@@ -64,15 +56,6 @@ public:
     void convertToYaml(YAML::Emitter &) override;
     void drawEditor() override;
     void setPath(std::string);
-    const aiScene* getScene();
-    std::string getPath();
-    std::map<string, BoneInfo> getMap();
-    auto& GetBoneInfoMap();
-    int& GetBoneCount();
-    void SetVertexBoneDataToDefault(Vertex& vertex);
-    void SetVertexBoneData(Vertex& vertex, int boneID, float weight);
-    void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
-
 private:
     Shader* modelShader;
     std::string path;
@@ -81,10 +64,6 @@ private:
     void processNode(aiNode* node, const aiScene* scene);
     vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-
-    std::map<string, BoneInfo> m_BoneInfoMap;
-    int m_BoneCounter = 0;
-    const aiScene* modelScene;
 };
 
 

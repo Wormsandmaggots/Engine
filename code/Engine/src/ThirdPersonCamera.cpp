@@ -13,7 +13,7 @@ void ThirdPersonCamera::awake() {}
 void ThirdPersonCamera::start() {}
 
 void ThirdPersonCamera::update() {
-    //transform->setPosition(parent->getLocalTransform()->getLocalPosition());
+    //transform->setPosition(parent->getTransform()->getLocalPosition());
     cameraTarget = parentTransform->getLocalPosition();
     cameraTarget.y +=2;
     calculateCameraPosition();
@@ -24,7 +24,7 @@ void ThirdPersonCamera::onDestroy() {}
 
 void ThirdPersonCamera::setParent(Entity *entity) {
     parentTransform = entity->getTransform();
-    //transform->setPosition(parent->getLocalTransform()->getLocalPosition());
+    //transform->setPosition(parent->getTransform()->getLocalPosition());
     cameraTarget = parentTransform->getLocalPosition();
 }
 
