@@ -115,7 +115,7 @@ set_target_properties(glad
         yaml-cpp
         nlohmann_json
         freetype
-        aabb
+        #aabb
         miniaudio
         effolkronium_random
         ftgl
