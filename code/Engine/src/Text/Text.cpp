@@ -1,6 +1,8 @@
 #include "Text/Text.h"
 #include "glad/glad.h"
 #include "glm/ext/matrix_clip_space.hpp"
+#include "Scene/Transform2.h"
+#include "ECS/Entity.h"
 
 Text::Text(const std::string& fontPath) {
     if (FT_Init_FreeType(&ft)) {
@@ -149,8 +151,6 @@ void Text::onDestroy() {}
 
 void Text::setParent(Entity *entity) {}
 
-void Text::setTransform(Transform2 *transform2) {}
-
 Shader* Text::getShader()
 {
     return shader;
@@ -184,4 +184,8 @@ void Text::renderAndUpdateCounter(Shader &shader, float deltaTime, float x, floa
         counter = 0.0f;
     }
     RenderCounter(shader, counter, x, y, scale, color, width, height);
+}
+
+void Text::setTransform(Transform2 *transform2) {
+    parentTransform = transform2;
 }

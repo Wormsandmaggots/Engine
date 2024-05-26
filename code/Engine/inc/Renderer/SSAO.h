@@ -152,7 +152,7 @@ public:
         shaderSSAO.setInt("texNoise", 2);
         shaderSSAOBlur.use();
         shaderSSAOBlur.setInt("ssaoInput", 0);
-        shaderSSAOBlur.setInt("depthBuffer", 1);
+//        shaderSSAOBlur.setInt("depthBuffer", 1);
     }
 
     unsigned int quadVAO = 0;

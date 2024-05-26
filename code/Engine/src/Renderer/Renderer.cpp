@@ -37,7 +37,7 @@ void Renderer::addShader(Shader* shader)
 
 void Renderer::Render(Renderable *renderable)
 {
-    ZoneScopedN("Render");
+    ZoneTransientN(Render, "Render", true);
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();

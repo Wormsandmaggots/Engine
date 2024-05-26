@@ -1,5 +1,6 @@
 #include "Engine/inc/HUD/Image.h"
 #include <iostream>
+#include "Renderer/Renderer.h"
 
 void Image::updateVertices(const std::vector<float>& vertices) {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -11,7 +12,7 @@ void Image::setColor(const glm::vec3& color) {
 }
 
 Image::Image(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath)
-        : shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str()){
+        : shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str()) {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -75,7 +76,7 @@ Image::Image(const std::string& vertexShaderPath, const std::string& fragmentSha
 void Image::render() {
     shader.use();
 
-    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 model = transform->getWorldMatrix();
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection = glm::ortho(0.0f, (float)1920, 0.0f, (float)1080);
 
@@ -96,4 +97,24 @@ Image::~Image() {
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteTextures(1, &texture);
+}
+
+void Image::Draw(Shader *shader) {
+    Renderer::Render(this);
+}
+
+void Image::update() {
+    render();
+}
+
+Transform2 *Image::getTransform() {
+    return transform;
+}
+
+void Image::setTransform(Transform2 *t) {
+    transform = t;
+}
+
+Shader *Image::getShader() {
+    return &shader;
 }
