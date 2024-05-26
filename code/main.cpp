@@ -15,9 +15,11 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "AdvInput.h"
 using namespace SceneManagement;
 
-int main() {
+//int main() {
+int main(int argc, char* argv[]) {
     init();
 	EditorLayer::Editor editor;
     editor.init(&s.camera);
@@ -26,8 +28,10 @@ int main() {
 	a.init();
 	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
 	SceneManager sm;
+    AdvInput advInput;
 
-	sm.loadScene("res/content/maps/test.yaml");
+
+    sm.loadScene("res/content/maps/test.yaml");
 
 	sound->setVolume(2.f);
 
@@ -35,8 +39,8 @@ int main() {
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
     DebugInput debugInput;
-    PlayerInput playerInput(GLFW_JOYSTICK_1);
-    PlayerInput playerInput1(GLFW_JOYSTICK_2);
+    //PlayerInput playerInput(GLFW_JOYSTICK_1);
+    //PlayerInput playerInput1(GLFW_JOYSTICK_2);
     //HID - test
 
 #pragma endregion TEST
@@ -107,13 +111,88 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 */
+
+   /* if (!advInput.init()) {
+        std::cerr << "Failed to initialize AdvInput" << std::endl;
+        return -1;
+    } */
+
+#include <stdio.h>
+#include <wchar.h>
+#include <string.h>
+#include <stdlib.h>
+#include "hidapi.h"
+
+// Headers needed for sleeping.
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
+#define MAX_STR 255
+
+    int res;
+    unsigned char buf[65];
+    wchar_t wstr[MAX_STR];
+    hid_device *handle;
+    int i;
+
+#ifdef WIN32
+    UNREFERENCED_PARAMETER(argc);
+    UNREFERENCED_PARAMETER(argv);
+#endif
+
+    // Initialize the hidapi library
+    res = hid_init();
+
+    // Open the device using the VID, PID,
+    // and optionally the Serial number.
+    handle = hid_open(0x045e, 0x0b12, NULL);
+
+    if (!handle) {
+        printf("unable to open device\n");
+        return 1;
+    }
+
+    // Read the Manufacturer String
+    res = hid_get_manufacturer_string(handle, wstr, MAX_STR);
+    printf("Manufacturer String: %ls\n", wstr);
+
+    // Read the Product String
+    res = hid_get_product_string(handle, wstr, MAX_STR);
+    printf("Product String: %ls\n", wstr);
+
+    // Read the Serial Number String
+    res = hid_get_serial_number_string(handle, wstr, MAX_STR);
+    printf("Serial Number String: %ls", wstr);
+    printf("\n");
+
+    // Read Indexed String 1
+    res = hid_get_indexed_string(handle, 1, wstr, MAX_STR);
+    printf("Indexed String 1: %ls\n", wstr);
+
+    // Set the hid_read() function to be non-blocking.
+    hid_set_nonblocking(handle, 1);
+
+    // Try to read from the device. We have a timeout of 0 ms, so this
+    // function should return immediately whether there is data or not.
+    res = hid_read(handle, buf, 65);
+
+    // Print out the returned buffer.
+    for (i = 0; i < res; i++)
+        printf("buf[%d]: %02hhx\n", i, buf[i]);
+
+    // Finalize the hidapi library
+    res = hid_exit();
+
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        playerInput.interpretInput();
+        //playerInput.interpretInput();
         //playerInput1.interpretInput();
 
         glClearColor(0.2, 0.2, 0.2, 1);

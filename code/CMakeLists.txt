@@ -45,7 +45,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/HUD/BackgroundImage.h
         Engine/inc/HUD/ProgressBar.h
         Engine/inc/HUD/ProgressBar.h
-        Engine/inc/Input/PlayerInput.h)
+        Engine/inc/Input/PlayerInput.h
+        Engine/inc/AdvInput.h)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
@@ -62,6 +63,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${aabb_SOURCE_DIR}
         ${ftgl_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
+        ${hidapi_SRC}
 )
 
 
@@ -83,6 +85,8 @@ target_link_libraries(${PROJECT_NAME}
         gizmos
         ftgl
         TracyClient
+        hidapi
+        setupapi
 )
 
 

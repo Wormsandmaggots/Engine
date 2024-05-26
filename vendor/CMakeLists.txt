@@ -34,6 +34,9 @@ CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
+CPMAddPackage("gh:signal11/hidapi#hidapi-0.8.0-rc1")
+
+
 
 
 #if one of thirdparty libraries is not building you maybe have to do smth like this below
@@ -82,6 +85,12 @@ target_include_directories(aabb PRIVATE ${aabb_SOURCE_DIR})
 target_link_libraries(aabb glm)
 
 
+set(hidapi_SRC ${CMAKE_CURRENT_LIST_DIR}/hid CACHE INTERNAL "")
+add_library(hidapi STATIC
+        ${hidapi_SRC}/hid.c)
+target_include_directories(hidapi PRIVATE ${hidapi_SOURCE_DIR})
+
+
 set(ftgl_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/freetype-gl CACHE INTERNAL "")
 add_library(ftgl STATIC
         ${ftgl_SOURCE_DIR}/distance-field.c
@@ -104,6 +113,9 @@ target_link_libraries(ftgl
         freetype)
 
 
+
+
+
 set_target_properties(glad
         stb_image
         assimp
@@ -120,6 +132,7 @@ set_target_properties(glad
         effolkronium_random
         ftgl
         TracyClient
+        hidapi
         PROPERTIES FOLDER "vendor")
 
 
