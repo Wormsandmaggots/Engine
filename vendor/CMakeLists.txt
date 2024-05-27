@@ -29,6 +29,11 @@ CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
+#CPMAddPackage("gh:FFTW/fftw3#fftw-3.3.7")
+CPMAddPackage("gh:fftw/fftw3#fftw-3.3.10")
+CPMAddPackage("gh:libsndfile/libsndfile#1.2.2")
+CPMAddPackage("gh:libsndfile/libsndfile#v1.2.2")
+
 
 # if one of thirdparty libraries is not building you maybe have to do smth like this below
 # and remember to add source dir to exe in code
@@ -70,6 +75,10 @@ add_library(aabb STATIC
 target_include_directories(aabb PRIVATE ${aabb_SOURCE_DIR})
 target_link_libraries(aabb glm)
 
+set(fftw ${CMAKE_CURRENT_LIST_DIR}/fftw CACHE INTERNAL "")
+add_library(fftw_lib INTERFACE)
+target_include_directories(fftw_lib INTERFACE ${fftw})
+
 set(ftgl_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/freetype-gl CACHE INTERNAL "")
 add_library(ftgl STATIC
         ${ftgl_SOURCE_DIR}/distance-field.c
@@ -107,6 +116,8 @@ set_target_properties(glad
         effolkronium_random
         ftgl
         TracyClient
+        sndfile
+        fftw_lib
         PROPERTIES FOLDER "vendor")
 
 if(TARGET zlibstatic)

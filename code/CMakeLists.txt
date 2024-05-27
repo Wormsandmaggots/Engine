@@ -68,10 +68,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${miniaudio_SOURCE_DIR}
         ${aabb_SOURCE_DIR}
         ${ftgl_SOURCE_DIR}
+        ${fftw}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
 )
 
-
+link_directories(${fftw})
 target_link_libraries(${PROJECT_NAME}
         ${OPENGL_LIBRARIES}
         glad
@@ -90,7 +91,11 @@ target_link_libraries(${PROJECT_NAME}
         gizmos
         ftgl
         TracyClient
+        SndFile::sndfile
+        fftw_lib
 )
+
+
 
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -132,3 +137,4 @@ endfunction()
 
 
 copy_dll_dependencies( ${CMAKE_CURRENT_BINARY_DIR} "${dlls}")
+

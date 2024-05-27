@@ -11,6 +11,7 @@
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
+#include "Input/PlayerInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
@@ -42,11 +43,10 @@ int main() {
     sm.loadScene("res/content/maps/test.yaml");
 
 
-    //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
-    Input::getInstance().initializeController(GLFW_JOYSTICK_1);
-    //HID - test
     DebugInput debugInput;
+    PlayerInput playerInput(GLFW_JOYSTICK_1);
+    PlayerInput playerInput1(GLFW_JOYSTICK_2);
+
     //HID - test
 
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
@@ -56,7 +56,6 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
-    //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
@@ -168,7 +167,8 @@ int main() {
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        //fb->bind();
+        playerInput.interpretInput();
+        playerInput1.interpretInput();
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
