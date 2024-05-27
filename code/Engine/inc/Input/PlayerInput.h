@@ -34,7 +34,7 @@ public:
 
         // Interpret joystick state
         for (int axis = 0; axis < 2; ++axis) {
-            auto [x, y] = input.getControllerJoystickState(joystickId, axis);
+            glm::vec2 position = input.getControllerJoystickState(joystickId, axis);
             //std::string joystickSide = (axis == 0) ? "Left" : "Right";
             //LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(x) + ", y=" + std::to_string(y));
         }

@@ -152,8 +152,10 @@ public:
             return GLFW_RELEASE;
         }
     }
-    //zmien na wektor 2
+
     //zmien axis na glaska
+    //axis 0 - left stick axis 1 - right stick
+    //
     glm::vec2 getControllerJoystickState(int joystick, int axis) const {
         GLFWgamepadstate state;
         if (glfwGetGamepadState(joystick, &state)) {
