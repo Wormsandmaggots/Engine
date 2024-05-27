@@ -16,6 +16,12 @@
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/SSAO.h"
+#include "Generative-System/SongAnalizer.h"
+#include "Generative-System/Ball.h"
+
+
+#include "Globals.h"
+
 using namespace SceneManagement;
 
 int main() {
@@ -28,9 +34,13 @@ int main() {
     Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
     SceneManager sm;
 
+    float songSampleInterval = 1;
+    vector<SongSample> songData;
+    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
+    int songDataIndex = 0;
+
     sm.loadScene("res/content/maps/test.yaml");
 
-    sound->setVolume(2.f);
 
     //HID - test
     //TODO: Kuba: Czy to może tutaj zostać?
@@ -61,16 +71,16 @@ int main() {
     Renderer renderer(&ssao.shaderGeometryPass);
     renderer.init();
 
-    renderer.addShader(&collisionTestShader);
-    renderer.addShader(&colorShader);
-    renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
+    //renderer.addShader(&collisionTestShader);
+    //renderer.addShader(&colorShader);
+    //renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
     Model* player = new Model("res/content/models/player/character_base.obj");
 
-    renderer.addShader(&shaderText);
+    /*renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
-    renderer.addShader(&ssao.shaderGeometryPass);
+    renderer.addShader(&ssao.shaderGeometryPass);*/
 
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
@@ -94,11 +104,11 @@ int main() {
     player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
-    Entity* club1 = new Entity("club");
+    /*Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
     club1->addComponent(club);
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
-    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));*/
 
     glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
 
@@ -130,6 +140,27 @@ int main() {
     static float mul = 4;
     static float texelSize = 1;
 
+
+    //Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
+    Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/material.json"));
+
+    Entity ent("doopa");
+    ent.addComponent(sphereModel);
+
+    sm.getLoadedScenes()[0]->addEntity(&ent);
+
+
+    float time = 0;
+
+    Spawner spawner(sm.getLoadedScenes().at(0));
+    float timeToDispense = songSampleInterval;
+    float timeToDispense2 = timeToDispense;
+
+
+  
+    sound->play();
+    sound->setVolume(1.f);
+
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
@@ -150,7 +181,16 @@ int main() {
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
 
+        if (timeToDispense2 < 0 && songDataIndex < songData.size())
+        {
+            spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20), sphereModel);
+            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20), sphereModel);
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), sphereModel);
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
 
+            songDataIndex++;
+            timeToDispense2 = timeToDispense;
+        }
 
         ImGui::Begin("SSAO");
 
