@@ -14,21 +14,33 @@
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
+#include "Generative-System/SongAnalizer.h"
+#include "Generative-System/Ball.h"
+
+#include "Globals.h"
+
 using namespace SceneManagement;
 
 int main() {
     init();
-	EditorLayer::Editor editor;
+	EditorLayer ::Editor editor;
     editor.init(&s.camera);
     CollisionManager cm;
-	AudioManager a;
-	a.init();
-	Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
+	AudioManager audioManager;
+    audioManager.init();
+	Sound* sound = audioManager.loadSound("res/content/sounds/queen.wav");
 	SceneManager sm;
+    
+    float songSampleInterval = 1;
+    vector<SongSample> songData;
+    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav",songData);
+    int songDataIndex = 0;
 
-	sm.loadScene("res/content/maps/test.yaml");
 
-	sound->setVolume(2.f);
+   
+	sm.loadScene("res/content/maps/Marcin.yaml");
+
+	
 
     //HID - test
     //TODO: Kuba: Czy to może tutaj zostać?
@@ -37,7 +49,6 @@ int main() {
     DebugInput debugInput;
     //HID - test
 
-#pragma endregion TEST
 
 	Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
 	Shader collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag");
@@ -52,25 +63,17 @@ int main() {
     BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
     Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
     
-    MaterialAsset material("res/content/materials/color.json");
   
 
     Renderer renderer(&shader);
     renderer.init();
-	renderer.addShader(&collisionTestShader);
-    renderer.addShader(&colorShader);
-    renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
 
-    Model* player = new Model("res/content/models/player/character_base.obj");
-    
-	renderer.addShader(&shaderText);
-    renderer.addShader(&shaderPbr);
-    renderer.addShader(&shaderCel);
-
-    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
-	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
+    //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
-    Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+    //Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
+    
+    
+
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -84,26 +87,28 @@ int main() {
     cc1->start();
     cc2->start();
 
-    Entity* player1 = new Entity("player");
-	sm.getLoadedScenes()[0]->addEntity(player1);
-    player1->addComponent(player);
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
+    float time = 0;
 
-    Entity* club1 = new Entity("club");
-    sm.getLoadedScenes()[0]->addEntity(club1);
-    club1->addComponent(club);
-    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
-    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+    Spawner spawner(sm.getLoadedScenes().at(0));
+    float timeToDispense = songSampleInterval;
+    float timeToDispense2 = timeToDispense;
 
-    Entity* sphere1 = new Entity("sphere");
-    sm.getLoadedScenes()[0]->addEntity(sphere1);
-    sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
 
-    Entity* player3 = new Entity("player2");
-    sm.getLoadedScenes()[0]->addEntity(player3);
-    player3->addComponent(player2);
-    player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
+    Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
+
+
+    Entity* ball = new Entity("Ball");
+    ball->addComponent(sphereModel);
+    sm.getLoadedScenes().at(0)->addEntity(ball);
+
+
+    Entity* player = new Entity("Player");
+    player->addComponent(sphereModel);
+    player->getTransform()->setPosition(glm::vec3(1, 1, 0));
+    sm.getLoadedScenes().at(0)->addEntity(player);
+    
+    sound->play();
+    sound->setVolume(1.f);
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -111,12 +116,35 @@ int main() {
 		s.deltaTime = currentFrame - s.lastFrame;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        time = time + s.deltaTime;
+
+        
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = s.camera.GetViewMatrix();
+
+        timeToDispense2 -= s.deltaTime;
+
+
+
+        if ( timeToDispense2<0 && songDataIndex < songData.size())
+        {
+         spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20), sphereModel);
+            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20), sphereModel);
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), sphereModel);
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
+            songDataIndex++;
+			timeToDispense2 = timeToDispense;
+        }
+            
+
+
+        
+       spawner.updateBalls(s.deltaTime);
+       //spawner.removeBalls(s.deltaTime);
 
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
 		//glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
@@ -125,9 +153,9 @@ int main() {
         imgui_begin();
         editor.draw();
 
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        //shaderPbr.use();
+        //shaderPbr.setVec3("camPos",s.camera.Position);
+        //shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
 		renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
@@ -135,7 +163,7 @@ int main() {
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         arcadeRenderer->renderText();
-
+        
 
 
 
@@ -162,7 +190,7 @@ int main() {
         //arcadeRenderer->update();
         update();
 	}
-    a.end();
+    audioManager.end();
 
 	end();
 	return 0;

@@ -17,6 +17,7 @@ public:
 
     void play();
     void stop();
+    void applyLowPassfilter();
     void load()override {};
 
     void setVolume(float);
@@ -27,6 +28,7 @@ private:
     float volume = 1;
     ma_sound sound;
 };
+
 
 
 #endif //ENGINE_SOUND_H

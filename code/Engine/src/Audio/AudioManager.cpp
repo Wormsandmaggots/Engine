@@ -16,11 +16,13 @@ int AudioManager::init() {
 
 Sound* AudioManager::loadSound(const std::string &path) {
     Sound* newSound = AssetManager::GetAsset<Sound>(path);
-    ma_sound_init_from_file(&engine, path.c_str(), 0, NULL, NULL, &newSound->getSound());
+    ma_sound_init_from_file(&engine, path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION, NULL, NULL, &newSound->getSound());
     loadedSounds.push_back(newSound);
 
     return newSound;
 }
+
+
 
 void AudioManager::end() {
 

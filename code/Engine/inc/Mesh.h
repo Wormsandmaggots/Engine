@@ -64,12 +64,59 @@ private:
 
         glBindVertexArray(0);
     }
+    virtual void setupMeshInstanced()
+    {
+        // create buffers/arrays
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        // vertex normals
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+        // vertex texture coords
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+        // vertex tangent
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+        // vertex bitangent
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+
+        // create instance buffer
+        glGenBuffers(1, &instanceBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+        glBufferData(GL_ARRAY_BUFFER, instances * sizeof(glm::mat4), &instancedMatrix[0], GL_STATIC_DRAW);
+
+        // set up instance attributes
+        for (unsigned int i = 0; i < 4; i++)
+        {
+            glEnableVertexAttribArray(5 + i);
+            glVertexAttribPointer(5 + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * i));
+            glVertexAttribDivisor(5 + i, 1);
+        }
+
+        glBindVertexArray(0);
+    }
+
 public:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
     std::vector<SVertex>* sphereVertices;
+
+    std::vector<glm::mat4>* instancedMatrix;
 
     unsigned int instances;
 
@@ -79,13 +126,19 @@ public:
 
     /*  Functions  */
     // constructor
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, unsigned int numberOfInstances = 1, std::vector<glm::mat4> instancedMatrix = {})
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, unsigned int numberOfInstances = 1, std::vector<glm::mat4>* instancedMatrix = nullptr)
     {
         this->vertices = vertices;
         this->indices = indices;
         this->textures = textures;
         instances = numberOfInstances;
-        setupMesh();
+        this->instancedMatrix = instancedMatrix;
+        if (numberOfInstances > 1) {
+            setupMeshInstanced();
+        }
+        else {
+            setupMesh();
+        }
     }
 
     // render the mesh
@@ -148,6 +201,11 @@ public:
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
+    }
+
+    void drawInstanced(Shader* shader, unsigned int instanceCount, glm::mat4 translationMatrix) 
+    {
+    
     }
 };
 

@@ -15,7 +15,7 @@
 
 class AssetManager {
 public:
-    template<typename T>
+    template<typename T>    
     static T* GetAsset(const std::string& path);
 
     //!IT SHOULD BE CALLED AFTER OTHER MODULES HAS BEEN DEALLOCATED
