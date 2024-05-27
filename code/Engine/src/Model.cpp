@@ -53,7 +53,7 @@ Model::Model(const Model& another)
 	this->meshes = another.meshes;
 
     //wyjebac
-    loadModel(path);
+    //loadModel(path);
 }
 
 Model::Model(){
