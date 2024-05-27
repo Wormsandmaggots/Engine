@@ -5,6 +5,7 @@
 #include <vector>
 #include "GLFW/glfw3.h"
 #include "Debug/Logger.h"
+#include <glm/glm.hpp>
 
 class Input {
 public:
@@ -122,6 +123,7 @@ public:
     }
 
     //controller
+
     //variables to store the initial joystick positions
     //std::array<std::array<float, 2>, 2> initialJoystickPositions = {{{0.0f, 0.0f}, {0.0f, 0.0f}}};
 
@@ -150,32 +152,9 @@ public:
             return GLFW_RELEASE;
         }
     }
-
-    /*std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
-        //deadzone paramteter
-        //deadzone is a value that is used to ignore small values of the joystick
-        float deadZone = 0.4f;
-        int count;
-        const float* axes = glfwGetJoystickAxes(joystick, &count);
-        if (axis < count) {
-            float x = axes[axis * 2];
-            float y = axes[axis * 2 + 1];
-
-            // Apply dead zone
-            if (std::abs(x) < deadZone) x = 0.0f;
-            if (std::abs(y) < deadZone) y = 0.0f;
-
-            // Subtract the initial joystick positions from the current positions
-            //x -= initialJoystickPositions[axis][0];
-            //y -= initialJoystickPositions[axis][1];
-
-            return std::make_pair(x, y);
-        } else {
-            return std::make_pair(0.0f, 0.0f);
-        }
-    }*/
-
-    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+    //zmien na wektor 2
+    //zmien axis na glaska
+    glm::vec2 getControllerJoystickState(int joystick, int axis) const {
         GLFWgamepadstate state;
         if (glfwGetGamepadState(joystick, &state)) {
             float x = state.axes[axis * 2];
@@ -186,22 +165,12 @@ public:
             if (std::abs(x) < deadZone) x = 0.0f;
             if (std::abs(y) < deadZone) y = 0.0f;
 
-            return std::make_pair(x, y);
+            return glm::vec2(x, y);
         } else {
-            return std::make_pair(0.0f, 0.0f);
+            return glm::vec2(0.0f, 0.0f);
         }
     }
 
-    //triggers
-    /*float getControllerTriggerState(int joystick, int trigger) const {
-        int count;
-        const float* axes = glfwGetJoystickAxes(joystick, &count);
-        if (trigger + 4 < count) {
-            return axes[trigger + 4];
-        } else {
-            return -1.0f;
-        }
-    }*/
 
     float getControllerTriggerState(int joystick, int trigger) const {
         GLFWgamepadstate state;
