@@ -10,23 +10,24 @@
 #include "Core/AssetManager/Asset.h"
 #include "Debug/Logger.h"
 
-class Sound : public Asset{
+class Sound : public Asset
+{
 public:
-    explicit Sound(const std::string& path) : Asset(path) {};
+    explicit Sound(const std::string &path) : Asset(path){};
     virtual ~Sound() = default;
 
     void play();
     void stop();
-    void load()override {};
+    void applyLowPassfilter();
+    void load() override {};
 
     void setVolume(float);
 
-    [[nodiscard]] ma_sound& getSound();
+    [[nodiscard]] ma_sound &getSound();
 
 private:
     float volume = 1;
     ma_sound sound;
 };
 
-
-#endif //ENGINE_SOUND_H
+#endif // ENGINE_SOUND_H

@@ -6,23 +6,23 @@
 #include "Shader.h"
 #include "Renderer/Renderable.h"
 #include <Debug/Logger.h>
+#include "Globals.h"
 
-class Renderer{
+class Renderer
+{
 public:
-    Renderer(Shader* defaultShader);
+    Renderer(Shader *defaultShader);
     void init();
     void update();
     void end();
-    void addShader(Shader* shader);
-    void static Render(Renderable* renderable);
+    void static Render(Renderable *renderable);
     virtual ~Renderer() = default;
-    inline static Shader* defaultShader;
-    std::vector<Shader*> shaders;
+    inline static Shader *defaultShader;
     void updateProjectionAndView(glm::mat4 view, glm::mat4 projection);
-   
-    //3) frame buffer do post procesow 
-    //2) instance render
 
+    // 1) render do frame buffera
+    // 3) frame buffer do post procesow
+    // 2) instance render
 };
 
-#endif //ENGINE_RENDERER_H
+#endif // ENGINE_RENDERER_H

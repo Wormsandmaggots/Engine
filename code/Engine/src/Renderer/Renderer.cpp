@@ -2,10 +2,8 @@
 #include <Renderer/MaterialAsset.h>
 #include <tracy/Tracy.hpp>
 
-
-
 Renderer::Renderer(Shader* shader) {
-	shaders.push_back(shader);
+	globalShaders.push_back(shader);
 	defaultShader = shader;
  }
 
@@ -30,10 +28,6 @@ void Renderer::end()
 
 }
 
-void Renderer::addShader(Shader* shader)
-{
-	shaders.push_back(shader);
-}
 
 void Renderer::Render(Renderable *renderable)
 {
@@ -56,7 +50,7 @@ void Renderer::Render(Renderable *renderable)
 
 void Renderer::updateProjectionAndView(glm::mat4 projection, glm::mat4 view)
 {
-	for (Shader* shader : shaders) {
+	for (Shader* shader : globalShaders) {
 		shader->use();		
 		shader->setMat4("view", view);
 		shader->setMat4("projection", projection);

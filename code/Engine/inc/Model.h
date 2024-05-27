@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include <glm/glm.hpp>
+#include <glm/glm.hpp   >
 #include <glm/gtc/matrix_transform.hpp>
 #include <stb_image.h>
 #include <assimp/Importer.hpp>
@@ -23,6 +23,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"
 #include "Renderer/MaterialAsset.h"
+#include "Core/AssetManager/Asset.h"
 
 using namespace std;
 
@@ -47,8 +48,8 @@ public:
     Model(const string &path,Shader* shader=nullptr, bool gamma=false);
     Model(const string& path, MaterialAsset* material);
     void Draw(Shader* shader) override;
-
     ~Model() override = default;
+
 
     void awake() override;
 

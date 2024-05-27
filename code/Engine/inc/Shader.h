@@ -4,8 +4,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include "Globals.h"
 #include "Debug/Logger.h"
-
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -96,7 +96,7 @@ public:
         glDeleteShader(fragment);
         if (geometryPath != nullptr)
             glDeleteShader(geometry);
-
+        globalShaders.push_back(this);
     }
 
     Shader();

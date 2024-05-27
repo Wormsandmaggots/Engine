@@ -45,15 +45,18 @@ Model::Model(const string& path, MaterialAsset* material)
     loadModel(path);
 }
 
-Model::Model(const Model& another) {
+Model::Model(const Model& another) 
+{
     directory = path.substr(0, path.find_last_of('/'));
     this->path = another.path;
     this->modelShader = another.modelShader;
+	this->meshes = another.meshes;
 
-    loadModel(path);
+    //wyjebac
+    //loadModel(path);
 }
 
-Model::Model() {
+Model::Model(){
     path = "res/content/models/sphere/untitled.obj";
     modelShader = nullptr;
     //PATH JEST DO SPHERE a nie do obiektu z którego powinno przyjmować texture
