@@ -40,12 +40,14 @@ public:
     //keyboard
     void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
         //to handle a new kwy, at it to this if statement
-        if (action == GLFW_PRESS) {
-            keys[key] = true;
-            keysReleased[key] = false;
-        } else if (action == GLFW_RELEASE) {
-            keys[key] = false;
-            keysReleased[key] = true;
+        if (key == GLFW_KEY_W || key == GLFW_KEY_A || key == GLFW_KEY_S || key == GLFW_KEY_D || key == GLFW_KEY_Q || key == GLFW_KEY_E || key == GLFW_KEY_B || key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_ESCAPE) {
+            if (action == GLFW_PRESS) {
+                keys[key] = true;
+                keysReleased[key] = false;
+            } else if (action == GLFW_RELEASE) {
+                keys[key] = false;
+                keysReleased[key] = true;
+            }
         }
     }
 
@@ -120,14 +122,25 @@ public:
     }
 
     //controller
+    //variables to store the initial joystick positions
+    //std::array<std::array<float, 2>, 2> initialJoystickPositions = {{{0.0f, 0.0f}, {0.0f, 0.0f}}};
+
     void initializeController(int joystick) {
         if (glfwJoystickPresent(joystick)) {
             LOG_INFO("Controller detected");
+
+            // Get the initial joystick positions
+            /*for (int axis = 0; axis < 2; ++axis) {
+                auto [x, y] = getControllerJoystickState(joystick, axis);
+                initialJoystickPositions[axis][0] = x;
+                initialJoystickPositions[axis][1] = y;
+            }*/
         } else {
             LOG_WARNING("No controller detected");
         }
     }
 
+    //buttons and bumpers
     int getControllerButtonState(int joystick, int button) const {
         int count;
         const unsigned char* buttons = glfwGetJoystickButtons(joystick, &count);
@@ -135,6 +148,67 @@ public:
             return buttons[button];
         } else {
             return GLFW_RELEASE;
+        }
+    }
+
+    /*std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+        //deadzone paramteter
+        //deadzone is a value that is used to ignore small values of the joystick
+        float deadZone = 0.4f;
+        int count;
+        const float* axes = glfwGetJoystickAxes(joystick, &count);
+        if (axis < count) {
+            float x = axes[axis * 2];
+            float y = axes[axis * 2 + 1];
+
+            // Apply dead zone
+            if (std::abs(x) < deadZone) x = 0.0f;
+            if (std::abs(y) < deadZone) y = 0.0f;
+
+            // Subtract the initial joystick positions from the current positions
+            //x -= initialJoystickPositions[axis][0];
+            //y -= initialJoystickPositions[axis][1];
+
+            return std::make_pair(x, y);
+        } else {
+            return std::make_pair(0.0f, 0.0f);
+        }
+    }*/
+
+    std::pair<float, float> getControllerJoystickState(int joystick, int axis) const {
+        GLFWgamepadstate state;
+        if (glfwGetGamepadState(joystick, &state)) {
+            float x = state.axes[axis * 2];
+            float y = state.axes[axis * 2 + 1];
+
+            // Apply dead zone
+            float deadZone = 0.4f;
+            if (std::abs(x) < deadZone) x = 0.0f;
+            if (std::abs(y) < deadZone) y = 0.0f;
+
+            return std::make_pair(x, y);
+        } else {
+            return std::make_pair(0.0f, 0.0f);
+        }
+    }
+
+    //triggers
+    /*float getControllerTriggerState(int joystick, int trigger) const {
+        int count;
+        const float* axes = glfwGetJoystickAxes(joystick, &count);
+        if (trigger + 4 < count) {
+            return axes[trigger + 4];
+        } else {
+            return -1.0f;
+        }
+    }*/
+
+    float getControllerTriggerState(int joystick, int trigger) const {
+        GLFWgamepadstate state;
+        if (glfwGetGamepadState(joystick, &state)) {
+            return state.axes[trigger + 4]; // Triggers are usually axes 4 and 5
+        } else {
+            return -1.0f;
         }
     }
 
