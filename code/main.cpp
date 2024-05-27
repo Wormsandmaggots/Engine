@@ -72,6 +72,7 @@ int main() {
     InverseKinematics* playerIK = new InverseKinematics(playerRig);
 
     int offset = 0;
+    glm::vec2 joystickOffset = glm::vec2(0,0);
     renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
@@ -152,8 +153,9 @@ int main() {
         shaderRig.use();
 
         ///IK
-        playerIK->update(offset, offset, "mixamorig:RightFoot");
-        playerIK->update(offset, offset, "mixamorig:RightHand");
+        joystickOffset = playerInput.getJoystick(1) * 100.0f;
+        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightFoot");
+        //playerIK->update(offset, offset, "mixamorig:RightHand");
         playerRig->update();
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)

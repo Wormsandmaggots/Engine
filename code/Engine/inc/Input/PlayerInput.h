@@ -36,8 +36,10 @@ public:
         // Interpret joystick state
         for (int axis = 0; axis < 2; ++axis) {
             glm::vec2 position = input.getControllerJoystickState(joystickId, axis);
-            //std::string joystickSide = (axis == 0) ? "Left" : "Right";
-            //LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(x) + ", y=" + std::to_string(y));
+            if(axis == 0){joystick1 = position;}
+            else {joystick2 = position;}
+            std::string joystickSide = (axis == 0) ? "Left" : "Right";
+            LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(position.x) + ", y=" + std::to_string(position.y));
         }
         // Interpret trigger state
         for (int trigger = 0; trigger < 2; ++trigger) {
@@ -46,10 +48,16 @@ public:
             //LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + triggerSide + " Trigger Value: " + std::to_string(triggerValue));
         }
     }
-
+    glm::vec2 getJoystick(int num){
+        if(num == 1){return joystick1;}
+        else if(num == 2) {return joystick2;}
+        else {return glm::vec2(0,0);}
+    }
 private:
     //int joystick;
     int joystickId;
     //Input& input;
+    glm::vec2 joystick1;
+    glm::vec2 joystick2;
 };
 #endif
