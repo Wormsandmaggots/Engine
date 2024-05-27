@@ -150,8 +150,9 @@ int main() {
         shaderRig.use();
 
         ///IK
-        playerIK->update(offset, "mixamorig:RightFoot");
-        playerRig->update(offset);
+        playerIK->update(offset, offset, "mixamorig:RightFoot");
+        playerIK->update(offset, offset, "mixamorig:RightHand");
+        playerRig->update();
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);

@@ -83,7 +83,7 @@ public:
             calculateVertices(bone->getModelTransform(), bone->getChildren()[i]);
     }
 
-    void update(int offset){
+    void update(){
         calculateVertices(glm::mat4(1.0f), rootBone);
     }
 
