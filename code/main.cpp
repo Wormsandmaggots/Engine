@@ -12,6 +12,7 @@
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
+#include "Input/PlayerInput.h"
 #include "HUD/ProgressBar.h"
 #include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
@@ -34,11 +35,10 @@ int main() {
 
     sound->setVolume(2.f);
 
-    //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
-    Input::getInstance().initializeController(GLFW_JOYSTICK_1);
-    //HID - test
     DebugInput debugInput;
+
+    PlayerInput playerInput(GLFW_JOYSTICK_1);
+    PlayerInput playerInput1(GLFW_JOYSTICK_2);
     //HID - test
 
 #pragma endregion TEST
@@ -131,6 +131,8 @@ int main() {
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        playerInput.interpretInput();
+        playerInput1.interpretInput();
         offset += debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         //animator->UpdateAnimation(s.deltaTime);
         glClearColor(0.2, 0.2, 0.2, 1);
