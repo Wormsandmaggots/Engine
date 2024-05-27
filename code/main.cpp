@@ -17,6 +17,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/SSAO.h"
 #include "Core/Time.h"
+#include "AI/StateMachine.h"
 
 using namespace SceneManagement;
 
@@ -48,7 +49,7 @@ int main() {
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
-    Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
+    Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/FXAA.frag");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -129,11 +130,12 @@ int main() {
     Entity* timer = new Entity("timer");
     sm.getLoadedScenes()[0]->addEntity(timer);
     timer->getTransform()->setPosition(glm::vec3(70, 960, 0));
+    timer->addComponent(new StateMachine());
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
-    //FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+    FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
     int SCR_WIDTH = s.WINDOW_WIDTH;
     int SCR_HEIGHT = s.WINDOW_HEIGHT;
@@ -270,6 +272,9 @@ int main() {
     shaderSSAOBlur.use();
     shaderSSAOBlur.setInt("ssaoInput", 0);
 
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
     while (!glfwWindowShouldClose(s.window))
 	{
         glEnable(GL_DEPTH_TEST);
@@ -375,7 +380,6 @@ int main() {
         ssao.renderQuad();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shaderLightingPass.use();
         // send light relevant uniforms
@@ -396,7 +400,18 @@ int main() {
         glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
 
+        fb->bind();
         ssao.renderQuad();
+        fb->unbind();
+
+        screenShader.use();
+        screenShader.setFloat("time", glfwGetTime());
+        screenShader.setInt("screenTexture", 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, fb->getTexture());
+        fb->drawQuad();
+
+
 //        glDisable(GL_DEPTH_TEST);
 //        arcadeRenderer->renderText();
 //        counterRenderer->renderText();
