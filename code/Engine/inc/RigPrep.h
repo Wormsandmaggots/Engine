@@ -100,6 +100,9 @@ public:
         bones = _bones;
     }
 
+    Bone* getBone(std::string name){
+        return bones[name];
+    }
 private:
     Bone* rootBone;
     std::map<std::string, BoneInfo> m_BoneInfoMap;

@@ -6,18 +6,17 @@ private:
     glm::vec3 hingeAxis;
     glm::vec3 initTarget;
     std::map<std::string,Bone*> bones;
-    int prevOffset;
     RigPrep* rig;
+
 public:
     InverseKinematics(RigPrep* _rig){
         rig = _rig;
         bones = rig->getBones();
         hingeAxis = glm::vec3(0.0f,1.0f,0.0f);
-        initTarget = glm::vec3(-138.593, 288.838, -4.86769);
-        prevOffset = -1;
+        //initTarget = glm::vec3(-138.593, 288.838, -4.86769);
     }
-    void update(int offset){
-        ik("mixamorig:RightHand",offset);
+    void update(int offset, string _limb){
+        ik(_limb,offset);
         rig->setBones(bones);
     }
 
@@ -28,7 +27,7 @@ public:
         }
         //glm::vec3 target = limbBone->getModelPosition();
 
-        glm::vec3 target = initTarget + glm::vec3(offset, offset, 0);
+        glm::vec3 target = limbBone->getInitPosition() + glm::vec3(offset, offset, 0);
         //glm::vec3 target = initTarget;
         glm::vec3 endEffector = limbBone ->getModelPosition();
         for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
@@ -78,7 +77,6 @@ public:
                         glm::mat3 newLocalMatrix = invParentRotationPart * glm::mat3(secondToLast->getModelTransform()); //oblicza sie prawidlowo
                         secondToLast->updateLocalRotationPart(newLocalMatrix);
 
-
                         updateChildren(secondToLast);
                         endEffector = limbBone ->getModelPosition();
                     }
@@ -87,7 +85,7 @@ public:
                 secondToLast = secondToLast->getParent();
             }
         }
-        prevOffset = offset;
+        //prevOffset = offset;
     }
 
     void updateChildren(Bone* parent) {
