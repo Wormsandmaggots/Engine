@@ -163,7 +163,7 @@ public:
             float y = state.axes[axis * 2 + 1];
 
             // Apply dead zone
-            float deadZone = 0.4f;
+            float deadZone = 0.1f;
             if (std::abs(x) < deadZone) x = 0.0f;
             if (std::abs(y) < deadZone) y = 0.0f;
 
