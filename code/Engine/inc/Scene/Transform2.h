@@ -36,6 +36,8 @@ public:
     void setScale(glm::vec3 newScale);
     void setLocalTransform(glm::mat4 mat);
 
+    glm::vec3 getPosition();
+
 private:
     glm::vec3 localPosition=glm::vec3(0.f);
     glm::vec3 localScale=glm::vec3(1.f);

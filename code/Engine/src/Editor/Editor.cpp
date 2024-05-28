@@ -8,6 +8,7 @@
 #include "Scene/SceneManager.h"
 #include "Editor/Panels/FileDialog.h"
 #include "Editor/YamlWriter.h"
+#include <tracy/Tracy.hpp>
 
 
 using namespace EditorLayer;
@@ -31,6 +32,9 @@ Editor::Editor() {
 }
 
 void Editor::draw() {
+
+    ZoneScopedN("Draw editor");
+
     hierarchy->draw(editorCamera);
     drawMainMenu();
 }
