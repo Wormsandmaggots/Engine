@@ -1,0 +1,17 @@
+{
+  "vertexShader": "res/content/shaders/color_v.glsl",
+  "fragmentShader": "res/content/shaders/color_f.glsl",
+  "uniforms": [
+    {
+      "type": "vec4",
+      "name": "color",
+      "value": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "textures": []
+}
