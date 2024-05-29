@@ -16,16 +16,19 @@ public:
     Component() = default;
     virtual ~Component() = default;
     //when initialized
-    virtual void awake() = 0;
+    virtual void awake() {};
     //next frame after initialization
-    virtual void start() = 0;
+    virtual void start() {};
     //every frame
-    virtual void update() = 0;
+    virtual void update() {};
     //when should be destroyed
-    virtual void onDestroy() = 0;
+    virtual void onDestroy() {};
     virtual void setParent(Entity* e);
     virtual void setTransform(Transform2* t);
     virtual void convertToYaml(YAML::Emitter&);
     virtual void drawEditor() {};
+
+private:
+
 };
 #endif //ENGINE_COMPONENT_H

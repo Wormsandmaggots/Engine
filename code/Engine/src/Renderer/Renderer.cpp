@@ -1,5 +1,6 @@
 #include "Renderer/Renderer.h"
 #include <Renderer/MaterialAsset.h>
+#include <tracy/Tracy.hpp>
 
 
 
@@ -13,7 +14,7 @@ void Renderer::init()
 {
 	//    stbi_set_flip_vertically_on_load(true);
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }
 
@@ -36,8 +37,7 @@ void Renderer::addShader(Shader* shader)
 
 void Renderer::Render(Renderable *renderable)
 {
-
-	
+    ZoneTransientN(Render, "Render", true);
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();

@@ -85,7 +85,7 @@ target_link_libraries(${PROJECT_NAME}
         yaml-cpp
         freetype
         miniaudio
-        aabb
+        #aabb
         effolkronium_random
         gizmos
         ftgl

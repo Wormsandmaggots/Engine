@@ -6,11 +6,14 @@
 #include "Shader.h"
 #include "stb_image.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "ECS/Component.h"
+#include "Renderer/Renderable.h"
 #include <vector>
 
-class Image {
+class Image : public Component, public Renderable {
 private:
     unsigned int VAO, VBO, EBO, texture;
+    Transform2* transform;
 
 protected:
     Shader shader;
@@ -21,6 +24,14 @@ protected:
 public:
     Image(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath);
     void render();
+    void update() override;
+    void awake() override {};
+    void start() override {};
+    Shader * getShader() override;
+    Transform2 * getTransform() override;
+    void setTransform(Transform2 *t) override;
+    void onDestroy() override {};
+    void Draw(Shader *shader) override;
     ~Image();
 };
 

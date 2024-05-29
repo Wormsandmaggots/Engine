@@ -45,16 +45,20 @@ class FrameBuffer {
 public:
     FramebufferSpecification Specification;
 
-    FrameBuffer(int,int);
+    FrameBuffer(int,int,int = 0);
 
     void bind();
     void unbind();
 
     int readPixel(int, int, int);
+
+    void drawQuad() const;
+
+    int getTexture() const;
 private:
     unsigned int fbo;
     unsigned int texture;
-
+    unsigned int quadVAO, quadVBO;
 };
 
 

@@ -25,10 +25,10 @@ public:
     Entity(const Entity&);
     virtual ~Entity();
 
-    void update();
+    virtual void update();
     void updateTransform();
     void setDirtyTree();
-    void addComponent(Component*);
+    virtual void addComponent(Component*);
     void addChild(Entity*);
     void addChildren(std::vector<Entity*>&);
     void removeChild(Entity*);
@@ -69,13 +69,14 @@ public:
     void addComponent(Args&&... args) {
         T* newComponent = new T(std::forward<Args>(args)...);
         newComponent->setParent(this);
-        components.push_back(newComponent);}
+        addComponent(newComponent);
+    }
 
     void drawEditor();
 
 
 private:
-    static int EntityCounter;
+    static unsigned int EntityCounter;
     std::string name = "Untitled" + std::to_string(EntityCounter);
     Transform2* transform = new Transform2;
     int id = 0;
