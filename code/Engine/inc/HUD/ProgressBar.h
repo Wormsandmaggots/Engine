@@ -13,7 +13,7 @@ public:
             : Image(vertexShaderPath, fragmentShaderPath, texturePath), maxValue(maxValue), currentValue(maxValue) {}
 
     void update() override {
-        currentValue -= 2.0f * deltaTime;
+        currentValue -= 2.0f * Time::deltaTime;
 
         if (currentValue < 0) {
             currentValue = 0;

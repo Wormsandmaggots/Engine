@@ -5,7 +5,11 @@
 #ifndef ENGINE_TIME_H
 #define ENGINE_TIME_H
 
-static float gameTime;
-static float deltaTime;
+class Time {
+public:
+    static float gameTime;
+    static float deltaTime;
+
+};
 
 #endif //ENGINE_TIME_H

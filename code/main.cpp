@@ -17,6 +17,7 @@
 #include "Renderer/MaterialAsset.h"
 #include "Animation/Animation.h"
 #include "Animation/Animator.h"
+#include "AI/StateMachine.h"
 
 using namespace SceneManagement;
 
@@ -78,10 +79,10 @@ int main() {
     //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
     Model* player2 = new Model("res/content/models/npc1/Dance3.fbx", &shaderRig);
-    Animation* npcAnimation = new Animation("res/content/models/npc1/Dance3.fbx", player2);
-    Animation* npcAnimation1 = new Animation("res/content/models/npc1/3addony_moze_oddadzom.fbx", player2);
-    RigPrep* npcRig = new RigPrep(player2);
-    Animator* animator = new Animator(npcAnimation);
+    //Animation* npcAnimation = new Animation("res/content/models/npc1/Dance3.fbx", player2);
+    //Animation* npcAnimation1 = new Animation("res/content/models/npc1/3addony_moze_oddadzom.fbx", player2);
+    //RigPrep* npcRig = new RigPrep(player2);
+    //Animator* animator = new Animator(npcAnimation);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -117,16 +118,26 @@ int main() {
     player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
     player2->getTransform()->setPosition(glm::vec3(-1.0f, 7.0f, 0.0f));
 
+    StateMachine* stateMachine = new StateMachine();
+    Entity* stateMachineEntity = new Entity("stateMachineEntity");
+    sm.getLoadedScenes()[0]->addEntity(stateMachineEntity);
+    stateMachineEntity->addComponent(player2);
+    stateMachineEntity->addComponent(stateMachine);
+    player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
+    player2->getTransform()->setPosition(glm::vec3(-1.0f, 7.0f, 0.0f));
+
+
+
     bool f = true;
     //animator->PlayAnimation(npcAnimation1);
     while (!glfwWindowShouldClose(s.window))
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
 		s.deltaTime = currentFrame - s.lastFrame;
+        Time::deltaTime = s.deltaTime;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        offset += debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
-        animator->UpdateAnimation(s.deltaTime);
+        //animator->UpdateAnimation(s.deltaTime);
 
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -150,11 +161,12 @@ int main() {
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
 */
+/*
         ///ANIMATIONS
         auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-
+*/
 
         f = false;
         shaderPbr.use();
