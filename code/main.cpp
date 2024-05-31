@@ -18,6 +18,12 @@
 #include "Generative-System/Ball.h"
 
 #include "Globals.h"
+#include "Input/DebugInput.h"
+#include "Input/PlayerInput.h"
+#include "Animation/Animation.h"
+#include "Animation/Animator.h"
+#include "RigPrep.h"
+#include "Animation/InverseKinematics.h"
 
 using namespace SceneManagement;
 
@@ -36,7 +42,10 @@ int main() {
     SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav",songData);
     int songDataIndex = 0;
 
+    DebugInput debugInput;
 
+    PlayerInput playerInput(GLFW_JOYSTICK_1);
+    PlayerInput playerInput1(GLFW_JOYSTICK_2);
    
 	sm.loadScene("res/content/maps/Marcin.yaml");
 
@@ -46,7 +55,6 @@ int main() {
     //TODO: Kuba: Czy to może tutaj zostać?
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
-    DebugInput debugInput;
     //HID - test
 
 
@@ -56,6 +64,7 @@ int main() {
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+    Shader shaderRig("res/content/shaders/vertexRig.glsl","res/content/shaders/fragment.glsl");
     //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
@@ -68,12 +77,16 @@ int main() {
     Renderer renderer(&shader);
     renderer.init();
 
-    //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
+    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	//Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     //Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
     
-    
+    Model* playerModel = new Model("res/content/models/Character_rigged/originWstopkach.fbx", &shaderRig);
+    RigPrep* playerRig = new RigPrep(playerModel);
+	InverseKinematics* playerIK = new InverseKinematics(playerRig);
 
+    glm::vec2 joystickOffset = glm::vec2(0);
+    
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -103,10 +116,15 @@ int main() {
 
 
     Entity* player = new Entity("Player");
-    player->addComponent(sphereModel);
+    player->addComponent(playerModel);
     player->getTransform()->setPosition(glm::vec3(1, 1, 0));
     sm.getLoadedScenes().at(0)->addEntity(player);
-    
+    player->getTransform()->setScale(glm::vec3(0.01f));
+
+    Entity* handPointer = new Entity("handPointer");
+	handPointer->setParent(*player);
+	handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition()*0.01f);
+
     sound->play();
     sound->setVolume(1.f);
 
@@ -118,6 +136,9 @@ int main() {
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         time = time + s.deltaTime;
 
+		debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
+        playerInput.interpretInput();
+        playerInput1.interpretInput();
         
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -127,6 +148,7 @@ int main() {
 		glm::mat4 view = s.camera.GetViewMatrix();
 
         timeToDispense2 -= s.deltaTime;
+
 
 
 
@@ -153,6 +175,16 @@ int main() {
 
         imgui_begin();
         editor.draw();
+
+        shaderRig.use();
+        joystickOffset = playerInput.getJoystick(1) * 100.0f;
+        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        //playerIK->update(offset, offset, "mixamorig:RightHand");
+        playerRig->update();
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.007f);
 
         //shaderPbr.use();
         //shaderPbr.setVec3("camPos",s.camera.Position);
