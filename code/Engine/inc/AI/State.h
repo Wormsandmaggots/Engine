@@ -7,13 +7,18 @@
 class State {
 public:
     Animator* animator;
-
+    Animation* givenAnimation;
     State() {}
+    State(Animation* anim) {
+        givenAnimation = anim;
+    }
 
     virtual void enter(Entity* contex) {
-        LOG_WARNING(contex->getName());
-        Animation* animation = new Animation(contex->getComponent<Model>()->getPath(), contex->getComponent<Model>());
-        animator = new Animator(animation);
+        if(givenAnimation == NULL){
+            givenAnimation = new Animation(contex->getComponent<Model>()->getPath(), contex->getComponent<Model>());
+        }
+        //Animation* animation = new Animation(contex->getComponent<Model>()->getPath(), contex->getComponent<Model>());
+        animator = new Animator(givenAnimation);
     };
     virtual void update(Entity* context) {
         context->getComponent<Model>()->getShader()->use();

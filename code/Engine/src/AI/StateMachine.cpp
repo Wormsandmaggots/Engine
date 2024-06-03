@@ -21,5 +21,6 @@ StateMachine::StateMachine(const State &currentState) : currentState(currentStat
 }
 
 void StateMachine::awake() {
+
     currentState.enter(parentEntity);
 }

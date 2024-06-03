@@ -33,6 +33,12 @@ public:
         if (input.isKeyPressed(GLFW_KEY_E)) {
             camera.ProcessKeyboard(DOWN, deltaTime);
         }
+        if (input.isKeyPressed(GLFW_KEY_P)) {
+            state += 1;
+        }
+        if (input.isKeyPressed(GLFW_KEY_O)) {
+            state -= 1;
+        }
         // functional
         if (input.isKeyPressed(GLFW_KEY_ESCAPE)) {
             //Deltion pending
@@ -80,7 +86,7 @@ public:
 
         camera.ProcessMouseScroll(scrollOffsetY);
     }
-
+int state = 0;
 private:
 
     double lastMouseX = 0.0;

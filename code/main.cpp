@@ -126,9 +126,9 @@ int main() {
     player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
     player2->getTransform()->setPosition(glm::vec3(-1.0f, 7.0f, 0.0f));
 
-
-
-    bool f = true;
+    Animation* secondAnimation = new Animation("res/content/models/npc1/poChinsku.fbx", player2);
+    State secondState(secondAnimation);
+    int f = 0;
     //animator->PlayAnimation(npcAnimation1);
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -137,6 +137,11 @@ int main() {
         Time::deltaTime = s.deltaTime;
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        cout << debugInput.state<< endl;
+        if(debugInput.state > 30 && f == 0) {
+            stateMachine->changeState(secondState);
+            f = 1;
+        }
         //animator->UpdateAnimation(s.deltaTime);
 
         glClearColor(0.2, 0.2, 0.2, 1);
@@ -168,7 +173,6 @@ int main() {
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 */
 
-        f = false;
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
