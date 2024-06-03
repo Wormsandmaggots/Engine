@@ -29,7 +29,7 @@ public:
         glm::vec3 endEffector = limbBone ->getModelPosition();
         for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kowsci ktora manewrujemy jako pierwsza
-            for (int i =0; i <2; i++) { //petla by przejsc 3 poprzednie kosci
+            for (int i =0; i <3; i++) { //petla by przejsc 3 poprzednie kosci
                 glm::vec3 e_i = glm::vec3(endEffector - secondToLast->getModelPosition());
                 glm::vec3 t_i = glm::vec3(target - secondToLast->getModelPosition()); //odejmowanie w dobrym kierunku
                 e_i = glm::normalize(e_i);
@@ -52,7 +52,7 @@ public:
                         secondToLast->updateModelRotationPart(newModelTransform);
 /*
                         //!CONSTRAINTS v2
-                        if(secondToLast->getName() == "mixamorig:RightForeArm"){
+                        if(secondToLast->getName() == "mixamorig:RightForeArm" || secondToLast->getName() == "mixamorig:LeftForeArm"){
                             glm::vec3 jointAxisNew = hingeAxis;
                             jointAxisNew = jointAxisNew * glm::mat3(secondToLast->getModelTransform()) ;
                             jointAxisNew = glm::normalize(jointAxisNew);

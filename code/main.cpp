@@ -73,6 +73,7 @@ int main() {
 
     int offset = 0;
     glm::vec2 joystickOffset = glm::vec2(0,0);
+    glm::vec2 joystickOffset2 = glm::vec2(0,0);
     renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
@@ -153,8 +154,10 @@ int main() {
         shaderRig.use();
 
         ///IK
-        joystickOffset = playerInput.getJoystick(1) * 100.0f;
-        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightFoot");
+        joystickOffset = playerInput.getJoystick(1) * 200.0f;
+        joystickOffset2 = playerInput.getJoystick(2) * 200.0f;
+        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
         //playerIK->update(offset, offset, "mixamorig:RightHand");
         playerRig->update();
         auto transforms = playerRig->GetFinalBoneMatrices();
