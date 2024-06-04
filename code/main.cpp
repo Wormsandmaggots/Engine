@@ -66,7 +66,7 @@ int main() {
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
     renderer.addShader(&shaderRig);
 
-    Model* player = new Model("res/content/models/Character_rigged/originWstopkach.fbx", &shaderRig);
+    Model* player = new Model("res/content/models/NEWCHARACTER/New_character_rigged.fbx", &shaderRig);
     //Model* player = new Model("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
     InverseKinematics* playerIK = new InverseKinematics(playerRig);
@@ -78,16 +78,16 @@ int main() {
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
 
-    //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
+    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
-    Model* player2 = new Model("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", &shaderRig);
-    Animation* npcAnimation = new Animation("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", player2);
-    RigPrep* npcRig = new RigPrep(player2);
-    Animator* animator = new Animator(npcAnimation);
+    //Model* player2 = new Model("res/content/models/NEWCHARACTER/NewCharacter.fbx", &shaderPbr);
+    //Animation* npcAnimation = new Animation("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", player2);
+    //RigPrep* npcRig = new RigPrep(player2);
+    //Animator* animator = new Animator(npcAnimation);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
-    arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+    arcadeRenderer->setParameters("SCORE", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
     ColliderComponent* cc1 = new ColliderComponent();
@@ -108,13 +108,13 @@ int main() {
     //sm.getLoadedScenes()[0]->addEntity(handPointer);
     handPointer->setParent(*player1);
     handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition()* 0.01f);
-/*
+
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
     club1->addComponent(club);
     club->getTransform()->setPosition(glm::vec3(0, -5, 0));
     club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-*/
+
     Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
     sphere1->addComponent(sphere);
