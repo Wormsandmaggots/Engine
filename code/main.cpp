@@ -114,6 +114,7 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(mainMenu);
     mainMenu->addComponent(menu);
     menu->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+    menu->getTransform()->setPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -238,6 +239,8 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
         ssao.renderQuad();
 
+
+        //HUD Menu
         glDisable(GL_DEPTH_TEST);
         imageShader.use();
         //imageShader.setMat4("view", view);
