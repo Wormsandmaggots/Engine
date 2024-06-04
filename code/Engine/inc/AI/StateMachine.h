@@ -9,7 +9,7 @@
 #include "State.h"
 
 class StateMachine : public Component {
-    Animator* machineAnimator;
+    //Animator* machineAnimator;
 public:
     explicit StateMachine(const State &currentState);
     StateMachine() {};

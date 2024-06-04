@@ -8,7 +8,9 @@ class State {
 public:
     Animator* animator;
     Animation* givenAnimation;
-    State() {}
+    State() {
+        givenAnimation = NULL;
+    }
     State(Animation* anim) {
         givenAnimation = anim;
     }
