@@ -11,7 +11,7 @@
 class ColliderComponent : public Component{
 public:
     ColliderComponent() = default;
-    ~ColliderComponent() override;
+    //~ColliderComponent() override;
 
     void start() override;
     virtual void onCollision(ColliderComponent*);

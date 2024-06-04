@@ -24,6 +24,7 @@
 #include "Animation/Animator.h"
 #include "RigPrep.h"
 #include "Animation/InverseKinematics.h"
+#include "ECS/ScriptableEntity.h"
 
 using namespace SceneManagement;
 
@@ -34,12 +35,13 @@ int main() {
     CollisionManager cm;
 	AudioManager audioManager;
     audioManager.init();
-	Sound* sound = audioManager.loadSound("res/content/sounds/queen.wav");
+	Sound* sound = audioManager.loadSound("res/content/sounds/overcompensate.wav");
 	SceneManager sm;
     
+
     float songSampleInterval = 1;
     vector<SongSample> songData;
-    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav",songData);
+    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/overcompensate.wav",songData);
     int songDataIndex = 0;
 
     DebugInput debugInput;
@@ -49,7 +51,8 @@ int main() {
    
 	sm.loadScene("res/content/maps/Marcin.yaml");
 
-	
+    Scene2* currentScene = sm.getLoadedScenes().at(0);
+
 
     //HID - test
     //TODO: Kuba: Czy to może tutaj zostać?
@@ -91,14 +94,15 @@ int main() {
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
-    arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+    arcadeRenderer->setParameters("score", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
 
-    ColliderComponent* cc1 = new ColliderComponent();
-    ColliderComponent* cc2 = new ColliderComponent();
+    //ColliderComponent* cc1 = new ColliderComponent();
+    //ColliderComponent* cc2 = new ColliderComponent();
 
-    cc1->start();
-    cc2->start();
+    //cc1->start();
+    //cc2->start();
+
 
     float time = 0;
 
@@ -108,25 +112,31 @@ int main() {
 
 
     Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
+    Model* sphereModel_green = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"));
 
-
-    Entity* ball = new Entity("Ball");
-    ball->addComponent(sphereModel);
-    sm.getLoadedScenes().at(0)->addEntity(ball);
-
+  
 
     Entity* player = new Entity("Player");
     player->addComponent(playerModel);
-    player->getTransform()->setPosition(glm::vec3(1, 1, 0));
-    sm.getLoadedScenes().at(0)->addEntity(player);
+    player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
     player->getTransform()->setScale(glm::vec3(0.01f));
+    sm.getLoadedScenes().at(0)->addEntity(player);
+
 
     Entity* handPointer = new Entity("handPointer");
-	handPointer->setParent(*player);
+    ColliderComponent* collider = new ColliderComponent();
+    collider->start();
+    collider->getCollider()->getColliderShape()->setRadius(0.12);
+    handPointer->setParent(*player);
+    handPointer->addComponent(collider);
 	handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition()*0.01f);
 
+
+    
     sound->play();
     sound->setVolume(1.f);
+    
+
 
     while (!glfwWindowShouldClose(s.window))
 	{
@@ -135,6 +145,7 @@ int main() {
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         time = time + s.deltaTime;
+        deltaTime = s.deltaTime;
 
 		debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
@@ -151,22 +162,20 @@ int main() {
 
 
 
-
         if ( timeToDispense2<0 && songDataIndex < songData.size())
         {
-            spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20), sphereModel);
-            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20), sphereModel);
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), sphereModel);
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
+            spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
+            spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
+            spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
+            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
             
             songDataIndex++;
 			timeToDispense2 = timeToDispense;
         }
             
 
-
-        
-       spawner.updateBalls(s.deltaTime);
+       
+       //spawner.updateBalls();
        //spawner.removeBalls(s.deltaTime);
 
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;

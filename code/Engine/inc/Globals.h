@@ -4,3 +4,4 @@
 class Shader; 
 
 extern std::vector<Shader*> globalShaders;
+extern float deltaTime;

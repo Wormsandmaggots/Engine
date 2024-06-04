@@ -6,6 +6,7 @@
 #include "Physics/CollisionManager.h"
 #include "Physics/Colliders/Collider.h"
 #include "Physics/ColliderComponent.h"
+#include "Debug/Logger.h"
 #include <tracy/Tracy.hpp>
 
 
@@ -25,12 +26,13 @@ void CollisionManager::update() {
     ZoneScopedN("Collision");
 
     collisions.clear();
+    bool collidedWithSmth = false;
+
 
     for(int i = 0; i < Colliders.size() - 1; i++)
     {
         Collider* collider = Colliders[i];
 
-        bool collidedWithSmth;
 
         for (int j = i + 1; j < Colliders.size(); j++)
         {
@@ -57,6 +59,10 @@ void CollisionManager::update() {
                 another->collidedWith = collider->getOwner();
                 collidedWithSmth = true;
             }
+            else
+            {
+				collidedWithSmth = false;
+            }
 //            else if(collider->collided)
 //            {
 //                collider->collided = false;
@@ -66,13 +72,15 @@ void CollisionManager::update() {
 
         if(!collidedWithSmth && collider->collided)
         {
-            Collision c(collider, collider->collidedWith->getCollider(), EXIT, EXIT);
+            Collision c(collider, NULL, EXIT, EXIT);
             collider->collided = false;
-            collider->collidedWith->getCollider()->collidedWith = nullptr;
+            //collider->collidedWith->getCollider()->collidedWith = nullptr;
             collider->collidedWith = nullptr;
+
 
             collisions.push_back(c);
         }
+
     }
 
     resolveCollisions();
@@ -92,8 +100,9 @@ void CollisionManager::resolveCollisions() {
         }
         else
         {
-            c.first->getOnCollisionExit()(c.second->getOwner());
-            c.second->getOnCollisionExit()(c.first->getOwner());
+           /* c.first->getOnCollisionExit()(c.second->getOwner());
+            if(c.second != NULL)
+                c.second->getOnCollisionExit()(c.first->getOwner());*/
         }
 
     }

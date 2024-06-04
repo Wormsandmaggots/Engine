@@ -50,6 +50,7 @@ Model::Model(const Model& another)
     directory = path.substr(0, path.find_last_of('/'));
     this->path = another.path;
     this->modelShader = another.modelShader;
+    this->textures_loaded = another.textures_loaded;
 	this->meshes = another.meshes;
 
     //wyjebac

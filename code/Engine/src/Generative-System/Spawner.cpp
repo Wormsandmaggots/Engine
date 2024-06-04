@@ -9,27 +9,21 @@ Spawner::Spawner(Scene2* scene) {
 	this->model = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
 }
 
-void Spawner::spawnBall(const std::string& name, glm::vec3 pos,Model* model) {
+void Spawner::spawnBall(const std::string& name, glm::vec3 pos) {
 	
-		Ball* kula = new Ball(name, pos, new Model(*model));
+		Ball* kula = new Ball(name, pos, new Model(*this->model));
 		balls.push_back(kula);
-		kula->addComponent(model);
 		this->scene->addEntity(kula);
 		
 }
 
-void Spawner::updateBalls(float dtime) {
+void Spawner::updateBalls() {
 	for (Ball* ball : balls) {
-		ball->update(dtime);
+		if (ball->getToDestory()) {
+			ball->getTransform()->setPosition(glm::vec3(100));
+		}
+		ball->update();
+		
 	}
 }
 
-void Spawner::removeBalls(float dtime)
-{
-	for (Ball* ball : balls) {
-		if (ball->getTransform()->getLocalPosition().z > 2.0)
-		{
-			scene->removeEntity(ball);
-		}
-	}
-}
