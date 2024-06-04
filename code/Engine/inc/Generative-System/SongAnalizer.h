@@ -3,14 +3,6 @@
 #include <complex>
 #include <fftw3.h>
 #include <sndfile.h>
-
-using namespace std;
-
-#include <iostream>
-#include <cmath>
-#include <complex>
-#include <fftw3.h>
-#include <sndfile.h>
 #include <vector>
 #include <glm/glm.hpp>
 

@@ -30,6 +30,7 @@ CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
 
+
 # if one of thirdparty libraries is not building you maybe have to do smth like this below
 # and remember to add source dir to exe in code
 set(miniaudio_DIR ${CMAKE_CURRENT_LIST_DIR}/miniaudio)
