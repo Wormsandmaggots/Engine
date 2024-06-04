@@ -4,32 +4,28 @@
 class InverseKinematics{
 private:
     glm::vec3 hingeAxis;
-    glm::vec3 initTarget;
     std::map<std::string,Bone*> bones;
-    int prevOffset;
     RigPrep* rig;
+
 public:
     InverseKinematics(RigPrep* _rig){
         rig = _rig;
         bones = rig->getBones();
         hingeAxis = glm::vec3(0.0f,1.0f,0.0f);
-        initTarget = glm::vec3(-138.593, 288.838, -4.86769);
-        prevOffset = -1;
     }
-    void update(int offset){
-        ik("mixamorig:RightHand",offset);
+    void update(int offsetx, int offsety, string _limb){
+        ik(_limb,offsetx, offsety);
         rig->setBones(bones);
     }
 
-    void ik(std::string limb, int offset){
+    void ik(std::string limb, int offsetx, int offsety){
         Bone* limbBone;
         if(bones.find(limb)!=bones.end()){ //searching for limb in our bones
             limbBone = bones[limb];
         }
         //glm::vec3 target = limbBone->getModelPosition();
 
-        glm::vec3 target = initTarget + glm::vec3(offset, offset, 0);
-        //glm::vec3 target = initTarget;
+        glm::vec3 target = limbBone->getInitPosition() + glm::vec3(offsetx, offsety, 0);
         glm::vec3 endEffector = limbBone ->getModelPosition();
         for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kowsci ktora manewrujemy jako pierwsza
@@ -78,7 +74,6 @@ public:
                         glm::mat3 newLocalMatrix = invParentRotationPart * glm::mat3(secondToLast->getModelTransform()); //oblicza sie prawidlowo
                         secondToLast->updateLocalRotationPart(newLocalMatrix);
 
-
                         updateChildren(secondToLast);
                         endEffector = limbBone ->getModelPosition();
                     }
@@ -87,7 +82,7 @@ public:
                 secondToLast = secondToLast->getParent();
             }
         }
-        prevOffset = offset;
+        //prevOffset = offset;
     }
 
     void updateChildren(Bone* parent) {

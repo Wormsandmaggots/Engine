@@ -15,7 +15,7 @@ public:
 	Model* model;
 	Spawner(Scene2* scene);
 	std::vector<Ball*> balls;
-	void spawnBall(const std::string& name, glm::vec3 pos, Model* model);
-	void updateBalls(float dtime);
-	void removeBalls(float dtime);
+	void spawnBall(const std::string& name, glm::vec3 pos);
+	void updateBalls();
+	
 };

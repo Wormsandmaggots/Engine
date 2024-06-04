@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <assimp/scene.h>
 #include "Animation/AnimBone.h"

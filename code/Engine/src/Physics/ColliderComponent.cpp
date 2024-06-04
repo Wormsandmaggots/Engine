@@ -21,6 +21,7 @@ void ColliderComponent::start() {
 }
 
 void ColliderComponent::onCollision(ColliderComponent *another) {
+    
 }
 
 void ColliderComponent::update() {
@@ -33,8 +34,9 @@ void ColliderComponent::onCollisionExit(ColliderComponent *another) {
 void ColliderComponent::onCollisionStart(ColliderComponent *) {
 }
 
-Collider *ColliderComponent::getCollider() const {
-    return collider;
+Collider *ColliderComponent::getCollider() const 
+{
+        return collider;
 }
 
 void ColliderComponent::convertToYaml(YAML::Emitter &emitter) {
@@ -89,6 +91,6 @@ void ColliderComponent::drawEditor() {
     ImGui::NewLine();
 }
 
-ColliderComponent::~ColliderComponent() {
-    delete collider;
-}
+//ColliderComponent::~ColliderComponent() {
+//    delete collider;
+//}

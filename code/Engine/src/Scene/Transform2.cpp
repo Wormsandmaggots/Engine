@@ -111,3 +111,6 @@ void Transform2::rotate(glm::vec3 r) {
     isDirty = true;
 }
 
+glm::vec3 Transform2::getPosition() {
+    return localPosition;
+}

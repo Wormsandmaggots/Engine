@@ -39,6 +39,12 @@ Transform2 *Entity::getTransform() const {
 void Entity::addComponent(Component *component) {
     components.push_back(component);
     component->setParent(this);
+    if (strcmp(typeid(component).name(), typeid(ColliderComponent).name()) == 0)
+    {
+        ColliderComponent* c =dynamic_cast<ColliderComponent*>(component);
+        //c->getCollider()->setOwner(c);
+        c->start();
+    }
 }
 
 void Entity::setTransform(const Transform2 &newTransform) {

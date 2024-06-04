@@ -15,13 +15,14 @@
 #include <vector>
 #include "Scene/Transform2.h"
 #include "ThirdPersonCamera.h"
+#include  "Physics/ColliderComponent.h"
 
 class Component;
 
 class Entity {
 public:
     static void ResetCounter();
-    explicit Entity(const std::string &name = "");
+    explicit Entity(const std::string& name = "");
     Entity(const Entity&);
     virtual ~Entity();
 
@@ -62,7 +63,7 @@ public:
     //    return nullptr;
     //}
     T* getComponent() const;
-    
+
     void toYaml(YAML::Emitter&);
 
     template<typename T, typename... Args>

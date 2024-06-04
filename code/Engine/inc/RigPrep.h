@@ -83,7 +83,7 @@ public:
             calculateVertices(bone->getModelTransform(), bone->getChildren()[i]);
     }
 
-    void update(int offset){
+    void update(){
         calculateVertices(glm::mat4(1.0f), rootBone);
     }
 
@@ -100,6 +100,9 @@ public:
         bones = _bones;
     }
 
+    Bone* getBone(std::string name){
+        return bones[name];
+    }
 private:
     Bone* rootBone;
     std::map<std::string, BoneInfo> m_BoneInfoMap;
