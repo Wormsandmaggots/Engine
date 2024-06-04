@@ -11,11 +11,10 @@
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
-#include "HUD/ProgressBar.h"
-#include "HUD/BackgroundImage.h"
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/SSAO.h"
+#include "HUD/Image.h"
 using namespace SceneManagement;
 
 int main() {
@@ -33,7 +32,6 @@ int main() {
     sound->setVolume(2.f);
 
     //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
     DebugInput debugInput;
@@ -46,12 +44,8 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
-    //TODO: Kuba: Czy to może tutaj zostać?
+    Shader imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl");
 
-    //HUD
-    ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
-    BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
-    Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
     MaterialAsset material("res/content/materials/color.json");
 
@@ -71,10 +65,13 @@ int main() {
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
     renderer.addShader(&ssao.shaderGeometryPass);
+    renderer.addShader(&imageShader);
+
+    //menu
+    Image* menu = new Image(&imageShader);
 
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
-    //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/random.fbx", &ssao.shaderGeometryPass);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -112,10 +109,14 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
+    //menu
+    Entity* mainMenu = new Entity("menu");
+    sm.getLoadedScenes()[0]->addEntity(mainMenu);
+    mainMenu->addComponent(menu);
+    menu->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
-
-    //FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
     glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
 
@@ -137,7 +138,6 @@ int main() {
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        //fb->bind();
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -145,10 +145,6 @@ int main() {
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
-
-        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
-        //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
-        //glm::mat4 view = playerCamera->getView();
 
 
 
@@ -225,11 +221,9 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
-        // send light relevant uniforms
         glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
         ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
         ssao.shaderLightingPass.setVec3("light.Color", lightColor);
-        // Update attenuation parameters
 
 
         ssao.shaderLightingPass.setFloat("light.Linear", linear);
@@ -243,40 +237,16 @@ int main() {
         glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
         ssao.renderQuad();
-        //scene.update();
+
+        glDisable(GL_DEPTH_TEST);
+        imageShader.use();
+        //imageShader.setMat4("view", view);
+        //imageShader.setMat4("projection", projection);
+        menu->renderPlane();
+        glEnable(GL_DEPTH_TEST);
 
         cm.update();
-//		ImGui::Render();
-//		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        //arcadeRenderer->renderText();
 
-        //fb->unbind();
-
-        //screenShader.use();
-        //fb->drawQuad();
-
-
-        //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
-        //hud
-        //counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
-        //glDisable(GL_DEPTH_TEST);
-        //glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
-        //shader.setMat4("projection", orthoProjection);
-
-        //progressBar.update(s.deltaTime);
-        //progressBar.renderBar();
-
-        //image.render();
-        // backgroundImage.render();
-        //backgroundImage.update(s.deltaTime);
-        //glEnable(GL_DEPTH_TEST);
-        //hud end
-
-
-//        sm.updateLoadedScenes();
-//
-//        cm.update();
-        //arcadeRenderer->update();
         update();
     }
     a.end();

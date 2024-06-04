@@ -41,10 +41,6 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/HUD/Image.h
         Engine/inc/HUD/Image.h
         Engine/src/HUD/Image.cpp
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/ProgressBar.h
-        Engine/inc/HUD/ProgressBar.h
         Engine/inc/assimp_glm_helpers.h
         Engine/inc/RigPrep.h
         Engine/inc/Animation/Bone.h
