@@ -29,7 +29,25 @@ CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
+CPMAddPackage("gh:erikd/libsndfile#1.2.2")
 
+# set(LIB_SND_FILE_DIR ${CMAKE_CURRENT_LIST_DIR}/libsndfile)
+
+# list(APPEND CMAKE_MODULE_PATH ${LIB_SND_FILE_DIR}/cmake)
+# find_package(SndFile REQUIRED)
+
+
+# set(FFTW_DIR ${CMAKE_CURRENT_LIST_DIR}/fftw-3.3.5-dll64)
+# include_directories(${FFTW_DIR})
+# add_library(FFTW3 SHARED IMPORTED)
+# set_target_properties(FFTW3 PROPERTIES
+#     IMPORTED_LOCATION ${FFTW_DIR}/libfftw3-3.lib
+#     IMPORTED_IMPLIB_DEBUG ${FFTW_DIR}/libfftw3-3.lib
+#     IMPORTED_IMPLIB_RELEASE $${FFTW_DIR}/libfftw3-3.lib
+#     IMPORTED_IMPLIB_MINSIZEREL ${FFTW_DIR}/libfftw3-3.lib
+#     IMPORTED_IMPLIB_RELWITHDEBINFO ${FFTW_DIR}/libfftw3-3.lib
+#     INTERFACE_INCLUDE_DIRECTORIES ${FFTW_DIR})
+ 
 
 # if one of thirdparty libraries is not building you maybe have to do smth like this below
 # and remember to add source dir to exe in code
@@ -90,7 +108,8 @@ target_include_directories(ftgl PRIVATE
         ${glad_SOURCE_DIR})
 target_link_libraries(ftgl
         glad
-        freetype)
+        freetype
+        )
 
 set_target_properties(glad
         stb_image
@@ -107,6 +126,7 @@ set_target_properties(glad
         miniaudio
         effolkronium_random
         ftgl
+        SndFile::sndfile
         TracyClient
         PROPERTIES FOLDER "vendor")
 
