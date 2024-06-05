@@ -153,4 +153,4 @@ file(GLOB_RECURSE dlls
         ${CMAKE_CURRENT_LIST_DIR}/*.dll
 )
 
-copy_dll_dependencies( ${CMAKE_CURRENT_BINARY_DIR} "${dlls}")
+copy_dll_dependencies( ${CMAKE_CURRENT_BINARY_DIR}/../code "${dlls}")
