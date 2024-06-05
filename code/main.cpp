@@ -67,7 +67,7 @@ int main() {
     renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
     renderer.addShader(&shaderRig);
 
-    Model* player = new Model("res/content/models/NEWCHARACTER/New_character_rigged.fbx", &shaderRig);
+    Model* player = new Model("res/content/models/NEWCHARACTER/Character_fixed_kurwa_origin.fbx", &shaderRig);
     //Model* player = new Model("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
     InverseKinematics* playerIK = new InverseKinematics(playerRig);

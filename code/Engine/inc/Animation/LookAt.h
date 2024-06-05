@@ -1,6 +1,5 @@
 #include "glm/vec3.hpp"
 #include "RigPrep.h"
-
 class LookAt{
 private:
     std::map<std::string,Bone*> bones;
@@ -14,15 +13,19 @@ public:
     }
 //s.camera.Position
     void update(glm::vec3 target){
-        compute(target);
+        compute();
     }
 
-    void compute(glm::vec3 target){
+    void compute(){
         Bone* head;
         if(bones.find("mixamorig:Head")!=bones.end()){ //searching for limb in our bones
             head = bones["mixamorig:Head"];
         }
         glm::vec3 headPos = head ->getModelPosition();
+        glm::vec3 target = glm::vec3(headPos.x - 10, headPos.y, headPos.z);
+        if(forward == glm::vec3(0.0f,0.0f,1.0f)){
+            forward = glm::vec3(headPos.x , headPos.y, headPos.z + 10);
+        }
         glm::vec3 f_h = glm::vec3(forward-headPos); //forward to head
         glm::vec3 t_h = glm::vec3(target-headPos); //target to head
         f_h = glm::normalize(f_h);
@@ -46,8 +49,8 @@ public:
                 glm::mat3 newLocalMatrix = invParentRotationPart * glm::mat3(head->getModelTransform()); //oblicza sie prawidlowo
                 head->updateLocalRotationPart(newLocalMatrix);
 
+                forward = rotationMatrix * forward;
                 updateChildren(head);
-
             }
         }
     }
