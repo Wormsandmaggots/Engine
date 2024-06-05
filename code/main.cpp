@@ -15,6 +15,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/SSAO.h"
 #include "HUD/Image.h"
+#include "HUD/ResizableImage.h"
 using namespace SceneManagement;
 
 int main() {
@@ -67,8 +68,6 @@ int main() {
     renderer.addShader(&ssao.shaderGeometryPass);
     renderer.addShader(&imageShader);
 
-    //menu
-    Image* menu = new Image(&imageShader);
 
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
@@ -85,6 +84,11 @@ int main() {
 
     cc1->start();
     cc2->start();
+
+    //menu
+    Image* menu = new Image(&imageShader);
+    ResizableImage* bar = new ResizableImage(&imageShader);
+
 
     Entity* player1 = new Entity("player");
     sm.getLoadedScenes()[0]->addEntity(player1);
@@ -113,8 +117,16 @@ int main() {
     Entity* mainMenu = new Entity("menu");
     sm.getLoadedScenes()[0]->addEntity(mainMenu);
     mainMenu->addComponent(menu);
-    menu->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-    menu->getTransform()->setPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+    menu->getTransform()->setScale(glm::vec3(0.25f, 0.25f, 0.25f));
+    menu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    Entity* mainBar = new Entity("bar");
+    sm.getLoadedScenes()[0]->addEntity(mainBar);
+    mainBar->addComponent(bar);
+    bar->getTransform()->setScale(glm::vec3(0.1f, 0.3f, 0.0f));
+    bar->getTransform()->setPosition(glm::vec3(-0.5f, 0.0f, 0.0f));
+    //TODO: Rotacja nie działa
+    //bar->getTransform()->setRotation(glm::vec3(45.0f, 45.0f, 0.0f));
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -131,6 +143,9 @@ int main() {
     static vec2 range(2,2);
     static float mul = 4;
     static float texelSize = 1;
+
+    //for resizing bar
+    double lastTime = 0.0;
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -246,7 +261,15 @@ int main() {
         //imageShader.setMat4("view", view);
         //imageShader.setMat4("projection", projection);
         menu->renderPlane();
+        bar->renderPlane();
         glEnable(GL_DEPTH_TEST);
+
+        double currentTime = glfwGetTime();
+        if (currentTime - lastTime >= 3.0)
+        {
+            bar->resizeOnImpulse(0.1f);
+            lastTime = currentTime;
+        }
 
         cm.update();
 

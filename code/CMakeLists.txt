@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
         Engine/inc/Animation/InverseKinematics.h
         Engine/inc/Animation/Animation.h
         Engine/inc/Animation/Animator.h
+        Engine/inc/HUD/ResizableImage.h
 )
 
 
