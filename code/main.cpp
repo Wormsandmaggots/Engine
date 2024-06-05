@@ -16,6 +16,7 @@
 #include "Renderer/SSAO.h"
 #include "HUD/Image.h"
 #include "HUD/ResizableImage.h"
+#include "HUD/Button.h"
 using namespace SceneManagement;
 
 int main() {
@@ -46,6 +47,9 @@ int main() {
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
     Shader imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl");
+    //for visual debugging
+    Shader imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl");
+    Shader imageShaderBlue("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_blue.glsl");
 
 
     MaterialAsset material("res/content/materials/color.json");
@@ -67,6 +71,8 @@ int main() {
     renderer.addShader(&shaderCel);
     renderer.addShader(&ssao.shaderGeometryPass);
     renderer.addShader(&imageShader);
+    renderer.addShader(&imageShaderGreen);
+    renderer.addShader(&imageShaderBlue);
 
 
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
@@ -87,7 +93,8 @@ int main() {
 
     //menu
     Image* menu = new Image(&imageShader);
-    ResizableImage* bar = new ResizableImage(&imageShader);
+    ResizableImage* bar = new ResizableImage(&imageShaderGreen);
+    Button* button = new Button(&imageShaderBlue);
 
 
     Entity* player1 = new Entity("player");
@@ -117,16 +124,22 @@ int main() {
     Entity* mainMenu = new Entity("menu");
     sm.getLoadedScenes()[0]->addEntity(mainMenu);
     mainMenu->addComponent(menu);
-    menu->getTransform()->setScale(glm::vec3(0.25f, 0.25f, 0.25f));
-    menu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    menu->getTransform()->setScale(glm::vec3(0.25f, 0.25f, 0.0f));
+    menu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.1f));
 
     Entity* mainBar = new Entity("bar");
     sm.getLoadedScenes()[0]->addEntity(mainBar);
     mainBar->addComponent(bar);
     bar->getTransform()->setScale(glm::vec3(0.1f, 0.3f, 0.0f));
-    bar->getTransform()->setPosition(glm::vec3(-0.5f, 0.0f, 0.0f));
-    //TODO: Rotacja nie działa
-    //bar->getTransform()->setRotation(glm::vec3(45.0f, 45.0f, 0.0f));
+    bar->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.3f));
+    //Rotacja nie działa
+    //bar->getTransform()->setRotation(glm::radians(glm::vec3(0.0f, 0.0f, 180.0f)));
+
+    Entity* mainButton = new Entity("button");
+    sm.getLoadedScenes()[0]->addEntity(mainButton);
+    mainButton->addComponent(button);
+    button->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
+    button->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, -1.0f));
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -258,18 +271,30 @@ int main() {
         //HUD Menu
         glDisable(GL_DEPTH_TEST);
         imageShader.use();
-        //imageShader.setMat4("view", view);
-        //imageShader.setMat4("projection", projection);
+        //kolejnosc renderowania ma znaczenie
+        //pierwszy renderowany obiekt bedzie pod spodem
         menu->renderPlane();
         bar->renderPlane();
+        button->renderPlane();
         glEnable(GL_DEPTH_TEST);
 
+        double mouseX, mouseY;
+        glfwGetCursorPos(s.window, &mouseX, &mouseY);
+
+        //buton demo test
+        mouseX = (mouseX / s.WINDOW_WIDTH   ) * 2 - 1;
+        mouseY = 1 - (mouseY / s.WINDOW_HEIGHT) * 2;
+
+        button->checkHover(mouseX, mouseY);
+
+        /* //resizing bar demo
         double currentTime = glfwGetTime();
         if (currentTime - lastTime >= 3.0)
         {
+            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
             bar->resizeOnImpulse(0.1f);
             lastTime = currentTime;
-        }
+        }*/
 
         cm.update();
 

@@ -54,6 +54,12 @@ public:
 /*
     void renderPlane()
     {
+        shader->use();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, parentTransform->getLocalPosition());
+        model = glm::scale(model, parentTransform->getLocalScale());
+        shader->setMat4("model", model);
+
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
@@ -64,6 +70,9 @@ public:
         shader->use();
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, parentTransform->getLocalPosition());
+        //model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().x), glm::vec3(1.0f, 0.0f, 0.0f)); // X axis
+        //model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().y), glm::vec3(0.0f, 1.0f, 0.0f)); // Y axis
+        model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
         model = glm::scale(model, parentTransform->getLocalScale());
         shader->setMat4("model", model);
 
