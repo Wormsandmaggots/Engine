@@ -39,7 +39,7 @@ public:
             if(axis == 0){joystick1 = position;}
             else {joystick2 = position;}
             std::string joystickSide = (axis == 0) ? "Left" : "Right";
-            LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(position.x) + ", y=" + std::to_string(position.y));
+            //LOG_INFO("Joystick ID: " + std::to_string(joystickId) + ", " + joystickSide + " Joystick Position: x=" + std::to_string(position.x) + ", y=" + std::to_string(position.y));
         }
         // Interpret trigger state
         for (int trigger = 0; trigger < 2; ++trigger) {

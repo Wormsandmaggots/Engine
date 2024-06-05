@@ -18,6 +18,7 @@
 #include "Renderer/MaterialAsset.h"
 #include "Animation/Animation.h"
 #include "Animation/Animator.h"
+#include "Animation/LookAt.h"
 
 using namespace SceneManagement;
 
@@ -70,6 +71,7 @@ int main() {
     //Model* player = new Model("res/content/models/npc1/pykpykKurwaMaDzialac.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(player);
     InverseKinematics* playerIK = new InverseKinematics(playerRig);
+    LookAt* playerLA = new LookAt(playerRig);
 
     int offset = 0;
     glm::vec2 joystickOffset = glm::vec2(0,0);
@@ -163,7 +165,8 @@ int main() {
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.007f);
+        handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        playerLA->update(s.camera.Position);
         /*
         ///ANIMATIONS
         auto transforms = animator->GetFinalBoneMatrices();
