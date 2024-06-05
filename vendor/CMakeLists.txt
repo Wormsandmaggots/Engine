@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(CPM)
 
 # based on your ide set to different location
 set(deps ${CMAKE_CURRENT_BINARY_DIR}/../_deps)
+set(vendor ${CMAKE_CURRENT_LIST_DIR})
 
 include(${deps}/cpm-src/cmake/CPM.cmake)
 
@@ -29,6 +30,7 @@ CPMAddPackage("gh:effolkronium/random#v1.5.0")
 CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
+CPMAddPackage("gh:libsndfile/libsndfile#1.2.2")
 
 # if one of thirdparty libraries is not building you maybe have to do smth like this below
 # and remember to add source dir to exe in code
@@ -84,12 +86,18 @@ add_library(ftgl STATIC
         ${ftgl_SOURCE_DIR}/vector.c
         ${ftgl_SOURCE_DIR}/vertex-attribute.c
         ${ftgl_SOURCE_DIR}/vertex-buffer.c)
+
 target_include_directories(ftgl PRIVATE
         ${ftgl_SOURCE_DIR}
         ${glad_SOURCE_DIR})
+
 target_link_libraries(ftgl
         glad
         freetype)
+
+
+set(fftw_dir ${CMAKE_CURRENT_LIST_DIR}/fftw CACHE INTERNAL "")
+
 
 set_target_properties(glad
         stb_image
@@ -107,8 +115,42 @@ set_target_properties(glad
         effolkronium_random
         ftgl
         TracyClient
-        PROPERTIES FOLDER "vendor")
+        sndfile
+        PROPERTIES FOLDER "vendor"
+)
 
 if(TARGET zlibstatic)
         set_target_properties(zlibstatic PROPERTIES FOLDER "vendor")
 endif()
+
+function(copy_dll_dependencies DESTINATION_DIR DEPENDENCIES)
+
+        if (NOT DESTINATION_DIR)
+                message(FATAL_ERROR "copy_dll_dependencies: DESTINATION_DIR not specified")
+        endif()
+
+        if (NOT DEPENDENCIES)
+                message(STATUS "copy_dll_dependencies: DEPENDENCIES not specified or nothing to copy")
+        endif()
+
+        foreach (DLL_PATH ${DEPENDENCIES})
+
+                get_filename_component(DLL_NAME ${DLL_PATH} NAME)
+                set(DLL_DESTINATION ${DESTINATION_DIR}/${DLL_NAME})
+
+                if (NOT EXISTS ${DLL_DESTINATION})
+                        message(STATUS "${DLL_NAME} not found in destination directory, copying...")
+                        execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DLL_PATH}" "${DLL_DESTINATION}")
+                else()
+                        message(STATUS "${DLL_NAME} has been found in destination directory, no need for copying")
+                endif()
+
+        endforeach()
+
+endfunction()
+
+file(GLOB_RECURSE dlls
+        ${CMAKE_CURRENT_LIST_DIR}/*.dll
+)
+
+copy_dll_dependencies( ${CMAKE_CURRENT_BINARY_DIR} "${dlls}")

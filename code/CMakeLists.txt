@@ -8,8 +8,10 @@ file(GLOB_RECURSE HEADER_FILES
         *.hpp)
 
 #based on your ide set to different location
+
 file(GLOB_RECURSE dlls
-        ${CMAKE_CURRENT_BINARY_DIR}/../_deps/*.dll)
+        ${CMAKE_CURRENT_BINARY_DIR}/../_deps/*.dll
+)
 
 
 file(GLOB_RECURSE ASSETS_FILES
@@ -24,35 +26,7 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${HEADER_FILES})
 source_group(TREE ${CMAKE_SOURCE_DIR}         FILES ${ASSETS_FILES})
 
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
-        Engine/src/Text/Text.cpp
-        Engine/inc/Text/Text.h
-        Engine/inc/Text/Text.h
-        Engine/inc/Debug/Profiler.h
-        Engine/src/Debug/Profiler.cpp
-        Engine/inc/ThirdPersonCamera.h
-        Engine/src/ThirdPersonCamera.cpp
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/Input.h
-        Engine/inc/Input/DebugInput.h
-        Engine/inc/Input/DebugInput.h
-        Engine/src/HUD/Image.cpp
-        Engine/inc/HUD/Image.h
-        Engine/inc/HUD/Image.h
-        Engine/src/HUD/Image.cpp
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/BackgroundImage.h
-        Engine/inc/HUD/ProgressBar.h
-        Engine/inc/HUD/ProgressBar.h
-        Engine/inc/assimp_glm_helpers.h
-        Engine/inc/RigPrep.h
-        Engine/inc/Animation/Bone.h
-        Engine/inc/Animation/AnimBone.h
-        Engine/inc/Animation/InverseKinematics.h
-        Engine/inc/Animation/Animation.h
-        Engine/inc/Animation/Animator.h
-)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES})
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
@@ -69,9 +43,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${aabb_SOURCE_DIR}
         ${ftgl_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
+        ${fftw_dir}
 )
 
-
+#target_link_directories(${PROJECT_NAME} PUBLIC ${fftw_dir})
 target_link_libraries(${PROJECT_NAME}
         ${OPENGL_LIBRARIES}
         glad
@@ -90,6 +65,8 @@ target_link_libraries(${PROJECT_NAME}
         gizmos
         ftgl
         TracyClient
+        sndfile
+        ${fftw_dir}/fftw3.lib
 )
 
 
