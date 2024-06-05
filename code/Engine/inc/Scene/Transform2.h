@@ -36,6 +36,14 @@ public:
     void setScale(glm::vec3 newScale);
     void setLocalTransform(glm::mat4 mat);
 
+    void setPivotPoint(const glm::vec3& newPivotPoint) {
+        pivotPoint = newPivotPoint;
+    }
+
+    const glm::vec3& getPivotPoint() const {
+        return pivotPoint;
+    }
+
 private:
     glm::vec3 localPosition=glm::vec3(0.f);
     glm::vec3 localScale=glm::vec3(1.f);
@@ -50,6 +58,9 @@ private:
     bool isDirty = true;
 
     void updateLocalTransform();
+
+    //for rotating Quad
+    glm::vec3 pivotPoint = glm::vec3(0.0f, 0.0f, 0.0f); // Dodajemy zmienną do przechowywania punktu obracania
 };
 
 

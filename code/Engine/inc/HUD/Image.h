@@ -65,6 +65,7 @@ public:
         glBindVertexArray(0);
     }
 */
+
     void renderPlane()
     {
         shader->use();
@@ -78,6 +79,25 @@ public:
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
+
+/*
+    void renderPlane()
+    {
+        shader->use();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, parentTransform->getLocalPosition());
+        model = glm::translate(model, -parentTransform->getPivotPoint()); // Przesunięcie obiektu tak, aby punkt obracania był w środku
+        model = glm::scale(model, glm::vec3(1.0f / parentTransform->getLocalScale().x, 1.0f / parentTransform->getLocalScale().y, 1.0f)); // Przekształcenie do przestrzeni świata
+        model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
+        model = glm::translate(model, parentTransform->getPivotPoint()); // Przesunięcie obiektu z powrotem
+        model = glm::scale(model, parentTransform->getLocalScale()); // Przekształcenie z powrotem do przestrzeni ekranu
+        shader->setMat4("model", model);
+
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+    }
+*/
 };
 
 #endif //ENGINE_IMAGE_H
