@@ -16,9 +16,11 @@ uniform float bias = 0.025;
 uniform float power = 1;
 
 // tile noise texture over screen based on screen dimensions divided by noise size
-const vec2 noiseScale = vec2(800.0/4.0, 600.0/4.0);
+const vec2 noiseScale = vec2(1640/4.0, 960.0/4.0);
 
 uniform mat4 projection;
+
+float off = 0.5f;
 
 void main()
 {
@@ -32,10 +34,9 @@ void main()
     mat3 TBN = mat3(tangent, bitangent, normal);
     // iterate over the sample kernel and calculate occlusion factor
     float occlusion = 0.0;
+
     for(int i = 0; i < kernelSize; ++i)
     {
-        float s = dot(samples[i], normal);
-
         // get sample position
         vec3 samplePos = TBN * samples[i]; // from tangent to view-space
         samplePos = fragPos + samplePos * radius;
@@ -44,7 +45,7 @@ void main()
         vec4 offset = vec4(samplePos, 1.0);
         offset = projection * offset; // from view to clip-space
         offset.xyz /= offset.w; // perspective divide
-        offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
+        offset.xyz = offset.xyz * off + off; // transform to range 0.0 - 1.0
 
         // get sample depth
         float sampleDepth = texture(gPosition, offset.xy).z; // get depth value of kernel sample
@@ -53,8 +54,8 @@ void main()
         float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
         occlusion += (sampleDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
     }
-    occlusion = 1.0 - (occlusion / kernelSize);
 
-    FragColor = occlusion;
+    occlusion = 1.0 - (occlusion / kernelSize);
+    FragColor = pow(occlusion, power);
 }
 

@@ -1,6 +1,7 @@
 #ifndef ENGINE_PROGRESSBAR_H
 #define ENGINE_PROGRESSBAR_H
 #include "Image.h"
+#include "Core/Time.h"
 
 class ProgressBar : public Image {
 private:
@@ -11,14 +12,14 @@ public:
     ProgressBar(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& texturePath, float maxValue)
             : Image(vertexShaderPath, fragmentShaderPath, texturePath), maxValue(maxValue), currentValue(maxValue) {}
 
-    void update(float deltaTime) {
-        currentValue -= 2.0f * deltaTime;
+    void update() override {
+        currentValue -= 2.0f * Time::deltaTime;
 
         if (currentValue < 0) {
             currentValue = 0;
         }
 
-        float percentage = currentValue / maxValue;
+        float percentage = 1;
 
         std::vector<float> vertices = {
                 300.0f, 100.0f, 0.0f, 0.0f,
@@ -28,6 +29,8 @@ public:
         };
 
         updateVertices(vertices);
+
+        renderBar();
     }
 
     void renderBar() {

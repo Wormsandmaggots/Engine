@@ -10,13 +10,13 @@ uniform float texelSize;
 
 void main()
 {
-    vec2 texelS = texelSize / vec2(textureSize(ssaoInput, 0));
+    vec2 texelSize = texelSize / vec2(textureSize(ssaoInput, 0));
     float result = 0.0;
     for (int x = -rangeX; x < rangeX; ++x)
     {
         for (int y = -rangeY; y < rangeY; ++y)
         {
-            vec2 offset = vec2(float(x), float(y)) * texelS;
+            vec2 offset = vec2(float(x), float(y)) * texelSize;
             result += texture(ssaoInput, TexCoords + offset).r;
         }
     }
