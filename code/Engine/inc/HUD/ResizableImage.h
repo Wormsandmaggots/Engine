@@ -11,13 +11,14 @@ public:
         glm::vec3 currentScale = parentTransform->getLocalScale();
         glm::vec3 currentPosition = parentTransform->getLocalPosition();
 
-        // Skalowanie obiektu
-        currentScale.y -= impulse;
-        parentTransform->setScale(currentScale);
+        if (currentScale.y - impulse > 0) {
+            currentScale.y -= impulse;
+            parentTransform->setScale(currentScale);
 
-        // Przesunięcie obiektu w dół
-        currentPosition.y -= impulse;
-        parentTransform->setPosition(currentPosition);
+            // Przesunięcie obiektu w dół
+            currentPosition.y -= impulse;
+            parentTransform->setPosition(currentPosition);
+        }
     }
 };
 
