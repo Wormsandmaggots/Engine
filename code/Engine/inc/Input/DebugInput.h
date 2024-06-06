@@ -95,6 +95,24 @@ public:
             return 0;
         }
     }
+
+    float getMouseX() {
+        Input& input = Input::getInstance();
+        return input.getMouseX();
+    }
+
+    float getMouseY() {
+        Input& input = Input::getInstance();
+        return input.getMouseY();
+    }
+
+    std::pair<float, float> getMousePosition(GLFWwindow *window) {
+        Input& input = Input::getInstance();
+        double mouseX, mouseY;
+        std::tie(mouseX, mouseY) = input.getCursorPosition(window);
+        return std::make_pair(static_cast<float>(mouseX), static_cast<float>(mouseY));
+    }
+
 private:
 
     double lastMouseX = 0.0;

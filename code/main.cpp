@@ -37,6 +37,7 @@ int main() {
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
     //HID - test
     DebugInput debugInput;
+
     //HID - test
 
     Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl");
@@ -93,9 +94,11 @@ int main() {
 
     //menu
     Image* menu = new Image(&imageShader);
-    ResizableImage* bar = new ResizableImage(&imageShaderGreen);
-    Button* button = new Button(&imageShaderBlue);
-
+    ResizableImage* bar = new ResizableImage(&imageShader);
+    Button* button = new Button(&imageShader);
+    button->setOnClick([]() {
+        std::cout << "Button 1 clicked" << std::endl;
+    });
 
     Entity* player1 = new Entity("player");
     sm.getLoadedScenes()[0]->addEntity(player1);
@@ -132,8 +135,6 @@ int main() {
     mainBar->addComponent(bar);
     bar->getTransform()->setScale(glm::vec3(0.1f, 0.3f, 0.0f));
     bar->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.3f));
-    //Rotacja nie działa
-    //bar->getTransform()->setRotation(glm::radians(glm::vec3(0.0f, 0.0f, 180.0f)));
 
     Entity* mainButton = new Entity("button");
     sm.getLoadedScenes()[0]->addEntity(mainButton);
@@ -273,19 +274,24 @@ int main() {
         imageShader.use();
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
-        menu->renderPlane();
-        bar->renderPlane();
+        //menu->setTexture("res/content/textures/hud_back.png");
+        //menu->renderPlane();
+        //bar->setTexture("res/content/textures/nodes.png");
+        //bar->renderPlane();
+        button->setTexture("res/content/textures/nodes.png");
         button->renderPlane();
         glEnable(GL_DEPTH_TEST);
 
+
+
+        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
         double mouseX, mouseY;
         glfwGetCursorPos(s.window, &mouseX, &mouseY);
+        button->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        button->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
 
-        //buton demo test
-        mouseX = (mouseX / s.WINDOW_WIDTH   ) * 2 - 1;
-        mouseY = 1 - (mouseY / s.WINDOW_HEIGHT) * 2;
 
-        button->checkHover(mouseX, mouseY);
 
         /* //resizing bar demo
         double currentTime = glfwGetTime();

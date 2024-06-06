@@ -71,11 +71,11 @@ public:
     }
 
     //mouse
-    double getMouseX() const {
+    float getMouseX() const {
         return mouseX;
     }
 
-    double getMouseY() const {
+    float getMouseY() const {
         return mouseY;
     }
 

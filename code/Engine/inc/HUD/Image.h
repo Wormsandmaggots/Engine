@@ -8,11 +8,13 @@
 #include "Shader.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "Scene/Transform2.h"
+#include "stb_image.h"
 
 class Image: public Component {
 public:
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
+    unsigned int textureID;
     Shader* shader;
 
     void awake() override;
@@ -51,12 +53,43 @@ public:
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
         glBindVertexArray(0);
     }
-/*
+
+    void setTexture(const std::string& texturePath) {
+        glGenTextures(1, &textureID);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        int width, height, nrChannels;
+        unsigned char *data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            GLenum format;
+            if (nrChannels == 1)
+                format = GL_RED;
+            else if (nrChannels == 3)
+                format = GL_RGB;
+            else if (nrChannels == 4)
+                format = GL_RGBA;
+
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
+    }
+
     void renderPlane()
     {
         shader->use();
+        glBindTexture(GL_TEXTURE_2D, textureID);
         glm::mat4 model = glm::mat4(1.0f);
+        shader->setInt("imageTexture", 0);
+
         model = glm::translate(model, parentTransform->getLocalPosition());
+        //model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
         model = glm::scale(model, parentTransform->getLocalScale());
         shader->setMat4("model", model);
 
@@ -64,40 +97,7 @@ public:
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
-*/
 
-    void renderPlane()
-    {
-        shader->use();
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, parentTransform->getLocalPosition());
-        model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
-        model = glm::scale(model, parentTransform->getLocalScale());
-        shader->setMat4("model", model);
-
-        glBindVertexArray(quadVAO);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glBindVertexArray(0);
-    }
-
-/*
-    void renderPlane()
-    {
-        shader->use();
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, parentTransform->getLocalPosition());
-        model = glm::translate(model, -parentTransform->getPivotPoint()); // Przesunięcie obiektu tak, aby punkt obracania był w środku
-        model = glm::scale(model, glm::vec3(1.0f / parentTransform->getLocalScale().x, 1.0f / parentTransform->getLocalScale().y, 1.0f)); // Przekształcenie do przestrzeni świata
-        model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
-        model = glm::translate(model, parentTransform->getPivotPoint()); // Przesunięcie obiektu z powrotem
-        model = glm::scale(model, parentTransform->getLocalScale()); // Przekształcenie z powrotem do przestrzeni ekranu
-        shader->setMat4("model", model);
-
-        glBindVertexArray(quadVAO);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glBindVertexArray(0);
-    }
-*/
 };
 
-#endif //ENGINE_IMAGE_H
+#endif
