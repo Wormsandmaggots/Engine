@@ -146,15 +146,23 @@ int main() {
     barCover->getTransform()->setScale(glm::vec3(0.04f, 0.34f, 0.0f));
     barCover->getTransform()->setPosition(glm::vec3(0.84f, 0.03f, 0.0f));
 
+    Text* counter = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    counter->setParameters("0", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     Entity* backgroundImage1 = new Entity("background1");
     sm.getLoadedScenes()[0]->addEntity(backgroundImage1);
     backgroundImage1->addComponent(background1);
+    //backgroundImage1->addComponent(new Text("res/content/fonts/ARCADECLASSIC.TTF"));
+    //backgroundImage1->getComponent<Text>()->setParameters("0", 0, 0, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     background1->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
     background1->getTransform()->setPosition(glm::vec3(-0.83f, 0.8f, 0.0f));
 
+    Text* score = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    score->setParameters("0", 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     Entity* backgroundImage2 = new Entity("background2");
     sm.getLoadedScenes()[0]->addEntity(backgroundImage2);
     backgroundImage2->addComponent(background2);
+    //backgroundImage2->addComponent(new Text("res/content/fonts/ARCADECLASSIC.TTF"));
+    //backgroundImage2->getComponent<Text>()->setParameters("0", 0, 0, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     background2->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
     background2->getTransform()->setPosition(glm::vec3(0.0f, 0.8f, 0.0f));
 
@@ -334,6 +342,8 @@ int main() {
         //4
         barCover->setTexture("res/content/textures/dupa.png");
         barCover->renderPlane();
+        counter->renderText();
+        score->renderText();
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
