@@ -137,6 +137,12 @@ int main() {
             "res/content/textures/nodes.png",
             "res/content/textures/ng.png",
     };
+
+    std::vector<std::string> animationTextures1 = {
+            "res/content/textures/ex.png",
+            "res/content/textures/nodes.png",
+            "res/content/textures/ex.png",
+    };
 /*
     menuBackground->setTexture("res/content/textures/backgg.jpg");
     menuPole->setTexture("res/content/textures/pole.png");
@@ -144,6 +150,8 @@ int main() {
     exit->setTexture("res/content/textures/ex.png");
 */
 
+    //menuBackground->setTexture("res/content/textures/backgg.jpg");
+    //menuPole->setTexture("res/content/textures/pole.png");
     newGame->setTexture("res/content/textures/ng.png");
     exit->setTexture("res/content/textures/ex.png");
     while (!glfwWindowShouldClose(s.window))
@@ -190,6 +198,7 @@ int main() {
         newGame->renderPlane();
 
         //exit->setTexture("res/content/textures/ex.png");
+        exit->setAnimationTextures(animationTextures1);
         exit->renderPlane();
 
         glEnable(GL_DEPTH_TEST);
