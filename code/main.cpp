@@ -55,10 +55,7 @@ int main() {
 
     MaterialAsset material("res/content/materials/color.json");
 
-    SSAO ssao;
-    ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-    Renderer renderer(&ssao.shaderGeometryPass);
+    Renderer renderer(&shader);
     renderer.init();
 
     renderer.addShader(&collisionTestShader);
@@ -70,123 +67,67 @@ int main() {
     renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
     renderer.addShader(&shaderCel);
-    renderer.addShader(&ssao.shaderGeometryPass);
+
     renderer.addShader(&imageShader);
     renderer.addShader(&imageShaderGreen);
     renderer.addShader(&imageShaderBlue);
 
-
-    Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
-    Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
-    Model* player2 = new Model("res/content/models/random.fbx", &ssao.shaderGeometryPass);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
     arcadeRenderer->setParameters("dupa", 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
-
-    ColliderComponent* cc1 = new ColliderComponent();
-    ColliderComponent* cc2 = new ColliderComponent();
-
-    cc1->start();
-    cc2->start();
-
-    //menu
-    //Image* menu = new Image(&imageShader);
-
-    Image* barCover = new Image(&imageShader);
-
-    Image* background1 = new Image(&imageShader);
-
-    Image* background2 = new Image(&imageShader);
-
-    ResizableImage* bar = new ResizableImage(&imageShaderGreen);
-
-    Button* button = new Button(&imageShader);
-    button->setOnClick([]() {
-        std::cout << "game paused" << std::endl;
-    });
-
-    Entity* player1 = new Entity("player");
-    sm.getLoadedScenes()[0]->addEntity(player1);
-    player1->addComponent(player);
-    player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
-
-    Entity* club1 = new Entity("club");
-    sm.getLoadedScenes()[0]->addEntity(club1);
-    club1->addComponent(club);
-    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
-    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
     glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
-
-    Entity* sphere1 = new Entity("sphere");
-    sm.getLoadedScenes()[0]->addEntity(sphere1);
-    sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(lightPos);
-
-    Entity* player3 = new Entity("player2");
-    sm.getLoadedScenes()[0]->addEntity(player3);
-    player3->addComponent(player2);
-    player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
-
-    //menu
-    //image
-    /*
-    Entity* mainMenu = new Entity("menu");
-    sm.getLoadedScenes()[0]->addEntity(mainMenu);
-    mainMenu->addComponent(menu);
-    menu->getTransform()->setScale(glm::vec3(0.25f, 0.25f, 0.0f));
-    menu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.1f));
-*/
-    Entity* cover = new Entity("barCover");
-    sm.getLoadedScenes()[0]->addEntity(cover);
-    cover->addComponent(barCover);
-    barCover->getTransform()->setScale(glm::vec3(0.04f, 0.34f, 0.0f));
-    barCover->getTransform()->setPosition(glm::vec3(0.84f, 0.03f, 0.0f));
-
-    Entity* backgroundImage1 = new Entity("background1");
-    sm.getLoadedScenes()[0]->addEntity(backgroundImage1);
-    backgroundImage1->addComponent(background1);
-    background1->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
-    background1->getTransform()->setPosition(glm::vec3(-0.83f, 0.8f, 0.0f));
-
-    Entity* backgroundImage2 = new Entity("background2");
-    sm.getLoadedScenes()[0]->addEntity(backgroundImage2);
-    backgroundImage2->addComponent(background2);
-    background2->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
-    background2->getTransform()->setPosition(glm::vec3(0.0f, 0.8f, 0.0f));
-
-    //ResizableImage
-    Entity* mainBar = new Entity("bar");
-    sm.getLoadedScenes()[0]->addEntity(mainBar);
-    mainBar->addComponent(bar);
-    bar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
-    bar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
-
-    //button
-    Entity* mainButton = new Entity("button");
-    sm.getLoadedScenes()[0]->addEntity(mainButton);
-    mainButton->addComponent(button);
-    button->getTransform()->setScale(glm::vec3(0.04f, 0.06f, 0.0f));
-    button->getTransform()->setPosition(glm::vec3(0.85f, 0.8f, 0.0f));
-
-    screenShader.use();
-    screenShader.setInt("screenTexture", 0);
-
     glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
 
-    static float linear    = 0.09f;
-    static float quadratic = 0.032f;
-    static float power = 1;
-    static float kernelSize = 64;
-    static float radius = 0.5f;
-    static float bias = 0.025f;
-    static bool onlySSAO = true;
-    static vec2 range(2,2);
-    static float mul = 4;
-    static float texelSize = 1;
+
+
+
+    Image* menuBackground = new Image(&imageShader);
+
+    Image* menuPole = new Image(&imageShader);
+
+
+
+    Button* newGame = new Button(&imageShader);
+    newGame->setOnClick([]() {
+        std::cout << "start game" << std::endl;
+    });
+
+    Button* exit = new Button(&imageShader);
+    exit->setOnClick([]() {
+        std::cout << "wyjscie" << std::endl;
+    });
+
+
+
+    //main menu
+    //Image
+    Entity* menuWalpaper = new Entity("menuBackground");
+    sm.getLoadedScenes()[0]->addEntity(menuWalpaper);
+    menuWalpaper->addComponent(menuBackground);
+    menuBackground->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    menuBackground->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    Entity* menuAditional = new Entity("menuPole");
+    sm.getLoadedScenes()[0]->addEntity(menuAditional);
+    menuAditional->addComponent(menuPole);
+    menuPole->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    menuPole->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //button
+    Entity* ng = new Entity("newGame");
+    sm.getLoadedScenes()[0]->addEntity(ng);
+    ng->addComponent(newGame);
+    newGame->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
+    newGame->getTransform()->setPosition(glm::vec3(-0.75f, -0.1f, 0.0f));
+
+    Entity* ex = new Entity("exit");
+    sm.getLoadedScenes()[0]->addEntity(ex);
+    ex->addComponent(exit);
+    exit->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
+    exit->getTransform()->setPosition(glm::vec3(-0.75f, -0.3f, 0.0f));
 
     //for resizing bar
     double lastTime = 0.0;
@@ -207,98 +148,11 @@ int main() {
         glm::mat4 view = s.camera.GetViewMatrix();
 
 
-
-        ImGui::Begin("SSAO");
-
-        {
-            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
-            ImGui::DragFloat("linear", &linear);
-            ImGui::DragFloat("quadratic", &quadratic);
-            ImGui::DragFloat("power", &power);
-            ImGui::DragFloat("kernelSize", &kernelSize);
-            ImGui::DragFloat("radius", &radius);
-            ImGui::DragFloat("bias", &bias);
-            ImGui::DragFloat2("range", glm::value_ptr(range));
-            ImGui::DragFloat("multiplier", &mul);
-            ImGui::DragFloat("texel size", &texelSize);
-            ImGui::Checkbox("Only SSAO", &onlySSAO);
-        }
-
-        ImGui::End();
-
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-        ssao.shaderGeometryPass.use();
-        ssao.shaderGeometryPass.setBool("invertedNormals", false);
-        ssao.shaderGeometryPass.setBool("onlySSAO", onlySSAO);
         renderer.updateProjectionAndView(projection, view);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         editor.draw();
 
         sm.updateLoadedScenes();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAO.use();
-        ssao.shaderSSAO.setFloat("power", power);
-        ssao.shaderSSAO.setFloat("kernelSize", kernelSize);
-        ssao.shaderSSAO.setFloat("radius", radius);
-        ssao.shaderSSAO.setFloat("bias", bias);
-        // Send kernel + rotation
-        for (unsigned int i = 0; i < 64; ++i)
-        {
-            if(i > kernelSize)
-            {
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", vec3(0));
-            }
-            else
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", ssao.ssaoKernel[i]);
-        }
-
-        ssao.shaderSSAO.setMat4("projection", projection);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, ssao.noiseTexture);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoBlurFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAOBlur.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBuffer);
-        ssao.shaderSSAOBlur.setInt("rangeX", range.x);
-        ssao.shaderSSAOBlur.setInt("rangeY", range.y);
-        ssao.shaderSSAOBlur.setFloat("mul", mul);
-        ssao.shaderSSAOBlur.setFloat("texelSize", texelSize);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        ssao.shaderLightingPass.use();
-        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
-        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
-        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
-
-
-        ssao.shaderLightingPass.setFloat("light.Linear", linear);
-        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
-        glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
-        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
-        ssao.renderQuad();
-
-
 
 
 
@@ -311,29 +165,17 @@ int main() {
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
         //1
-        background1->setTexture("res/content/textures/back.png");
-        background1->renderPlane();
-        background2->setTexture("res/content/textures/back.png");
-        background2->renderPlane();
+        menuBackground->setTexture("res/content/textures/backgg.jpg");
+        menuBackground->renderPlane();
+        menuPole->setTexture("res/content/textures/pole.png");
+        menuPole->renderPlane();
 
         //2
-        button->setTexture("res/content/textures/stop.png");
-        button->renderPlane();
+        newGame->setTexture("res/content/textures/ng.png");
+        newGame->renderPlane();
 
-        //3
-        bar->renderPlane();
-         //resizing bar
-        double currentTime = glfwGetTime();
-        if (currentTime - lastTime >= 3.0)
-        {
-            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
-            bar->resizeOnImpulse(0.03f);
-            lastTime = currentTime;
-        }
-
-        //4
-        barCover->setTexture("res/content/textures/dupa.png");
-        barCover->renderPlane();
+        exit->setTexture("res/content/textures/ex.png");
+        exit->renderPlane();
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
@@ -343,8 +185,12 @@ int main() {
         //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
         double mouseX, mouseY;
         glfwGetCursorPos(s.window, &mouseX, &mouseY);
-        button->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-        button->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+        newGame->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        newGame->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+        exit->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        exit->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
         //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
 
 
