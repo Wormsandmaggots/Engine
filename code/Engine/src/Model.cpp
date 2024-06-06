@@ -52,9 +52,9 @@ Model::Model(const Model& another)
     this->modelShader = another.modelShader;
     this->textures_loaded = another.textures_loaded;
 	this->meshes = another.meshes;
-
-    //wyjebac
-    //loadModel(path);
+    if (another.material != nullptr) {
+        this->material = another.material;
+    }
 }
 
 Model::Model(){
@@ -68,8 +68,9 @@ Model::Model(){
 
 void Model::Draw(Shader *shader) {
 
-    if(material!=nullptr)
+    if (material != nullptr) {
         material->bindMaterial();
+    }
 
     for (auto &meshe: meshes)
         meshe.Draw(*shader);
@@ -277,6 +278,11 @@ void Model::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* 
             SetVertexBoneData(vertices[vertexId], boneID, weight);
         }
     }
+}
+
+MaterialAsset* Model::getMaterial()
+{
+    return this->material;
 }
 
 const aiScene* Model::getScene() {
