@@ -59,6 +59,8 @@ public:
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
+        stbi_set_flip_vertically_on_load(1); // Dodajemy tę linię
+
         int width, height, nrChannels;
         unsigned char *data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
         if (data)

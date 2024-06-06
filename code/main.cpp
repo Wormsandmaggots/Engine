@@ -93,11 +93,19 @@ int main() {
     cc2->start();
 
     //menu
-    Image* menu = new Image(&imageShader);
-    ResizableImage* bar = new ResizableImage(&imageShader);
+    //Image* menu = new Image(&imageShader);
+
+    Image* barCover = new Image(&imageShader);
+
+    Image* background1 = new Image(&imageShader);
+
+    Image* background2 = new Image(&imageShader);
+
+    ResizableImage* bar = new ResizableImage(&imageShaderGreen);
+
     Button* button = new Button(&imageShader);
     button->setOnClick([]() {
-        std::cout << "Button 1 clicked" << std::endl;
+        std::cout << "game paused" << std::endl;
     });
 
     Entity* player1 = new Entity("player");
@@ -124,23 +132,45 @@ int main() {
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
     //menu
+    //image
+    /*
     Entity* mainMenu = new Entity("menu");
     sm.getLoadedScenes()[0]->addEntity(mainMenu);
     mainMenu->addComponent(menu);
     menu->getTransform()->setScale(glm::vec3(0.25f, 0.25f, 0.0f));
     menu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.1f));
+*/
+    Entity* cover = new Entity("barCover");
+    sm.getLoadedScenes()[0]->addEntity(cover);
+    cover->addComponent(barCover);
+    barCover->getTransform()->setScale(glm::vec3(0.04f, 0.34f, 0.0f));
+    barCover->getTransform()->setPosition(glm::vec3(0.84f, 0.03f, 0.0f));
 
+    Entity* backgroundImage1 = new Entity("background1");
+    sm.getLoadedScenes()[0]->addEntity(backgroundImage1);
+    backgroundImage1->addComponent(background1);
+    background1->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
+    background1->getTransform()->setPosition(glm::vec3(-0.83f, 0.8f, 0.0f));
+
+    Entity* backgroundImage2 = new Entity("background2");
+    sm.getLoadedScenes()[0]->addEntity(backgroundImage2);
+    backgroundImage2->addComponent(background2);
+    background2->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
+    background2->getTransform()->setPosition(glm::vec3(0.0f, 0.8f, 0.0f));
+
+    //ResizableImage
     Entity* mainBar = new Entity("bar");
     sm.getLoadedScenes()[0]->addEntity(mainBar);
     mainBar->addComponent(bar);
-    bar->getTransform()->setScale(glm::vec3(0.1f, 0.3f, 0.0f));
-    bar->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.3f));
+    bar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
+    bar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
 
+    //button
     Entity* mainButton = new Entity("button");
     sm.getLoadedScenes()[0]->addEntity(mainButton);
     mainButton->addComponent(button);
-    button->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
-    button->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, -1.0f));
+    button->getTransform()->setScale(glm::vec3(0.04f, 0.06f, 0.0f));
+    button->getTransform()->setPosition(glm::vec3(0.85f, 0.8f, 0.0f));
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -269,18 +299,44 @@ int main() {
         ssao.renderQuad();
 
 
+
+
+
         //HUD Menu
         glDisable(GL_DEPTH_TEST);
         imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
-        //menu->setTexture("res/content/textures/hud_back.png");
-        //menu->renderPlane();
-        //bar->setTexture("res/content/textures/nodes.png");
-        //bar->renderPlane();
-        button->setTexture("res/content/textures/nodes.png");
+        //1
+        background1->setTexture("res/content/textures/back.png");
+        background1->renderPlane();
+        background2->setTexture("res/content/textures/back.png");
+        background2->renderPlane();
+
+        //2
+        button->setTexture("res/content/textures/stop.png");
         button->renderPlane();
+
+        //3
+        bar->renderPlane();
+         //resizing bar
+        double currentTime = glfwGetTime();
+        if (currentTime - lastTime >= 3.0)
+        {
+            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
+            bar->resizeOnImpulse(0.03f);
+            lastTime = currentTime;
+        }
+
+        //4
+        barCover->setTexture("res/content/textures/dupa.png");
+        barCover->renderPlane();
+
         glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
 
 
 
@@ -291,16 +347,6 @@ int main() {
         button->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
         //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
 
-
-
-        /* //resizing bar demo
-        double currentTime = glfwGetTime();
-        if (currentTime - lastTime >= 3.0)
-        {
-            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
-            bar->resizeOnImpulse(0.1f);
-            lastTime = currentTime;
-        }*/
 
         cm.update();
 
