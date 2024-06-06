@@ -132,6 +132,20 @@ int main() {
     //for resizing bar
     double lastTime = 0.0;
 
+    std::vector<std::string> animationTextures = {
+            "res/content/textures/ng.png",
+            "res/content/textures/nodes.png",
+            "res/content/textures/ng.png",
+    };
+/*
+    menuBackground->setTexture("res/content/textures/backgg.jpg");
+    menuPole->setTexture("res/content/textures/pole.png");
+    newGame->setAnimationTextures(animationTextures);
+    exit->setTexture("res/content/textures/ex.png");
+*/
+
+    newGame->setTexture("res/content/textures/ng.png");
+    exit->setTexture("res/content/textures/ex.png");
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
@@ -171,10 +185,11 @@ int main() {
         menuPole->renderPlane();
 
         //2
-        newGame->setTexture("res/content/textures/ng.png");
+        //newGame->setTexture("res/content/textures/ng.png");
+        newGame->setAnimationTextures(animationTextures);
         newGame->renderPlane();
 
-        exit->setTexture("res/content/textures/ex.png");
+        //exit->setTexture("res/content/textures/ex.png");
         exit->renderPlane();
 
         glEnable(GL_DEPTH_TEST);
