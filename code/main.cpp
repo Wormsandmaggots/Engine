@@ -140,7 +140,7 @@ int main() {
     lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
     leftHandPointer->setParent(*player);
     leftHandPointer->addComponent(lHandcollider);
-    leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+    leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
 
     Entity* rightHandPointer = new Entity("rightHandPointer");
     ColliderComponent* rHandcollider = new ColliderComponent();
@@ -148,7 +148,7 @@ int main() {
     rHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
     rightHandPointer->setParent(*player);
     rightHandPointer->addComponent(rHandcollider);
-    rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+    rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
 
     song->play();
 
@@ -182,13 +182,13 @@ int main() {
         {
             spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].high.x, -20),clap, sweep);
             //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
-            //spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), clap, sweep);
+            spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), clap, sweep);
             //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
 
             songDataIndex++;
             timeToDispense2 = timeToDispense;
             std::cout <<"SCORE: " << score << std::endl;
-            std::cout << "SCORE: " << score << std::endl;
+            std::cout << "COMBO: " << combo << std::endl;
 
         }
 
@@ -205,21 +205,21 @@ int main() {
         shaderRig.use();
 
         joystickOffset2 = playerInput.getJoystick(2) * 100.0f;
-        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:RightHand");
+        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
         playerRig->update();
 
 
 
         joystickOffset = playerInput.getJoystick(1) * 100.0f;
-        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
+        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
         playerRig->update();
 
 
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0,0,0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0,0,0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
 
 
        

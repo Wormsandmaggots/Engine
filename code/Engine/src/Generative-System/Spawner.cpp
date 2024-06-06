@@ -16,13 +16,5 @@ void Spawner::spawnBall(const std::string& name, glm::vec3 pos,Sound* success, S
 		
 }
 
-void Spawner::updateBalls() {
-	for (Ball* ball : balls) {
-		if (ball->getToDestory()) {
-			ball->getTransform()->setPosition(glm::vec3(100));
-		}
-		ball->update();
-		
-	}
-}
+
 

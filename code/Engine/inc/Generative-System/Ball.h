@@ -8,7 +8,7 @@
 
 class Ball : public Entity {
 	glm::vec3 position;
-	float speed = 5.1;
+	float speed = 7.1;
 	bool toDestroy = false;
 	Sound* success;
 	Sound* failure;
@@ -26,6 +26,7 @@ public:
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
 			score += 100;
+			combo += 1;
 			position = glm::vec3(100);
 			success->play();
 
@@ -47,6 +48,7 @@ public:
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
+		collider->getCollider()->getColliderShape()->setRadius(0.6);
 		this->getTransform()->setScale(glm::vec3(.3));
 		this->getTransform()->setPosition(position);
 		this->addComponent(model);
@@ -60,6 +62,7 @@ public:
 			if (position.z > 10.0 && !toDestroy) {
 				toDestroy = true;
 				position.z = 100;
+				combo = 0;
 				failure->play();
 				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
 			}
