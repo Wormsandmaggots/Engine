@@ -99,6 +99,9 @@ target_link_libraries(ftgl
 set(fftw_dir ${CMAKE_CURRENT_LIST_DIR}/fftw CACHE INTERNAL "")
 
 
+add_subdirectory(joyshock)
+
+
 set_target_properties(glad
         stb_image
         assimp
@@ -116,6 +119,7 @@ set_target_properties(glad
         ftgl
         TracyClient
         sndfile
+        JoyShockLibrary
         PROPERTIES FOLDER "vendor"
 )
 

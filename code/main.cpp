@@ -18,6 +18,7 @@
 #include "Renderer/SSAO.h"
 #include "Generative-System/SongAnalizer.h"
 #include "Generative-System/Ball.h"
+#include "JoyShockLibrary.h"
 
 
 #include "Globals.h"
@@ -25,6 +26,7 @@
 using namespace SceneManagement;
 
 int main() {
+    int connectedControllers = JslConnectDevices();
     init();
     EditorLayer::Editor editor;
     editor.init(&s.camera);

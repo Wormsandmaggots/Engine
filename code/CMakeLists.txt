@@ -66,6 +66,7 @@ target_link_libraries(${PROJECT_NAME}
         ftgl
         TracyClient
         sndfile
+        JoyShockLibrary
         ${fftw_dir}/fftw3.lib
 )
 
