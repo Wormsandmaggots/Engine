@@ -5,24 +5,34 @@ private:
     std::map<std::string,Bone*> bones;
     RigPrep* rig;
     glm::vec3 forward;
+    glm::mat4 headInitPos;
 public:
     LookAt(RigPrep* _rig){
         rig = _rig;
         bones = rig->getBones();
         forward = glm::vec3(0.0f, 0.0f, 1.0f); //wektor do przodu, defaultowo glowa patrzy w tym kierunku
+        Bone* head;
+        if(bones.find("mixamorig:Head")!=bones.end()){ //searching for limb in our bones
+            head = bones["mixamorig:Head"];
+        }
+        headInitPos = head->getModelTransform();
     }
-//s.camera.Position
+///tej funkcji używamy gdy chcemy podać punkt na który ma patrzeć postać (w odniesieniu do glowy postaci)
     void update(glm::vec3 target){
-        compute();
+        compute(target);
+    }
+    /// tej funkcji uzywamy gdy chcemy podać kąt o jaki głowa ma zostać obrócona względem jej początkowego zwrotu
+    void update(float angle){
+        compute(angle);
     }
 
-    void compute(){
+    void compute(glm::vec3 pointTarget){
         Bone* head;
         if(bones.find("mixamorig:Head")!=bones.end()){ //searching for limb in our bones
             head = bones["mixamorig:Head"];
         }
         glm::vec3 headPos = head ->getModelPosition();
-        glm::vec3 target = glm::vec3(headPos.x - 10, headPos.y, headPos.z);
+        glm::vec3 target = glm::vec3(headPos.x + pointTarget.x, headPos.y + pointTarget.y, headPos.z + pointTarget.z);
         if(forward == glm::vec3(0.0f,0.0f,1.0f)){
             forward = glm::vec3(headPos.x , headPos.y, headPos.z + 10);
         }
@@ -54,6 +64,31 @@ public:
             }
         }
     }
+
+    void compute(float angle){
+        Bone* head;
+        if(bones.find("mixamorig:Head")!=bones.end()){ //searching for limb in our bones
+            head = bones["mixamorig:Head"];
+        }
+        if(fabs(angle) > 0.001f){
+            glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f);
+                //obrot macierzy w modelspace
+                glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis);
+                glm::mat3 newModelTransform = rotationMatrix * glm::mat3(headInitPos);
+                head->updateModelRotationPart(newModelTransform);
+                //przygotowanie macierzy odwrotnej do macierzy rotacji rodzica
+                glm::mat4 parentModelMatrix = head->getParent()->getModelTransform();
+                glm::mat3 parentRotationPart = glm::mat3(parentModelMatrix);
+                glm::mat3 invParentRotationPart = glm::inverse(parentRotationPart);
+
+                //dopasowanie localSpace na podstawie zmian wprowadzonych w modelSpace
+                glm::mat3 newLocalMatrix = invParentRotationPart * glm::mat3(head->getModelTransform()); //oblicza sie prawidlowo
+                head->updateLocalRotationPart(newLocalMatrix);
+
+                updateChildren(head);
+            }
+        }
+
 
     void updateChildren(Bone* parent) {
         for(Bone* child : parent->getChildren()) {
