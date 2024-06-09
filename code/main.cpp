@@ -88,6 +88,7 @@ int main() {
     Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
     Texture menuNewGame("res/content/textures/ng.png", "ng");
     Texture menuExit("res/content/textures/ex.png", "ex");
+    Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
 
 
     Image* menuBackground = new Image(&imageShader);
@@ -137,6 +138,13 @@ int main() {
     ex->addComponent(exit);
     exit->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
     exit->getTransform()->setPosition(glm::vec3(-0.75f, -0.3f, 0.0f));
+
+    // Dodaj tekstury do wektora
+    std::vector<Texture*> animationTextures = {&menuNewGame, &menuNewGameAlt};
+
+        // Ustaw tekstury animacji dla przycisku
+    newGame->setAnimationTextures(animationTextures);
+
 
     //for resizing bar
     double lastTime = 0.0;

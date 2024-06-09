@@ -8,12 +8,33 @@
 
 class Button : public Image {
 public:
-    Button(Shader* shader) : Image(shader), isPressed(false), onClick([](){}) {}
+    Button(Shader* shader) : Image(shader), isPressed(false), onClick([](){}), currentTextureIndex(0) {}
 
     void setOnClick(std::function<void()> onClickFunc) {
         onClick = onClickFunc;
     }
 
+    void setAnimationTextures(const std::vector<Texture*>& textures) {
+        animationTextures = textures;
+    }
+
+    void animate() {
+        if (!animationTextures.empty()) {
+            if (currentTextureIndex != 0) {
+                setTexture(animationTextures[currentTextureIndex]);
+            }
+            currentTextureIndex = (currentTextureIndex + 1) % animationTextures.size();
+        }
+    }
+
+    void resetAnimation() {
+        if (!animationTextures.empty()) {
+            // Ustawiamy teksturę na pierwszą w sekwencji
+            setTexture(animationTextures[0]);
+            // Resetujemy indeks tekstury
+            currentTextureIndex = 0;
+        }
+    }
 
     void checkHover(double mouseX, double mouseY, double windowWidth, double windowHeight) {
         double screenX = (mouseX / windowWidth) * 2 - 1;
@@ -27,9 +48,9 @@ public:
 
         if (isHovered) {
             std::cout << "hover" << std::endl;
-            //animate();
+            animate();
         } else {
-            //resetAnimation();
+            resetAnimation();
         }
     }
 
@@ -54,7 +75,7 @@ private:
     bool isPressed;
     std::function<void()> onClick;
 
-    std::vector<std::string> animationTextures;
+    std::vector<Texture*> animationTextures;
     int currentTextureIndex = 0;
 };
 
