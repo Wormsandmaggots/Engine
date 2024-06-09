@@ -24,6 +24,10 @@ uniform vec3 spotLightDir;
 uniform float cutOff;
 uniform float outerCutOff;
 
+// directional light
+uniform vec3 dirLightDir;
+uniform vec3 dirLightColor;
+
 vec3 lightColor = vec3(150.0f, 150.0f, 150.0f);
 const float PI = 3.14159265359;
 
@@ -175,6 +179,35 @@ kD *= 1.0 - metallic;
 
 // scale light by NdotL
 float NdotL = max(dot(N, L), 0.0);
+
+// add to outgoing radiance Lo
+Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+
+// calculate directional light radiance
+L = normalize(-dirLightDir);
+H = normalize(V + L);
+radiance = dirLightColor;
+
+// Cook-Torrance BRDF
+NDF = DistributionGGX(N, H, roughness);
+G   = GeometrySmith(N, V, L, roughness);
+F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+
+numerator    = NDF * G * F;
+denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+specular = numerator / denominator;
+
+// kS is equal to Fresnel
+kS = F;
+// energy conservation
+kD = vec3(1.0) - kS;
+// multiply kD by the inverse metalness such that only non-metals
+// have diffuse lighting, or a linear blend if partly metal (pure metals
+// have no diffuse light).
+kD *= 1.0 - metallic;
+
+// scale light by NdotL
+NdotL = max(dot(N, L), 0.0);
 
 // add to outgoing radiance Lo
 Lo += (kD * albedo / PI + specular) * radiance * NdotL;

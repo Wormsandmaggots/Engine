@@ -132,7 +132,9 @@ int main() {
         shaderPbr.setVec3("spotLightDir", glm::vec3(1, 1, 1));
         shaderPbr.setFloat("cutOff", glm::cos(glm::radians(12.5f)));
         shaderPbr.setFloat("outerCutOff", glm::cos(glm::radians(17.5f)));
-		renderer.updateProjectionAndView(projection, view);
+        shaderPbr.setVec3("dirLightDir", glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f))); // Example direction
+        shaderPbr.setVec3("dirLightColor", glm::vec3(1.0f, 1.0f, 1.0f)); // Example color
+        renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
         cm.update();
