@@ -84,12 +84,16 @@ public:
         }
         stbi_image_free(data);
     }*/
-
+/*
     void setTexture(Texture* texture) {
         this->texture = texture;
         this->textureID = texture->getTextureID();
     }
-
+*/
+    void setTexture(Texture* texture) {
+        this->texture = texture;
+        this->textureID = texture->textureID;
+    }
     void renderPlane()
     {
         shader->use();
