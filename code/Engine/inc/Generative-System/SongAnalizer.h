@@ -69,10 +69,17 @@ inline static double equalLoudnessContour(double frequency) {
     return adjustment1 + ratio * (adjustment2 - adjustment1);
 }
 
+enum sampleType {
+	BASS,
+	SKIP,
+	CLAP
+};
+
 struct SongSample {
     glm::vec3 bass;
     glm::vec3 mid;
     glm::vec3 high;
+    sampleType type;
 };
 
 
@@ -106,8 +113,8 @@ public:
 
             sf_seek(file, chunkStart, SEEK_SET);
             sf_read_double(file, samples, samplesPerChunk);
+                        double timestamp = static_cast<double>(chunkStart) / info.samplerate;
 
-            double timestamp = static_cast<double>(chunkStart) / info.samplerate;
 
             fftw_complex* in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * samplesPerChunk);
             for (int i = 0; i < samplesPerChunk; ++i) {
@@ -211,6 +218,8 @@ public:
             double normalizedPredominantBassFrequency = 0;
             double normalizedPredominantMidFrequency = 0;
             double normalizedPredominantHighFrequency = 0;
+
+            
             
             if (predominantBassFrequency != 0  || predominantMidFrequency != 0 || predominantHighFrequency != 0) 
             {
@@ -220,12 +229,15 @@ public:
             }
 
             SongSample sample;
-            
-            sample.bass = glm::vec3(normalized_bassMean, normalizedPredominantBassFrequency, -20);
-            sample.mid = glm::vec3(normalized_midMean, normalizedPredominantMidFrequency, -20);
-            sample.high = glm::vec3(normalized_highMean, normalizedPredominantHighFrequency, -20);
-           
 
+         
+
+            sample.bass = glm::vec3(normalized_bassMean, normalizedPredominantBassFrequency, -2137);
+            sample.mid = glm::vec3(normalized_midMean, -1, -6969);
+            sample.high = glm::vec3(normalized_highMean, 1, -420);
+           
+            
+          
             result.push_back(sample);
            
 
@@ -237,8 +249,95 @@ public:
         }
 
 
-
         delete[] samples;
         sf_close(file);
     }
+
+
+    inline static void songLenth( const char* filename) {
+    
+        SF_INFO info;
+        SNDFILE* file = sf_open(filename, SFM_READ, &info);
+        if (!file) {
+            cerr << "Error opening file: " << sf_strerror(file) << endl;
+            return;
+        }
+    }
+
+    inline static void testparseSong(double chunkDuration, const char* filename, vector<SongSample>& result) {
+        // Load the audio file
+        SF_INFO sfinfo;
+        SNDFILE* file = sf_open(filename, SFM_READ, &sfinfo);
+
+        double duration = static_cast<double>(sfinfo.frames) / sfinfo.samplerate;
+
+        // Calculate the number of samples per chunk
+        int chunk_size = chunkDuration * sfinfo.samplerate;
+
+        // Prepare the FFT
+        fftw_complex* fft_result = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * chunk_size);
+        fftw_plan plan = fftw_plan_dft_r2c_1d(chunk_size, NULL, fft_result, FFTW_ESTIMATE);
+
+        // Define the bass range (20Hz to 150Hz)
+        int bass_min = 20.0 / sfinfo.samplerate * chunk_size;
+        int bass_max = 150.0 / sfinfo.samplerate * chunk_size;
+
+        // Define the clap range (2000Hz to 4000Hz)
+        int clap_min = 2000.0 / sfinfo.samplerate * chunk_size;
+        int clap_max = 4000.0 / sfinfo.samplerate * chunk_size;
+
+        std::vector<double> chunk(chunk_size);
+        int chunk_number = 0;
+        for (int chunkStart = 0; chunkStart < sfinfo.frames; chunkStart += chunk_size) {
+            // Read the chunk
+            sf_seek(file, chunkStart, SEEK_SET);
+            sf_read_double(file, &chunk[0], chunk_size);
+           
+            
+            // Perform the FFT on the current chunk
+            fftw_execute_dft_r2c(plan, &chunk[0], fft_result);
+
+            // Check if there's any bass in the current chunk
+            double energyBass = 0.0;
+            for (int i = bass_min; i <= bass_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyBass += std::norm(value); // square of the absolute value
+            }
+
+            // Check if there's any clap in the current chunk
+            double energyClap = 0.0;
+            for (int i = clap_min; i <= clap_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyClap += std::norm(value); // square of the absolute value
+            }
+
+            // Calculate the timestamp for the current chunk
+            double timestamp = static_cast<double>(chunkStart) / sfinfo.samplerate;
+
+            // Print the result for the current chunk
+           // std::cout << std::fixed << timestamp << "s: ";
+
+            //cout <<"\tCLAP: " << energyClap << "\tBASE: " << energyBass << endl;
+                    if(energyBass < 100 && energyClap < 100)
+              {
+                 // std::cout << "SKIP\n";
+                  result.at(chunk_number).type = sampleType::SKIP;
+              }
+              else if (energyBass > energyClap) {
+                  //std::cout << "BASS\n";
+                  result.at(chunk_number).type = sampleType::BASS;
+
+              }else if (energyBass < energyClap) {
+                 // std::cout << "CLAP\n";
+                  result.at(chunk_number).type = sampleType::CLAP;
+              }
+            ++chunk_number;
+        }
+
+        // Clean up
+        fftw_destroy_plan(plan);
+        fftw_free(fft_result);
+        sf_close(file);
+    }
+
 };

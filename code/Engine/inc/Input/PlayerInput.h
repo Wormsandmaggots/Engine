@@ -24,7 +24,8 @@ public:
                 switch (button)
                 {
                 case 0: // square/A
-                    // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed"); //A
+                    start = true;
+                            LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed"); //A
                     break;
                 case 1: // cross/B
                     // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Cross is pressed"); //B

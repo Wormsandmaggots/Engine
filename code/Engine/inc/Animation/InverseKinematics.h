@@ -37,7 +37,7 @@ public:
                 float angle = glm::acos(glm::dot(e_i,t_i)); //kąt wychodzi prawidłowy
                 if(fabs(angle) > 0.001f){
                     glm::vec3 axis = glm::cross(e_i,t_i); //rotation axis
-                    std::cout << " axis " << axis.x << " " << axis.y << " " << axis.z << std::endl;
+                    //std::cout << " axis " << axis.x << " " << axis.y << " " << axis.z << std::endl;
                     if( glm::pow(glm::length(axis),2) > 0.0f){
                         axis = glm::normalize(axis);
                         //obrot macierzy modelSpace

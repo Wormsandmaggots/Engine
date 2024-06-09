@@ -35,7 +35,6 @@ int main() {
     CollisionManager cm;
     AudioManager audioManager;
     audioManager.init();
-    Sound* song = audioManager.loadSound("res/content/sounds/queen.wav");
 
     Sound* clap = audioManager.loadSound("res/content/sounds/clap.wav");
     Sound* sweep = audioManager.loadSound("res/content/sounds/sweep.wav");
@@ -44,11 +43,17 @@ int main() {
 
     SceneManager sm;
     
-    
 
-    float songSampleInterval = 1;
+    float songSampleInterval = 0.3;
     vector<SongSample> songData;
-    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
+    const char* path = "res/content/sounds/queen.wav";
+    Sound* song = audioManager.loadSound(path);
+
+
+    SongAnalizer::parseSong(songSampleInterval, path, songData);
+    SongAnalizer::testparseSong(songSampleInterval, path, songData);
+
+    
     int songDataIndex = 0;
 
     DebugInput debugInput;
@@ -73,7 +78,7 @@ int main() {
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
-    Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+   // Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl");
     //TODO: Kuba: Czy to może tutaj zostać?
 
@@ -91,27 +96,20 @@ int main() {
     //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     //Model* player2 = new Model("res/content/models/random.fbx", &shaderPbr);
 
-    Model* playerModel = new Model("res/content/models/Character_rigged/originWstopkach.fbx", &shaderRig);
+    Model* playerModel = new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig);
     RigPrep* playerRig = new RigPrep(playerModel);
     InverseKinematics* playerIK = new InverseKinematics(playerRig);
 
     glm::vec2 joystickOffset = glm::vec2(0);
     glm::vec2 joystickOffset2 = glm::vec2(0);
+    glm::vec2 joystickOffset3 = glm::vec2(0);
+    glm::vec2 joystickOffset4 = glm::vec2(0);
+
+    Text* comboRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+    Text* scoreRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
 
-    Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
-    Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
-
-    std::string strNum = std::to_string(score);
-
-    arcadeRenderer->setParameters(strNum, 100, 100, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
     ThirdPersonCamera* playerCamera = new ThirdPersonCamera();
-
-    //ColliderComponent* cc1 = new ColliderComponent();
-    //ColliderComponent* cc2 = new ColliderComponent();
-
-    //cc1->start();
-    //cc2->start();
 
 
     float time = 0;
@@ -123,15 +121,27 @@ int main() {
 
     Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
     Model* sphereModel_green = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"));
+    Model* sphereModel_green2 = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"));
 
+    Entity* lowBall = new Entity("lowBall");
+    lowBall->getTransform()->setScale(glm::vec3(.3));
+    lowBall->getTransform()->setPosition(glm::vec3(0));
+    lowBall->addComponent(sphereModel_green);
+    //currentScene->addEntity(lowBall);
+
+    Entity* highBall = new Entity("highBall");
+    highBall->getTransform()->setScale(glm::vec3(.3));
+    highBall->getTransform()->setPosition(glm::vec3(1,1,0));
+    highBall->addComponent(sphereModel_green2);
+    //currentScene->addEntity(highBall);
 
 
     Entity* player = new Entity("Player");
+    //player->getTransform()->setRotation(glm::vec3(0, 180, 0));
     player->addComponent(playerModel);
     player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
     player->getTransform()->setScale(glm::vec3(0.01f));
-    //player->getTransform()->setRotation(glm::vec3(0,180,0));
-    sm.getLoadedScenes().at(0)->addEntity(player);
+    currentScene->addEntity(player);
 
 
     Entity* leftHandPointer = new Entity("leftHandPointer");
@@ -140,7 +150,7 @@ int main() {
     lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
     leftHandPointer->setParent(*player);
     leftHandPointer->addComponent(lHandcollider);
-    leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+    leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
 
     Entity* rightHandPointer = new Entity("rightHandPointer");
     ColliderComponent* rHandcollider = new ColliderComponent();
@@ -148,9 +158,25 @@ int main() {
     rHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
     rightHandPointer->setParent(*player);
     rightHandPointer->addComponent(rHandcollider);
-    rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+    rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
 
-    song->play();
+    Entity* leftFootPointer = new Entity("leftFootPointer");
+    ColliderComponent* leftFootCollider = new ColliderComponent();
+    leftFootCollider->start();
+    leftFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
+    leftFootPointer->setParent(*player);
+    leftFootPointer->addComponent(leftFootCollider);
+    leftFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
+    Entity* rightFootPointer = new Entity("rightFootPointer");
+    ColliderComponent* rightFootCollider = new ColliderComponent();
+    rightFootCollider->start();
+    rightFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
+    rightFootPointer->setParent(*player);
+    rightFootPointer->addComponent(rightFootCollider);
+    rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+
+
 
 
 
@@ -171,24 +197,83 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Combo " + std::to_string(combo)+"x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
+
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
+
         timeToDispense2 -= s.deltaTime;
+        if (start) {
+            if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
+                switch (songData[songDataIndex].type) {
+                case sampleType::CLAP:
+                    //spawner.spawnBall("ball", glm::vec3(0, 1, 0), clap, sweep);
+                    //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x * 1.25, 1 * 1.25, 0), clap, sweep);
+                    spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].high.x, 1, 0), clap, sweep);
 
+                    break;
+                case sampleType::BASS:
+                    //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x * 1.25, -1 * 1.25, 0), clap, sweep);
+                    spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x, -1, 0), clap, sweep);
 
+                    //spawner.spawnBall("ball", glm::vec3(0, -1, 0), clap, sweep);
+                    break;
+                case sampleType::SKIP:
+                    break;
+                }
+                songDataIndex++;
+                timeToDispense2 = timeToDispense;
+                if (!(songDataIndex < songData.size())) songDataIndex = 0;
+            }
+            song->play();
 
-        if (timeToDispense2 < 0 && songDataIndex < songData.size())
-        {
-            spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].high.x, -20),clap, sweep);
-            //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
-            spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), clap, sweep);
-            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), sphereModel);
+            
+           
 
-            songDataIndex++;
-            timeToDispense2 = timeToDispense;
-            std::cout <<"SCORE: " << score << std::endl;
-            std::cout << "COMBO: " << combo << std::endl;
+            //if (timeToDispense2 < 0 && songDataIndex < songData.size()) 
+            //{
+            // if(timeToDispense2 < 0 && songDataIndex < songData.size())
+            //    spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x*1.25, songData[songDataIndex].high.x * 1.25, -7), clap, sweep);
+
+            //        if (songData[songDataIndex].bass.x > 0.5) 
+            //        {
+            //           // spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x*1.25, songData[songDataIndex].high.x * 1.25, -7), clap, sweep);
+
+            //        }
+            //        else
+            //        {
+            //            //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].high.x * 1.25, songData[songDataIndex].mid.x * 1.25, -7), clap, sweep);
+
+            //        }
+
+            //        if (songData[songDataIndex].bass.x < 0.5) 
+            //        {
+            //            //spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].mid.x * 1.25, songData[songDataIndex].high.x * 1.25, -7), clap, sweep);
+
+            //        }
+            //        else 
+            //        {
+            //            //spawner.spawnBall("ball", glm::vec3(songData[songDataIndex].high.x * 1.25, songData[songDataIndex].mid.x * 1.25, -7), clap, sweep);
+            //        }
+
+            //    //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].bass.x, songData[songDataIndex].bass.y, -2.5), clap, sweep);
+            //    //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -5* songData[songDataIndex].bass.x), clap, sweep);
+            //    //spawner.spawnBall("ball", glm::vec3(-songData[songDataIndex].high.x, songData[songDataIndex].high.y, -5* songData[songDataIndex].bass.x), clap, sweep);
+
+            //    //spawner.spawnDrink("drink",glm::vec3(1.25,0,-5),clap,sweep);
+
+            //    songDataIndex++;
+            //    timeToDispense2 = timeToDispense;
+            //}
+            //else {
+            //    songDataIndex++;
+            //    timeToDispense2 = timeToDispense;
+
+            //}
+            //if (!(songDataIndex < songData.size())) songDataIndex = 0;
 
         }
 
@@ -205,23 +290,29 @@ int main() {
         shaderRig.use();
 
         joystickOffset2 = playerInput.getJoystick(2) * 100.0f;
-        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:RightHand");
         playerRig->update();
-
 
 
         joystickOffset = playerInput.getJoystick(1) * 100.0f;
-        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
         playerRig->update();
 
+        joystickOffset3 = playerInput1.getJoystick(1) * 100.0f;
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:LeftFoot");
+        playerRig->update();
+
+        joystickOffset4 = playerInput1.getJoystick(2) * 100.0f;
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:RightFoot");
+        playerRig->update();
 
         auto transforms = playerRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0,0,0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-
-
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0,0,0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
        
 
         //shaderPbr.use();
@@ -233,7 +324,8 @@ int main() {
         cm.update();
         //		ImGui::Render();
         //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        arcadeRenderer->renderText();
+        comboRenderer->renderText();
+        scoreRenderer->renderText();
 
 
 
