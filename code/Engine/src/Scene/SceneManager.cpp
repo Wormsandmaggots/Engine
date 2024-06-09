@@ -29,10 +29,19 @@ void SceneManager::unloadScene(const std::string &sceneName) {
     }
 }
 
+/*
 void SceneManager::updateLoadedScenes() {
     ZoneScopedN("Scene update");
     for (Scene2 *scene : loadedScenes) {
         scene->update();
+    }
+}
+ */
+
+void SceneManager::updateLoadedScenes() {
+    ZoneScopedN("Scene update");
+    if (currentScene) {
+        currentScene->update();
     }
 }
 

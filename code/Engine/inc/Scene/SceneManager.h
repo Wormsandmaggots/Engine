@@ -13,6 +13,7 @@ namespace SceneManagement {
     class SceneManager {
     public:
         static SceneManager* Instance;
+        Scene2* currentScene = nullptr;
         SceneManager();
 
         virtual ~SceneManager() = default;
@@ -23,6 +24,21 @@ namespace SceneManagement {
         void updateLoadedScenes();
 
         const std::vector<Scene2*>& getLoadedScenes() const;
+
+        void setCurrentScene(const std::string &sceneName) {
+            auto foundedScene = std::find_if(loadedScenes.begin(), loadedScenes.end(),
+                                             [&sceneName](const Scene2* scene) { return scene->getName() == sceneName; });
+
+            if (foundedScene != loadedScenes.end()) {
+                currentScene = *foundedScene;
+            } else {
+                LOG_ERROR("Scene '" + sceneName + "' has not been loaded before.\n");
+            }
+        }
+
+        Scene2* getCurrentScene() const {
+            return currentScene;
+        }
 
     private:
         std::vector<Scene2 *> loadedScenes;

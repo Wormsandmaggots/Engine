@@ -45,6 +45,10 @@ int main() {
     glViewport(0,0, 1920, 1080);
 
     sm.loadScene("res/content/maps/test.yaml");
+    sm.loadScene("res/content/maps/Marcin.yaml");
+
+    sm.setCurrentScene("exampleScene");
+
 
     //HID
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
@@ -218,6 +222,14 @@ int main() {
         editor.draw();
 
         sm.updateLoadedScenes();
+        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            if (sm.getCurrentScene()->getName() == "exampleScene") {
+                sm.setCurrentScene("MarcinScene");
+            } else {
+                sm.setCurrentScene("exampleScene");
+            }
+        }
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
         glClear(GL_COLOR_BUFFER_BIT);
