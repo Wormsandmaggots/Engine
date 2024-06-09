@@ -89,6 +89,7 @@ int main() {
     Animation* npcAnimation = new Animation("res/content/models/barman/barman_animated.fbx", player2);
     RigPrep* npcRig = new RigPrep(player2);
     Animator* animator = new Animator(npcAnimation);
+    LookAt* npcLA = new LookAt(npcRig);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -100,7 +101,7 @@ int main() {
 
     cc1->start();
     cc2->start();
-
+/*
     Entity* player1 = new Entity("player1");
 	sm.getLoadedScenes()[0]->addEntity(player1);
     player1->addComponent(player);
@@ -113,7 +114,7 @@ int main() {
     //sm.getLoadedScenes()[0]->addEntity(handPointer);
     handPointer->setParent(*player1);
     handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition()* 0.01f);
-
+*/
     Entity* club1 = new Entity("club");
     sm.getLoadedScenes()[0]->addEntity(club1);
     club1->addComponent(club);
@@ -143,13 +144,13 @@ int main() {
     chairs->addComponent(chairsModel);
     chairsModel->getTransform()->setPosition(glm::vec3(0, -5, 0));
     chairsModel->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-/*
+
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
     player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
     player2->getTransform()->setPosition(glm::vec3(-3.0f, 7.0f, 0.0f));
-*/
+
     bool f = true;
     while (!glfwWindowShouldClose(s.window))
     {
@@ -160,7 +161,7 @@ int main() {
         playerInput.interpretInput();
         playerInput1.interpretInput();
         offset += debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
-        //animator->UpdateAnimation(s.deltaTime);
+        animator->UpdateAnimation(s.deltaTime);
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -178,7 +179,7 @@ int main() {
         shaderRig.use();
 
         ///IK
-
+/*
         joystickOffset = playerInput.getJoystick(1) * 200.0f;
         joystickOffset2 = playerInput.getJoystick(2) * 200.0f;
         playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
@@ -190,14 +191,14 @@ int main() {
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
         handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
         playerLA->update(90);
+*/
 
-/*
         ///ANIMATIONS
         npcRig->update();
         auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-*/
+        npcLA->update(90);
 
         f = false;
         shaderPbr.use();
