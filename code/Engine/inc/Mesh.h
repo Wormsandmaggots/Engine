@@ -161,30 +161,50 @@ public:
         unsigned int ambientNr = 1;
         unsigned int roughnessNr = 1;
         unsigned int displacementNr = 1;
+        unsigned int emissiveNr = 1;
+        std::map<TextureType, int> textureNumberMap;
         for (unsigned int i = 0; i < textures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
             std::string name = textures[i].textureName;
-            if (name == "texture_diffuse")
-                number = std::to_string(diffuseNr++);
-            else if (name == "texture_specular")
-                number = std::to_string(specularNr++);
-            else if (name == "texture_metalic")
-                number = std::to_string(metalnessNr++);
-            else if (name == "texture_normal")
-                number = std::to_string(normalNr++);
-            else if (name == "texture_ambient")
-                number = std::to_string(ambientNr++);
-            else if (name == "texture_roughness")
-                number = std::to_string(roughnessNr++);
-            else if (name == "texture_displacement")
-                number = std::to_string(displacementNr++);
-            // now set the sampler to the correct texture unit
+            number = std::to_string(textureNumberMap[textures[i].textureType]++);
+//            if (type == TextureType::DIFFUSE)
+//                number = std::to_string(diffuseNr++);
+//            else if (type == TextureType::SPECULAR)
+//                number = std::to_string(specularNr++);
+//            else if (type == TextureType::METALLIC)
+//                number = std::to_string(metalnessNr++);
+//            else if (type == TextureType::NORMAL)
+//                number = std::to_string(normalNr++);
+//            else if (type == TextureType::AMBIENT)
+//                number = std::to_string(ambientNr++);
+//            else if (type == TextureType::ROUGHNESS)
+//                number = std::to_string(roughnessNr++);
+//            else if (type == TextureType::DISPLACEMENT)
+//                number = std::to_string(displacementNr++);
+//            else if (type == TextureType::EMISSIVE)
+//                number = std::to_string(emissiveNr++);
+//            if (name == "texture_diffuse")
+//                number = std::to_string(diffuseNr++);
+//            else if (name == "texture_specular")
+//                number = std::to_string(specularNr++);
+//            else if (name == "texture_metalic")
+//                number = std::to_string(metalnessNr++);
+//            else if (name == "texture_normal")
+//                number = std::to_string(normalNr++);
+//            else if (name == "texture_ambient")
+//                number = std::to_string(ambientNr++);
+//            else if (name == "texture_roughness")
+//                number = std::to_string(roughnessNr++);
+//            else if (name == "texture_displacement")
+//                number = std::to_string(displacementNr++);
+//            else if (name == "texture_emissive")
+//                number = std::to_string(emissiveNr++);
+            //now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
             textures[i].bind();
-
         }
 
         // draw mesh

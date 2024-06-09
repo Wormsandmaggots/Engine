@@ -12,7 +12,7 @@ void Profiler::init() {
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
-    CreateProcess(NULL, (LPWSTR)"res/tracyExe/Tracy.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+    CreateProcess(NULL, appPath, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 }
 void Profiler::end() {
     CloseHandle(pi.hProcess);

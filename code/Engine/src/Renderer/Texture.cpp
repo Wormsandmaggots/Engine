@@ -1,5 +1,15 @@
 #include "Renderer/Texture.h"
 
+std::map<std::string, TextureType> Texture::textureMap = {
+        {"texture_diffuse", TextureType::DIFFUSE},
+        {"texture_specular", TextureType::SPECULAR},
+        {"texture_metalic", TextureType::METALLIC},
+        {"texture_normal", TextureType::NORMAL},
+        {"texture_ambient", TextureType::AMBIENT},
+        {"texture_roughness", TextureType::ROUGHNESS},
+        {"texture_displacement", TextureType::DISPLACEMENT},
+        {"texture_emissive", TextureType::EMISSIVE}};
+
 Texture::Texture(const std::string& path, const std::string& name)
 {
     

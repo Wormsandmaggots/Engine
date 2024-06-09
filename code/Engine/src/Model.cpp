@@ -162,6 +162,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         vector<Texture> displacementMaps = loadMaterialTextures(material,
                                                            aiTextureType_DISPLACEMENT, "texture_displacement");
         textures.insert(textures.end(), displacementMaps.begin(), displacementMaps.end());
+        vector<Texture> emissiveMaps = loadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emissive");
+        textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
     }
     ExtractBoneWeightForVertices(vertices,mesh,scene);
     return Mesh(vertices, indices, textures);
@@ -185,6 +187,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
         }
         if (!skip) {   // if texture hasn't been loaded already, load it
             Texture texture(directory + "/" + str.C_Str(), typeName);
+            texture.textureType = Texture::textureMap[typeName];
             textures.push_back(texture);
             textures_loaded.push_back(
                     texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.

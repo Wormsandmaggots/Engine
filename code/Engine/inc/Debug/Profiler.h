@@ -16,6 +16,7 @@ public:
     void zoneScope();
     void zoneScope(std::string name);
 private:
+    wchar_t appPath[23] = L"res/tracyExe/Tracy.exe";
     Profiler();
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
