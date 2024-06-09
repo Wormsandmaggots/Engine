@@ -27,6 +27,7 @@
 using namespace SceneManagement;
 
 int main() {
+#pragma region INITIALIZERS
     int connectedControllers = JslConnectDevices();
     init();
     EditorLayer::Editor editor;
@@ -62,8 +63,79 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
+    Shader imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl");
+#pragma endregion INITIALIZERS
 
     //HUD
+#pragma region texures
+    Texture menuBack("res/content/textures/backgg.jpg", "backgg");
+    Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
+    Texture menuNewGame("res/content/textures/ng.png", "ng");
+    Texture menuExit("res/content/textures/ex.png", "ex");
+    Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
+#pragma endregion textures
+
+#pragma region hudObjects
+    Image* menuBackground = new Image(&imageShader);
+    menuBackground->setTexture(&menuBack);
+
+    Image* menuColumn = new Image(&imageShader);
+    menuColumn->setTexture(&menuVerticalColumn);
+
+    Button* newGame = new Button(&imageShader);
+    newGame->setTexture(&menuNewGame);
+    newGame->setOnClick([]() {
+        std::cout << "start game" << std::endl;
+    });
+
+    Button* exit = new Button(&imageShader);
+    exit->setTexture(&menuExit);
+    exit->setOnClick([]() {
+        std::cout << "wyjscie" << std::endl;
+    });
+#pragma endregion hudObjects
+
+#pragma region Entities
+    //main menu
+//Image
+    Entity* menuWalpaper = new Entity("menuBackground");
+    sm.getLoadedScenes()[1]->addEntity(menuWalpaper);
+    menuWalpaper->addComponent(menuBackground);
+    menuBackground->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    menuBackground->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    Entity* menuAditional = new Entity("menuPole");
+    sm.getLoadedScenes()[1]->addEntity(menuAditional);
+    menuAditional->addComponent(menuColumn);
+    menuColumn->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    menuColumn->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+//button
+    Entity* ng = new Entity("newGame");
+    sm.getLoadedScenes()[1]->addEntity(ng);
+    ng->addComponent(newGame);
+    newGame->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
+    newGame->getTransform()->setPosition(glm::vec3(-0.75f, -0.1f, 0.0f));
+
+    Entity* ex = new Entity("exit");
+    sm.getLoadedScenes()[1]->addEntity(ex);
+    ex->addComponent(exit);
+    exit->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
+    exit->getTransform()->setPosition(glm::vec3(-0.75f, -0.3f, 0.0f));
+#pragma endregion Entities
+    // Dodaj tekstury do wektora
+    std::vector<Texture*> animationTextures = {&menuNewGame, &menuNewGameAlt};
+
+    // Ustaw tekstury animacji dla przycisku
+    newGame->setAnimationTextures(animationTextures);
+
+
+    //for resizing bar
+    double lastTime = 0.0;
+
+
+
+#pragma region DUPA
 
     MaterialAsset material("res/content/materials/color.json");
 
@@ -162,6 +234,7 @@ int main() {
   
     sound->play();
     sound->setVolume(1.f);
+#pragma endregion DUPA
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -293,6 +366,47 @@ int main() {
         ssao.renderQuad();
         //scene.update();
 
+
+
+
+
+
+        //TODO::MENU
+
+        //HUD
+        //HUD Menu
+        glDisable(GL_DEPTH_TEST);
+        imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        imageShader.use();
+//kolejnosc renderowania ma znaczenie
+//pierwszy renderowany obiekt bedzie pod spodem
+//1
+        menuBackground->renderPlane();
+        menuColumn->renderPlane();
+
+//2
+        newGame->renderPlane();
+        exit->renderPlane();
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
+
+
+
+//TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
+        double mouseX, mouseY;
+        glfwGetCursorPos(s.window, &mouseX, &mouseY);
+
+        newGame->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        newGame->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+        exit->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        exit->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+//TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
+//HUD
         cm.update();
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

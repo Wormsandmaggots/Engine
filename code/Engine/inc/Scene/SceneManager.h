@@ -40,6 +40,14 @@ namespace SceneManagement {
             return currentScene;
         }
 
+        void updateEntities() {
+            if (currentScene) {
+                for (auto& entity : currentScene->getSceneEntities()) {
+                    entity->update();
+                }
+            }
+        }
+
     private:
         std::vector<Scene2 *> loadedScenes;
         SceneLoader sceneLoader;

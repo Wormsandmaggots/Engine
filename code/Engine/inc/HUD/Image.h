@@ -23,7 +23,8 @@ public:
 
     void start() override{};
 
-    void update() override{} ;
+    void update() override{
+    } ;
 
     void onDestroy() override{};
 
