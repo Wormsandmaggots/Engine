@@ -44,11 +44,8 @@ int main() {
 
     sm.loadScene("res/content/maps/test.yaml");
 
-
-    //HID - test
-    //TODO: Kuba: Czy to może tutaj zostać?
+    //HID
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
-    //HID - test
     DebugInput debugInput;
     //HID - test
 
@@ -61,9 +58,6 @@ int main() {
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
 
     //HUD
-    ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
-    BackgroundImage backgroundImage("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/nodes.png");
-    Image image("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl", "res/content/textures/hud_back.png");
 
     MaterialAsset material("res/content/materials/color.json");
 
@@ -296,23 +290,6 @@ int main() {
 
         //screenShader.use();
         //fb->drawQuad();
-
-
-        //TODO: Kuba: Muszę poprawić renderowanie textu u siebie
-        //hud
-        //counterRenderer->renderAndUpdateCounter(shaderText, s.deltaTime, 300, 160, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);//if rectangle display queue broken, uncomment glDisabe/glEnable
-        //glDisable(GL_DEPTH_TEST);
-        //glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(s.WINDOW_WIDTH), 0.0f, static_cast<float>(s.WINDOW_HEIGHT));
-        //shader.setMat4("projection", orthoProjection);
-
-        //progressBar.update(s.deltaTime);
-        //progressBar.renderBar();
-
-        //image.render();
-        // backgroundImage.render();
-        //backgroundImage.update(s.deltaTime);
-        //glEnable(GL_DEPTH_TEST);
-        //hud end
 
 
 //        sm.updateLoadedScenes();
