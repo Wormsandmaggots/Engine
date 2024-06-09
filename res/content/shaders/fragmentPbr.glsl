@@ -1,7 +1,7 @@
 /*If you want to use this shader remember about those uniforms
 shaderPbr.use();
 shaderPbr.setVec3("camPos",s.camera.Position);
-shaderPbr.setVec3("lightPos",sphere->getLocalTransform()->getLocalPosition());*/
+shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());*/
 #version 460 core
 out vec4 FragColor;
 
@@ -18,7 +18,17 @@ uniform sampler2D texture_ambient1;
 uniform vec3 camPos;
 uniform vec3 lightPos;
 
-vec3 lightColor = vec3(300.0f, 300.0f, 300.0f);
+//spotlight
+uniform vec3 spotLightPos;
+uniform vec3 spotLightDir;
+uniform float cutOff;
+uniform float outerCutOff;
+
+// directional light
+uniform vec3 dirLightDir;
+uniform vec3 dirLightColor;
+
+vec3 lightColor = vec3(150.0f, 150.0f, 150.0f);
 const float PI = 3.14159265359;
 
 vec3 getNormalFromMap()
@@ -93,66 +103,129 @@ vec3 cel(vec3 color){
     color.z = celValue(color.z);
     return color;
 }
+
+float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, float outerCutOff, vec3 normal, vec3 fragPos, vec3 viewDir)
+{
+    vec3 lightToFragment = normalize(spotLightPos - fragPos);
+    float theta = dot(lightToFragment, -spotLightDir);
+    float epsilon = cutOff - outerCutOff;
+    float intensity = clamp((theta - outerCutOff) / epsilon, 0.0, 1.0);
+
+    // rest of the lighting calculations (ambient, diffuse, specular)
+    vec3 lightColor = vec3(1.0, 1.0, 1.0); // adjust this as needed
+    float ambientStrength = 0.1; // adjust this as needed
+    vec3 ambient = ambientStrength * lightColor;
+
+    vec3 norm = normalize(normal);
+    vec3 lightDir = normalize(spotLightPos - fragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+
+    float specularStrength = 0.5; // adjust this as needed
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec3 specular = specularStrength * spec * lightColor;
+
+    // Combine results
+    vec3 result = (ambient + diffuse + specular) * intensity;
+    float finalIntensity = max(result.r, max(result.g, result.b));
+
+    return finalIntensity;
+}
+
 void main()
 {
-vec3 albedo     = pow(texture(texture_diffuse1, TexCoords).rgb, vec3(2.2));
-float metallic  = texture(texture_metalic1, TexCoords).r;
-float roughness = texture(texture_roughness1, TexCoords).r;
-float ao        = texture(texture_ambient1, TexCoords).r;
+    vec3 albedo     = pow(texture(texture_diffuse1, TexCoords).rgb, vec3(2.2));
+    float metallic  = texture(texture_metalic1, TexCoords).r;
+    float roughness = texture(texture_roughness1, TexCoords).r;
+    float ao        = texture(texture_ambient1, TexCoords).r;
 
-vec3 N = getNormalFromMap();
-//vec3 N = normalize(Normal);
-vec3 V = normalize(camPos - WorldPos);
+    vec3 N = getNormalFromMap();
+    //vec3 N = normalize(Normal);
+    vec3 V = normalize(camPos - WorldPos);
 
-// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0
-// of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)
-vec3 F0 = vec3(0.04);
-F0 = mix(F0, albedo, metallic);
+    // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0
+    // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)
+    vec3 F0 = vec3(0.04);
+    F0 = mix(F0, albedo, metallic);
 
-// init reflectance equation
-vec3 Lo = vec3(0.0);
+    // init reflectance equation
+    vec3 Lo = vec3(0.0);
 
-// calculate light radiance
-vec3 L = normalize(lightPos - WorldPos);
-vec3 H = normalize(V + L);
-float distance = length(lightPos - WorldPos);
-float attenuation = 1.0 / (distance * distance);
-vec3 radiance = lightColor * attenuation;
+    // calculate light radiance
+    vec3 L = normalize(lightPos - WorldPos);
+    vec3 H = normalize(V + L);
+    float distance = length(lightPos - WorldPos);
+    float attenuation = 1.0 / (distance * distance);
+    vec3 radiance = lightColor * attenuation;
 
-// Cook-Torrance BRDF
-float NDF = DistributionGGX(N, H, roughness);
-float G   = GeometrySmith(N, V, L, roughness);
-vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+    // Cook-Torrance BRDF
+    float NDF = DistributionGGX(N, H, roughness);
+    float G   = GeometrySmith(N, V, L, roughness);
+    vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
 
-vec3 numerator    = NDF * G * F;
-float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
-vec3 specular = numerator / denominator;
+    vec3 numerator    = NDF * G * F;
+    float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+    vec3 specular = numerator / denominator;
 
-// kS is equal to Fresnel
-vec3 kS = F;
-// energy conservation
-vec3 kD = vec3(1.0) - kS;
-// multiply kD by the inverse metalness such that only non-metals
-// have diffuse lighting, or a linear blend if partly metal (pure metals
-// have no diffuse light).
-kD *= 1.0 - metallic;
+    // kS is equal to Fresnel
+    vec3 kS = F;
+    // energy conservation
+    vec3 kD = vec3(1.0) - kS;
+    // multiply kD by the inverse metalness such that only non-metals
+    // have diffuse lighting, or a linear blend if partly metal (pure metals
+    // have no diffuse light).
+    kD *= 1.0 - metallic;
 
-// scale light by NdotL
-float NdotL = max(dot(N, L), 0.0);
+    // scale light by NdotL
+    float NdotL = max(dot(N, L), 0.0);
 
-// add to outgoing radiance Lo
-Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+    // add to outgoing radiance Lo
+    Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 
-vec3 ambient = vec3(0.03) * albedo * ao;
+    // calculate directional light radiance
+    L = normalize(-dirLightDir);
+    H = normalize(V + L);
+    radiance = dirLightColor;
 
-vec3 color = ambient + Lo;
+    // Cook-Torrance BRDF
+    NDF = DistributionGGX(N, H, roughness);
+    G   = GeometrySmith(N, V, L, roughness);
+    F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
 
-// HDR tonemapping
-color = color / (color + vec3(1.0));
-// gamma correct
-color = pow(color, vec3(1.0/2.2));
+    numerator    = NDF * G * F;
+    denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+    specular = numerator / denominator;
 
-vec3 finalColor = cel(color);
-FragColor = vec4(color, 1.0);
-//FragColor = vec4(finalColor, 1.0); // THIS IF U WANT TO USE CEL SHADING
+    // kS is equal to Fresnel
+    kS = F;
+    // energy conservation
+    kD = vec3(1.0) - kS;
+    // multiply kD by the inverse metalness such that only non-metals
+    // have diffuse lighting, or a linear blend if partly metal (pure metals
+    // have no diffuse light).
+    kD *= 1.0 - metallic;
+
+    // scale light by NdotL
+    NdotL = max(dot(N, L), 0.0);
+
+    // add to outgoing radiance Lo
+    Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+
+    vec3 ambient = vec3(0.03) * albedo * ao;
+
+    vec3 color = ambient + Lo;
+
+    //spotLight
+    float spotlightIntensity = calculateSpotLight(spotLightPos, spotLightDir, cutOff, outerCutOff, N, WorldPos, V);
+    color += spotlightIntensity;
+
+    // HDR tonemapping
+    color = color / (color + vec3(1.0));
+    // gamma correct
+    color = pow(color, vec3(1.0/2.2));
+
+    vec3 finalColor = cel(color);
+    FragColor = vec4(color, 1.0);
+    //FragColor = vec4(finalColor, 1.0); // THIS IF U WANT TO USE CEL SHADING
 }
