@@ -5,22 +5,23 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec3 FragPos;
 out vec2 TexCoords;
+out vec3 WorldPos;
 out vec3 Normal;
-
-uniform bool invertedNormals;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat3 normalMatrix;
 
 void main()
 {
+    WorldPos = vec3(model * vec4(aPos, 1.0));
     vec4 viewPos = view * model * vec4(aPos, 1.0);
     FragPos = viewPos.xyz;
     TexCoords = aTexCoords;
 
-    mat3 normalMatrix = transpose(inverse(mat3(projection * model)));
-    Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
+    //mat3 normalMatrix = transpose(inverse(mat3(projection * model)));
+    Normal = normalMatrix * aNormal;
 
     gl_Position = projection * viewPos;
 }

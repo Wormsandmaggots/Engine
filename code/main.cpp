@@ -42,6 +42,8 @@ int main() {
     SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
     int songDataIndex = 0;
 
+    glViewport(0,0, 1920, 1080);
+
     sm.loadScene("res/content/maps/test.yaml");
 
     //HID
@@ -210,8 +212,6 @@ int main() {
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
-        ssao.shaderGeometryPass.setBool("invertedNormals", false);
-        ssao.shaderGeometryPass.setBool("onlySSAO", onlySSAO);
         renderer.updateProjectionAndView(projection, view);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

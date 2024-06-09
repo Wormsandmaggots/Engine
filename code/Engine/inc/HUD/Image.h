@@ -19,13 +19,13 @@ public:
     Shader* shader;
     Texture* texture = nullptr;
 
-    void awake() override;
+    void awake() override{};
 
-    void start() override;
+    void start() override{};
 
-    void update() override ;
+    void update() override{} ;
 
-    void onDestroy() override;
+    void onDestroy() override{};
 
     ~Image() override = default;
 

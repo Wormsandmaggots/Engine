@@ -22,8 +22,13 @@ public:
     Shader shaderSSAOBlur = Shader("res/content/shaders/ssao/ssao.vert", "res/content/shaders/ssao/ssao_blur.frag");
 
     unsigned int gBuffer;
-    unsigned int gPosition, gNormal, gAlbedo;
-    unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+    unsigned int gPosition, gNormal, gAlbedo, gWorldPos, gMetallicRoughnessAmbient, gEmissive;
+    unsigned int attachments[6] = { GL_COLOR_ATTACHMENT0,
+                                    GL_COLOR_ATTACHMENT1,
+                                    GL_COLOR_ATTACHMENT2,
+                                    GL_COLOR_ATTACHMENT3,
+                                    GL_COLOR_ATTACHMENT4,
+                                    GL_COLOR_ATTACHMENT5};
     unsigned int rboDepth;
     unsigned int rboDepth2;
     unsigned int ssaoFBO, ssaoBlurFBO;
@@ -65,9 +70,30 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedo, 0);
 
+        glGenTextures(1, &gWorldPos);
+        glBindTexture(GL_TEXTURE_2D, gWorldPos);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gWorldPos, 0);
+
+        glGenTextures(1, &gMetallicRoughnessAmbient);
+        glBindTexture(GL_TEXTURE_2D, gMetallicRoughnessAmbient);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gMetallicRoughnessAmbient, 0);
+
+        glGenTextures(1, &gEmissive);
+        glBindTexture(GL_TEXTURE_2D, gEmissive);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, gEmissive, 0);
+
         // create and attach depth buffer (renderbuffer)
          // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
-        glDrawBuffers(3, attachments);
+        glDrawBuffers(6, attachments);
 
 
         glGenRenderbuffers(1, &rboDepth);
