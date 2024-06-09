@@ -11,8 +11,9 @@
 #include "Physics/CollisionManager.h"
 #include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
-#include "HUD/ProgressBar.h"
-#include "HUD/BackgroundImage.h"
+#include "HUD/Image.h"
+#include "HUD/Button.h"
+#include "HUD/ResizableImage.h"
 #include "Renderer/MaterialAsset.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/SSAO.h"
@@ -58,7 +59,6 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
-    //TODO: Kuba: Czy to może tutaj zostać?
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
