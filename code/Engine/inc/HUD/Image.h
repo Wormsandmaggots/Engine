@@ -9,6 +9,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "Scene/Transform2.h"
 #include "stb_image.h"
+#include "Renderer/Texture.h"
 
 class Image: public Component {
 public:
@@ -16,6 +17,7 @@ public:
     unsigned int quadVBO;
     unsigned int textureID;
     Shader* shader;
+    Texture* texture = nullptr;
 
     void awake() override;
 
@@ -54,12 +56,12 @@ public:
         glBindVertexArray(0);
     }
 
-    void setTexture(const std::string& texturePath) {
+    /*void setTexture(const std::string& texturePath) {
         glGenTextures(1, &textureID);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
-        stbi_set_flip_vertically_on_load(1); // Dodajemy tę linię
+        stbi_set_flip_vertically_on_load(1);
 
         int width, height, nrChannels;
         unsigned char *data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
@@ -81,22 +83,29 @@ public:
             std::cout << "Failed to load texture" << std::endl;
         }
         stbi_image_free(data);
+    }*/
+
+    void setTexture(Texture* texture) {
+        this->texture = texture;
+        this->textureID = texture->getTextureID();
     }
 
     void renderPlane()
     {
         shader->use();
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
         glm::mat4 model = glm::mat4(1.0f);
         shader->setInt("imageTexture", 0);
 
         model = glm::translate(model, parentTransform->getLocalPosition());
-        //model = glm::rotate(model, glm::radians(parentTransform->getLocalRotation().z), glm::vec3(0.0f, 0.0f, 1.0f)); // Z axis
+        model = glm::scale(model, glm::vec3(1.0f, -1.0f, 1.0f)); // Odwrócenie tekstury wzdłuż osi Y
         model = glm::scale(model, parentTransform->getLocalScale());
         shader->setMat4("model", model);
 
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glBindVertexArray(0);
     }
 

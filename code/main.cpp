@@ -17,6 +17,8 @@
 #include "HUD/Image.h"
 #include "HUD/ResizableImage.h"
 #include "HUD/Button.h"
+#include "Renderer/Texture.h"
+
 using namespace SceneManagement;
 
 int main() {
@@ -82,24 +84,31 @@ int main() {
     glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
 
 
+    Texture menuBack("res/content/textures/backgg.jpg", "backgg");
+    Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
+    Texture menuNewGame("res/content/textures/ng.png", "ng");
+    Texture menuExit("res/content/textures/ex.png", "ex");
 
 
     Image* menuBackground = new Image(&imageShader);
+    menuBackground->setTexture(&menuBack);
 
-    Image* menuPole = new Image(&imageShader);
+    Image* menuColumn = new Image(&imageShader);
+    menuColumn->setTexture(&menuVerticalColumn);
 
 
 
     Button* newGame = new Button(&imageShader);
+    newGame->setTexture(&menuNewGame);
     newGame->setOnClick([]() {
         std::cout << "start game" << std::endl;
     });
 
     Button* exit = new Button(&imageShader);
+    exit->setTexture(&menuExit);
     exit->setOnClick([]() {
         std::cout << "wyjscie" << std::endl;
     });
-
 
 
     //main menu
@@ -112,9 +121,9 @@ int main() {
 
     Entity* menuAditional = new Entity("menuPole");
     sm.getLoadedScenes()[0]->addEntity(menuAditional);
-    menuAditional->addComponent(menuPole);
-    menuPole->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-    menuPole->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    menuAditional->addComponent(menuColumn);
+    menuColumn->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    menuColumn->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //button
     Entity* ng = new Entity("newGame");
@@ -132,28 +141,6 @@ int main() {
     //for resizing bar
     double lastTime = 0.0;
 
-    std::vector<std::string> animationTextures = {
-            "res/content/textures/ng.png",
-            "res/content/textures/nodes.png",
-            "res/content/textures/ng.png",
-    };
-
-    std::vector<std::string> animationTextures1 = {
-            "res/content/textures/ex.png",
-            "res/content/textures/nodes.png",
-            "res/content/textures/ex.png",
-    };
-/*
-    menuBackground->setTexture("res/content/textures/backgg.jpg");
-    menuPole->setTexture("res/content/textures/pole.png");
-    newGame->setAnimationTextures(animationTextures);
-    exit->setTexture("res/content/textures/ex.png");
-*/
-
-    //menuBackground->setTexture("res/content/textures/backgg.jpg");
-    //menuPole->setTexture("res/content/textures/pole.png");
-    newGame->setTexture("res/content/textures/ng.png");
-    exit->setTexture("res/content/textures/ex.png");
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
@@ -187,18 +174,11 @@ int main() {
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
         //1
-        menuBackground->setTexture("res/content/textures/backgg.jpg");
         menuBackground->renderPlane();
-        menuPole->setTexture("res/content/textures/pole.png");
-        menuPole->renderPlane();
+        menuColumn->renderPlane();
 
         //2
-        //newGame->setTexture("res/content/textures/ng.png");
-        newGame->setAnimationTextures(animationTextures);
         newGame->renderPlane();
-
-        //exit->setTexture("res/content/textures/ex.png");
-        exit->setAnimationTextures(animationTextures1);
         exit->renderPlane();
 
         glEnable(GL_DEPTH_TEST);
