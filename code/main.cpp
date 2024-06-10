@@ -56,7 +56,7 @@ int main() {
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
-    Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+    //Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
 
     //HUD
@@ -80,6 +80,7 @@ int main() {
     renderer.addShader(&shaderCel);
     renderer.addShader(&ssao.shaderGeometryPass);*/
 
+    Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
     //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
@@ -96,6 +97,14 @@ int main() {
 
     cc1->start();
     cc2->start();
+
+    Entity* clubE = new Entity("club");
+    clubE->addComponent(club);
+    sm.getLoadedScenes()[0]->addEntity(clubE);
+
+    Entity* boxE = new Entity("box");
+    boxE->addComponent(box);
+    sm.getLoadedScenes()[0]->addEntity(boxE);
 
     Entity* player1 = new Entity("player");
     sm.getLoadedScenes()[0]->addEntity(player1);

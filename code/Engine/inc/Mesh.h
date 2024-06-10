@@ -169,7 +169,7 @@ public:
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
             std::string name = textures[i].textureName;
-            number = std::to_string(textureNumberMap[textures[i].textureType]++);
+            number = std::to_string(1 + textureNumberMap[textures[i].textureType]++);
 //            if (type == TextureType::DIFFUSE)
 //                number = std::to_string(diffuseNr++);
 //            else if (type == TextureType::SPECULAR)
