@@ -63,7 +63,7 @@ target_link_libraries(${PROJECT_NAME}
         #aabb
         effolkronium_random
         gizmos
-        ftgl
+        #ftgl
         TracyClient
         sndfile
         JoyShockLibrary

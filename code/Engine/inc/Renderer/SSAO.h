@@ -72,21 +72,21 @@ public:
 
         glGenTextures(1, &gWorldPos);
         glBindTexture(GL_TEXTURE_2D, gWorldPos);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gWorldPos, 0);
 
         glGenTextures(1, &gMetallicRoughnessAmbient);
         glBindTexture(GL_TEXTURE_2D, gMetallicRoughnessAmbient);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gMetallicRoughnessAmbient, 0);
 
         glGenTextures(1, &gEmissive);
         glBindTexture(GL_TEXTURE_2D, gEmissive);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, gEmissive, 0);
@@ -172,6 +172,10 @@ public:
         shaderLightingPass.setInt("gNormal", 1);
         shaderLightingPass.setInt("gAlbedo", 2);
         shaderLightingPass.setInt("ssao", 3);
+        shaderLightingPass.setInt("gWorldPos", 4);
+        shaderLightingPass.setInt("gMetallicRoughnessAmbient", 5);
+        shaderLightingPass.setInt("gEmissive", 6);
+
         shaderSSAO.use();
         shaderSSAO.setInt("gPosition", 0);
         shaderSSAO.setInt("gNormal", 1);
@@ -179,6 +183,73 @@ public:
         shaderSSAOBlur.use();
         shaderSSAOBlur.setInt("ssaoInput", 0);
 //        shaderSSAOBlur.setInt("depthBuffer", 1);
+    }
+
+    void geometryBuffer()
+    {
+        shaderGeometryPass.use();
+        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    float power = 1;
+    float kernelSize = 64;
+    float radius = 0.5f;
+    float bias = 0.025f;
+
+    void ssaoBuffer()
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        shaderSSAO.use();
+        shaderSSAO.setFloat("power", power);
+        shaderSSAO.setFloat("kernelSize", kernelSize);
+        shaderSSAO.setFloat("radius", radius);
+        shaderSSAO.setFloat("bias", bias);
+        // Send kernel + rotation
+        for (unsigned int i = 0; i < 64; ++i)
+        {
+            if(i > kernelSize)
+            {
+                shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", vec3(0));
+            }
+            else
+                shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", ssaoKernel[i]);
+        }
+
+        //shaderSSAO.setMat4("projection", projection);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, gPosition);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, noiseTexture);
+        renderQuad();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    vec2 range = vec2(2,2);
+    float mul = 4;
+    float texelSize = 1;
+
+    void blurBuffer()
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, ssaoBlurFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        shaderSSAOBlur.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssaoColorBuffer);
+        shaderSSAOBlur.setInt("rangeX", range.x);
+        shaderSSAOBlur.setInt("rangeY", range.y);
+        shaderSSAOBlur.setFloat("mul", mul);
+        shaderSSAOBlur.setFloat("texelSize", texelSize);
+        renderQuad();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void lightBuffer()
+    {
+
     }
 
     unsigned int quadVAO = 0;

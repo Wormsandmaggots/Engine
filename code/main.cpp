@@ -20,7 +20,10 @@
 #include "Generative-System/SongAnalizer.h"
 #include "Generative-System/Ball.h"
 #include "JoyShockLibrary.h"
-
+#include "Light/DirectionalLight.h"
+#include "Light/PointLight.h"
+#include "Light/SpotLight.h"
+#include "Light/LightManager.h"
 
 #include "Globals.h"
 
@@ -69,16 +72,7 @@ int main() {
     Renderer renderer(&ssao.shaderGeometryPass);
     renderer.init();
 
-    //renderer.addShader(&collisionTestShader);
-    //renderer.addShader(&colorShader);
-    //renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
-
     Model* player = new Model("res/content/models/player/character_base.obj");
-
-    /*renderer.addShader(&shaderText);
-    renderer.addShader(&shaderPbr);
-    renderer.addShader(&shaderCel);
-    renderer.addShader(&ssao.shaderGeometryPass);*/
 
     Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
@@ -129,6 +123,10 @@ int main() {
     player3->addComponent(player2);
     player->getTransform()->setPosition(glm::vec3(-7, -2, 1));
 
+    Entity* sun = new Entity("sun");
+    sm.getLoadedScenes()[0]->addEntity(sun);
+    sun->addComponent(new DirectionalLight());
+
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
@@ -138,14 +136,8 @@ int main() {
 
     static float linear    = 0.09f;
     static float quadratic = 0.032f;
-    static float power = 1;
-    static float kernelSize = 64;
-    static float radius = 0.5f;
-    static float bias = 0.025f;
+
     static bool onlySSAO = true;
-    static vec2 range(2,2);
-    static float mul = 4;
-    static float texelSize = 1;
 
 
     //Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
@@ -156,17 +148,14 @@ int main() {
 
     sm.getLoadedScenes()[0]->addEntity(&ent);
 
-
     float time = 0;
 
     Spawner spawner(sm.getLoadedScenes().at(0));
     float timeToDispense = songSampleInterval;
     float timeToDispense2 = timeToDispense;
 
-
-  
     sound->play();
-    sound->setVolume(1.f);
+    sound->setVolume(0.f);
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -175,7 +164,6 @@ int main() {
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        //fb->bind();
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -199,114 +187,52 @@ int main() {
             timeToDispense2 = timeToDispense;
         }
 
-        ImGui::Begin("SSAO");
-
-        {
-            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
-            ImGui::DragFloat("linear", &linear);
-            ImGui::DragFloat("quadratic", &quadratic);
-            ImGui::DragFloat("power", &power);
-            ImGui::DragFloat("kernelSize", &kernelSize);
-            ImGui::DragFloat("radius", &radius);
-            ImGui::DragFloat("bias", &bias);
-            ImGui::DragFloat2("range", glm::value_ptr(range));
-            ImGui::DragFloat("multiplier", &mul);
-            ImGui::DragFloat("texel size", &texelSize);
-            ImGui::Checkbox("Only SSAO", &onlySSAO);
-        }
-
-        ImGui::End();
-
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-        ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        ssao.geometryBuffer();
+
         editor.draw();
 
         sm.updateLoadedScenes();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAO.use();
-        ssao.shaderSSAO.setFloat("power", power);
-        ssao.shaderSSAO.setFloat("kernelSize", kernelSize);
-        ssao.shaderSSAO.setFloat("radius", radius);
-        ssao.shaderSSAO.setFloat("bias", bias);
-        // Send kernel + rotation
-        for (unsigned int i = 0; i < 64; ++i)
-        {
-            if(i > kernelSize)
-            {
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", vec3(0));
-            }
-            else
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", ssao.ssaoKernel[i]);
-        }
 
-        ssao.shaderSSAO.setMat4("projection", projection);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, ssao.noiseTexture);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ssao.ssaoBuffer();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoBlurFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAOBlur.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBuffer);
-        ssao.shaderSSAOBlur.setInt("rangeX", range.x);
-        ssao.shaderSSAOBlur.setInt("rangeY", range.y);
-        ssao.shaderSSAOBlur.setFloat("mul", mul);
-        ssao.shaderSSAOBlur.setFloat("texelSize", texelSize);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ssao.blurBuffer();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
+        LightManager::UpdateLightShader(ssao.shaderLightingPass);
         // send light relevant uniforms
         glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
-        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
-        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
+        ssao.shaderLightingPass.setVec3("pointLight.position", sphere1->getTransform()->getLocalPosition());
+        ssao.shaderLightingPass.setVec3("pointLight.color", lightColor);
+        ssao.shaderLightingPass.setVec3("camPos", s.camera.Position);
         // Update attenuation parameters
 
-
-        ssao.shaderLightingPass.setFloat("light.Linear", linear);
-        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
+        ssao.shaderLightingPass.setFloat("pointLight.linear", linear);
+        ssao.shaderLightingPass.setFloat("pointLight.quadratic", quadratic);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
-        glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
+        glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, ssao.gWorldPos);
+        glActiveTexture(GL_TEXTURE5);
+        glBindTexture(GL_TEXTURE_2D, ssao.gMetallicRoughnessAmbient);
+        glActiveTexture(GL_TEXTURE6);
+        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
+
         ssao.renderQuad();
-        //scene.update();
 
         cm.update();
-//		ImGui::Render();
-//		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        //arcadeRenderer->renderText();
 
-        //fb->unbind();
-
-        //screenShader.use();
-        //fb->drawQuad();
-
-
-//        sm.updateLoadedScenes();
-//
-//        cm.update();
-        //arcadeRenderer->update();
         update();
     }
+
     a.end();
 
     end();
