@@ -4,11 +4,14 @@
 #include "Generative-System/Spawner.h"
 #include "Renderer/MaterialAsset.h"
 #include "Physics/ColliderComponent.h"
+#include "Audio/Sound.h"
 
 class Ball : public Entity {
 	glm::vec3 position;
 	float speed = 5.1;
 	bool toDestroy = false;
+	Sound* success;
+	Sound* failure;
 	
 
 public:
@@ -18,15 +21,15 @@ public:
 	}
 
 	void onTriggerEnter(ColliderComponent* entity) {
-		
-		if (entity->parentEntity->getName() != "ball") {
-			//this->getTransform()->setPosition(glm::vec3(10,10,10));
-			//entity->parentEntity->getTransform()->setPosition(glm::vec3(100));
-			//entity->getCollider()->collidedWith->parentEntity->getTransform()->setPosition(glm::vec3(100));
+		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
+			this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
+			score += 100;
+			combo += 1;
 			position = glm::vec3(100);
-			LOG_INFO("callision");
+			//success->play();
+
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {
@@ -38,26 +41,34 @@ public:
 
 
 
-	Ball(const std::string name, const glm::vec3& position,Model* model): Entity(name),position(position){
+	Ball(const std::string name, const glm::vec3& position,Model* model,Sound* success,Sound* failure): Entity(name),position(position){
+		this->success = success;
+		this->failure = failure;
+		
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
+		collider->getCollider()->getColliderShape()->setRadius(0.6);
 		this->getTransform()->setScale(glm::vec3(.3));
 		this->getTransform()->setPosition(position);
 		this->addComponent(model);
 		this->addComponent(collider);	
+
 	}
 
 	void update() override{
-		position.z += speed*deltaTime;
-		this->getTransform()->setPosition(position);
 		
-		if (position.z == 5) {
-			position = glm::vec3(100);
-		}
-		
-		Entity::update();
+			position.z += speed * deltaTime;
+			if (position.z > 10.0 && !toDestroy) {
+				toDestroy = true;
+				position.z = 100;
+				combo = 0;
+				//failure->play();
+				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
+			}
+			this->getTransform()->setPosition(position);
 
+			Entity::update();
 	}
 
 	void addComponent(Component* c) override {
@@ -72,8 +83,4 @@ public:
 			addedCollider->setOnCollisionExit([this](ColliderComponent* collider) { onTriggerExit(collider); });
 		}
 	}
-
-
-	
-
 };

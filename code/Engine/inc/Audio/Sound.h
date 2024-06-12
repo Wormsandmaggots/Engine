@@ -13,12 +13,12 @@
 class Sound : public Asset
 {
 public:
-    explicit Sound(const std::string &path) : Asset(path){};
+    explicit Sound(const std::string &path) : Asset(path){
+    };
     virtual ~Sound() = default;
 
     void play();
     void stop();
-    void applyLowPassfilter();
     void load() override {};
 
     void setVolume(float);

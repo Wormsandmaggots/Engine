@@ -19,7 +19,6 @@ public:
 //    void playSound();
 //    void stopSound();
     Sound* loadSound(const std::string&);
-
 private:
     ma_engine engine;
     std::vector<Sound*> loadedSounds;
