@@ -20,6 +20,10 @@
 #include "Generative-System/SongAnalizer.h"
 #include "Generative-System/Ball.h"
 #include "JoyShockLibrary.h"
+#include "Script/SceneScript.h"
+#include "Script/menuSceneScript.h"
+#include "Script/exampleSceneScript.h"
+
 
 
 #include "Globals.h"
@@ -36,15 +40,17 @@ int main() {
     a.init();
     Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
     SceneManager sm;
-
+/*
     float songSampleInterval = 1;
     vector<SongSample> songData;
     SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
     int songDataIndex = 0;
-
+*/
     glViewport(0,0, 1920, 1080);
 
     sm.loadScene("res/content/maps/test.yaml");
+    sm.setCurrentScene("exampleScene");
+
 
     //HID
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
@@ -135,7 +141,7 @@ int main() {
     //FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
     glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
-
+/*
     static float linear    = 0.09f;
     static float quadratic = 0.032f;
     static float power = 1;
@@ -146,7 +152,7 @@ int main() {
     static vec2 range(2,2);
     static float mul = 4;
     static float texelSize = 1;
-
+*/
 
     //Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
     Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/material.json"));
@@ -159,14 +165,18 @@ int main() {
 
     float time = 0;
 
+    /*
     Spawner spawner(sm.getLoadedScenes().at(0));
     float timeToDispense = songSampleInterval;
     float timeToDispense2 = timeToDispense;
-
+*/
 
   
     sound->play();
     sound->setVolume(1.f);
+
+    exampleSceneScript ess(sm, lightColor, shaderPbr, sphere, sphere1, ssao, renderer, editor);
+    ess.start();
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -187,108 +197,9 @@ int main() {
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
-
-        if (timeToDispense2 < 0 && songDataIndex < songData.size())
-        {
-            //spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
-            //spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
-            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
-            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20));
-
-            songDataIndex++;
-            timeToDispense2 = timeToDispense;
-        }
-
-        ImGui::Begin("SSAO");
-
-        {
-            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
-            ImGui::DragFloat("linear", &linear);
-            ImGui::DragFloat("quadratic", &quadratic);
-            ImGui::DragFloat("power", &power);
-            ImGui::DragFloat("kernelSize", &kernelSize);
-            ImGui::DragFloat("radius", &radius);
-            ImGui::DragFloat("bias", &bias);
-            ImGui::DragFloat2("range", glm::value_ptr(range));
-            ImGui::DragFloat("multiplier", &mul);
-            ImGui::DragFloat("texel size", &texelSize);
-            ImGui::Checkbox("Only SSAO", &onlySSAO);
-        }
-
-        ImGui::End();
-
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-        ssao.shaderGeometryPass.use();
-        renderer.updateProjectionAndView(projection, view);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        editor.draw();
-
-        sm.updateLoadedScenes();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAO.use();
-        ssao.shaderSSAO.setFloat("power", power);
-        ssao.shaderSSAO.setFloat("kernelSize", kernelSize);
-        ssao.shaderSSAO.setFloat("radius", radius);
-        ssao.shaderSSAO.setFloat("bias", bias);
-        // Send kernel + rotation
-        for (unsigned int i = 0; i < 64; ++i)
-        {
-            if(i > kernelSize)
-            {
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", vec3(0));
-            }
-            else
-                ssao.shaderSSAO.setVec3("samples[" + std::to_string(i) + "]", ssao.ssaoKernel[i]);
-        }
-
-        ssao.shaderSSAO.setMat4("projection", projection);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, ssao.noiseTexture);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoBlurFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ssao.shaderSSAOBlur.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBuffer);
-        ssao.shaderSSAOBlur.setInt("rangeX", range.x);
-        ssao.shaderSSAOBlur.setInt("rangeY", range.y);
-        ssao.shaderSSAOBlur.setFloat("mul", mul);
-        ssao.shaderSSAOBlur.setFloat("texelSize", texelSize);
-        ssao.renderQuad();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        ssao.shaderLightingPass.use();
-        // send light relevant uniforms
-        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
-        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
-        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
-        // Update attenuation parameters
+        ess.update(projection, view);
 
 
-        ssao.shaderLightingPass.setFloat("light.Linear", linear);
-        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ssao.gNormal);
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
-        glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
-        glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
-        ssao.renderQuad();
-        //scene.update();
 
         cm.update();
 //		ImGui::Render();
