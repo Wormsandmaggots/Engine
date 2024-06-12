@@ -20,7 +20,8 @@
 #include "Generative-System/SongAnalizer.h"
 #include "Generative-System/Ball.h"
 #include "JoyShockLibrary.h"
-
+#include "Script/exampleSceneScript.h"
+#include "Script/menuSceneScript.h"
 
 #include "Globals.h"
 
@@ -50,6 +51,9 @@ int main() {
 
     sm.setCurrentScene("exampleScene");
 
+//imp
+    exampleSceneScript* exampleScene = new exampleSceneScript();
+    menuSceneScript* menuScene = new menuSceneScript();
 
     //HID
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);
@@ -256,7 +260,8 @@ int main() {
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
 
-        if (timeToDispense2 < 0 && songDataIndex < songData.size())
+       /*
+       if (timeToDispense2 < 0 && songDataIndex < songData.size())
         {
             spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
             spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
@@ -288,13 +293,15 @@ int main() {
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
-        ssao.shaderGeometryPass.use();
+        ssao.shaderGeometryPass.use();*/
         renderer.updateProjectionAndView(projection, view);
-        glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
+       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         editor.draw();
 
+        //imp
         sm.updateLoadedScenes();
+        //scene switching
         if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             if (sm.getCurrentScene()->getName() == "exampleScene") {
                 sm.setCurrentScene("MarcinScene");
@@ -302,7 +309,7 @@ int main() {
                 sm.setCurrentScene("exampleScene");
             }
         }
-
+/*
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -363,7 +370,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
         glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
-        ssao.renderQuad();
+        ssao.renderQuad();*/
         //scene.update();
 
 
@@ -407,6 +414,11 @@ int main() {
         exit->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
 //HUD
+
+
+
+
+
         cm.update();
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
