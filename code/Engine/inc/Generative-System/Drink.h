@@ -61,8 +61,8 @@ public:
 			toDestroy = true;
 			position.z = 100;
 			combo = 0;
-			//failure->play();
-			this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
+			failure->play();
+			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
 		}
 		this->getTransform()->setPosition(position);
 

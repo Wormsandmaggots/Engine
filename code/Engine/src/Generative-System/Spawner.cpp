@@ -11,15 +11,9 @@ Spawner::Spawner(Scene2* scene) {
 }
 
 void Spawner::spawnBall(const std::string& name, glm::vec3 pos,Sound* success, Sound* failure) {
-	
-	//if (pos.x != 0 || pos.y != 0) 
-	{
 		Ball* kula = new Ball(name, pos, new Model(*this->ballModel), success, failure);
 		balls.push_back(kula);
 		this->scene->addEntity(kula);
-
-	}
-		
 }
 
 void Spawner::spawnDrink(const std::string& name, glm::vec3 pos, Sound* success, Sound* failure)

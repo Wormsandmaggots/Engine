@@ -28,7 +28,7 @@ public:
 			score += 100;
 			combo += 1;
 			position = glm::vec3(100);
-			//success->play();
+			success->play();
 
 		}
 	}
@@ -63,7 +63,7 @@ public:
 				toDestroy = true;
 				position.z = 100;
 				combo = 0;
-				//failure->play();
+				failure->play();
 				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
 			}
 			this->getTransform()->setPosition(position);
