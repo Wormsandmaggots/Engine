@@ -26,14 +26,6 @@
 #include "Generative-System/Ball.h"
 #include "JoyShockLibrary.h"
 
-//sm scene menager needed
-//light colour needed
-//projection
-//view
-//editor
-
-
-
 static float linear    = 0.09f;
 static float quadratic = 0.032f;
 static float power = 1;
@@ -57,24 +49,25 @@ private:
     EditorLayer::Editor& editor;
     Spawner spawner;
 
-public:
-    exampleSceneScript(SceneManagement::SceneManager& sm, glm::vec3& lightColor, Shader& shaderPbr, Model* sphere, Entity* sphere1, SSAO& ssao, Renderer& renderer, EditorLayer::Editor& editor)
-            : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
-    {
-        // Inicjalizacja innych składowych klasy
-    }
     float songSampleInterval = 1;
     vector<SongSample> songData;
-    //SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
     int songDataIndex = 0;
 
     float timeToDispense2 = timeToDispense;
     float timeToDispense = songSampleInterval;
 
+public:
+
+    exampleSceneScript(SceneManagement::SceneManager& sm, glm::vec3& lightColor, Shader& shaderPbr, Model* sphere, Entity* sphere1, SSAO& ssao, Renderer& renderer, EditorLayer::Editor& editor)
+            : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
+    {}
+
     void awake() override{};
+
     void start() override{
         SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
     };
+
     void update(const glm::mat4& projection, const glm::mat4& view) override{
         if (timeToDispense2 < 0 && songDataIndex < songData.size())
         {
@@ -178,7 +171,9 @@ public:
         ssao.renderQuad();
         //scene.update();
     };
+
     void onDestroy() override{};
+
     ~exampleSceneScript() override = default;
 };
 

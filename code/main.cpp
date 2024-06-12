@@ -40,15 +40,12 @@ int main() {
     a.init();
     Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
     SceneManager sm;
-/*
-    float songSampleInterval = 1;
-    vector<SongSample> songData;
-    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
-    int songDataIndex = 0;
-*/
+
     glViewport(0,0, 1920, 1080);
 
     sm.loadScene("res/content/maps/test.yaml");
+    sm.loadScene("res/content/maps/Marcin.yaml");
+
     sm.setCurrentScene("exampleScene");
 
 
@@ -62,10 +59,7 @@ int main() {
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
-    //Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
-
-    //HUD
 
     MaterialAsset material("res/content/materials/color.json");
 
@@ -81,15 +75,9 @@ int main() {
 
     Model* player = new Model("res/content/models/player/character_base.obj");
 
-    /*renderer.addShader(&shaderText);
-    renderer.addShader(&shaderPbr);
-    renderer.addShader(&shaderCel);
-    renderer.addShader(&ssao.shaderGeometryPass);*/
-
     Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
-    //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass);
 
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
@@ -117,12 +105,6 @@ int main() {
     player1->addComponent(player);
     player->getTransform()->setPosition(glm::vec3(-5, -2, 1));
 
-    /*Entity* club1 = new Entity("club");
-    sm.getLoadedScenes()[0]->addEntity(club1);
-    club1->addComponent(club);
-    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
-    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));*/
-
     glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
 
     Entity* sphere1 = new Entity("sphere");
@@ -138,23 +120,8 @@ int main() {
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
-    //FrameBuffer* fb = new FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
     glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
-/*
-    static float linear    = 0.09f;
-    static float quadratic = 0.032f;
-    static float power = 1;
-    static float kernelSize = 64;
-    static float radius = 0.5f;
-    static float bias = 0.025f;
-    static bool onlySSAO = true;
-    static vec2 range(2,2);
-    static float mul = 4;
-    static float texelSize = 1;
-*/
 
-    //Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
     Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/material.json"));
 
     Entity ent("doopa");
@@ -162,21 +129,15 @@ int main() {
 
     sm.getLoadedScenes()[0]->addEntity(&ent);
 
-
     float time = 0;
 
-    /*
-    Spawner spawner(sm.getLoadedScenes().at(0));
-    float timeToDispense = songSampleInterval;
-    float timeToDispense2 = timeToDispense;
-*/
-
-  
     sound->play();
     sound->setVolume(1.f);
 
+//main scene script-----------------------------------------------------------------------------------------------
     exampleSceneScript ess(sm, lightColor, shaderPbr, sphere, sphere1, ssao, renderer, editor);
     ess.start();
+//main scene script-----------------------------------------------------------------------------------------------
 
     while (!glfwWindowShouldClose(s.window))
     {
@@ -185,37 +146,27 @@ int main() {
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        //fb->bind();
-
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
-        //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
-        //glm::mat4 view = playerCamera->getView();
-        ess.update(projection, view);
+        /*
+        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            if (sm.getCurrentScene()->getName() == "exampleScene") {
+                sm.setCurrentScene("MarcinScene");
+            } else {
+                sm.setCurrentScene("exampleScene");
+            }
+        }
+         */
 
+        //main scene script-----------------------------------------------------------------------------------------------
+        ess.update(projection, view);
+        //main scene script-----------------------------------------------------------------------------------------------
 
 
         cm.update();
-//		ImGui::Render();
-//		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        //arcadeRenderer->renderText();
-
-        //fb->unbind();
-
-        //screenShader.use();
-        //fb->drawQuad();
-
-
-//        sm.updateLoadedScenes();
-//
-//        cm.update();
-        //arcadeRenderer->update();
         update();
     }
     a.end();
