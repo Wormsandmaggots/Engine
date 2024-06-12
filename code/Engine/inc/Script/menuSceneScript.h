@@ -7,7 +7,7 @@ class menuSceneScript: public SceneScript{
 public:
     void awake() override{};
     void start() override{};
-    void update() override{};
+    void update(const glm::mat4& projection, const glm::mat4& view) override{};
     void onDestroy() override{};
     ~menuSceneScript() override = default;
 };
