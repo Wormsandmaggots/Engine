@@ -45,17 +45,20 @@ void MaterialAsset::SetFloat(const std::string& name, float value) {
 }
 
 void MaterialAsset::SetInt(const std::string& name, int value) {
-    if (!shader->doesUniformExist(name)) {
-        SPDLOG_ERROR("Uniform: " + name + " not found");
-        return;
+    if (this != nullptr) {
+        if (!shader->doesUniformExist(name)) {
+            SPDLOG_ERROR("Uniform: " + name + " not found");
+            return;
+        }
+
+        RemoveUniform(name);
+
+        auto newUniform = std::make_unique<IntUniform>();
+        newUniform->name = name;
+        newUniform->value = value;
+        uniforms.push_back(std::move(newUniform));
     }
-
-    RemoveUniform(name);
-
-    auto newUniform = std::make_unique<IntUniform>();
-    newUniform->name = name;
-    newUniform->value = value;
-    uniforms.push_back(std::move(newUniform));
+    
 }
 
 void MaterialAsset::SetVec4(const std::string& name, glm::vec4 value) {

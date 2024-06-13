@@ -112,6 +112,7 @@ int main() {
 
     Entity* clubE = new Entity("club");
     clubE->addComponent(club);
+    clubE->getTransform()->translate(glm::vec3(0,-3,0));
     sm.getLoadedScenes()[0]->addEntity(clubE);
     /*
     Entity* box = new Entity("box");
@@ -293,11 +294,11 @@ int main() {
         playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
         playerRig->update();
 
-        joystickOffset3 = playerInput.getJoystick(1) * 100.0f;
+        joystickOffset3 = playerInput1.getJoystick(1) * 100.0f;
         playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:LeftFoot");
         playerRig->update();
 
-        joystickOffset4 = playerInput.getJoystick(2) * 100.0f;
+        joystickOffset4 = playerInput1.getJoystick(2) * 100.0f;
         playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:RightFoot");
         playerRig->update();
 

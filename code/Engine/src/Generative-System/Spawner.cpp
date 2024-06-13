@@ -6,8 +6,8 @@
 
 Spawner::Spawner(Scene2* scene) {
 	this->scene = scene;
-	this->ballModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
-	this->drinkModel = new Model("res/content/models/kieliszki/drink1/drink1.fbx", new MaterialAsset("res/content/materials/color_white.json"));
+	this->ballModel = new Model("res/content/models/sphere/untitled.obj");
+	this->drinkModel = new Model("res/content/models/kieliszki/drink1/drink1.fbx");
 	ballsSpawned=0;
 }
 
