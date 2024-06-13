@@ -160,24 +160,20 @@ int main() {
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        /*
+        //scene switching
         if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            if (sm.getCurrentScene()->getName() == "exampleScene") {
-                sm.setCurrentScene("MarcinScene");
-            } else {
+            if (sm.getCurrentScene()->getName() == "MarcinScene") {
                 sm.setCurrentScene("exampleScene");
+            } else {
+                sm.setCurrentScene("MarcinScene");
             }
         }
-         */
 
-        //main menu script-----------------------------------------------------------------------------------------------
-        mss.update(projection, view);
-        //main menu script-----------------------------------------------------------------------------------------------
-
-
-        //main scene script-----------------------------------------------------------------------------------------------
-        //ess.update(projection, view);
-        //main scene script-----------------------------------------------------------------------------------------------
+        if (sm.getCurrentScene()->getName() == "MarcinScene") {
+            mss.update(projection, view);
+        } else if (sm.getCurrentScene()->getName() == "exampleScene") {
+            ess.update(projection, view);
+        }
 
 
         cm.update();

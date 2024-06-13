@@ -49,7 +49,9 @@ private:
 
     //for resizing bar
     double lastTime = 0.0;
+
 public:
+
     menuSceneScript(SceneManagement::SceneManager* sm, Shader* imageShader) : sm(sm), imageShader(imageShader) {
         // Inicjalizacja obiektów jako nullptr
         menuBackground = nullptr;
@@ -76,14 +78,24 @@ public:
 
         newGame = new Button(imageShader);
         newGame->setTexture(&menuNewGame);
-        newGame->setOnClick([]() {
+        /*newGame->setOnClick([]() {
             std::cout << "start game" << std::endl;
+        });*/
+
+        newGame->setOnClick([this]() {
+            std::cout << "start game" << std::endl;
+            if (sm->getCurrentScene()->getName() == "MarcinScene") {
+                sm->setCurrentScene("exampleScene");
+            } else {
+                //sm->setCurrentScene("MarcinScene");
+            }
         });
 
         exit = new Button(imageShader);
         exit->setTexture(&menuExit);
-        exit->setOnClick([]() {
+        exit->setOnClick([this]() {
             std::cout << "wyjscie" << std::endl;
+            glfwSetWindowShouldClose(s.window, true);
         });
 
         //Image
@@ -113,14 +125,15 @@ public:
         exit->getTransform()->setPosition(glm::vec3(-0.75f, -0.3f, 0.0f));
 
         // Dodaj tekstury do wektora
-        std::vector<Texture*> animationTextures = {&menuNewGame, &menuNewGameAlt};
+        //std::vector<Texture*> animationTextures = {&menuNewGame, &menuNewGameAlt};
 
         // Ustaw tekstury animacji dla przycisku
-        newGame->setAnimationTextures(animationTextures);
+        //newGame->setAnimationTextures(animationTextures);
 
     };
 
     void update(const glm::mat4& projection, const glm::mat4& view) override{
+
         glDisable(GL_DEPTH_TEST);
         imageShader->use();
         glEnable(GL_BLEND);
@@ -139,6 +152,8 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
+        //sm->updateLoadedScenes();
+
         //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
         double mouseX, mouseY;
         glfwGetCursorPos(s.window, &mouseX, &mouseY);
@@ -149,6 +164,7 @@ public:
         exit->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
         exit->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
         //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
+
     };
 
     void onDestroy() override{
