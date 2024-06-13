@@ -42,6 +42,8 @@ private:
     SceneManagement::SceneManager& sm;
     glm::vec3& lightColor;
     Shader& shaderPbr;
+    Shader* imageShader;
+    Shader* imageShaderGreen;
     Model* sphere;
     Entity* sphere1;
     SSAO& ssao;
@@ -56,16 +58,32 @@ private:
     float timeToDispense2 = timeToDispense;
     float timeToDispense = songSampleInterval;
 
+    Image* textBack;
+
 public:
 
-    exampleSceneScript(SceneManagement::SceneManager& sm, glm::vec3& lightColor, Shader& shaderPbr, Model* sphere, Entity* sphere1, SSAO& ssao, Renderer& renderer, EditorLayer::Editor& editor)
-            : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
-    {}
+    exampleSceneScript(SceneManagement::SceneManager& sm, glm::vec3& lightColor, Shader& shaderPbr, Shader* imageShader, Shader* imageShaderGreen, Model* sphere, Entity* sphere1, SSAO& ssao, Renderer& renderer, EditorLayer::Editor& editor)
+            : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), imageShader(imageShader), imageShaderGreen(imageShaderGreen), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
+    {
+        textBack = nullptr;
+    }
 
     void awake() override{};
 
     void start() override{
         SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
+
+        Texture textBac("res/content/textures/backgg.jpg", "backgg");
+
+        textBack = new Image(imageShader);
+        textBack->setTexture(&textBac);
+
+        //Image
+        Entity* textBG = new Entity("textBack");
+        sm.getLoadedScenes()[0]->addEntity(textBG);
+        textBG->addComponent(textBack);
+        textBack->getTransform()->setScale(glm::vec3(0.2f, 0.2f, 0.2f));
+        textBack->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     };
 
     void update(const glm::mat4& projection, const glm::mat4& view) override{
@@ -170,6 +188,22 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
         ssao.renderQuad();
         //scene.update();
+
+
+        imageShader->use();
+        glDisable(GL_DEPTH_TEST);
+        //imageShader->use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        //kolejnosc renderowania ma znaczenie
+        //pierwszy renderowany obiekt bedzie pod spodem
+        //1
+        textBack->renderPlane();
+
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
     };
 
     void onDestroy() override{};

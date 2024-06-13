@@ -144,7 +144,7 @@ int main() {
 
 
 //main scene script-----------------------------------------------------------------------------------------------
-    exampleSceneScript ess(sm, lightColor, shaderPbr, sphere, sphere1, ssao, renderer, editor);
+    exampleSceneScript ess(sm, lightColor, shaderPbr, &imageShader, &imageShaderGreen, sphere, sphere1, ssao, renderer, editor);
     ess.start();
 //main scene script-----------------------------------------------------------------------------------------------
 
