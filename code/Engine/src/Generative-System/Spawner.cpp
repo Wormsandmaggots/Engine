@@ -8,12 +8,14 @@ Spawner::Spawner(Scene2* scene) {
 	this->scene = scene;
 	this->ballModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
 	this->drinkModel = new Model("res/content/models/kieliszki/drink1/drink1.fbx", new MaterialAsset("res/content/materials/color_white.json"));
+	ballsSpawned=0;
 }
 
 void Spawner::spawnBall(const std::string& name, glm::vec3 pos) {
 		Ball* kula = new Ball(name, pos, new Model(*this->ballModel));
 		balls.push_back(kula);
 		this->scene->addEntity(kula);
+		ballsSpawned++;
 }
 
 void Spawner::spawnDrink(const std::string& name, glm::vec3 pos)

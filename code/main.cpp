@@ -27,6 +27,7 @@
 #include "RigPrep.h"
 #include "Animation/InverseKinematics.h"
 #include "ECS/ScriptableEntity.h"
+#include "Generative-system/Drink.h"
 
 using namespace SceneManagement;
 
@@ -38,19 +39,22 @@ int main() {
     CollisionManager cm;
     AudioManager& audioManager = AudioManager::getInstance();
     audioManager.init();
-    std::shared_ptr<Sound> sound = audioManager.loadSound("res/content/sounds/songs/queen.wav");
     std::shared_ptr<Sound> success = audioManager.loadSound("res/content/sounds/effects/clap.wav");
     std::shared_ptr<Sound> failure = audioManager.loadSound("res/content/sounds/effects/sweep.wav");
 
     success->setVolume(0.2);
 	failure->setVolume(0.5);
 
+
     SceneManager sm;
 
     float songSampleInterval = 0.3;
     vector<SongSample> songData;
-    SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
-    SongAnalizer::testparseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
+
+    const char* path = "res/content/sounds/kick-kick-clap.wav";
+    std::shared_ptr<Sound> sound = audioManager.loadSound(path);
+    SongAnalizer::parseSong(songSampleInterval, path, songData);
+    SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
     int songDataIndex = 0;
 
@@ -64,7 +68,7 @@ int main() {
     glm::vec2 joystickOffset3 = glm::vec2(0);
     glm::vec2 joystickOffset4 = glm::vec2(0);
 
-    sm.loadScene("res/content/maps/test.yaml");
+    sm.loadScene("res/content/maps/Marcin.yaml");
 
     Scene2* currentScene = sm.getLoadedScenes().at(0);
 
@@ -81,7 +85,7 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     //Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
-    Shader shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl");
+    Shader shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag");
 
     SSAO ssao;
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -90,7 +94,7 @@ int main() {
     renderer.init();
 
 
-    Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
+    Model* boxModel = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass);
@@ -109,10 +113,17 @@ int main() {
     Entity* clubE = new Entity("club");
     clubE->addComponent(club);
     sm.getLoadedScenes()[0]->addEntity(clubE);
+    /*
+    Entity* box = new Entity("box");
+    box->addComponent(boxModel);
+    currentScene->addEntity(box);
+    
+     Entity* player3 = new Entity("player2");
+    sm.getLoadedScenes()[0]->addEntity(player3);
+    player3->addComponent(player2);
+    
+    */
 
-    Entity* boxE = new Entity("box");
-    boxE->addComponent(box);
-    sm.getLoadedScenes()[0]->addEntity(boxE);
 
     
 
@@ -123,9 +134,7 @@ int main() {
     sphere1->addComponent(sphere);
     sphere->getTransform()->setPosition(lightPos);
 
-    Entity* player3 = new Entity("player2");
-    sm.getLoadedScenes()[0]->addEntity(player3);
-    player3->addComponent(player2);
+   
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -228,18 +237,50 @@ int main() {
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
+        sound->play();
 
         timeToDispense2 -= s.deltaTime;
-        if (timeToDispense2 < 0 && songDataIndex < songData.size())
-        {
-            spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
-            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20));
+        if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
+            float z = -5;
+            switch (songData[songDataIndex].type) {
+            case sampleType::BASS:
+                //raczki
+                spawner.spawnBall("ball", glm::vec3(1, 1.5, z));
+                spawner.spawnBall("ball", glm::vec3(-1, 1.5, z));
+                //nozki
+                spawner.spawnBall("ball", glm::vec3(1, -2, z));
+                spawner.spawnBall("ball", glm::vec3(-1, -2, z));
 
+                break;
+            case sampleType::CLAP:
+                //raczki
+                spawner.spawnBall("ball", glm::vec3(1.55, 0.16, z));
+                spawner.spawnBall("ball", glm::vec3(-1.55, 0.16, z));
+               
+                //nozki
+                spawner.spawnBall("ball", glm::vec3(0.8, -0.8, z));
+                spawner.spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+
+               // 3 pozycja raczek i nozek
+               //spawner.spawnBall("ball", glm::vec3(1.1, -0.5, z));
+               //spawner.spawnBall("ball", glm::vec3(-1.1, -0.5,z));
+                //spawner.spawnBall("ball", glm::vec3(0.2, -2.25, z));
+               //spawner.spawnBall("ball", glm::vec3(-0.2, -2.25,z));
+
+                break;
+            case sampleType::SKIP:
+                break;
+            }
+            if (spawner.ballsSpawned % 50 == 0) {
+				spawner.spawnDrink("drink", glm::vec3(-1, 1, 0));
+            }
             songDataIndex++;
             timeToDispense2 = timeToDispense;
+
+            if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }
+
+
 
         shaderRig.use();
 
@@ -252,11 +293,11 @@ int main() {
         playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
         playerRig->update();
 
-        joystickOffset3 = playerInput1.getJoystick(1) * 100.0f;
+        joystickOffset3 = playerInput.getJoystick(1) * 100.0f;
         playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:LeftFoot");
         playerRig->update();
 
-        joystickOffset4 = playerInput1.getJoystick(2) * 100.0f;
+        joystickOffset4 = playerInput.getJoystick(2) * 100.0f;
         playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:RightFoot");
         playerRig->update();
 

@@ -9,7 +9,7 @@
 
 class Ball : public Entity {
 	glm::vec3 position;
-	float speed = 5.1;
+	float speed = 4.0;
 	bool toDestroy = false;
 public:
 	
@@ -52,7 +52,7 @@ public:
 	void update() override{
 		
 			position.z += speed * deltaTime;
-			if (position.z > 10.0 && !toDestroy) {
+			if (position.z > 5.0 && !toDestroy) {
 				toDestroy = true;
 				position.z = 100;
 				combo = 0;

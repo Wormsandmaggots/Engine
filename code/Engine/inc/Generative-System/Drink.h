@@ -3,12 +3,15 @@
 #include "Renderer/MaterialAsset.h"
 #include "Physics/ColliderComponent.h"
 #include "Audio/Sound.h"
+#include "Debug/Logger.h"
+
+
 
 class Drink : public Entity {
 	glm::vec3 position;
 	float speed = 5.1;
 	bool toDestroy = false;
-
+	DrinkType type;
 
 public:
 
@@ -17,12 +20,13 @@ public:
 	}
 
 	void onTriggerEnter(ColliderComponent* entity) {
-		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer") {
+		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
 			position = glm::vec3(100);
+			//drinkEnable = true;
 			//AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
-
+			
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {
@@ -35,6 +39,8 @@ public:
 
 
 	Drink(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position) {
+
+		//type = (DrinkType)(rand() % 3);
 
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);

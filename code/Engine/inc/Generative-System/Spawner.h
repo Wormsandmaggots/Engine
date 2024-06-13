@@ -15,6 +15,7 @@ public:
 	Scene2* scene;
 	Model* ballModel;
 	Model* drinkModel;
+	int ballsSpawned;
 	Spawner(Scene2* scene);
 	std::vector<Ball*> balls;
 	std::vector<Drink*> drinks;
