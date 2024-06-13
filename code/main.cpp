@@ -23,9 +23,9 @@
 #include "Script/SceneScript.h"
 #include "Script/menuSceneScript.h"
 #include "Script/exampleSceneScript.h"
-
-
-
+#include "HUD/Button.h"
+#include "HUD/ResizableImage.h"
+#include "HUD/Image.h"
 #include "Globals.h"
 
 using namespace SceneManagement;
@@ -46,7 +46,8 @@ int main() {
     sm.loadScene("res/content/maps/test.yaml");
     sm.loadScene("res/content/maps/Marcin.yaml");
 
-    sm.setCurrentScene("exampleScene");
+    //sm.setCurrentScene("exampleScene");
+    sm.setCurrentScene("MarcinScene");
 
 
     //HID
@@ -61,6 +62,11 @@ int main() {
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
     Shader screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag");
 
+    Shader imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl");
+    //for visual debugging
+    Shader imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl");
+    Shader imageShaderBlue("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_blue.glsl");
+
     MaterialAsset material("res/content/materials/color.json");
 
     SSAO ssao;
@@ -72,6 +78,12 @@ int main() {
     //renderer.addShader(&collisionTestShader);
     //renderer.addShader(&colorShader);
     //renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
+
+    Texture menuBack("res/content/textures/backgg.jpg", "backgg");
+    Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
+    Texture menuNewGame("res/content/textures/ng.png", "ng");
+    Texture menuExit("res/content/textures/ex.png", "ex");
+    Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
 
     Model* player = new Model("res/content/models/player/character_base.obj");
 
@@ -134,6 +146,12 @@ int main() {
     sound->play();
     sound->setVolume(1.f);
 
+//main menu script-----------------------------------------------------------------------------------------------
+    menuSceneScript mss(&sm, &imageShader);
+    mss.start();
+//main menu script-----------------------------------------------------------------------------------------------
+
+
 //main scene script-----------------------------------------------------------------------------------------------
     exampleSceneScript ess(sm, lightColor, shaderPbr, sphere, sphere1, ssao, renderer, editor);
     ess.start();
@@ -161,8 +179,13 @@ int main() {
         }
          */
 
+        //main menu script-----------------------------------------------------------------------------------------------
+        mss.update(projection, view);
+        //main menu script-----------------------------------------------------------------------------------------------
+
+
         //main scene script-----------------------------------------------------------------------------------------------
-        ess.update(projection, view);
+        //ess.update(projection, view);
         //main scene script-----------------------------------------------------------------------------------------------
 
 
