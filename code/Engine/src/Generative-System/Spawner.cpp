@@ -6,7 +6,7 @@
 
 Spawner::Spawner(Scene2* scene) {
 	this->scene = scene;
-	this->ballModel = new Model("res/content/models/sphere/untitled.obj");
+	this->ballModel = new Model("res/content/models/orb2/orb2.fbx");
 	this->drinkModel = new Model("res/content/models/kieliszki/drink1/drink1.fbx");
 	ballsSpawned=0;
 }
@@ -14,6 +14,7 @@ Spawner::Spawner(Scene2* scene) {
 void Spawner::spawnBall(const std::string& name, glm::vec3 pos) {
 		Ball* kula = new Ball(name, pos, new Model(*this->ballModel));
 		balls.push_back(kula);
+		kula->getTransform()->setRotation(glm::vec3(90,90,90));
 		this->scene->addEntity(kula);
 		ballsSpawned++;
 }

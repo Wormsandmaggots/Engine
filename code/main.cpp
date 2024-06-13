@@ -51,7 +51,7 @@ int main() {
     float songSampleInterval = 0.3;
     vector<SongSample> songData;
 
-    const char* path = "res/content/sounds/kick-kick-clap.wav";
+    const char* path = "res/content/sounds/songs/queen.wav";
     std::shared_ptr<Sound> sound = audioManager.loadSound(path);
     SongAnalizer::parseSong(songSampleInterval, path, songData);
     SongAnalizer::testparseSong(songSampleInterval, path, songData);
@@ -242,25 +242,25 @@ int main() {
 
         timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
-            float z = -5;
+            float z = 5;
             switch (songData[songDataIndex].type) {
             case sampleType::BASS:
                 //raczki
-                spawner.spawnBall("ball", glm::vec3(1, 1.5, z));
-                spawner.spawnBall("ball", glm::vec3(-1, 1.5, z));
+                spawner.spawnBall("ball", glm::vec3(1* songData[songDataIndex].mid.x, 1.5, z));
+                spawner.spawnBall("ball", glm::vec3(-1*songData[songDataIndex].mid.x, 1.5, z));
                 //nozki
-                spawner.spawnBall("ball", glm::vec3(1, -2, z));
-                spawner.spawnBall("ball", glm::vec3(-1, -2, z));
+                //spawner.spawnBall("ball", glm::vec3(1, -2, z));
+                //spawner.spawnBall("ball", glm::vec3(-1, -2, z));
 
                 break;
             case sampleType::CLAP:
                 //raczki
-                spawner.spawnBall("ball", glm::vec3(1.55, 0.16, z));
-                spawner.spawnBall("ball", glm::vec3(-1.55, 0.16, z));
+                spawner.spawnBall("ball", glm::vec3(1.55* songData[songDataIndex].mid.x, 0.16, z));
+                spawner.spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.x, 0.16, z));
                
                 //nozki
-                spawner.spawnBall("ball", glm::vec3(0.8, -0.8, z));
-                spawner.spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+                //spawner.spawnBall("ball", glm::vec3(0.8, -0.8, z));
+                //spawner.spawnBall("ball", glm::vec3(-0.8, -0.8, z));
 
                // 3 pozycja raczek i nozek
                //spawner.spawnBall("ball", glm::vec3(1.1, -0.5, z));

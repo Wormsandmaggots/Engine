@@ -51,10 +51,12 @@ public:
 
 	void update() override{
 		
-			position.z += speed * deltaTime;
-			if (position.z > 5.0 && !toDestroy) {
+			position.z -= speed * deltaTime;
+			if (position.z < -1.5 && !toDestroy) {
 				toDestroy = true;
 				position.z = 100;
+				position.x = 1000;
+				position.y = 1000;
 				combo = 0;
 				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3",0.1);
 //				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
