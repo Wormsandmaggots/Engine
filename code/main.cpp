@@ -36,9 +36,19 @@ int main() {
     EditorLayer::Editor editor;
     editor.init(&s.camera);
     CollisionManager cm;
-    AudioManager a;
+    /*AudioManager a;
     a.init();
-    Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");
+    Sound* sound = a.loadSound("res/content/sounds/Ich will.mp3");*/
+
+    AudioManager& audioManager = AudioManager::getInstance();
+    audioManager.init();
+    std::shared_ptr<Sound> sound = audioManager.loadSound("res/content/sounds/songs/queen.wav");
+    std::shared_ptr<Sound> success = audioManager.loadSound("res/content/sounds/effects/clap.wav");
+    std::shared_ptr<Sound> failure = audioManager.loadSound("res/content/sounds/effects/sweep.wav");
+
+    success->setVolume(0.2);
+    failure->setVolume(0.5);
+
     SceneManager sm;
 
     glViewport(0,0, 1920, 1080);
@@ -179,7 +189,7 @@ int main() {
         cm.update();
         update();
     }
-    a.end();
+    audioManager.end();
 
     end();
     return 0;
