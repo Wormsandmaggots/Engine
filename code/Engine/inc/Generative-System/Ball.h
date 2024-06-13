@@ -25,7 +25,7 @@ public:
 			score += 100;
 			combo += 1;
 			position = glm::vec3(100);
-			AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav",0.3);
+			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",0.3);
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {
@@ -56,7 +56,7 @@ public:
 				toDestroy = true;
 				position.z = 100;
 				combo = 0;
-				AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav",0.1);
+				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3",0.1);
 				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
 			}
 			this->getTransform()->setPosition(position);
