@@ -59,6 +59,12 @@ private:
     float timeToDispense = songSampleInterval;
 
     Image* textBack;
+    Image* textBack1;
+    Image* barCover;
+
+    Button* pauseButton;
+
+    ResizableImage* acceptBar;
 
 public:
 
@@ -66,6 +72,10 @@ public:
             : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), imageShader(imageShader), imageShaderGreen(imageShaderGreen), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
     {
         textBack = nullptr;
+        textBack1 = nullptr;
+        barCover = nullptr;
+        pauseButton = nullptr;
+        acceptBar = nullptr;
     }
 
     void awake() override{};
@@ -74,16 +84,59 @@ public:
         SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
 
         Texture textBac("res/content/textures/backgg.jpg", "backgg");
+        Texture textBac1("res/content/textures/backgg.jpg", "backgg");
+        Texture barCov("res/content/textures/dupa.png", "dupa");
+        Texture pauseImg("res/content/textures/stop.png", "stop");
 
         textBack = new Image(imageShader);
         textBack->setTexture(&textBac);
+
+        textBack1 = new Image(imageShader);
+        textBack1 -> setTexture(&textBac);
+
+        barCover = new Image(imageShader);
+        barCover -> setTexture(&barCov);
+
+        pauseButton = new Button(imageShader);
+        pauseButton -> setTexture(&pauseImg);
+        pauseButton->setOnClick([]() {
+            std::cout << "pauza" << std::endl;
+        });
+
+        acceptBar = new ResizableImage(imageShaderGreen);
 
         //Image
         Entity* textBG = new Entity("textBack");
         sm.getLoadedScenes()[0]->addEntity(textBG);
         textBG->addComponent(textBack);
-        textBack->getTransform()->setScale(glm::vec3(0.2f, 0.2f, 0.2f));
-        textBack->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        textBack->getTransform()->setScale(glm::vec3(0.15f, 0.15f, 0.0f));
+        textBack->getTransform()->setPosition(glm::vec3(-0.8f, 0.75f, 0.0f));
+
+        Entity* textBG1 = new Entity("textBack1");
+        sm.getLoadedScenes()[0]->addEntity(textBG1);
+        textBG1->addComponent(textBack1);
+        textBack1->getTransform()->setScale(glm::vec3(0.15f, 0.15f, 0.0f));
+        textBack1->getTransform()->setPosition(glm::vec3(0.0f, 0.75f, 0.0f));
+
+        Entity* barImageCover = new Entity("barCover");
+        sm.getLoadedScenes()[0]->addEntity(barImageCover);
+        barImageCover->addComponent(barCover);
+        barCover->getTransform()->setScale(glm::vec3(0.030f, 0.330f, 0.0f));
+        barCover->getTransform()->setPosition(glm::vec3(0.9f, 0.068f, 0.0f));
+
+        //Button
+        Entity* stopButton = new Entity("pauseButton");
+        sm.getLoadedScenes()[0]->addEntity(stopButton);
+        stopButton->addComponent(pauseButton);
+        pauseButton->getTransform()->setScale(glm::vec3(0.04f, 0.05f, 0.05f));
+        pauseButton->getTransform()->setPosition(glm::vec3(0.9f, 0.75f, 0.0f));
+
+        //ResizableImage
+        Entity* accBar = new Entity("acceptBar");
+        sm.getLoadedScenes()[0]->addEntity(accBar);
+        accBar->addComponent(acceptBar);
+        acceptBar->getTransform()->setScale(glm::vec3(0.015f, 0.3f, 0.0f));
+        acceptBar->getTransform()->setPosition(glm::vec3(0.905f, 0.0f, 0.0f));
     };
 
     void update(const glm::mat4& projection, const glm::mat4& view) override{
@@ -199,11 +252,61 @@ public:
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
         //1
+        acceptBar->renderPlane();
+
+        // Zmienna do przechowywania czasu od ostatniego wywołania resizeOnImpulse
+        static float timeSinceLastResize = 0.0f;
+
+        // Oblicz czas od ostatniej klatki (deltaTime)
+        float deltaTime = glfwGetTime() - timeSinceLastResize;
+
+        // Jeśli minęła sekunda od ostatniego wywołania resizeOnImpulse
+        if (deltaTime >= 1.0f) {
+            // Wywołaj resizeOnImpulse
+            acceptBar->resizeOnImpulse(0.01f);
+
+            // Zresetuj licznik czasu
+            timeSinceLastResize = glfwGetTime();
+        }
+
+        //2
         textBack->renderPlane();
+        textBack1->renderPlane();
+        barCover->renderPlane();
 
+        //3
+        pauseButton->renderPlane();
+        acceptBar->renderPlane();
+/*
+        acceptBar->renderPlane();
 
+        // Zmienna do przechowywania czasu od ostatniego wywołania resizeOnImpulse
+        static float timeSinceLastResize = 0.0f;
+
+        // Oblicz czas od ostatniej klatki (deltaTime)
+        float deltaTime = glfwGetTime() - timeSinceLastResize;
+
+        // Jeśli minęła sekunda od ostatniego wywołania resizeOnImpulse
+        if (deltaTime >= 1.0f) {
+            // Wywołaj resizeOnImpulse
+            acceptBar->resizeOnImpulse(0.01f);
+
+            // Zresetuj licznik czasu
+            timeSinceLastResize = glfwGetTime();
+        }
+*/
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
+
+        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
+        double mouseX, mouseY;
+        glfwGetCursorPos(s.window, &mouseX, &mouseY);
+
+        pauseButton->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        pauseButton->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+
+        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
     };
 
     void onDestroy() override{};
