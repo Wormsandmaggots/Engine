@@ -2,7 +2,6 @@
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
-
 #include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
@@ -28,6 +27,7 @@
 #include "RigPrep.h"
 #include "Animation/InverseKinematics.h"
 #include "ECS/ScriptableEntity.h"
+
 using namespace SceneManagement;
 
 int main() {
@@ -36,11 +36,11 @@ int main() {
     EditorLayer::Editor editor;
     editor.init(&s.camera);
     CollisionManager cm;
-    AudioManager a;
-    a.init();
-    Sound* sound = a.loadSound("res/content/sounds/songs/queen.wav");
-    Sound* success = a.loadSound("res/content/sounds/effects/clap.wav");
-    Sound* failure = a.loadSound("res/content/sounds/effects/sweep.wav");
+    AudioManager& audioManager = AudioManager::getInstance();
+    audioManager.init();
+    std::shared_ptr<Sound> sound = audioManager.loadSound("res/content/sounds/songs/queen.wav");
+    std::shared_ptr<Sound> success = audioManager.loadSound("res/content/sounds/effects/clap.wav");
+    std::shared_ptr<Sound> failure = audioManager.loadSound("res/content/sounds/effects/sweep.wav");
 
     success->setVolume(0.2);
 	failure->setVolume(0.5);
@@ -220,9 +220,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-
+        
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -234,10 +232,10 @@ int main() {
         timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size())
         {
-            spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20),success,failure);
-            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20), success, failure);
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20), success, failure);
-            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20), success, failure);
+            spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
+            spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
+            spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20));
 
             songDataIndex++;
             timeToDispense2 = timeToDispense;
@@ -362,6 +360,9 @@ int main() {
         ssao.renderQuad();
         //scene.update();
 
+        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
         comboRenderer->renderText();
         scoreRenderer->renderText();
         cm.update();
@@ -381,7 +382,7 @@ int main() {
         //arcadeRenderer->update();
         update();
     }
-    a.end();
+    audioManager.end();
 
     end();
     return 0;

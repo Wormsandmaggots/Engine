@@ -10,15 +10,15 @@ Spawner::Spawner(Scene2* scene) {
 	this->drinkModel = new Model("res/content/models/kieliszki/drink1/drink1.fbx", new MaterialAsset("res/content/materials/color_white.json"));
 }
 
-void Spawner::spawnBall(const std::string& name, glm::vec3 pos,Sound* success, Sound* failure) {
-		Ball* kula = new Ball(name, pos, new Model(*this->ballModel), success, failure);
+void Spawner::spawnBall(const std::string& name, glm::vec3 pos) {
+		Ball* kula = new Ball(name, pos, new Model(*this->ballModel));
 		balls.push_back(kula);
 		this->scene->addEntity(kula);
 }
 
-void Spawner::spawnDrink(const std::string& name, glm::vec3 pos, Sound* success, Sound* failure)
+void Spawner::spawnDrink(const std::string& name, glm::vec3 pos)
 {
-	Drink* drink = new Drink(name, pos, new Model(*this->drinkModel), success, failure);
+	Drink* drink = new Drink(name, pos, new Model(*this->drinkModel));
 	drinks.push_back(drink);
 	drink->getTransform()->setScale(glm::vec3(0.001f));
 	this->scene->addEntity(drink);

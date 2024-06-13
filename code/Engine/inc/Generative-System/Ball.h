@@ -5,15 +5,12 @@
 #include "Renderer/MaterialAsset.h"
 #include "Physics/ColliderComponent.h"
 #include "Audio/Sound.h"
+#include "Audio/AudioManager.h" // Add this include statement
 
 class Ball : public Entity {
 	glm::vec3 position;
 	float speed = 5.1;
 	bool toDestroy = false;
-	Sound* success;
-	Sound* failure;
-	
-
 public:
 	
 	bool getToDestory() {
@@ -28,8 +25,7 @@ public:
 			score += 100;
 			combo += 1;
 			position = glm::vec3(100);
-			success->play();
-
+			AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav",0.3);
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {
@@ -41,10 +37,7 @@ public:
 
 
 
-	Ball(const std::string name, const glm::vec3& position,Model* model,Sound* success,Sound* failure): Entity(name),position(position){
-		this->success = success;
-		this->failure = failure;
-		
+	Ball(const std::string name, const glm::vec3& position,Model* model): Entity(name),position(position){
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
@@ -63,7 +56,7 @@ public:
 				toDestroy = true;
 				position.z = 100;
 				combo = 0;
-				failure->play();
+				AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav",0.1);
 				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
 			}
 			this->getTransform()->setPosition(position);

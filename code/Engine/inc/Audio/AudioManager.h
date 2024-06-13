@@ -1,28 +1,35 @@
-//
-// Created by Radek on 25.03.2024.
-//
-
 #ifndef ENGINE_AUDIOMANAGER_H
 #define ENGINE_AUDIOMANAGER_H
 
-#include "Debug/Logger.h"
 #include "miniaudio.h"
-#include "Sound.h"
+#include <string>
+#include <vector>
+#include <memory>
+#include "Audio/Sound.h"
+#include "Core/AssetManager/AssetManager.h"
 
-class AudioManager {
+class AudioManager : public AssetManager {
 public:
-    AudioManager() = default;
-    virtual ~AudioManager() = default;
+    static AudioManager& getInstance() {
+        static AudioManager instance; // Guaranteed to be destroyed and instantiated on first use.
+        return instance;
+    }
+
+    AudioManager(const AudioManager&) = delete; // Delete copy constructor
+    void operator=(const AudioManager&) = delete; // Delete copy assignment operator
+
+    void playSound(const std::string& filePath,float);
 
     int init();
     void end();
-//    void playSound();
-//    void stopSound();
-    Sound* loadSound(const std::string&);
+    std::shared_ptr<Sound> loadSound(const std::string& filePath);
+
 private:
+    AudioManager() : engine() {} // Private constructor with engine initialization
+    virtual ~AudioManager() {} // Private destructor
+
     ma_engine engine;
-    std::vector<Sound*> loadedSounds;
+    std::vector<std::shared_ptr<Sound>> loadedSounds; // Corrected vector declaration
 };
 
-
-#endif //ENGINE_AUDIOMANAGER_H
+#endif // ENGINE_AUDIOMANAGER_H

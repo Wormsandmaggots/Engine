@@ -8,8 +8,6 @@ class Drink : public Entity {
 	glm::vec3 position;
 	float speed = 5.1;
 	bool toDestroy = false;
-	Sound* success;
-	Sound* failure;
 
 
 public:
@@ -20,13 +18,10 @@ public:
 
 	void onTriggerEnter(ColliderComponent* entity) {
 		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer") {
-			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
-			//score += 100;
-			//combo += 1;
 			position = glm::vec3(100);
-			//success->play();
+			//AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
 
 		}
 	}
@@ -39,9 +34,7 @@ public:
 
 
 
-	Drink(const std::string name, const glm::vec3& position, Model* model, Sound* success, Sound* failure) : Entity(name), position(position) {
-		this->success = success;
-		this->failure = failure;
+	Drink(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position) {
 
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
@@ -55,14 +48,11 @@ public:
 	}
 
 	void update() override {
-
 		position.z -= speed * deltaTime;
 		if (position.z > -10.0 && !toDestroy) {
 			toDestroy = true;
 			position.z = 100;
-			combo = 0;
-			failure->play();
-			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
+			//AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav");// DZWIEK DO PODMIANY
 		}
 		this->getTransform()->setPosition(position);
 
