@@ -13,8 +13,9 @@
 class Sound : public Asset
 {
 public:
-    explicit Sound(const std::string &path) : Asset(path){
-    };
+    explicit Sound(const std::string &path) : Asset(path){};
+    Sound() = default;
+
     virtual ~Sound() = default;
 
     void play();
@@ -28,6 +29,8 @@ public:
 private:
     float volume = 1;
     ma_sound sound;
+public:
+
 };
 
 #endif // ENGINE_SOUND_H

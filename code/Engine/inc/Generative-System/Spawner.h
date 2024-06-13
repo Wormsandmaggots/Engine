@@ -18,6 +18,6 @@ public:
 	Spawner(Scene2* scene);
 	std::vector<Ball*> balls;
 	std::vector<Drink*> drinks;
-	void spawnBall(const std::string& name, glm::vec3 pos,Sound* success,Sound* failure);
-	void spawnDrink(const std::string& name, glm::vec3 pos, Sound* success, Sound* failure);
+	void spawnBall(const std::string& name, glm::vec3 pos);
+	void spawnDrink(const std::string& name, glm::vec3 pos);
 };
