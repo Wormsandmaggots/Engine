@@ -75,15 +75,6 @@ int main() {
     Renderer renderer(&ssao.shaderGeometryPass);
     renderer.init();
 
-    //renderer.addShader(&collisionTestShader);
-    //renderer.addShader(&colorShader);
-    //renderer.addShader(material.getShader());//TODO: Automatyczne dodawanie shadera do updatowania MVP
-
-    Texture menuBack("res/content/textures/backgg.jpg", "backgg");
-    Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
-    Texture menuNewGame("res/content/textures/ng.png", "ng");
-    Texture menuExit("res/content/textures/ex.png", "ex");
-    Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
 
     Model* player = new Model("res/content/models/player/character_base.obj");
 

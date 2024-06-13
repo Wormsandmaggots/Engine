@@ -1,12 +1,10 @@
-#version 330 core
+#version 460 core
 out vec4 FragColor;
 
-in vec2 TexCoord;
-
-uniform sampler2D texture1;
+in vec2 TexCoords;
+uniform sampler2D imageTexture;
 
 void main()
 {
-    vec2 wrappedTexCoord = fract(TexCoord); // zawijanie koordynat tekstury
-    FragColor = texture(texture1, wrappedTexCoord);
+    FragColor = texture(imageTexture, TexCoords);
 }
