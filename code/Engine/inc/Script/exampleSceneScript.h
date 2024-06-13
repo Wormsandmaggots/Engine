@@ -136,7 +136,7 @@ public:
         sm.getLoadedScenes()[0]->addEntity(accBar);
         accBar->addComponent(acceptBar);
         acceptBar->getTransform()->setScale(glm::vec3(0.015f, 0.3f, 0.0f));
-        acceptBar->getTransform()->setPosition(glm::vec3(0.905f, 0.0f, 0.0f));
+        acceptBar->getTransform()->setPosition(glm::vec3(0.905f, 0.05f, 0.0f));
     };
 
     void update(const glm::mat4& projection, const glm::mat4& view) override{
@@ -252,32 +252,14 @@ public:
         //kolejnosc renderowania ma znaczenie
         //pierwszy renderowany obiekt bedzie pod spodem
         //1
-        acceptBar->renderPlane();
-
-        // Zmienna do przechowywania czasu od ostatniego wywołania resizeOnImpulse
-        static float timeSinceLastResize = 0.0f;
-
-        // Oblicz czas od ostatniej klatki (deltaTime)
-        float deltaTime = glfwGetTime() - timeSinceLastResize;
-
-        // Jeśli minęła sekunda od ostatniego wywołania resizeOnImpulse
-        if (deltaTime >= 1.0f) {
-            // Wywołaj resizeOnImpulse
-            acceptBar->resizeOnImpulse(0.01f);
-
-            // Zresetuj licznik czasu
-            timeSinceLastResize = glfwGetTime();
-        }
 
         //2
         textBack->renderPlane();
         textBack1->renderPlane();
-        barCover->renderPlane();
 
         //3
         pauseButton->renderPlane();
-        acceptBar->renderPlane();
-/*
+
         acceptBar->renderPlane();
 
         // Zmienna do przechowywania czasu od ostatniego wywołania resizeOnImpulse
@@ -294,7 +276,9 @@ public:
             // Zresetuj licznik czasu
             timeSinceLastResize = glfwGetTime();
         }
-*/
+
+        barCover->renderPlane();
+
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
