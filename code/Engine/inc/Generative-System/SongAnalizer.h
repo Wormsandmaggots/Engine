@@ -1,3 +1,5 @@
+#ifndef SONG_ANALIZER_H
+#define SONG_ANALIZER_H
 #include <iostream>
 #include <cmath>
 #include <complex>
@@ -341,3 +343,4 @@ public:
     }
 
 };
+#endif // SONG_ANALIZER_H

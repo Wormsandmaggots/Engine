@@ -68,6 +68,8 @@ int main() {
 
     Scene2* currentScene = sm.getLoadedScenes().at(0);
 
+    sm.setCurrentScene("exampleScene");
+
 
     //HID
     Input::getInstance().initializeController(GLFW_JOYSTICK_1);

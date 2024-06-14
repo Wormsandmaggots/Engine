@@ -17,7 +17,7 @@ void SceneManager::loadScene(const string &path) {
 
 void SceneManager::unloadScene(const std::string &sceneName) {
     auto foundedScene = std::find_if(loadedScenes.begin(), loadedScenes.end(),
-                           [&sceneName](const Scene2* scene) { return scene->getName() == sceneName; });
+                                     [&sceneName](const Scene2* scene) { return scene->getName() == sceneName; });
 
     if (foundedScene != loadedScenes.end()) {
         delete *foundedScene;
@@ -29,10 +29,19 @@ void SceneManager::unloadScene(const std::string &sceneName) {
     }
 }
 
+/*
 void SceneManager::updateLoadedScenes() {
     ZoneScopedN("Scene update");
     for (Scene2 *scene : loadedScenes) {
         scene->update();
+    }
+}
+ */
+
+void SceneManager::updateLoadedScenes() {
+    ZoneScopedN("Scene update");
+    if (currentScene) {
+        currentScene->update();
     }
 }
 

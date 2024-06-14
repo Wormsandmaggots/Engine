@@ -70,6 +70,7 @@ public:
             }
         }
     }
+
 private:
     Input* input;
     bool isPressed;
