@@ -70,9 +70,10 @@ inline static double equalLoudnessContour(double frequency) {
 }
 
 enum sampleType {
-	BASS,
-	SKIP,
-	CLAP
+    BASS,
+    MID,
+    CLAP,
+    SKIP
 };
 
 struct SongSample {
@@ -282,6 +283,10 @@ public:
         int bass_min = 20.0 / sfinfo.samplerate * chunk_size;
         int bass_max = 150.0 / sfinfo.samplerate * chunk_size;
 
+        // Define the mid range (400Hz to 2500Hz)
+        int mid_min = 400.0 / sfinfo.samplerate * chunk_size;
+        int mid_max = 2500.0 / sfinfo.samplerate * chunk_size;
+
         // Define the clap range (2000Hz to 4000Hz)
         int clap_min = 2000.0 / sfinfo.samplerate * chunk_size;
         int clap_max = 4000.0 / sfinfo.samplerate * chunk_size;
@@ -292,8 +297,7 @@ public:
             // Read the chunk
             sf_seek(file, chunkStart, SEEK_SET);
             sf_read_double(file, &chunk[0], chunk_size);
-           
-            
+
             // Perform the FFT on the current chunk
             fftw_execute_dft_r2c(plan, &chunk[0], fft_result);
 
@@ -302,6 +306,13 @@ public:
             for (int i = bass_min; i <= bass_max; ++i) {
                 std::complex<double> value(fft_result[i][0], fft_result[i][1]);
                 energyBass += std::norm(value); // square of the absolute value
+            }
+
+            // Check if there's any mid in the current chunk
+            double energyMid = 0.0;
+            for (int i = mid_min; i <= mid_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyMid += std::norm(value); // square of the absolute value
             }
 
             // Check if there's any clap in the current chunk
@@ -314,23 +325,19 @@ public:
             // Calculate the timestamp for the current chunk
             double timestamp = static_cast<double>(chunkStart) / sfinfo.samplerate;
 
-            // Print the result for the current chunk
-           // std::cout << std::fixed << timestamp << "s: ";
-
-            //cout <<"\tCLAP: " << energyClap << "\tBASE: " << energyBass << endl;
-                    if(energyBass < 100 && energyClap < 100)
-              {
-                 // std::cout << "SKIP\n";
-                  result.at(chunk_number).type = sampleType::SKIP;
-              }
-              else if (energyBass > energyClap) {
-                  //std::cout << "BASS\n";
-                  result.at(chunk_number).type = sampleType::BASS;
-
-              }else if (energyBass < energyClap) {
-                 // std::cout << "CLAP\n";
-                  result.at(chunk_number).type = sampleType::CLAP;
-              }
+            // Determine the sample type based on energy levels
+            if (energyBass < 100 && energyMid < 100 && energyClap < 100) {
+                result.at(chunk_number).type = sampleType::SKIP;
+            }
+            else if (energyBass > energyMid && energyBass > energyClap) {
+                result.at(chunk_number).type = sampleType::BASS;
+            }
+            else if (energyMid > energyBass && energyMid > energyClap) {
+                result.at(chunk_number).type = sampleType::MID;
+            }
+            else if (energyClap > energyBass && energyClap > energyMid) {
+                result.at(chunk_number).type = sampleType::CLAP;
+            }
             ++chunk_number;
         }
 

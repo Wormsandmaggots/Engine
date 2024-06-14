@@ -7,12 +7,12 @@
 #include "Audio/Sound.h"
 #include "Audio/AudioManager.h" // Add this include statement
 
-class Ball : public Entity {
+class BadBall : public Entity {
 	glm::vec3 position;
 	float speed = 4.0;
 	bool toDestroy = false;
 public:
-	
+
 	bool getToDestory() {
 		return toDestroy;
 	}
@@ -22,23 +22,23 @@ public:
 			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
-			score += 100;
-			combo += 1;
+			score -= 100;
+			combo = 0;
 			position = glm::vec3(100);
-			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",0.3);
+			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.1);
+
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {
-		
+
 	};
 	void onTriggerExit(ColliderComponent*) {
-	
+
 	};
 
 
 
-	Ball(const std::string name, const glm::vec3& position,Model* model): Entity(name),position(position){
-		
+	BadBall(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position) {
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
@@ -46,24 +46,20 @@ public:
 		this->getTransform()->setScale(glm::vec3(.3));
 		this->getTransform()->setPosition(position);
 		this->addComponent(model);
-		this->addComponent(collider);	
+		this->addComponent(collider);
 
 	}
 
-	void update() override{
-		
-			position.z -= speed * deltaTime;
-			if (position.z < -1.5 && !toDestroy) {
-				toDestroy = true;
-				position = glm::vec3(1000);
-				combo = 0;
-				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3",0.1);
-//				this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 0, 0, 1));
-			}
+	void update() override {
 
-			this->getTransform()->setPosition(position);
+		position.z -= speed * deltaTime;
+		if (position.z < -1.5 && !toDestroy) {
+			toDestroy = true;
+			position = glm::vec3(100);
+		}
+		this->getTransform()->setPosition(position);
 
-			Entity::update();
+		Entity::update();
 	}
 
 	void addComponent(Component* c) override {

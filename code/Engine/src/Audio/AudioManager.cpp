@@ -3,10 +3,16 @@
 
 void AudioManager::playSound(const std::string& filePath, float volume)
 {
-	auto sound = loadSound(filePath);
+    auto sound = loadSound(filePath);
+    if (!sound) {
+        // Handle the case where the sound could not be loaded. For example, log an error.
+        LOG_ERROR("Failed to load sound: " + filePath);
+        return;
+    }
     sound->setVolume(volume);
     sound->play();
 }
+
 
 int AudioManager::init() {
     if (ma_engine_init(nullptr, &engine) != MA_SUCCESS)
@@ -18,12 +24,20 @@ int AudioManager::init() {
 }
 
 std::shared_ptr<Sound> AudioManager::loadSound(const std::string& path) {
-    auto newSound = std::make_shared<Sound>(*AssetManager::GetAsset<Sound>(path));
+    auto asset = AssetManager::GetAsset<Sound>(path);
+    if (!asset) {
+        // Handle the case where the asset is not found. For example, log an error and return a null pointer.
+        LOG_ERROR("Asset not found: " + path);
+        return nullptr;
+    }
+
+    auto newSound = std::make_shared<Sound>(*asset);
     ma_sound_init_from_file(&engine, path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION, NULL, NULL, &newSound->getSound());
     loadedSounds.push_back(newSound);
 
     return newSound;
 }
+
 
 void AudioManager::end() {
     for (auto& s : loadedSounds) {

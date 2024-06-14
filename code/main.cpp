@@ -48,10 +48,11 @@ int main() {
 
     SceneManager sm;
 
-    float songSampleInterval = 0.3;
+    float songSampleInterval = 1;
     vector<SongSample> songData;
 
-    const char* path = "res/content/sounds/songs/queen.wav";
+    //const char* path = "res/content/sounds/kick-kick-clap.wav";
+    const char* path = "res/content/sounds/kick-kick-clap.wav";
     std::shared_ptr<Sound> sound = audioManager.loadSound(path);
     SongAnalizer::parseSong(songSampleInterval, path, songData);
     SongAnalizer::testparseSong(songSampleInterval, path, songData);
@@ -239,36 +240,88 @@ int main() {
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
         sound->play();
-
+        sound->setVolume(0.5);
+		// bardziej randomowe spawnowanie
         timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
             float z = 5;
             switch (songData[songDataIndex].type) {
             case sampleType::BASS:
                 //raczki
-                spawner.spawnBall("ball", glm::vec3(1* songData[songDataIndex].mid.x, 1.5, z));
-                spawner.spawnBall("ball", glm::vec3(-1*songData[songDataIndex].mid.x, 1.5, z));
+
+                if (spawner.hasXPercentChance(20)) {
+                    spawner.spawnBadBall("ball", glm::vec3(1, 1.5, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(1, 1.5, z));
+                }
+
+                if (spawner.hasXPercentChance(20)) {
+                    
+                    spawner.spawnBadBall("ball", glm::vec3(-1, 1.5, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(-1, 1.5, z));
+                }
+                
                 //nozki
-                //spawner.spawnBall("ball", glm::vec3(1, -2, z));
-                //spawner.spawnBall("ball", glm::vec3(-1, -2, z));
+                if (spawner.hasXPercentChance(20)) {
+                    spawner.spawnBadBall("ball", glm::vec3(1, -2, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(1, -2, z));
+                }
+                if (spawner.hasXPercentChance(20)) {
+                    spawner.spawnBadBall("ball", glm::vec3(-1, -2, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(-1, -2, z));
+                }
 
                 break;
-            case sampleType::CLAP:
+            case sampleType::MID:
                 //raczki
-                spawner.spawnBall("ball", glm::vec3(1.55* songData[songDataIndex].mid.x, 0.16, z));
-                spawner.spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.x, 0.16, z));
-               
+                if (spawner.hasXPercentChance(20)) {
+                    spawner.spawnBadBall("ball", glm::vec3(1.55, 0.16, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(1.55, 0.16, z));
+                }
+
+                if (spawner.hasXPercentChance(20)) {
+
+                    spawner.spawnBadBall("ball", glm::vec3(-1.55, 0.16, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(-1.55, 0.16, z));
+                }
                 //nozki
-                //spawner.spawnBall("ball", glm::vec3(0.8, -0.8, z));
-                //spawner.spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+                if (spawner.hasXPercentChance(20)) {
+                    spawner.spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(0.8, -0.8, z));
+                }
 
-               // 3 pozycja raczek i nozek
-               //spawner.spawnBall("ball", glm::vec3(1.1, -0.5, z));
-               //spawner.spawnBall("ball", glm::vec3(-1.1, -0.5,z));
-                //spawner.spawnBall("ball", glm::vec3(0.2, -2.25, z));
-               //spawner.spawnBall("ball", glm::vec3(-0.2, -2.25,z));
+                if (spawner.hasXPercentChance(20)) {
 
+                    spawner.spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
+                }
+                else {
+                    spawner.spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+                }
+                
+          
+ 
                 break;
+      //          case sampleType::CLAP:
+      //          //raczki
+      //         spawner.spawnBall("ball", glm::vec3(1.1 , -0.5, z));
+      //         spawner.spawnBadBall("ball", glm::vec3(-1.1, -0.5,z));
+			   ////nozki
+      //         spawner.spawnBall("ball", glm::vec3(0.2, -2.25, z));
+      //         spawner.spawnBall("ball", glm::vec3(-0.2, -2.25,z));
+      //          break;
             case sampleType::SKIP:
                 break;
             }
@@ -280,7 +333,6 @@ int main() {
 
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }
-
 
 
         shaderRig.use();
@@ -407,6 +459,9 @@ int main() {
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
+
+        spawner.update();
+
         cm.update();
 //		ImGui::Render();
 //		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
