@@ -10,6 +10,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <tracy/Tracy.hpp>
 #include "Shader.h"
 #include "ECS/Component.h"
 #include "Renderer/Texture.h"
@@ -151,8 +152,16 @@ public:
     }
 
     // render the mesh
-    void Draw(Shader shader, bool instanced = false, int amount = 0)
+    void Draw(Shader shader,const std::string path, bool instanced = false, int amount = 0)
     {
+        std::string str = "";
+        if(textures.size()>0){
+            str =textures[0].texturePath;
+        }
+        else{
+            str =path;
+        }
+        ZoneTransientN(Draw,str.c_str(), true);
         // bind appropriate textures
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;

@@ -73,7 +73,7 @@ void Model::Draw(Shader *shader) {
     }
 
     for (auto &meshe: meshes)
-        meshe.Draw(*shader);
+        meshe.Draw(*shader, path);
 
     if (material != nullptr)
     material->unbindMaterial();
