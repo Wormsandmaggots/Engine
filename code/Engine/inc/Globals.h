@@ -15,3 +15,4 @@ extern int score;
 extern int combo;
 extern bool start;
 extern DrinkType currentDrink;
+extern float ballSpeed;

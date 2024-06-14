@@ -9,7 +9,7 @@
 
 class BadBall : public Entity {
 	glm::vec3 position;
-	float speed = 4.0;
+	float speed = ballSpeed;
 	bool toDestroy = false;
 public:
 

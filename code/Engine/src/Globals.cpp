@@ -6,3 +6,4 @@ int score = 0;
 int combo = 0;
 bool start = false;
 DrinkType curentDrink = DrinkType::None;
+float ballSpeed = 6.0f;

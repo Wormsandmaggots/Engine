@@ -3,19 +3,13 @@
 #include <complex>
 #include <fftw3.h>
 #include <sndfile.h>
-
-using namespace std;
-
-#include <iostream>
-#include <cmath>
-#include <complex>
-#include <fftw3.h>
-#include <sndfile.h>
 #include <vector>
 #include <glm/glm.hpp>
 
-
 using namespace std;
+
+
+
 
 inline static double equalLoudnessContour(double frequency) {
     // These are made up values, you would need to replace these with the actual data points
@@ -49,8 +43,8 @@ inline static double equalLoudnessContour(double frequency) {
     6300, 0.06,   // Frequency: 6300 Hz, SPL: 6 dB
     8000, 0.05,   // Frequency: 8000 Hz, SPL: 5 dB
     10000, 0.04   // Frequency: 10000 Hz, SPL: 4 dB
-};
-;
+    };
+    ;
 
 
     // Find the two data points that the frequency falls between
@@ -83,11 +77,29 @@ struct SongSample {
     sampleType type;
 };
 
+// Function to generate a Hamming window
+inline static std::vector<double> generateHammingWindow(int N) {
+    std::vector<double> window(N);
+    for (int n = 0; n < N; ++n) {
+        window[n] = 0.54 - 0.46 * cos(2 * 3.1415 * n / (N - 1));
+    }
+    return window;
+}
+
+// Function to apply the Hamming window to an audio chunk
+inline static void applyWindow(std::vector<double>& chunk, const std::vector<double>& window) {
+    for (size_t i = 0; i < chunk.size(); ++i) {
+        chunk[i] *= window[i];
+    }
+}
 
 class SongAnalizer {
 public:
+
+    
+
     inline static void parseSong(double chunkDuration, const char* filename, vector<SongSample>& result) {
-        
+
 
         SF_INFO info;
         SNDFILE* file = sf_open(filename, SFM_READ, &info);
@@ -114,7 +126,7 @@ public:
 
             sf_seek(file, chunkStart, SEEK_SET);
             sf_read_double(file, samples, samplesPerChunk);
-                        double timestamp = static_cast<double>(chunkStart) / info.samplerate;
+            double timestamp = static_cast<double>(chunkStart) / info.samplerate;
 
 
             fftw_complex* in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * samplesPerChunk);
@@ -212,7 +224,7 @@ public:
             double normalized_highMean = (highMean - min_highMean) / (max_highMean - min_highMean);
 
 
-            
+
 
             // Normalize highMean
 
@@ -220,9 +232,9 @@ public:
             double normalizedPredominantMidFrequency = 0;
             double normalizedPredominantHighFrequency = 0;
 
-            
-            
-            if (predominantBassFrequency != 0  || predominantMidFrequency != 0 || predominantHighFrequency != 0) 
+
+
+            if (predominantBassFrequency != 0 || predominantMidFrequency != 0 || predominantHighFrequency != 0)
             {
                 normalizedPredominantBassFrequency = (predominantBassFrequency - 20) / (250 - 20);
                 normalizedPredominantMidFrequency = (predominantMidFrequency - 250) / (4000 - 250);
@@ -231,16 +243,16 @@ public:
 
             SongSample sample;
 
-         
+
 
             sample.bass = glm::vec3(normalized_bassMean, normalizedPredominantBassFrequency, -2137);
             sample.mid = glm::vec3(normalized_midMean, -1, -6969);
             sample.high = glm::vec3(normalized_highMean, 1, -420);
-           
-            
-          
+
+
+
             result.push_back(sample);
-           
+
 
 
             fftw_destroy_plan(forward);
@@ -255,8 +267,8 @@ public:
     }
 
 
-    inline static void songLenth( const char* filename) {
-    
+    inline static void songLenth(const char* filename) {
+
         SF_INFO info;
         SNDFILE* file = sf_open(filename, SFM_READ, &info);
         if (!file) {
@@ -273,23 +285,23 @@ public:
         double duration = static_cast<double>(sfinfo.frames) / sfinfo.samplerate;
 
         // Calculate the number of samples per chunk
-        int chunk_size = chunkDuration * sfinfo.samplerate;
-
+        int chunk_size = (chunkDuration * sfinfo.samplerate);
+        std::vector<double> hammingWindow = generateHammingWindow(chunk_size);
         // Prepare the FFT
         fftw_complex* fft_result = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * chunk_size);
         fftw_plan plan = fftw_plan_dft_r2c_1d(chunk_size, NULL, fft_result, FFTW_ESTIMATE);
 
         // Define the bass range (20Hz to 150Hz)
-        int bass_min = 20.0 / sfinfo.samplerate * chunk_size;
-        int bass_max = 150.0 / sfinfo.samplerate * chunk_size;
+        int bass_min = 40.0 / sfinfo.samplerate * chunk_size;
+        int bass_max = 50.0 / sfinfo.samplerate * chunk_size;
 
         // Define the mid range (400Hz to 2500Hz)
-        int mid_min = 400.0 / sfinfo.samplerate * chunk_size;
-        int mid_max = 2500.0 / sfinfo.samplerate * chunk_size;
+        int mid_min = 50.0 / sfinfo.samplerate * chunk_size;
+        int mid_max = 60.0 / sfinfo.samplerate * chunk_size;
 
         // Define the clap range (2000Hz to 4000Hz)
-        int clap_min = 2000.0 / sfinfo.samplerate * chunk_size;
-        int clap_max = 4000.0 / sfinfo.samplerate * chunk_size;
+        int clap_min = 60.0 / sfinfo.samplerate * chunk_size;
+        int clap_max = 70.0 / sfinfo.samplerate * chunk_size;
 
         std::vector<double> chunk(chunk_size);
         int chunk_number = 0;
@@ -297,8 +309,8 @@ public:
             // Read the chunk
             sf_seek(file, chunkStart, SEEK_SET);
             sf_read_double(file, &chunk[0], chunk_size);
-
-            // Perform the FFT on the current chunk
+            applyWindow(chunk, hammingWindow);
+             // Perform the FFT on the current chunk
             fftw_execute_dft_r2c(plan, &chunk[0], fft_result);
 
             // Check if there's any bass in the current chunk
@@ -325,19 +337,32 @@ public:
             // Calculate the timestamp for the current chunk
             double timestamp = static_cast<double>(chunkStart) / sfinfo.samplerate;
 
-            // Determine the sample type based on energy levels
-            if (energyBass < 100 && energyMid < 100 && energyClap < 100) {
+            // Find the average energy levels across all chunks
+            double avgEnergyBass = energyBass / chunk_number;
+            double avgEnergyMid = energyMid / chunk_number;
+            double avgEnergyClap = energyClap / chunk_number;
+
+            // Use these averages to set more dynamic thresholds
+            double thresholdBass = avgEnergyBass * 1.5; // Example threshold adjustment
+            double thresholdMid = avgEnergyMid * 1.5;
+            double thresholdClap = avgEnergyClap * 1.5;
+
+            // Then, in your loop where you determine the sample type
+            if (energyBass < thresholdBass && energyMid < thresholdMid && energyClap < thresholdClap) {
                 result.at(chunk_number).type = sampleType::SKIP;
+            }
+            
+            else if (energyClap > energyBass && energyClap > energyMid) {
+                result.at(chunk_number).type = sampleType::CLAP;
             }
             else if (energyBass > energyMid && energyBass > energyClap) {
                 result.at(chunk_number).type = sampleType::BASS;
             }
+            
             else if (energyMid > energyBass && energyMid > energyClap) {
                 result.at(chunk_number).type = sampleType::MID;
             }
-            else if (energyClap > energyBass && energyClap > energyMid) {
-                result.at(chunk_number).type = sampleType::CLAP;
-            }
+
             ++chunk_number;
         }
 

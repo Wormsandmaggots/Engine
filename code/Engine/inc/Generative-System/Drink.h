@@ -9,7 +9,7 @@
 
 class Drink : public Entity {
 	glm::vec3 position;
-	float speed = 5.1;
+	float speed = ballSpeed;
 	bool toDestroy = false;
 	DrinkType type;
 
