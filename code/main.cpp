@@ -91,7 +91,7 @@ int main() {
 
 
     Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
-    Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
+    Model* club = new Model("res/content/models/KLUBISZCZE/KLUB.fbx", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass);
 
@@ -109,11 +109,13 @@ int main() {
     Entity* clubE = new Entity("club");
     clubE->addComponent(club);
     sm.getLoadedScenes()[0]->addEntity(clubE);
-
+    club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+    club->getTransform()->scale(glm::vec3(0.001f));
+/*
     Entity* boxE = new Entity("box");
     boxE->addComponent(box);
     sm.getLoadedScenes()[0]->addEntity(boxE);
-
+*/
     
 
     glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
