@@ -27,8 +27,12 @@
 #include "RigPrep.h"
 #include "Animation/InverseKinematics.h"
 #include "ECS/ScriptableEntity.h"
+#include "Animation/LookAt.h"
+#include "Core/Utils/MathUtils.h"
+#include "Core/Utils/Ease.h"
 
 using namespace SceneManagement;
+using namespace utils;
 
 int main() {
     int connectedControllers = JslConnectDevices();
