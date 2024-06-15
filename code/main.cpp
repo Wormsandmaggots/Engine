@@ -247,23 +247,57 @@ int main() {
             timeToDispense2 = timeToDispense;
         }
 */
+//new
         shaderRig.use();
+        joystickOffset = playerInput.getJoystick(1);
+        joystickOffset2 = playerInput.getJoystick(2);
+        joystickOffset3 = playerInput1.getJoystick(1);
+        joystickOffset4 = playerInput1.getJoystick(2);
 
-        joystickOffset2 = playerInput.getJoystick(2) * 100.0f;
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:RightHand");
-        playerRig->update();
+        joystickOffset.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
 
 
-        joystickOffset = playerInput.getJoystick(1) * 100.0f;
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
-        playerRig->update();
+        joystickOffset2.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
 
-        joystickOffset3 = playerInput1.getJoystick(1) * 100.0f;
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:LeftFoot");
-        playerRig->update();
+        joystickOffset2.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
 
-        joystickOffset4 = playerInput1.getJoystick(2) * 100.0f;
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:RightFoot");
+        joystickOffset3.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset3.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+
+        joystickOffset4.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset4.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset *= 100 * s.deltaTime;
+        joystickOffset2 *= 100 * s.deltaTime;
+        joystickOffset3 *= 100 * s.deltaTime;
+        joystickOffset4 *= 100 * s.deltaTime;
+        //old
+
+        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
+        playerIK->update(joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
         playerRig->update();
 
         auto transforms = playerRig->GetFinalBoneMatrices();
