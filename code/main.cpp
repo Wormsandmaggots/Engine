@@ -91,7 +91,7 @@ int main() {
 
 
     Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
-    Model* club = new Model("res/content/models/KLUBISZCZE/KLUB.fbx", &ssao.shaderGeometryPass);
+    Model* club = new Model("res/content/models/klub/KLUBv2.fbx", &ssao.shaderGeometryPass);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass);
 
@@ -105,13 +105,13 @@ int main() {
     RigPrep* playerRig = new RigPrep(playerModel);
     InverseKinematics* playerIK = new InverseKinematics(playerRig);
 
-
+/*
     Entity* clubE = new Entity("club");
     clubE->addComponent(club);
     sm.getLoadedScenes()[0]->addEntity(clubE);
     club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
     club->getTransform()->scale(glm::vec3(0.001f));
-/*
+
     Entity* boxE = new Entity("box");
     boxE->addComponent(box);
     sm.getLoadedScenes()[0]->addEntity(boxE);
@@ -200,7 +200,7 @@ int main() {
     rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
   
-    sound->play();
+    //sound->play();
     sound->setVolume(1.f);
 
     while (!glfwWindowShouldClose(s.window))
@@ -230,7 +230,7 @@ int main() {
         //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
         //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
         //glm::mat4 view = playerCamera->getView();
-
+/*
         timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size())
         {
@@ -242,7 +242,7 @@ int main() {
             songDataIndex++;
             timeToDispense2 = timeToDispense;
         }
-
+*/
         shaderRig.use();
 
         joystickOffset2 = playerInput.getJoystick(2) * 100.0f;
