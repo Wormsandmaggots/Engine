@@ -19,8 +19,11 @@
 #include "Animation/Animation.h"
 #include "Animation/Animator.h"
 #include "Animation/LookAt.h"
+#include "Core/Utils/MathUtils.h"
+#include "Core/Utils/Ease.h"
 
 using namespace SceneManagement;
+using namespace utils;
 
 int main() {
     init();
@@ -179,26 +182,49 @@ int main() {
         shaderRig.use();
 
         ///IK
-/*
-        joystickOffset = playerInput.getJoystick(1) * 200.0f;
-        joystickOffset2 = playerInput.getJoystick(2) * 200.0f;
+
+
+        joystickOffset = playerInput.getJoystick(1);
+        joystickOffset2 = playerInput.getJoystick(2);
+
+        //LOG_INFO(to_string(joystickOffset.y));
+
+        joystickOffset.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset2.x = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset2.y = Math::Remap(
+                easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset *= 100 * s.deltaTime;
+        joystickOffset2 *= 100 * s.deltaTime;
+
         playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
         playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        //playerIK->update(offset, offset, "mixamorig:RightHand");
+        playerIK->update(offset, offset, "mixamorig:RightHand");
         playerRig->update();
-        auto transforms = playerRig->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        playerLA->update(90);
-*/
+//        auto transforms = playerRig->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms.size(); ++i)
+//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+//        handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+//        playerLA->update(90);
+
 
         ///ANIMATIONS
-        npcRig->update();
-        auto transforms = animator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        npcLA->update(90);
+//        npcRig->update();
+//        auto transforms = animator->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms.size(); ++i)
+//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+//        npcLA->update(90);
 
         f = false;
         shaderPbr.use();
