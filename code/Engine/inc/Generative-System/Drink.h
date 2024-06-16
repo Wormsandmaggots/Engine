@@ -55,11 +55,11 @@ public:
 
 	void update() override {
 		position.z -= speed * deltaTime;
-		//if (position.z > -10.0 && !toDestroy) {
-		//	toDestroy = true;
-		//	position.z = 100;
-		//	//AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav");// DZWIEK DO PODMIANY
-		//}
+		if (position.z > -1.5 && !toDestroy) {
+			toDestroy = true;
+			position.z = 100;
+			//AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav");// DZWIEK DO PODMIANY
+		}
 		this->getTransform()->setPosition(position);
 
 		Entity::update();

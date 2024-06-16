@@ -5,8 +5,11 @@
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
 #include "Core/AssetManager/AssetManager.h"
+#include "Debug/Profiler.h"
+#include "tracy/Tracy.hpp"
+
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-//#define PROFILER
+#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
 void* operator new(std::size_t count)
 {

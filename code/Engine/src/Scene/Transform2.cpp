@@ -106,6 +106,7 @@ void Transform2::scale(glm::vec3 s) {
     isDirty = true;
 }
 
+
 void Transform2::rotate(glm::vec3 r) {
     localRotation += r;
     isDirty = true;

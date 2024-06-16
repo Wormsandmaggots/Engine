@@ -25,9 +25,9 @@ public:
         if(bones.find(limb)!=bones.end()){ //searching for limb in our bones
             limbBone = bones[limb];
         }
-        //glm::vec3 target = limbBone->getModelPosition();
-
         glm::vec3 target = limbBone->getModelPosition() + glm::vec3(offsetx, offsety, 0);
+        //bezposrednie przelozenie galki na pozycje dloni
+        //glm::vec3 target = limbBone->getInitPosition() + glm::vec3(offsetx, offsety, 0);
         glm::vec3 endEffector = limbBone ->getModelPosition();
         for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kowsci ktora manewrujemy jako pierwsza
