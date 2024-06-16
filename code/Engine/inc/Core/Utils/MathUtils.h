@@ -23,5 +23,14 @@ public:
     static constexpr void Clamp(T toClamp, T low, T high, Compare compare) {
         toClamp = compare(toClamp, low) < 0 ? low : compare(toClamp, high) > 0 ? high : low;
     }
+
+    static double Remap(double value, double from_min, double from_max, double to_min, double to_max) {
+
+        double scale_factor = (to_max - to_min) / (from_max - from_min);
+
+        double remapped_value = to_min + (value - from_min) * scale_factor;
+
+        return remapped_value;
+    }
 };
 #endif //ENGINE_MATHUTILS_H

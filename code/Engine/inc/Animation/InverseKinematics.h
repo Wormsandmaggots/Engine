@@ -15,19 +15,19 @@ public:
         bones = rig->getBones();
         hingeAxis = glm::vec3(0.0f,1.0f,0.0f);
     }
-    void update(int offsetx, int offsety, string _limb){
+    void update(float offsetx, float offsety, string _limb){
         ik(_limb,offsetx, offsety);
         rig->setBones(bones);
     }
 
-    void ik(std::string limb, int offsetx, int offsety){
+    void ik(std::string limb, float offsetx, float offsety){
         Bone* limbBone;
         if(bones.find(limb)!=bones.end()){ //searching for limb in our bones
             limbBone = bones[limb];
         }
         //glm::vec3 target = limbBone->getModelPosition();
 
-        glm::vec3 target = limbBone->getInitPosition() + glm::vec3(offsetx, offsety, 0);
+        glm::vec3 target = limbBone->getModelPosition() + glm::vec3(offsetx, offsety, 0);
         glm::vec3 endEffector = limbBone ->getModelPosition();
         for(int j = 0; j <10; j++){ //petla by zwiekszyc dokladnosc wyniku
             Bone* secondToLast = limbBone->getParent(); //przypisanie przedramienia jako kowsci ktora manewrujemy jako pierwsza
