@@ -27,6 +27,7 @@
 #include "JoyShockLibrary.h"
 #include "Core/Utils/MathUtils.h"
 #include "Core/Utils/Ease.h"
+#include "Globals.h"
 
 
 using namespace SceneManagement;
@@ -437,6 +438,16 @@ public:
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }
 
+        switch (currentDrink) {
+        case DrinkType::Drunk:
+            break;
+        case DrinkType::InverseInput:
+            break;
+        case DrinkType::UpsideDown:
+            break;
+        case DrinkType::None:
+            break;
+        }
 
         shaderRig.use();
         joystickOffset = playerInput.getJoystick(1);
