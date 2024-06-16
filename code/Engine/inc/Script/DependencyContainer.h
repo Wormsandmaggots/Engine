@@ -5,7 +5,7 @@
 #include "Debug/Profiler.h"
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
-#include "Engine/inc/Engine.h"
+#include "Engine/Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
