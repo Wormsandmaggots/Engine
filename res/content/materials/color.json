@@ -1,17 +1,8 @@
 {
   "vertexShader": "res/content/shaders/color_v.glsl",
-  "fragmentShader": "res/content/shaders/color_f.glsl",
+  "fragmentShader": "res/content/shaders/SSAO/ssao_fragment.frag",
   "uniforms": [
-    {
-      "type": "vec4",
-      "name": "color",
-      "value": [
-        1.0,
-        0.0,
-        0.0,
-        1.0
-      ]
-    }
+    
   ],
   "textures": [
     {

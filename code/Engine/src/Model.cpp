@@ -8,7 +8,9 @@ void Model::awake() {}
 void Model::start() {}
 
 void Model::update() { 
-    Renderer::Render(this); 
+    if (enable) 
+        Renderer::Render(this);
+
 }
 
 void Model::onDestroy() {}
