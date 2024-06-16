@@ -168,6 +168,7 @@ int main() {
     player->addComponent(playerModel);
     player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
     player->getTransform()->setScale(glm::vec3(0.01f));
+    player->getTransform()->setRotation(glm::vec3(0.0f,180.0f,0.0f));
     currentScene->addEntity(player);
 
 
