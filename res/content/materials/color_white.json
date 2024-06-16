@@ -1,5 +1,5 @@
 {
-  "vertexShader": "res/content/shaders/color_v.glsl",
+  "vertexShader": "res/content/shaders/SSAO/ssao_geometry.vert",
   "fragmentShader": "res/content/shaders/SSAO/ssao_fragment.frag",
   "uniforms": [
   ],

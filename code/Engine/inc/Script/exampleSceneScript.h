@@ -159,7 +159,7 @@ public:
             colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
             shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
-            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl"),
+            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             renderer(&ssao.shaderGeometryPass),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass)),
