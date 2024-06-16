@@ -1,3 +1,5 @@
+#ifndef INVERSE_KINEMATICS_H
+#define INVERSE_KINEMATICS_H
 #include "glm/vec3.hpp"
 #include "RigPrep.h"
 
@@ -93,3 +95,4 @@ public:
         }
     }
 };
+#endif // INVERSE_KINEMATICS_H

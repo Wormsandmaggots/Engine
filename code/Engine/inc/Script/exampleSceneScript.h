@@ -8,7 +8,7 @@
 #include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
 
-#include "Engine/Engine.h"
+#include "Engine.h"
 #include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
@@ -26,130 +26,344 @@
 #include "Generative-System/Ball.h"
 #include "JoyShockLibrary.h"
 
-static float linear    = 0.09f;
-static float quadratic = 0.032f;
-static float power = 1;
-static float kernelSize = 64;
-static float radius = 0.5f;
-static float bias = 0.025f;
-static bool onlySSAO = true;
-static vec2 range(2,2);
-static float mul = 4;
-static float texelSize = 1;
 
-class exampleSceneScript: public SceneScript{
+using namespace SceneManagement;
+
+class exampleSceneScript : public SceneScript {
 private:
-    SceneManagement::SceneManager& sm;
-    glm::vec3& lightColor;
-    Shader& shaderPbr;
-    Shader* imageShader;
-    Shader* imageShaderGreen;
+    // editor
+    EditorLayer::Editor editor;
+    // collision
+    CollisionManager cm;
+    // scene manager
+    SceneManager sm;
+
+    // audio
+    AudioManager& audioManager;
+    std::shared_ptr<Sound> sound;
+    std::shared_ptr<Sound> success;
+    std::shared_ptr<Sound> failure;
+
+    float songSampleInterval;
+    std::vector<SongSample> songData;
+    int songDataIndex;
+
+    // input joystick
+    int connectedControllers;
+
+    PlayerInput playerInput;
+    PlayerInput playerInput1;
+
+    glm::vec2 joystickOffset;
+    glm::vec2 joystickOffset2;
+    glm::vec2 joystickOffset3;
+    glm::vec2 joystickOffset4;
+
+    DebugInput debugInput;
+
+    Shader shader;
+    Shader collisionTestShader;
+    Shader shaderText;
+    Shader colorShader;
+    Shader shaderPbr;
+    Shader screenShader;
+    Shader shaderRig;
+
+    // ssao
+    SSAO ssao;
+
+    // renderer
+    Renderer renderer;
+
+    // model
+    Model* box;
+    Model* club;
     Model* sphere;
+    Model* player2;
+    Model* playerModel;
+
+    Model* sphereModel;
+    Model* sphereModel_green;
+    Model* sphereModel_green2;
+
+    // text
+    Text* comboRenderer;
+    Text* scoreRenderer;
+
+    // camera
+    ThirdPersonCamera* playerCamera;
+
+    // IK
+    RigPrep* playerRig;
+    InverseKinematics* playerIK;
+
+    // light
+    glm::vec3 lightPos;
+    glm::vec3 lightColor;
+
+    float linear;
+    float quadratic;
+    float power;
+    float kernelSize;
+    float radius;
+    float bias;
+    bool onlySSAO;
+    glm::vec2 range;
+    float mul;
+    float texelSize;
+
+    float time;
+
+    // spawner
+    //Spawner* spawner;
+    Spawner* spawner = nullptr;
+    float timeToDispense;
+    float timeToDispense2;
+
+    // entities
+    Entity* clubE;
+    Entity* boxE;
     Entity* sphere1;
-    SSAO& ssao;
-    Renderer& renderer;
-    EditorLayer::Editor& editor;
-    Spawner spawner;
-
-    float songSampleInterval = 1;
-    vector<SongSample> songData;
-    int songDataIndex = 0;
-
-    float timeToDispense2 = timeToDispense;
-    float timeToDispense = songSampleInterval;
-
-    Image* textBack;
-    Image* textBack1;
-    Image* barCover;
-
-    Button* pauseButton;
-
-    ResizableImage* acceptBar;
+    Entity* player3;
+    Entity* player;
+    Entity* leftHandPointer;
+    ColliderComponent* lHandcollider;
+    Entity* rightHandPointer;
+    ColliderComponent* rHandcollider;
+    Entity* leftFootPointer;
+    ColliderComponent* leftFootCollider;
+    Entity* rightFootPointer;
+    ColliderComponent* rightFootCollider;
 
 public:
-
-    exampleSceneScript(SceneManagement::SceneManager& sm, glm::vec3& lightColor, Shader& shaderPbr, Shader* imageShader, Shader* imageShaderGreen, Model* sphere, Entity* sphere1, SSAO& ssao, Renderer& renderer, EditorLayer::Editor& editor)
-            : sm(sm), lightColor(lightColor), shaderPbr(shaderPbr), imageShader(imageShader), imageShaderGreen(imageShaderGreen), sphere(sphere), sphere1(sphere1), ssao(ssao), renderer(renderer), editor(editor), spawner(sm.getLoadedScenes().at(0))
+    // Konstruktor domyślny
+    exampleSceneScript() :
+            audioManager(AudioManager::getInstance()),
+            sound(audioManager.loadSound("res/content/sounds/songs/queen.wav")),
+            success(audioManager.loadSound("res/content/sounds/effects/clap.wav")),
+            failure(audioManager.loadSound("res/content/sounds/effects/sweep.wav")),
+            songSampleInterval(0.3),
+            songDataIndex(0),
+            connectedControllers(JslConnectDevices()),
+            playerInput(GLFW_JOYSTICK_1),
+            playerInput1(GLFW_JOYSTICK_2),
+            joystickOffset(glm::vec2(0)),
+            joystickOffset2(glm::vec2(0)),
+            joystickOffset3(glm::vec2(0)),
+            joystickOffset4(glm::vec2(0)),
+            shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
+            collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
+            shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
+            colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
+            shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
+            screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
+            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl"),
+            renderer(&ssao.shaderGeometryPass),
+            box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
+            club(new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass)),
+            sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
+            player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
+            playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
+            sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
+            sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
+            sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
+            comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
+            scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
+            playerCamera(new ThirdPersonCamera()),
+            playerRig(new RigPrep(playerModel)),
+            playerIK(new InverseKinematics(playerRig)),
+            lightPos(glm::vec3(2.0, 4.0, -2.0)),
+            lightColor(glm::vec3(0.2, 0.2, 0.7)),
+            linear(0.09f),
+            quadratic(0.032f),
+            power(1),
+            kernelSize(64),
+            radius(0.5f),
+            bias(0.025f),
+            onlySSAO(true),
+            range(glm::vec2(2, 2)),
+            mul(4),
+            texelSize(1),
+            time(0),
+            //spawner(new Spawner(sm.getLoadedScenes()[0])),
+            spawner(nullptr),
+            timeToDispense(songSampleInterval),
+            timeToDispense2(timeToDispense),
+            clubE(new Entity("club")),
+            boxE(new Entity("box")),
+            sphere1(new Entity("sphere")),
+            player3(new Entity("player2")),
+            player(new Entity("Player")),
+            leftHandPointer(new Entity("leftHandPointer")),
+            lHandcollider(new ColliderComponent()),
+            rightHandPointer(new Entity("rightHandPointer")),
+            rHandcollider(new ColliderComponent()),
+            leftFootPointer(new Entity("leftFootPointer")),
+            leftFootCollider(new ColliderComponent()),
+            rightFootPointer(new Entity("rightFootPointer")),
+            rightFootCollider(new ColliderComponent())
     {
-        textBack = nullptr;
-        textBack1 = nullptr;
-        barCover = nullptr;
-        pauseButton = nullptr;
-        acceptBar = nullptr;
     }
+    //exampleSceneScript(DependencyContainer& dependencies) : SceneScript(dependencies) {}
 
-    void awake() override{};
-
-    void start() override{
-        SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/queen.wav", songData);
-
-        Texture textBac("res/content/textures/backgg.jpg", "backgg");
-        Texture textBac1("res/content/textures/backgg.jpg", "backgg");
-        Texture barCov("res/content/textures/dupa.png", "dupa");
-        Texture pauseImg("res/content/textures/stop.png", "stop");
-
-        textBack = new Image(imageShader);
-        textBack->setTexture(&textBac);
-
-        textBack1 = new Image(imageShader);
-        textBack1 -> setTexture(&textBac);
-
-        barCover = new Image(imageShader);
-        barCover -> setTexture(&barCov);
-
-        pauseButton = new Button(imageShader);
-        pauseButton -> setTexture(&pauseImg);
-        pauseButton->setOnClick([]() {
-            std::cout << "pauza" << std::endl;
-        });
-
-        acceptBar = new ResizableImage(imageShaderGreen);
-
-        //Image
-        Entity* textBG = new Entity("textBack");
-        sm.getLoadedScenes()[0]->addEntity(textBG);
-        textBG->addComponent(textBack);
-        textBack->getTransform()->setScale(glm::vec3(0.15f, 0.15f, 0.0f));
-        textBack->getTransform()->setPosition(glm::vec3(-0.8f, 0.75f, 0.0f));
-
-        Entity* textBG1 = new Entity("textBack1");
-        sm.getLoadedScenes()[0]->addEntity(textBG1);
-        textBG1->addComponent(textBack1);
-        textBack1->getTransform()->setScale(glm::vec3(0.15f, 0.15f, 0.0f));
-        textBack1->getTransform()->setPosition(glm::vec3(0.0f, 0.75f, 0.0f));
-
-        Entity* barImageCover = new Entity("barCover");
-        sm.getLoadedScenes()[0]->addEntity(barImageCover);
-        barImageCover->addComponent(barCover);
-        barCover->getTransform()->setScale(glm::vec3(0.030f, 0.330f, 0.0f));
-        barCover->getTransform()->setPosition(glm::vec3(0.9f, 0.068f, 0.0f));
-
-        //Button
-        Entity* stopButton = new Entity("pauseButton");
-        sm.getLoadedScenes()[0]->addEntity(stopButton);
-        stopButton->addComponent(pauseButton);
-        pauseButton->getTransform()->setScale(glm::vec3(0.04f, 0.05f, 0.05f));
-        pauseButton->getTransform()->setPosition(glm::vec3(0.9f, 0.75f, 0.0f));
-
-        //ResizableImage
-        Entity* accBar = new Entity("acceptBar");
-        sm.getLoadedScenes()[0]->addEntity(accBar);
-        accBar->addComponent(acceptBar);
-        acceptBar->getTransform()->setScale(glm::vec3(0.015f, 0.3f, 0.0f));
-        acceptBar->getTransform()->setPosition(glm::vec3(0.905f, 0.05f, 0.0f));
+    void awake() override{
+        //turn into static
+        linear    = 0.09f;
+        quadratic = 0.032f;
+        power = 1;
+        kernelSize = 64;
+        radius = 0.5f;
+        bias = 0.025f;
+        onlySSAO = true;
+        range = glm::vec2(2,2);
+        mul = 4;
+        texelSize = 1;
     };
 
-    void update(const glm::mat4& projection, const glm::mat4& view) override{
+    void start() override{
+        //editor
+        editor.init(&s.camera);
+
+        //audio
+        audioManager.init();
+
+        success->setVolume(0.2);
+        failure->setVolume(0.5);
+
+        SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
+        SongAnalizer::testparseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
+
+        //scene manager
+        sm.loadScene("res/content/maps/test.yaml");
+        sm.setCurrentScene("exampleScene");
+
+        // Inicjalizacja spawnera
+        spawner = new Spawner(sm.getLoadedScenes()[0]);
+
+        //ssao
+        ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+        //renderer
+        renderer.init();
+
+        //screen shader
+        screenShader.use();
+        screenShader.setInt("screenTexture", 0);
+
+        //entities
+        clubE->addComponent(club);
+        sm.getLoadedScenes()[0]->addEntity(clubE);
+
+        boxE->addComponent(box);
+        sm.getLoadedScenes()[0]->addEntity(boxE);
+
+        sm.getLoadedScenes()[0]->addEntity(sphere1);
+        sphere1->addComponent(sphere);
+        sphere->getTransform()->setPosition(lightPos);
+
+        sm.getLoadedScenes()[0]->addEntity(player3);
+        player3->addComponent(player2);
+
+        //gemplay
+        player->addComponent(playerModel);
+        player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
+        player->getTransform()->setScale(glm::vec3(0.01f));
+        sm.getLoadedScenes()[0]->addEntity(player);
+
+        lHandcollider->start();
+        lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
+        leftHandPointer->setParent(*player);
+        leftHandPointer->addComponent(lHandcollider);
+        leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+
+        rHandcollider->start();
+        rHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
+        rightHandPointer->setParent(*player);
+        rightHandPointer->addComponent(rHandcollider);
+        rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+
+        leftFootCollider->start();
+        leftFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
+        leftFootPointer->setParent(*player);
+        leftFootPointer->addComponent(leftFootCollider);
+        leftFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
+        rightFootCollider->start();
+        rightFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
+        rightFootPointer->setParent(*player);
+        rightFootPointer->addComponent(rightFootCollider);
+        rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+
+        //sound
+        sound->play();
+        sound->setVolume(1.f);
+    };
+
+    void update() override{
+
+        float currentFrame = static_cast<float>(glfwGetTime());
+        s.deltaTime = currentFrame - s.lastFrame;
+        s.lastFrame = currentFrame;
+        debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        time = time + s.deltaTime;
+        deltaTime = s.deltaTime;
+
+        debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
+        playerInput.interpretInput();
+        playerInput1.interpretInput();
+
+        glClearColor(0.2, 0.2, 0.2, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+
+        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = s.camera.GetViewMatrix();
+
+        //std::cout << sphere->getTransform()->getLocalPosition().x << " " << sphere->getTransform()->getLocalPosition().y << " "<< sphere->getTransform()->getLocalPosition().z << " "<<std::endl;
+        //glm::mat4 projection = playerCamera->getProjection((float)s.WINDOW_WIDTH ,(float)s.WINDOW_HEIGHT);
+        //glm::mat4 view = playerCamera->getView();
+
+        timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size())
         {
-            //spawner.spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
-            //spawner.spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
-            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
-            //spawner.spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20));
+            spawner->spawnBall("bass", glm::vec3(-songData[songDataIndex].bass.x, -songData[songDataIndex].bass.y, -20));
+            spawner->spawnBall("mid", glm::vec3(-songData[songDataIndex].mid.x, songData[songDataIndex].mid.y, -20));
+            spawner->spawnBall("high", glm::vec3(songData[songDataIndex].high.x, songData[songDataIndex].high.y, -20));
+            spawner->spawnBall("high", glm::vec3(songData[songDataIndex].high.x, -songData[songDataIndex].high.y, -20));
 
             songDataIndex++;
             timeToDispense2 = timeToDispense;
         }
+
+        shaderRig.use();
+
+        joystickOffset2 = playerInput.getJoystick(2) * 100.0f;
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:RightHand");
+        playerRig->update();
+
+
+        joystickOffset = playerInput.getJoystick(1) * 100.0f;
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:LeftHand");
+        playerRig->update();
+
+        joystickOffset3 = playerInput1.getJoystick(1) * 100.0f;
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:LeftFoot");
+        playerRig->update();
+
+        joystickOffset4 = playerInput1.getJoystick(2) * 100.0f;
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:RightFoot");
+        playerRig->update();
+
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
 
         ImGui::Begin("SSAO");
 
@@ -242,60 +456,23 @@ public:
         ssao.renderQuad();
         //scene.update();
 
+        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
-        imageShader->use();
-        glDisable(GL_DEPTH_TEST);
-        //imageShader->use();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        comboRenderer->renderText();
+        scoreRenderer->renderText();
 
-        //kolejnosc renderowania ma znaczenie
-        //pierwszy renderowany obiekt bedzie pod spodem
-        //1
+        cm.update();
 
-        //2
-        textBack->renderPlane();
-        textBack1->renderPlane();
-
-        //3
-        pauseButton->renderPlane();
-
-        acceptBar->renderPlane();
-
-        // Zmienna do przechowywania czasu od ostatniego wywołania resizeOnImpulse
-        static float timeSinceLastResize = 0.0f;
-
-        // Oblicz czas od ostatniej klatki (deltaTime)
-        float deltaTime = glfwGetTime() - timeSinceLastResize;
-
-        // Jeśli minęła sekunda od ostatniego wywołania resizeOnImpulse
-        if (deltaTime >= 1.0f) {
-            // Wywołaj resizeOnImpulse
-            acceptBar->resizeOnImpulse(0.01f);
-
-            // Zresetuj licznik czasu
-            timeSinceLastResize = glfwGetTime();
-        }
-
-        barCover->renderPlane();
-
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
-
-        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
-        double mouseX, mouseY;
-        glfwGetCursorPos(s.window, &mouseX, &mouseY);
-
-        pauseButton->checkHover(mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-        pauseButton->checkClick(s.window, mouseX, mouseY, s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-
-        //TEMPORARY SOLUTION - TO BE SWITCH FOR CONTROLER INPUT ///////////////////////
     };
 
-    void onDestroy() override{};
+    void onDestroy() override{
+        audioManager.end();
+        delete spawner;
+    };
 
     ~exampleSceneScript() override = default;
 };
+
 
 #endif
