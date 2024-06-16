@@ -137,6 +137,7 @@ private:
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
 
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
@@ -250,13 +251,13 @@ public:
         screenShader.setInt("screenTexture", 0);
 
         //entities
-        /*
+
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-*/
+
 
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
