@@ -251,13 +251,13 @@ public:
         screenShader.setInt("screenTexture", 0);
 
         //entities
-
+/*
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
+*/
 
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -440,10 +440,10 @@ public:
 
 
         shaderRig.use();
-        joystickOffset = playerInput.getJoystick(1);
-        joystickOffset2 = playerInput.getJoystick(2);
-        joystickOffset3 = playerInput1.getJoystick(1);
-        joystickOffset4 = playerInput1.getJoystick(2);
+        joystickOffset = playerInput.getJoystick(2);
+        joystickOffset2 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
 
         joystickOffset.x = Math::Remap(
                 utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
@@ -479,16 +479,16 @@ public:
                 utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
                 0, 1, -1, 1);
 
-        joystickOffset *= 100 * s.deltaTime;
-        joystickOffset2 *= 100 * s.deltaTime;
-        joystickOffset3 *= 100 * s.deltaTime;
-        joystickOffset4 *= 100 * s.deltaTime;
+        joystickOffset *= 200 * s.deltaTime;
+        joystickOffset2 *= 200 * s.deltaTime;
+        joystickOffset3 *= 200 * s.deltaTime;
+        joystickOffset4 *= 200 * s.deltaTime;
         //old
 
-        playerIK->update(joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
-        playerIK->update(joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        playerIK->update(joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
-        playerIK->update(joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
         playerRig->update();
 
         auto transforms = playerRig->GetFinalBoneMatrices();
