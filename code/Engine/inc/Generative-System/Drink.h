@@ -23,6 +23,7 @@ public:
 		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
+			currentDrink = this->type;
 			position = glm::vec3(100);
 			//drinkEnable = true;
 			//AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
@@ -40,8 +41,7 @@ public:
 
 	Drink(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position) {
 
-		//type = (DrinkType)(rand() % 3);
-
+		type = (DrinkType)(rand() % 3);
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
@@ -55,11 +55,11 @@ public:
 
 	void update() override {
 		position.z -= speed * deltaTime;
-		//if (position.z > -10.0 && !toDestroy) {
-		//	toDestroy = true;
-		//	position.z = 100;
-		//	//AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav");// DZWIEK DO PODMIANY
-		//}
+		if (position.z < -1.5 && !toDestroy) {
+			toDestroy = true;
+			
+			//AudioManager::getInstance().playSound("res/content/sounds/effects/sweep.wav");// DZWIEK DO PODMIANY
+		}
 		this->getTransform()->setPosition(position);
 
 		Entity::update();
