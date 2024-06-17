@@ -33,6 +33,7 @@ public:
         currentPosition.y += impulse;
         parentTransform->setPosition(currentPosition);
     }
+
 };
 
 #endif

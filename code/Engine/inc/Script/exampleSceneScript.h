@@ -624,31 +624,18 @@ public:
         //resizing bar
         //temporary------------------------------------------------------------------------------------
         double currentTime = glfwGetTime();
-        /*
-        if (currentTime - lastTime >= 3.0)
-        {
-            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
-            resBar->resizeOnImpulse(0.01f);
-            lastTime = currentTime;
-        }
-         */
-//        float lastUpdateTime = 0.0f;
-//        float resizeInterval = 1.0f; // Co sekundę
-//        float resizeAmount = 0.1f;
-//        int lastScore = score;
-
         // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
-        if (deltaTime - lastUpdateTime >= resizeInterval) {
-            // Zmniejsz długość resBar
+        if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
-            lastUpdateTime = deltaTime;
+            lastUpdateTime = currentTime;
         }
-
         // Jeśli score został zwiększony o incrementScore
-        if (score - lastScore > incrementScore) {
-            // Zwiększ długość resBar
+        if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
+        }
+        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+            std::cout << "Koniec" << std::endl;
         }
         //temporary------------------------------------------------------------------------------------
         //text

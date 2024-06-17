@@ -12,7 +12,6 @@ class Ball : public Entity {
 	float speed = ballSpeed;
 	bool toDestroy = false;
 public:
-	
 	bool getToDestory() {
 		return toDestroy;
 	}
