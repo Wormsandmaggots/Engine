@@ -7,6 +7,7 @@
 #include "Animation/AnimBone.h"
 #include <functional>
 #include "Model.h"
+#include "Renderer/InstancedRobots.h"
 
 struct AssimpNodeData
 {
@@ -22,6 +23,20 @@ public:
     Animation() = default;
 
     Animation(const std::string& animationPath, Model* model)
+    {
+        Assimp::Importer importer;
+        const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
+        assert(scene && scene->mRootNode);
+        auto animation = scene->mAnimations[0];
+        m_Duration = animation->mDuration;
+        m_TicksPerSecond = animation->mTicksPerSecond;
+        aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
+        globalTransformation = globalTransformation.Inverse();
+        ReadHierarchyData(m_RootNode, scene->mRootNode);
+        ReadMissingBones(animation, *model);
+    }
+
+    Animation(const std::string& animationPath, InstancedRobots* model)
     {
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
@@ -81,6 +96,31 @@ private:
             }
             m_Bones.push_back(AnimBone(channel->mNodeName.data,
                                    boneInfoMap[channel->mNodeName.data].id, channel));
+        }
+
+        m_BoneInfoMap = boneInfoMap;
+    }
+
+    void ReadMissingBones(const aiAnimation* animation, InstancedRobots& model)
+    {
+        int size = animation->mNumChannels;
+
+        map<string, BoneInfo> boneInfoMap = model.getMap();//getting m_BoneInfoMap from Model class
+        int& boneCount = model.GetBoneCount(); //getting the m_BoneCounter from Model class
+
+        //reading channels(bones engaged in an animation and their keyframes)
+        for (int i = 0; i < size; i++)
+        {
+            auto channel = animation->mChannels[i];
+            std::string boneName = channel->mNodeName.data;
+
+            if (boneInfoMap.find(boneName) == boneInfoMap.end())
+            {
+                boneInfoMap[boneName].id = boneCount;
+                boneCount++;
+            }
+            m_Bones.push_back(AnimBone(channel->mNodeName.data,
+                                       boneInfoMap[channel->mNodeName.data].id, channel));
         }
 
         m_BoneInfoMap = boneInfoMap;

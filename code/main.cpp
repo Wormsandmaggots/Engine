@@ -21,6 +21,7 @@
 #include "Animation/LookAt.h"
 #include "Core/Utils/MathUtils.h"
 #include "Core/Utils/Ease.h"
+#include "Renderer/InstancedRobots.h"
 
 using namespace SceneManagement;
 using namespace utils;
@@ -52,8 +53,9 @@ int main() {
     Shader shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl");
     Shader colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl");
     Shader shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl");
-    Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
+    //Shader shaderCel("res/content/shaders/vertex.glsl", "res/content/shaders/fragmentCel.glsl");
     Shader shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/fragment.glsl");
+    Shader shaderRigInstanced("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/fragment.glsl");
 
     //HUD
     ProgressBar progressBar("res/content/shaders/vertex_2d.glsl", "res/content/shaders/progress_bar_fragment.glsl", "res/content/textures/bar.png", 100.0f);
@@ -81,18 +83,25 @@ int main() {
     glm::vec2 joystickOffset2 = glm::vec2(0,0);
     renderer.addShader(&shaderText);
     renderer.addShader(&shaderPbr);
-    renderer.addShader(&shaderCel);
+    renderer.addShader(&shaderRigInstanced);
+    //renderer.addShader(&shaderCel);
 
-    Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
+    //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
     Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
     Model* drink = new Model("res/content/models/kieliszki/drineczki.fbx");
     Model* canisterModel = new Model("res/content/models/Canister/Canister/kanistry.fbx");
     Model* chairsModel = new Model("res/content/models/krzesla/krzeslo/krzesla.fbx");
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &shaderRig);
-    Animation* npcAnimation = new Animation("res/content/models/barman/barman_animated.fbx", player2);
-    RigPrep* npcRig = new RigPrep(player2);
+    InstancedRobots* ir = new InstancedRobots("res/content/models/barman/barman_animated.fbx",
+                                              glm::vec2(5, 5),
+                                              &shaderRigInstanced,
+                                              glm::vec3(0),
+                                              glm::vec3(70,0,70),
+                                              glm::vec3(0.01f));
+    Animation* npcAnimation = new Animation("res/content/models/barman/barman_animated.fbx", ir);
+    RigPrep* npcRig = new RigPrep(ir);
     Animator* animator = new Animator(npcAnimation);
-    LookAt* npcLA = new LookAt(npcRig);
+    //LookAt* npcLA = new LookAt(npcRig);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -118,16 +127,17 @@ int main() {
     handPointer->setParent(*player1);
     handPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition()* 0.01f);
 */
-    Entity* club1 = new Entity("club");
-    sm.getLoadedScenes()[0]->addEntity(club1);
-    club1->addComponent(club);
-    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
-    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+//    Entity* club1 = new Entity("club");
+//    sm.getLoadedScenes()[0]->addEntity(club1);
+//    club1->addComponent(club);
+//    club->getTransform()->setPosition(glm::vec3(0, -5, 0));
+//    club->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
     Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
-    sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
+    sphere1->addComponent(ir);
+    //sphere1->getTransform()->setPosition(glm::vec3(-5.0f, 7.0f, 0.0f));
+    sphere1->getTransform()->setScale(glm::vec3(1.f));
 
     Entity* drink1 = new Entity("drink");
     sm.getLoadedScenes()[0]->addEntity(drink1);
@@ -151,7 +161,7 @@ int main() {
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
     player3->addComponent(player2);
-    player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
+    //player2->getTransform()->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
     player2->getTransform()->setPosition(glm::vec3(-3.0f, 7.0f, 0.0f));
 
     bool f = true;
@@ -220,16 +230,17 @@ int main() {
 
 
         ///ANIMATIONS
-//        npcRig->update();
-//        auto transforms = animator->GetFinalBoneMatrices();
-//        for (int i = 0; i < transforms.size(); ++i)
-//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-//        npcLA->update(90);
+        shaderRigInstanced.use();
+        npcRig->update();
+        auto transforms = animator->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        //npcLA->update(90);
 
         f = false;
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        shaderPbr.setVec3("lightPos",sphere1->getTransform()->getLocalPosition());
         renderer.updateProjectionAndView(projection, view);
         sm.updateLoadedScenes();
         //scene.update();
