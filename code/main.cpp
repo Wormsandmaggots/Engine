@@ -92,13 +92,13 @@ int main() {
     Model* canisterModel = new Model("res/content/models/Canister/Canister/kanistry.fbx");
     Model* chairsModel = new Model("res/content/models/krzesla/krzeslo/krzesla.fbx");
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &shaderRig);
-    InstancedRobots* ir = new InstancedRobots("res/content/models/barman/barman_animated.fbx",
+    InstancedRobots* ir = new InstancedRobots("res/content/models/npc1/spin_i_chuj_w_miejscu.fbx",
                                               glm::vec2(5, 5),
                                               &shaderRigInstanced,
                                               glm::vec3(0),
                                               glm::vec3(70,0,70),
                                               glm::vec3(0.01f));
-    Animation* npcAnimation = new Animation("res/content/models/barman/barman_animated.fbx", ir);
+    Animation* npcAnimation = new Animation("res/content/models/npc1/spin_i_chuj_w_miejscu.fbx", ir);
     RigPrep* npcRig = new RigPrep(ir);
     Animator* animator = new Animator(npcAnimation);
     //LookAt* npcLA = new LookAt(npcRig);
