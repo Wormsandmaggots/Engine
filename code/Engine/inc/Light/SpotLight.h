@@ -15,7 +15,7 @@ public:
               float outercutoff = glm::cos(glm::radians(17.5f)),
               glm::vec3 color = glm::vec3(1,1,1));
 
-    void setValuesToShader(Shader &, int) override;
+    void setValuesToShader(Shader &, int, glm::mat4) override;
 };
 
 

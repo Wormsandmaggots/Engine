@@ -76,7 +76,7 @@ int main() {
 
     Model* box = new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass);
     Model* club = new Model("res/content/models/club2/club2.obj", &ssao.shaderGeometryPass);
-    Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass);
+    //Model* sphere = new Model("res\\content\\models\\NEWCHARACTER\\untitled.obj", &ssao.shaderGeometryPass);
     //Model* player = new Model("res\\content\\models\\player\\character_base.obj", &shaderPbr);
     Model* player2 = new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass);
 
@@ -115,8 +115,8 @@ int main() {
 
     Entity* sphere1 = new Entity("sphere");
     sm.getLoadedScenes()[0]->addEntity(sphere1);
-    sphere1->addComponent(sphere);
-    sphere->getTransform()->setPosition(lightPos);
+    //sphere1->addComponent(sphere);
+    sphere1->getTransform()->setPosition(lightPos);
 
     Entity* player3 = new Entity("player2");
     sm.getLoadedScenes()[0]->addEntity(player3);
@@ -126,6 +126,10 @@ int main() {
     Entity* sun = new Entity("sun");
     sm.getLoadedScenes()[0]->addEntity(sun);
     sun->addComponent(new DirectionalLight());
+
+    Entity* pointLight = new Entity("pointLight");
+    sm.getLoadedScenes()[0]->addEntity(pointLight);
+    pointLight->addComponent(new PointLight());
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
@@ -137,15 +141,11 @@ int main() {
     static float linear    = 0.09f;
     static float quadratic = 0.032f;
 
-    static bool onlySSAO = true;
-
-
     //Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"));
     Model* sphereModel = new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/material.json"));
 
     Entity ent("doopa");
     ent.addComponent(sphereModel);
-
     sm.getLoadedScenes()[0]->addEntity(&ent);
 
     float time = 0;
@@ -201,16 +201,23 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
-        LightManager::UpdateLightShader(ssao.shaderLightingPass);
+        LightManager::UpdateLightShader(ssao.shaderLightingPass, view);
         // send light relevant uniforms
-        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
-        ssao.shaderLightingPass.setVec3("pointLight.position", sphere1->getTransform()->getLocalPosition());
-        ssao.shaderLightingPass.setVec3("pointLight.color", lightColor);
+//        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
+//        ssao.shaderLightingPass.setVec3("pointLight.position", lightPosView);
+//        ssao.shaderLightingPass.setVec3("pointLight.color", lightColor);
         ssao.shaderLightingPass.setVec3("camPos", s.camera.Position);
-        // Update attenuation parameters
+//        // Update attenuation parameters
+//
+//        ssao.shaderLightingPass.setFloat("pointLight.linear", linear);
+//        ssao.shaderLightingPass.setFloat("pointLight.quadratic", quadratic);
 
-        ssao.shaderLightingPass.setFloat("pointLight.linear", linear);
-        ssao.shaderLightingPass.setFloat("pointLight.quadratic", quadratic);
+//        ssao.shaderLightingPass.setVec3("spotLight.position", sphere1->getTransform()->getLocalPosition());
+//        ssao.shaderLightingPass.setVec3("spotLight.direction", glm::normalize(sphere1->getTransform()->getLocalRotation()));
+//        ssao.shaderLightingPass.setFloat("spotLight.cutoff", glm::radians(12.5f));
+//        ssao.shaderLightingPass.setFloat("spotLight.outercutoff", glm::radians(17.5f));
+
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
         glActiveTexture(GL_TEXTURE1);

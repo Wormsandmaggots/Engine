@@ -19,7 +19,7 @@ public:
 
     static void AddLight(LightSource*);
     static void RemoveLight(LightSource*);
-    static void UpdateLightShader(Shader&);
+    static void UpdateLightShader(Shader&, glm::mat4);
 };
 
 #endif //ENGINE_LIGHTMANAGER_H

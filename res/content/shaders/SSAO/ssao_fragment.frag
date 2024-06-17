@@ -6,7 +6,7 @@ layout (location = 2) out vec4 gAlbedo;
 layout (location = 3) out vec3 gWorldPos;
 //r - metallic, g - roughness, b - ambient
 layout (location = 4) out vec3 gMetallicRoughnessAmbient;
-layout (location = 5) out vec4 gEmissive;
+layout (location = 5) out vec3 gEmissive;
 
 in vec2 TexCoords;
 in vec3 FragPos;
@@ -46,7 +46,7 @@ void main()
     // store specular intensity in gAlbedoSpec's alpha component
     gAlbedo.a = texture(texture_specular1, TexCoords).r;
     gWorldPos = WorldPos;
-    gEmissive = texture(texture_emissive1, TexCoords);
+    gEmissive = texture(texture_emissive1, TexCoords).rgb;
     gMetallicRoughnessAmbient.r = texture(texture_metalic1, TexCoords).r;
     gMetallicRoughnessAmbient.g = texture(texture_roughness1, TexCoords).g;
     gMetallicRoughnessAmbient.b = texture(texture_ambient1, TexCoords).b;

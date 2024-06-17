@@ -9,7 +9,7 @@ LightSource::LightSource(LightType lighttype1, const glm::vec3 &color) : lightTy
     LightManager::AddLight(this);
 }
 
-void LightSource::setValuesToShader(Shader &, int) {
+void LightSource::setValuesToShader(Shader &, int, glm::mat4) {
 
 }
 

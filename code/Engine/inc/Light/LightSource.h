@@ -25,7 +25,7 @@ public:
 
     void update() override{};
 
-    virtual void setValuesToShader(Shader&, int);
+    virtual void setValuesToShader(Shader&, int, glm::mat4);
 
     glm::vec3 extractEulerAngles(const glm::mat4& transform) {
         glm::vec3 euler;
