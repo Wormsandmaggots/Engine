@@ -22,7 +22,7 @@ public:
 			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
-			score += 100;
+			score += incrementScore;
 			combo += 1;
 			position = glm::vec3(100);
 			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",0.3);

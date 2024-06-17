@@ -70,6 +70,8 @@ private:
     Shader shaderPbr;
     Shader screenShader;
     Shader shaderRig;
+    Shader imageShader;
+    Shader imageShaderGreen;
 
     // ssao
     SSAO ssao;
@@ -136,6 +138,11 @@ private:
     ColliderComponent* leftFootCollider;
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
+    //HUD
+    double lastTime;
+    ResizableImage* resBar;
+    Entity* resBarEntity;
+
 
 
 public:
@@ -161,6 +168,8 @@ public:
             shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
+            imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
             renderer(&ssao.shaderGeometryPass),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/KLUBv2.fbx", &ssao.shaderGeometryPass)),
@@ -202,7 +211,11 @@ public:
             leftFootPointer(new Entity("leftFootPointer")),
             leftFootCollider(new ColliderComponent()),
             rightFootPointer(new Entity("rightFootPointer")),
-            rightFootCollider(new ColliderComponent())
+            rightFootCollider(new ColliderComponent()),
+            //hud
+            resBar(new ResizableImage(&imageShaderGreen)),
+            resBarEntity(new Entity("resBar")),
+            lastTime(0.0)
     {
     }
 
@@ -292,6 +305,16 @@ public:
         rightFootPointer->setParent(*player);
         rightFootPointer->addComponent(rightFootCollider);
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+
+        //hud
+        sm.getLoadedScenes()[0]->addEntity(resBarEntity);
+        resBarEntity->addComponent(resBar);
+        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
+        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+
+        //txt
+        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
         AudioManager::getInstance().playSound("res/content/sounds/songs/queen.wav", 1.0f);
 
@@ -591,11 +614,52 @@ public:
         ssao.renderQuad();
 //scene.update();
 
-        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
+        glDisable(GL_DEPTH_TEST);
+        //imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //hud
+        resBar->renderPlane();
+        //resizing bar
+        //temporary------------------------------------------------------------------------------------
+        double currentTime = glfwGetTime();
+        /*
+        if (currentTime - lastTime >= 3.0)
+        {
+            //resizeOnImpulse() daje mozliwosc zmiany rozmiaru paska o dana wartosc
+            resBar->resizeOnImpulse(0.01f);
+            lastTime = currentTime;
+        }
+         */
+//        float lastUpdateTime = 0.0f;
+//        float resizeInterval = 1.0f; // Co sekundę
+//        float resizeAmount = 0.1f;
+//        int lastScore = score;
+
+        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
+        if (deltaTime - lastUpdateTime >= resizeInterval) {
+            // Zmniejsz długość resBar
+            resBar->resizeOnImpulse(resizeAmount);
+            lastUpdateTime = deltaTime;
+        }
+
+        // Jeśli score został zwiększony o incrementScore
+        if (score - lastScore > incrementScore) {
+            // Zwiększ długość resBar
+            resBar->increaseOnImpulse(resizeAmount);
+            lastScore = score;
+        }
+        //temporary------------------------------------------------------------------------------------
+        //text
+        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
 
         spawner->update();
 
