@@ -5,6 +5,7 @@
 #include "Script/exampleSceneScript.h"
 
 
+
 using namespace SceneManagement;
 
 int main() {
@@ -19,11 +20,13 @@ int main() {
     //start
     examplesceneScript->start();
 
+
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
         //update
         examplesceneScript->update();
+
         update();
     }
     //onDestroy

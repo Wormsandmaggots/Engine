@@ -228,7 +228,7 @@ public:
             glBindVertexArray(0);
         } else{
             glBindVertexArray(VAO);
-            glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, amount);
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0, amount);
             glBindVertexArray(0);
         }
 
