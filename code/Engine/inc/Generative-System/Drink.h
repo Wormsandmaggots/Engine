@@ -41,6 +41,7 @@ public:
 	{
 
 		type = (DrinkType)(rand() % 3);
+		
 		ColliderComponent *collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
