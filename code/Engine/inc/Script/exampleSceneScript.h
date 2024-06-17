@@ -163,7 +163,7 @@ public:
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             renderer(&ssao.shaderGeometryPass),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            club(new Model("res/content/models/klub/KLUBv2.fbx", &ssao.shaderGeometryPass)),
+            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
@@ -251,13 +251,13 @@ public:
         screenShader.setInt("screenTexture", 0);
 
         //entities
-/*
+
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-*/
+
 
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
