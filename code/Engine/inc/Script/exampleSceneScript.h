@@ -74,6 +74,8 @@ private:
 
     FrameBuffer buffer;
 
+    Shader shaderRigInstanced;
+
     // ssao
     SSAO ssao;
 
@@ -146,6 +148,11 @@ private:
     const char* path;
 
     
+    Entity* dancingRobots;
+    InstancedRobots* ir;
+    Animation* npcAnimation;
+    Animator* npcAnimator;
+    RigPrep* npcRig;
 
 public:
     // Konstruktor domyślny
@@ -201,7 +208,6 @@ public:
             spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
-            
             clubE(new Entity("club")),
             boxE(new Entity("box")),
             sphere1(new Entity("sphere")),
@@ -217,7 +223,15 @@ public:
             effectTime(10),
 		    timer(0),
             path("res/content/sounds/songs/overcompensate.wav"),
-            reversed(false)
+            reversed(false),
+            dancingRobots(new Entity("dancingRobots1")),
+            shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
+            ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5,5),
+                                   &shaderRigInstanced,
+                                   glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
+            npcAnimator(new Animator(npcAnimation)),
+            npcRig(new RigPrep(ir))
     {
     }
 
@@ -271,6 +285,9 @@ public:
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 */
 
+        sm.getLoadedScenes()[0]->addEntity(dancingRobots);
+        dancingRobots->addComponent(ir);
+
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
@@ -307,6 +324,8 @@ public:
 
         AudioManager::getInstance().playSound(path, 1.0f);
 
+        
+
     };
 
     void update() override{
@@ -322,7 +341,7 @@ public:
         playerInput.interpretInput();
         playerInput1.interpretInput();
 
-        glClearColor(0.2, 0.2, 0.2, 1);
+        glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -448,9 +467,79 @@ public:
             timeToDispense2 = timeToDispense;
 
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        }
+        }       
 
-       
+        shaderRig.use();
+        joystickOffset = playerInput.getJoystick(2);
+        joystickOffset2 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
+
+        joystickOffset.x = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset.y = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+
+        joystickOffset2.x = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset2.y = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset3.x = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset3.y = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+
+        joystickOffset4.x = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset4.y = Math::Remap(
+                utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
+                0, 1, -1, 1);
+
+        joystickOffset *= 200 * s.deltaTime;
+        joystickOffset2 *= 200 * s.deltaTime;
+        joystickOffset3 *= 200 * s.deltaTime;
+        joystickOffset4 *= 200 * s.deltaTime;
+        //old
+
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
+        playerRig->update();
+
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
+        npcAnimator->UpdateAnimation(s.deltaTime);
+
+        shaderRigInstanced.use();
+        npcRig->update();
+
+        auto transforms2 = npcRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms2.size(); ++i)
+            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
+
+        //npcRig->update();
+
 
         ImGui::Begin("SSAO");
 
@@ -636,13 +725,13 @@ public:
         playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
         playerRig->update();
 
-        auto transforms = playerRig->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+//        auto transforms = playerRig->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms.size(); ++i)
+//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+//        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+//        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+//        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+//        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
 
         comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
