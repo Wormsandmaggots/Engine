@@ -27,6 +27,7 @@
 #include "JoyShockLibrary.h"
 #include "Core/Utils/MathUtils.h"
 #include "Core/Utils/Ease.h"
+#include "Globals.h"
 
 
 using namespace SceneManagement;
@@ -42,9 +43,6 @@ private:
 
     // audio
     AudioManager& audioManager;
-    std::shared_ptr<Sound> sound;
-    std::shared_ptr<Sound> success;
-    std::shared_ptr<Sound> failure;
 
     float songSampleInterval;
     std::vector<SongSample> songData;
@@ -70,6 +68,13 @@ private:
     Shader shaderPbr;
     Shader screenShader;
     Shader shaderRig;
+    Shader DrunkShader;
+    Shader shaderNoneDrink;
+    Shader reverseShader;
+
+    FrameBuffer buffer;
+
+    Shader shaderRigInstanced;
 
     // ssao
     SSAO ssao;
@@ -99,6 +104,8 @@ private:
     RigPrep* playerRig;
     InverseKinematics* playerIK;
 
+    bool reversed;
+
     // light
     glm::vec3 lightPos;
     glm::vec3 lightColor;
@@ -121,6 +128,8 @@ private:
     Spawner* spawner = nullptr;
     float timeToDispense;
     float timeToDispense2;
+    float effectTime;
+    float timer;
 
     // entities
     Entity* clubE;
@@ -136,15 +145,19 @@ private:
     ColliderComponent* leftFootCollider;
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
+    const char* path;
 
+    
+    Entity* dancingRobots;
+    InstancedRobots* ir;
+    Animation* npcAnimation;
+    Animator* npcAnimator;
+    RigPrep* npcRig;
 
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
             audioManager(AudioManager::getInstance()),
-            sound(audioManager.loadSound("res/content/sounds/songs/queen.wav")),
-            success(audioManager.loadSound("res/content/sounds/effects/clap.wav")),
-            failure(audioManager.loadSound("res/content/sounds/effects/sweep.wav")),
             songSampleInterval(1.0),
             songDataIndex(0),
             connectedControllers(JslConnectDevices()),
@@ -161,7 +174,11 @@ public:
             shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
+            shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
+            reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
             renderer(&ssao.shaderGeometryPass),
+            buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
@@ -202,7 +219,19 @@ public:
             leftFootPointer(new Entity("leftFootPointer")),
             leftFootCollider(new ColliderComponent()),
             rightFootPointer(new Entity("rightFootPointer")),
-            rightFootCollider(new ColliderComponent())
+            rightFootCollider(new ColliderComponent()),
+            effectTime(10),
+		    timer(0),
+            path("res/content/sounds/songs/overcompensate.wav"),
+            reversed(false),
+            dancingRobots(new Entity("dancingRobots1")),
+            shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
+            ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5,5),
+                                   &shaderRigInstanced,
+                                   glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
+            npcAnimator(new Animator(npcAnimation)),
+            npcRig(new RigPrep(ir))
     {
     }
 
@@ -227,11 +256,8 @@ public:
         //audio
         audioManager.init();
 
-        success->setVolume(0.2);
-        failure->setVolume(0.5);
-
-        SongAnalizer::parseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
-        SongAnalizer::testparseSong(songSampleInterval, "res/content/sounds/songs/queen.wav", songData);
+        SongAnalizer::parseSong(songSampleInterval, path, songData);
+        SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
         sm.loadScene("res/content/maps/Marcin.yaml");
@@ -258,6 +284,9 @@ public:
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+
+        sm.getLoadedScenes()[0]->addEntity(dancingRobots);
+        dancingRobots->addComponent(ir);
 
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -293,7 +322,9 @@ public:
         rightFootPointer->addComponent(rightFootCollider);
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
-        AudioManager::getInstance().playSound("res/content/sounds/songs/queen.wav", 1.0f);
+        AudioManager::getInstance().playSound(path, 1.0f);
+
+        
 
     };
 
@@ -310,13 +341,13 @@ public:
         playerInput.interpretInput();
         playerInput1.interpretInput();
 
-        glClearColor(0.2, 0.2, 0.2, 1);
+        glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 
 
-        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
 
@@ -429,15 +460,14 @@ public:
                 case sampleType::SKIP:
                     break;
             }
-            if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0) {
-                spawner->spawnDrink("drink", glm::vec3(-1, 1, 5));
-            }
+           if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
+                spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
+
             songDataIndex++;
             timeToDispense2 = timeToDispense;
 
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        }
-
+        }       
 
         shaderRig.use();
         joystickOffset = playerInput.getJoystick(2);
@@ -498,6 +528,17 @@ public:
         leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
+        npcAnimator->UpdateAnimation(s.deltaTime);
+
+        shaderRigInstanced.use();
+        npcRig->update();
+
+        auto transforms2 = npcRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms2.size(); ++i)
+            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
+
+        //npcRig->update();
 
 
         ImGui::Begin("SSAO");
@@ -568,7 +609,7 @@ public:
         ssao.shaderSSAOBlur.setFloat("texelSize", texelSize);
         ssao.renderQuad();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+        buffer.bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
 // send light relevant uniforms
@@ -590,6 +631,108 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
         ssao.renderQuad();
 //scene.update();
+        
+        joystickOffset = playerInput.getJoystick(2);
+        joystickOffset2 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
+        
+        timer -= deltaTime;
+
+        if (currentDrink != DrinkType::None && timer < 0) {
+            timer = effectTime;
+			currentDrink = DrinkType::None;
+		}
+
+        buffer.unbind();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        switch (currentDrink) {
+        case DrinkType::Drunk:
+            DrunkShader.use();
+            DrunkShader.setFloat("time", time);
+            DrunkShader.setInt("screenTexture", 0);
+            break;
+        case DrinkType::InverseInput:
+            shaderNoneDrink.use();
+            DrunkShader.setInt("screenTexture", 0);
+            joystickOffset = -joystickOffset;
+            joystickOffset2 = -joystickOffset2;
+            joystickOffset3 = -joystickOffset3;
+            joystickOffset4 = -joystickOffset4;
+            break;
+        case DrinkType::UpsideDown:
+            reverseShader.use();
+            reverseShader.setFloat("time", time);
+            reverseShader.setInt("screenTexture", 0);
+            break;
+        case DrinkType::None:
+            shaderNoneDrink.use();
+            DrunkShader.setInt("screenTexture", 0); 
+            break;
+        }
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
+        ssao.renderQuad();
+
+        
+        shaderRig.use();
+     
+        
+
+        joystickOffset.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+
+        joystickOffset2.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset2.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset3.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset3.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+
+        joystickOffset4.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset4.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset *= 200 * s.deltaTime;
+        joystickOffset2 *= 200 * s.deltaTime;
+        joystickOffset3 *= 200 * s.deltaTime;
+        joystickOffset4 *= 200 * s.deltaTime;
+        //old
+
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
+        playerRig->update();
+
+//        auto transforms = playerRig->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms.size(); ++i)
+//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+//        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+//        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+//        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+//        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
 
         comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);

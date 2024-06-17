@@ -12,11 +12,16 @@ layout(location = 7) in mat4 instancedMatrix;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform mat3 normalMatrix;
+
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
 uniform mat4 finalBonesMatrices[MAX_BONES];
 
+out vec3 WorldPos;
+out vec3 FragPos;
+out vec3 Normal;
 out vec2 TexCoords;
 
 void main()
@@ -37,7 +42,14 @@ void main()
         vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;
     }
 
-    //mat4 viewModel = view * instancedMatrix;
-    gl_Position = projection * view * instancedMatrix * totalPosition;
+    WorldPos = vec3(instancedMatrix * totalPosition);
+    mat4 viewModel = view * instancedMatrix;
+    vec4 viewPos = view * instancedMatrix * totalPosition;
+    FragPos = viewPos.xyz;
+
+    Normal = normalMatrix * norm;
+
+    gl_Position =  projection * viewModel * totalPosition;
+
     TexCoords = tex;
 }

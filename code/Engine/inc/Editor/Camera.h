@@ -143,6 +143,14 @@ public:
             Zoom = 45.0f;
     }
 
+    void RotateCamera180() {
+        Yaw += 180; // Add 180 degrees to the Pitch angle
+        if (Yaw > 360) Yaw -= 360; // Ensure the Pitch angle stays within a 0-360 range
+
+        // Recalculate orientation vectors based on the new Pitch angle
+        updateCameraVectors();
+    }
+
 private:
     // calculates the front vector from the Camera's (updated) Euler Angles
     void updateCameraVectors()
