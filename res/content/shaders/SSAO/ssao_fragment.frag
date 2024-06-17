@@ -1,4 +1,5 @@
 #version 460 core
+
 layout (location = 0) out vec3 gPosition;
 layout (location = 1) out vec3 gNormal;
 //rgb - diffuse, a - specular

@@ -43,6 +43,9 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
+    bool instanced;
+    bool amount;
+
     Model();
     Model(const Model&);
     Model(const string &path,Shader* shader=nullptr, bool gamma=false);

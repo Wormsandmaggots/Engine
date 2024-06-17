@@ -12,6 +12,7 @@
 #include "assimp_glm_helpers.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
+#include "Renderer/InstancedRobots.h"
 
 class RigPrep{
 public:
@@ -28,6 +29,21 @@ public:
         ReadHierarchyData(scene->mRootNode, rootBone, NULL);
         CalculateBoneTransform(glm::mat4(1.0f), rootBone, 1.0f);
     }
+
+    RigPrep(InstancedRobots* instanced)
+    {
+        Assimp::Importer importer;
+        const aiScene *scene = importer.ReadFile(instanced->path,
+                                                 aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
+                                                 aiProcess_CalcTangentSpace);
+        m_BoneInfoMap = instanced->getMap();
+        assert(scene && scene->mRootNode);
+        m_FinalBoneMatrices.resize(m_BoneInfoMap.size());
+        rootBone = new Bone();
+        ReadHierarchyData(scene->mRootNode, rootBone, NULL);
+        CalculateBoneTransform(glm::mat4(1.0f), rootBone, 1.0f);
+    }
+
     ~RigPrep()= default;
     inline const Bone* GetRootBone() { return rootBone; }
     inline const std::map<std::string,BoneInfo>& GetBoneIDMap()
