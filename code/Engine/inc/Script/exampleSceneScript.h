@@ -765,30 +765,52 @@ public:
 
 
 
-        // Bind the texture that contains the result of the blur operation
+        // Utwórz nowy framebuffer do przechowywania wyniku operacji threshold
+        FrameBuffer thresholdFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+// Użyj shadera threshold
+        thresholdShader.use();
+        thresholdShader.setInt("image", 0);
+        thresholdShader.setFloat("threshold", 0.9f); // ustaw wartość progu
+
+// Binduj framebuffer
+        thresholdFBO.bind();
+
+// Binduj teksturę
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
+
+// Renderuj quad
+        ssao.renderQuad();
+
+// Odbinduj framebuffer
+        thresholdFBO.unbind();
+
+// Teraz użyj wynikowej tekstury z operacji threshold jako wejścia do operacji rozmycia
+
+// Bind the texture that contains the result of the threshold operation
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, thresholdFBO.getTexture());
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
-        // Render the quad with the blurred texture
 
-        //rozmycie
+// Rozmycie
         FrameBuffer blurHorizontalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
         FrameBuffer blurVerticalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
-        //shader
-        //Shader blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag");
+// Shader
         blurShader.use();
         blurShader.setInt("image", 0);
         blurShader.setBool("horizontal", true);
 
         blurHorizontalFBO.bind();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive); // twoja tekstura z jasnymi częściami
+        glBindTexture(GL_TEXTURE_2D, thresholdFBO.getTexture()); // twoja tekstura z jasnymi częściami
         blurShader.setBool("horizontal", true);
         ssao.renderQuad();
         blurHorizontalFBO.unbind();
-        //shader 2
+
+// Shader 2
         blurVerticalFBO.bind();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, blurHorizontalFBO.getTexture());
