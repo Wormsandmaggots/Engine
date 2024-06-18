@@ -75,6 +75,7 @@ private:
     //Shader simpleBloom;
     Shader blurShader;
     Shader bloomFinalShader;
+    Shader thresholdShader;
     //Shader horizontalB;
     //Shader verticalB;
 
@@ -190,6 +191,7 @@ public:
             //simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
             blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag"),
             bloomFinalShader("res/content/shaders/blur.vert", "res/content/shaders/bloom_final.frag"),
+            thresholdShader("res/content/shaders/blur.vert", "res/content/shaders/threshold.frag"),
             //horizontalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/horizontalBloom.glsl"),
             //verticalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/verticalBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
@@ -804,6 +806,24 @@ public:
         glBindTexture(GL_TEXTURE_2D, blurVerticalFBO.getTexture()); // Rozmyta tekstura
 
         ssao.renderQuad();
+
+
+
+
+//        thresholdShader.use();
+//        thresholdShader.setInt("image", 0);
+//        thresholdShader.setFloat("threshold", 0.9f); // ustaw wartość progu
+//
+//        glActiveTexture(GL_TEXTURE0);
+//        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
+
+// Renderuj quad
+        ssao.renderQuad();
+
+
+
+
+
 
         /*
         //normalny widok
