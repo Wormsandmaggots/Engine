@@ -75,6 +75,9 @@ private:
     Shader simpleBloom;
 
     FrameBuffer buffer;
+    FrameBuffer bufferSelect;
+
+    //Texture* select;
 
     Shader shaderRigInstanced;
 
@@ -183,6 +186,7 @@ public:
             simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
+            bufferSelect(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             //club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
@@ -679,6 +683,33 @@ public:
         glBindTexture(GL_TEXTURE_2D, buffer.getBloomTexture());
          */
 
+        // Create a new framebuffer
+        unsigned int framebuffer;
+        glGenFramebuffers(1, &framebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+        // Create a new texture to store the result
+        unsigned int textureColorbuffer;
+        glGenTextures(1, &textureColorbuffer);
+        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, s.WINDOW_WIDTH, s.WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // Attach it to the framebuffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+// Attach it to the framebuffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+// Check if the framebuffer is complete
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+
+// Bind the framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+
         // Use the brightness shader
         simpleBloom.use();
 
@@ -689,6 +720,16 @@ public:
 
 // Set the threshold
         simpleBloom.setFloat("threshold", 0.5f);
+
+        buffer.drawQuad();
+
+        // Unbind the framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+        //renderuje na ekranie zmodyfikowany widok
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
 
         buffer.drawQuad();
 
