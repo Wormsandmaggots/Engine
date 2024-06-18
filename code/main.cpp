@@ -79,10 +79,10 @@ int main() {
     //Model* club = new Model("res/content/models/club2/club2.obj", &shaderPbr);
 	Model* sphere = new Model("res\\content\\models\\sphere\\untitled.obj", &collisionTestShader);
     Model* player2 = new Model("res/content/models/npc1/Dance3.fbx", &shaderRig);
-    //Animation* npcAnimation = new Animation("res/content/models/npc1/Dance3.fbx", player2);
+    Animation* npcAnimation = new Animation("res/content/models/npc1/Dance3.fbx", player2);
     //Animation* npcAnimation1 = new Animation("res/content/models/npc1/3addony_moze_oddadzom.fbx", player2);
-    //RigPrep* npcRig = new RigPrep(player2);
-    //Animator* animator = new Animator(npcAnimation);
+    RigPrep* npcRig = new RigPrep(player2);
+    Animator* animator = new Animator(npcAnimation);
     Text* arcadeRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
     Text* counterRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
 
@@ -138,11 +138,12 @@ int main() {
 		s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
         cout << debugInput.state<< endl;
-        if(debugInput.state > 30 && f == 0) {
+
+       /* if(debugInput.state > 30 && f == 0) {
             stateMachine->changeState(secondState);
             f = 1;
-        }
-        //animator->UpdateAnimation(s.deltaTime);
+        }*/
+        animator->UpdateAnimation(s.deltaTime);
 
         glClearColor(0.2, 0.2, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -166,12 +167,12 @@ int main() {
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
 */
-/*
+
         ///ANIMATIONS
         auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-*/
+
 
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
