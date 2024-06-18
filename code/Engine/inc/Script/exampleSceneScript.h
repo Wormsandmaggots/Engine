@@ -28,6 +28,8 @@
 #include "Core/Utils/MathUtils.h"
 #include "Core/Utils/Ease.h"
 #include "Globals.h"
+#include "Light/DirectionalLight.h"
+#include "Light/LightManager.h"
 
 
 using namespace SceneManagement;
@@ -154,6 +156,9 @@ private:
     Animator* npcAnimator;
     RigPrep* npcRig;
 
+    Entity* sun;
+    DirectionalLight* sunLight;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
@@ -231,7 +236,9 @@ public:
                                    glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
-            npcRig(new RigPrep(ir))
+            npcRig(new RigPrep(ir)),
+            sun(new Entity("Sun")),
+            sunLight(new DirectionalLight())
     {
     }
 
@@ -284,6 +291,9 @@ public:
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        sm.getLoadedScenes()[0]->addEntity(sun);
+        sun->addComponent(sunLight);
+
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
@@ -323,9 +333,6 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         AudioManager::getInstance().playSound(path, 1.0f);
-
-        
-
     };
 
     void update() override{
@@ -570,7 +577,7 @@ public:
         ssao.shaderSSAO.setFloat("radius", radius);
         ssao.shaderSSAO.setFloat("bias", bias);
 // Send kernel + rotation
-        for (unsigned int i = 0; i < 64; ++i)
+        for (unsigned int i = 0; i < 16; ++i)
         {
             if(i > kernelSize)
             {
@@ -604,15 +611,17 @@ public:
         buffer.bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
+        ssao.shaderLightingPass.setVec3("camPos", s.camera.Position);
+        LightManager::UpdateLightShader(ssao.shaderLightingPass, view);
 // send light relevant uniforms
-        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
-        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
-        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
-// Update attenuation parameters
-
-
-        ssao.shaderLightingPass.setFloat("light.Linear", linear);
-        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
+//        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
+//        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);
+//        ssao.shaderLightingPass.setVec3("light.Color", lightColor);
+//// Update attenuation parameters
+//
+//
+//        ssao.shaderLightingPass.setFloat("light.Linear", linear);
+//        ssao.shaderLightingPass.setFloat("light.Quadratic", quadratic);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ssao.gPosition);
         glActiveTexture(GL_TEXTURE1);
@@ -621,6 +630,12 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
         glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
+        glActiveTexture(GL_TEXTURE4); // add extra SSAO texture to lighting pass
+        glBindTexture(GL_TEXTURE_2D, ssao.gWorldPos);
+        glActiveTexture(GL_TEXTURE5); // add extra SSAO texture to lighting pass
+        glBindTexture(GL_TEXTURE_2D, ssao.gMetallicRoughnessAmbient);
+        glActiveTexture(GL_TEXTURE6); // add extra SSAO texture to lighting pass
+        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 //scene.update();
         

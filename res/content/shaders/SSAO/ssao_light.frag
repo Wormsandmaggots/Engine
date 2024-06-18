@@ -298,7 +298,7 @@ void main()
         for(int i = 0; i < spotNum; i++)
         {
             SpotLight spot = spotLights[i];
-            //lighting += calculateSpotLight(spot.position, spot.direction, spot.cutoff, spot.outercutoff, )
+            lighting += calculateSpotLight(spot, Normal, FragPos);
         }
 
 //        vec3 lighting  = vec3(0.03f) * Albedo * AmbientOcclusion; // hard-coded ambient component

@@ -21,7 +21,6 @@ uniform sampler2D texture_metalic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_emissive1;
 uniform sampler2D texture_ambient1;
-uniform sampler2D texture_normal1;
 
 vec3 getNormalFromMap()
 {
