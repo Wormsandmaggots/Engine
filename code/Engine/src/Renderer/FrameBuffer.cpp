@@ -89,6 +89,7 @@ int FrameBuffer::getBloomTexture() const
 
 void FrameBuffer::drawQuad() const {
     glBindVertexArray(quadVAO);
-    glBindTexture(GL_TEXTURE_2D, bloomTexture);	// use the color attachment texture as the texture of the quad plane
+    //glBindTexture(GL_TEXTURE_2D, bloomTexture);	// use the color attachment texture as the texture of the quad plane
+    glBindTexture(GL_TEXTURE_2D, texture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }

@@ -72,6 +72,7 @@ private:
     Shader shaderNoneDrink;
     Shader reverseShader;
     Shader bloomShader;
+    Shader simpleBloom;
 
     FrameBuffer buffer;
 
@@ -179,6 +180,7 @@ public:
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
 		    bloomShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/bloom.frag"),
+            simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -670,10 +672,23 @@ public:
 
             break;
         }
+        /*
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, buffer.getBloomTexture());
+         */
+
+        // Use the brightness shader
+        simpleBloom.use();
+
+// Set the scene texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
+        simpleBloom.setInt("scene", 0);
+
+// Set the threshold
+        simpleBloom.setFloat("threshold", 0.5f);
 
         buffer.drawQuad();
 
