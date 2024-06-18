@@ -20,6 +20,7 @@ struct PointLight {
     vec3 position;
     LightColors colors;
 
+    float intensity;
     float radius;
     float linear;
     float quadratic;
@@ -85,6 +86,13 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
     return num / denom;
 }
 
+float D_GGX(in float roughness, in float NdH) {
+    float m = roughness * roughness;
+    float m2 = m * m;
+    float d = (NdH * m2 - NdH) * NdH + 1.0;
+    return m2 / (PI * d * d);
+}
+
 float GeometrySchlickGGX(float NdotV, float roughness) {
     float r = (roughness + 1.0);
     float k = (r * r) / 8.0;
@@ -93,6 +101,24 @@ float GeometrySchlickGGX(float NdotV, float roughness) {
     float denom = NdotV * (1.0 - k) + k;
 
     return num / denom;
+}
+
+float G_schlick(in float roughness, in float NdV, in float NdL) {
+    float k = roughness * roughness * 0.5;
+    float V = NdV * (1.0 - k) + k;
+    float L = NdL * (1.0 - k) + k;
+    return 0.25 / (V * L);
+}
+
+
+vec3 cooktorrance_specular(in float NdL, in float NdV, in float NdH, in vec3 specular, in float roughness) {
+    float D = D_GGX(roughness, NdH);
+
+    float G = G_schlick(roughness, NdV, NdL);
+
+    float rim = mix(1.0 - roughness * texture(gMetallicRoughnessAmbient, TexCoords).w * 0.9, 1.0, NdV);
+
+    return (1.0 / rim) * specular * G * D;
 }
 
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
@@ -158,26 +184,27 @@ vec3 calculateDirLight(DirectionalLight lightSource, vec3 normal, vec3 position,
     return result;
 }
 
-float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, float outerCutOff, vec3 normal, vec3 fragPos, vec3 viewDir)
+float calculateSpotLight(SpotLight lightSource, vec3 normal, vec3 position)
 {
-    vec3 lightToFragment = normalize(spotLightPos - fragPos);
-    float theta = dot(lightToFragment, -spotLightDir);
-    float epsilon = cutOff - outerCutOff;
-    float intensity = clamp((theta - outerCutOff) / epsilon, 0.0, 1.0);
+    vec3 cameraDir = normalize((camPos - position));
+    vec3 lightToFragment = normalize(lightSource.position - position);
+    float theta = dot(lightToFragment, -lightSource.direction);
+    float epsilon = lightSource.cutoff - lightSource.outercutoff;
+    float intensity = clamp((theta - lightSource.outercutoff) / epsilon, 0.0, 1.0);
 
     // rest of the lighting calculations (ambient, diffuse, specular)
-    vec3 lightColor = vec3(1.0, 1.0, 1.0); // adjust this as needed
+    vec3 lightColor = lightSource.colors.diffuse; // adjust this as needed
     float ambientStrength = 0.1; // adjust this as needed
     vec3 ambient = ambientStrength * lightColor;
 
     vec3 norm = normalize(normal);
-    vec3 lightDir = normalize(spotLightPos - fragPos);
+    vec3 lightDir = normalize(lightSource.position - position);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
     float specularStrength = 0.5; // adjust this as needed
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(cameraDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
     // Combine results
@@ -187,42 +214,53 @@ float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, flo
     return finalIntensity;
 }
 
-vec3 calculatePointLight(float roughness, vec3 N, float metallic, vec3 albedo, vec3 viewDir, vec3 F0, PointLight p, vec3 WorldPos)
+vec3 calculatePointLight(PointLight lightSource, vec3 normal, vec3 position, vec2 texCoord)
 {
-    vec3 L = normalize(p.position - WorldPos);
-    vec3 H = normalize(viewDir + L);
-    float distance = length(p.position - WorldPos);
+    vec3 albedo = texture(gAlbedo, texCoord).rgb;
+    vec3 metalnessAORoughness = texture(gMetallicRoughnessAmbient, texCoord).rgb;
 
-    float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = p.colors.diffuse * attenuation;
+    //vec3 albedo = albedoMetal.rgb;
+    float metallness = metalnessAORoughness.r;
+    float ao = metalnessAORoughness.g;
+    float roughness = metalnessAORoughness.b;
 
-        // Cook-Torrance BRDF
-    float NDF = DistributionGGX(N, H, roughness);
-    float G   = GeometrySmith(N, viewDir, L, roughness);
-    vec3 F    = fresnelSchlick(max(dot(H, viewDir), 0.0), F0);
+    vec3 lightVec = lightSource.position - position;
+    vec3 lightDir = normalize(lightVec);
 
-    vec3 numerator    = NDF * G * F;
-    float denominator = 4.0 * max(dot(N, viewDir), 0.0) * max(dot(N, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+    float distance = length(lightVec);
+
+    if(distance > lightSource.radius)
+            return vec3(0);
+
+    float attenuation = 1.0 /  (distance * distance);
+    vec3 radiance = lightSource.colors.diffuse * attenuation * lightSource.intensity;
+
+    //vec3 cameraDir = normalize(camPos - position);
+    vec3 cameraDir = normalize((camPos - position));
+    vec3 halfway = normalize(lightDir + cameraDir);
+    float cosTheta = max(dot(halfway, cameraDir), 0.0);
+
+    vec3 F = FresnelSchlick(cosTheta, albedo, metallness);
+    float D = DistributionGGX(normal, halfway, roughness);
+    float G = GeometrySmith(normal, cameraDir, lightDir, roughness);
+
+    float NdotL = max(dot(normal, lightDir), 0.0);
+    float NdotV = max(dot(normal, cameraDir), 0.0);
+
+    vec3 numerator = D * G * F;
+    float denominator = 4.0 * NdotV * NdotL + 0.0001;
     vec3 specular = numerator / denominator;
 
-        // kS is equal to Fresnel
     vec3 kS = F;
-        // energy conservation
-    vec3 kD = vec3(1.0) - kS;
-        // multiply kD by the inverse metalness such that only non-metals
-        // have diffuse lighting, or a linear blend if partly metal (pure metals
-        // have no diffuse light).
-    kD *= 1.0 - metallic;
+    vec3 kD = (vec3(1.0) - kS) * (1.0 - metallness);
 
-        // scale light by NdotL
-    float NdotL = max(dot(N, L), 0.0);
+    vec3 result = (kD * albedo / PI + specular) * radiance * NdotL * ao;
 
-        // add to outgoing radiance Lo
-    return (kD * albedo / PI + specular) * radiance * NdotL;
+    return result;
 }
 
 vec3 calculatePosition(vec2 texCoord) {
-    float depth = texture(gPosition, texCoord).z;
+    float depth = texture(gWorldPos, texCoord).z;
 
     vec4 clipSpacePosition = vec4(vec3(texCoord, depth) * 2.0 - 1.0, 1.0);
     vec4 viewSpacePosition = inverse(projection * view) * clipSpacePosition;
@@ -244,9 +282,24 @@ void main()
 
         vec2 texCoord = gl_FragCoord.xy / vec2(1920, 1080);
         vec3 position = calculatePosition(texCoord);
-        vec3 normal = texture(gNormal, texCoord).xyz;
 
-        vec3 lighting = calculateDirLight(dirLight, normal, position, texCoord);
+//        vec3 lighting  = vec3(0.03f) * Albedo * AmbientOcclusion; // hard-coded ambient component
+//        vec3 viewDir  = normalize(camPos - WorldPos);
+//        vec3 F0 = vec3(0.04);
+//        lighting += mix(F0, Albedo, Metallic);
+
+        vec3 lighting = calculateDirLight(dirLight, Normal, FragPos, texCoord);
+
+        for(int i = 0; i < pointNum; i++)
+        {
+            lighting += calculatePointLight(pointLights[i], Normal, FragPos, texCoord);
+        }
+
+        for(int i = 0; i < spotNum; i++)
+        {
+            SpotLight spot = spotLights[i];
+            //lighting += calculateSpotLight(spot.position, spot.direction, spot.cutoff, spot.outercutoff, )
+        }
 
 //        vec3 lighting  = vec3(0.03f) * Albedo * AmbientOcclusion; // hard-coded ambient component
 //        vec3 viewDir  = normalize(camPos - WorldPos);

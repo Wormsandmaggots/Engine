@@ -131,6 +131,10 @@ int main() {
     sm.getLoadedScenes()[0]->addEntity(pointLight);
     pointLight->addComponent(new PointLight());
 
+    Entity* spotLight = new Entity("spotLight");
+    sm.getLoadedScenes()[0]->addEntity(spotLight);
+    spotLight->addComponent(new SpotLight());
+
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
