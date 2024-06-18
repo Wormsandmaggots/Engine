@@ -687,6 +687,12 @@ public:
         glBindTexture(GL_TEXTURE_2D, buffer.getBloomTexture());
          */
 
+
+
+
+
+
+
         // Create a new framebuffer
         unsigned int framebuffer;
         glGenFramebuffers(1, &framebuffer);
@@ -759,6 +765,16 @@ public:
 
 // Unbind the framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+
+
+
+
+
+
+
 
 
         //renderuje na ekranie zmodyfikowany widok
