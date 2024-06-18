@@ -534,7 +534,7 @@ public:
         shaderRigInstanced.use();
         npcRig->update();
 
-        auto transforms2 = npcRig->GetFinalBoneMatrices();
+        auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
