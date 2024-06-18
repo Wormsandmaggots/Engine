@@ -72,18 +72,18 @@ public:
     void awake() override{};
     void start() override{
         //textures
-        Texture menuBack("res/content/textures/backgg.jpg", "backgg");
-        Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
-        Texture menuNewGame("res/content/textures/ng.png", "ng");
-        Texture menuExit("res/content/textures/ex.png", "ex");
-        Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
+        Texture menuBack("res/content/textures/background_l.png", "backgg");
+        //Texture menuVerticalColumn("res/content/textures/pole.png", "pole");
+        Texture menuNewGame("res/content/textures/start_l.png", "ng");
+        Texture menuExit("res/content/textures/exit_l.png", "ex");
+        //Texture menuNewGameAlt("res/content/textures/nodes.png", "nodes");
 
         //Objects
         menuBackground = new Image(imageShader);
         menuBackground->setTexture(&menuBack);
 
         menuColumn = new Image(imageShader);
-        menuColumn->setTexture(&menuVerticalColumn);
+        //menuColumn->setTexture(&menuVerticalColumn);
 
         newGame = new Button(imageShader);
         newGame->setTexture(&menuNewGame);

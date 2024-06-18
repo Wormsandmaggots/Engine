@@ -14,26 +14,26 @@ int main() {
     glViewport(0,0, 1920, 1080);
 
     //instance
-    menuSceneScript* menusceneScript = new menuSceneScript();
+    //menuSceneScript* menusceneScript = new menuSceneScript();
     exampleSceneScript* examplesceneScript = new exampleSceneScript();
     //awake
-    menusceneScript->awake();
+    //menusceneScript->awake();
     examplesceneScript->awake();
     //start
-    menusceneScript->start();
+    //menusceneScript->start();
     examplesceneScript->start();
 
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
         //update
-        menusceneScript->update();
+        //menusceneScript->update();
         examplesceneScript->update();
         
         update();
     }
     //onDestroy
-    menusceneScript->onDestroy();
+    //menusceneScript->onDestroy();
     examplesceneScript->onDestroy();
 
 
