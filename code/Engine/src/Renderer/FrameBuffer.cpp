@@ -41,7 +41,7 @@ FrameBuffer::FrameBuffer(int width, int height, int attachmentIndex) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTexture, 0);
 
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0 + attachmentIndex, GL_COLOR_ATTACHMENT1 };
+	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 	glDrawBuffers(2, attachments);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

@@ -56,6 +56,7 @@ public:
 
     int getTexture() const;
     int getBloomTexture() const;
+
 private:
     unsigned int fbo;
     unsigned int texture;
