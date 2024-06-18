@@ -182,7 +182,7 @@ public:
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+            //club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
@@ -280,11 +280,11 @@ public:
 
         //entities
 
-        clubE->addComponent(club);
+        /*clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
-        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));*/
 
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
@@ -661,10 +661,10 @@ public:
             reverseShader.setInt("screenTexture", 0);
             break;
         case DrinkType::None:
-            shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0);
-          /*  bloomShader.setInt("screenTexture",0);
-			bloomShader.setFloat("time", time);*/
+            /*shaderNoneDrink.use();
+            DrunkShader.setInt("screenTexture", 0);*/
+            bloomShader.setInt("screenTexture",0);
+			bloomShader.setFloat("time", time);
            
 
 
@@ -672,7 +672,10 @@ public:
         }
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
-        ssao.renderQuad();
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, buffer.getBloomTexture());
+
+        buffer.drawQuad();
 
         
         shaderRig.use();

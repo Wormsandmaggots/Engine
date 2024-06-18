@@ -55,6 +55,7 @@ public:
     void drawQuad() const;
 
     int getTexture() const;
+    int getBloomTexture() const;
 private:
     unsigned int fbo;
     unsigned int texture;
