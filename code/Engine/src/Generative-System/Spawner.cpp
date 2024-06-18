@@ -47,6 +47,10 @@ void Spawner::spawnDrink(const std::string& name, glm::vec3 pos)
 	drink->getTransform()->setScale(glm::vec3(0.001f));
 	this->scene->addEntity(drink);
 
+	Ring* ring = new Ring(name, glm::vec3(pos.x, pos.y, -0.3), new Model(*this->ringModel));
+	rings.push_back(ring);
+	ring->getTransform()->setRotation(glm::vec3(90, 90, 90));
+	drink->addChild(ring);
 }
 
 void Spawner::update() {
