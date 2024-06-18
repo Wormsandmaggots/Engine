@@ -73,8 +73,8 @@ private:
     Shader reverseShader;
     Shader bloomShader;
     Shader simpleBloom;
-    Shader horizontalB;
-    Shader verticalB;
+    //Shader horizontalB;
+    //Shader verticalB;
 
     FrameBuffer buffer;
     FrameBuffer bufferSelect;
@@ -186,8 +186,8 @@ public:
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
 		    bloomShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/bloom.frag"),
             simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
-            horizontalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/horizontalBloom.glsl"),
-            verticalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/verticalBloom.glsl"),
+            //horizontalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/horizontalBloom.glsl"),
+            //verticalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/verticalBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             bufferSelect(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
@@ -633,6 +633,8 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gAlbedo);
         glActiveTexture(GL_TEXTURE3); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssao.ssaoColorBufferBlur);
+        glActiveTexture(GL_TEXTURE4); // add extra SSAO texture to lighting pass
+        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 //scene.update();
         
@@ -692,96 +694,103 @@ public:
 
 
 
+/*
+        // Tworzymy nowy obiekt FrameBuffer
+        FrameBuffer bloomBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
-        // Create a new framebuffer
-        unsigned int framebuffer;
-        glGenFramebuffers(1, &framebuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+// Bindujemy framebuffer
+        bloomBuffer.bind();
 
-// Create a new texture to store the result
-        unsigned int textureColorbuffer;
-        glGenTextures(1, &textureColorbuffer);
-        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, s.WINDOW_WIDTH, s.WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-// Attach it to the framebuffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-
-// Check if the framebuffer is complete
-        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
-// Use the brightness shader
+// Używamy shadera do wykrywania jasnych obszarów
         simpleBloom.use();
 
-// Set the scene texture
+// Ustawiamy teksturę sceny
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         simpleBloom.setInt("scene", 0);
 
-// Set the threshold
+// Ustawiamy próg
         simpleBloom.setFloat("threshold", 0.5f);
 
-// Render to the framebuffer
+// Renderujemy do framebuffera
         buffer.drawQuad();
 
-// Unbind the framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+// Odbindowujemy framebuffer
+        bloomBuffer.unbind();
 
-// Now we perform the blur operation
-        unsigned int blurFramebuffer;
-        glGenFramebuffers(1, &blurFramebuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, blurFramebuffer);
+// Teraz wykonujemy operację rozmycia
+        FrameBuffer blurBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
-// Create a new texture to store the blur result
-        unsigned int blurTexture;
-        glGenTextures(1, &blurTexture);
-        glBindTexture(GL_TEXTURE_2D, blurTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, s.WINDOW_WIDTH, s.WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-// Attach it to the framebuffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, blurTexture, 0);
+// Bindujemy framebuffer
+        blurBuffer.bind();
 
         float blurSize = 100.0f;
-// Use the horizontal blur shader
+
+// Używamy shadera do rozmycia poziomego
         horizontalB.use();
         horizontalB.setInt("image", 0);
         horizontalB.setFloat("blurSize", blurSize);
 
-// Draw the scene texture
+// Rysujemy teksturę sceny
+        glActiveTexture(GL_TEXTURE0);
+        //bloomBuffer.drawQuad();
         buffer.drawQuad();
-
-// Use the vertical blur shader
+// Używamy shadera do rozmycia pionowego
         verticalB.use();
         verticalB.setInt("image", 0);
         verticalB.setFloat("blurSize", blurSize);
 
-// Draw the horizontally blurred texture
-        buffer.drawQuad();
-
-// Unbind the framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-        //renderuje na ekranie zmodyfikowany widok
+// Rysujemy poziomo rozmytą teksturę
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
-
+        //bloomBuffer.drawQuad();
         buffer.drawQuad();
+
+// Odbindowujemy framebuffer
+        blurBuffer.unbind();
+*/
+
+
+
+
+
+
+
+
+
+
+
+        // Bind the texture that contains the result of the blur operation
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
+        screenShader.use();
+        screenShader.setInt("screenTexture", 0);
+        // Render the quad with the blurred texture
+
+        //rozmycie
+        FrameBuffer blurHorizontalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        FrameBuffer blurVerticalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+
+        //shader
+        Shader blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag");
+        blurShader.use();
+        blurShader.setInt("image", 0);
+        blurShader.setBool("horizontal", true);
+
+        blurHorizontalFBO.bind();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive); // twoja tekstura z jasnymi częściami
+        blurShader.setBool("horizontal", true);
+        ssao.renderQuad();
+        blurHorizontalFBO.unbind();
+        //shader 2
+        blurVerticalFBO.bind();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, blurHorizontalFBO.getTexture());
+        blurShader.setBool("horizontal", false);
+        ssao.renderQuad();
+        blurVerticalFBO.unbind();
+
+        ssao.renderQuad();
 
         
         shaderRig.use();

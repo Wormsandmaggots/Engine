@@ -59,14 +59,11 @@ FrameBuffer::FrameBuffer(int width, int height, int attachmentIndex) {
 }
 
 void FrameBuffer::bind() {
-    glEnable(GL_DEPTH_TEST);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glViewport(0, 0, Specification.width, Specification.height);
 }
 
 void FrameBuffer::unbind() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
 }
 
 int FrameBuffer::readPixel(int attachmentIndex, int x, int y) {
