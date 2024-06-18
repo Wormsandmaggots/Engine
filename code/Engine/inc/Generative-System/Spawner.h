@@ -20,6 +20,10 @@ public:
 	Model* badBallModel;
 	Model* ringModel;
 	int ballsSpawned;
+
+	vector<Ball*> activeBalls;
+	vector<Ball*> avaliableBalls;
+
 	Spawner(Scene2* scene);
 	std::vector<Ball*> balls;
 	std::vector<BadBall*> badballs;

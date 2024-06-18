@@ -58,6 +58,7 @@ public:
 private:
     unsigned int fbo;
     unsigned int texture;
+    unsigned int bloomTexture;
     unsigned int quadVAO, quadVBO;
 };
 

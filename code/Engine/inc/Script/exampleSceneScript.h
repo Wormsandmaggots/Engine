@@ -71,6 +71,7 @@ private:
     Shader DrunkShader;
     Shader shaderNoneDrink;
     Shader reverseShader;
+    Shader bloomShader;
 
     FrameBuffer buffer;
 
@@ -177,6 +178,7 @@ public:
             DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
+		    bloomShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/bloom.frag"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -376,13 +378,13 @@ public:
 
                     //nozki
                     if (spawner->hasXPercentChance(20))
-                        spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
+                        spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, -2* songData[songDataIndex].bass.y, z));
                     else 
-                        spawner->spawnBall("ball", glm::vec3(1, -2, z));
+                        spawner->spawnBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, -2* songData[songDataIndex].bass.y, z));
                     if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
+                        spawner->spawnBadBall("ball", glm::vec3(-1* songData[songDataIndex].bass.y, -2* songData[songDataIndex].bass.x, z));
                     else 
-                        spawner->spawnBall("ball", glm::vec3(-1, -2, z));
+                        spawner->spawnBall("ball", glm::vec3(-1* songData[songDataIndex].bass.y, -2* songData[songDataIndex].bass.x, z));
                     
 
                     break;
@@ -404,16 +406,16 @@ public:
                     }
                     ////nozki
                     if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
+                        spawner->spawnBadBall("ball", glm::vec3(0.8 * songData[songDataIndex].mid.y, -0.8 * songData[songDataIndex].mid.x, z));
                     else 
-                        spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
+                        spawner->spawnBall("ball", glm::vec3(0.8 * songData[songDataIndex].mid.y, -0.8 * songData[songDataIndex].mid.x, z));
                   
 
                     if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
+                        spawner->spawnBadBall("ball", glm::vec3(-0.8 * songData[songDataIndex].mid.x, -0.8 * songData[songDataIndex].mid.y, z));
                   
                     else 
-                        spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+                        spawner->spawnBall("ball", glm::vec3(-0.8 * songData[songDataIndex].mid.x, -0.8 * songData[songDataIndex].mid.y, z));
                     
 
                     break;
@@ -437,14 +439,14 @@ public:
                     //nozki
                     
                     if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
+                        spawner->spawnBadBall("ball", glm::vec3(0.2* songData[songDataIndex].high.x, -2.25* songData[songDataIndex].high.y, z));
                     else
-                        spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
+                        spawner->spawnBall("ball", glm::vec3(0.2* songData[songDataIndex].high.x, -2.25* songData[songDataIndex].high.y, z));
 
                     if (spawner->hasXPercentChance(20))
-                        spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
+                        spawner->spawnBadBall("ball", glm::vec3(-0.2* songData[songDataIndex].high.y, -2.25* songData[songDataIndex].high.x, z));
                     else
-                        spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
+                        spawner->spawnBall("ball", glm::vec3(-0.2* songData[songDataIndex].high.y, -2.25* songData[songDataIndex].high.x, z));
 
                               
                  
@@ -452,8 +454,8 @@ public:
                 case sampleType::SKIP:
                     break;
             }
-           if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-                spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
+           //if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
+               spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
 
             songDataIndex++;
             timeToDispense2 = timeToDispense;
@@ -640,13 +642,11 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         switch (currentDrink) {
         case DrinkType::Drunk:
-            LOG_INFO("Drunk");
             DrunkShader.use();
             DrunkShader.setFloat("time", time);
             DrunkShader.setInt("screenTexture", 0);
             break;
         case DrinkType::InverseInput:
-            LOG_INFO("InverseInput");
             shaderNoneDrink.use();
             DrunkShader.setInt("screenTexture", 0);
             joystickOffset = -joystickOffset;
@@ -655,16 +655,19 @@ public:
             joystickOffset4 = -joystickOffset4;
             break;
         case DrinkType::UpsideDown:
-            LOG_INFO("UpsideDown");
 
             reverseShader.use();
             reverseShader.setFloat("time", time);
             reverseShader.setInt("screenTexture", 0);
             break;
         case DrinkType::None:
-            LOG_INFO("None");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0); 
+            DrunkShader.setInt("screenTexture", 0);
+          /*  bloomShader.setInt("screenTexture",0);
+			bloomShader.setFloat("time", time);*/
+           
+
+
             break;
         }
         glActiveTexture(GL_TEXTURE0);
