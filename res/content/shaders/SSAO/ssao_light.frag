@@ -270,50 +270,69 @@ vec3 calculatePosition(vec2 texCoord) {
 
 void main()
 {
-        vec3 FragPos = texture(gPosition, TexCoords).rgb;
-        vec3 Normal = texture(gNormal, TexCoords).rgb;
-        vec3 Albedo = pow(texture(gAlbedo, TexCoords).rgb, vec3(2.2f));
-        float Specular = texture(gAlbedo, TexCoords).a;
-        vec3 WorldPos = texture(gWorldPos, TexCoords).rgb;
-        vec3 Emissive = texture(gEmissive, TexCoords).rgb;
-        float Metallic = texture(gMetallicRoughnessAmbient, TexCoords).r;
-        float Roughness = texture(gMetallicRoughnessAmbient, TexCoords).g;
-        float AmbientOcclusion = (texture(gMetallicRoughnessAmbient, TexCoords).b + texture(ssao, TexCoords).r);
+    vec3 normal = texture(gNormal, TexCoords).rgb;
+    vec3 position = texture(gPosition, TexCoords).rgb;
 
-        vec2 texCoord = gl_FragCoord.xy / vec2(1920, 1080);
-        vec3 position = calculatePosition(texCoord);
+    vec3 light = calculateDirLight(dirLight, normal, position, TexCoords);
 
-//        vec3 lighting  = vec3(0.03f) * Albedo * AmbientOcclusion; // hard-coded ambient component
-//        vec3 viewDir  = normalize(camPos - WorldPos);
-//        vec3 F0 = vec3(0.04);
-//        lighting += mix(F0, Albedo, Metallic);
+    for(int i = 0; i < pointNum; i++)
+    {
+        light += calculatePointLight(pointLights[i], normal, position, TexCoords);
+    }
 
-        vec3 lighting = calculateDirLight(dirLight, Normal, FragPos, texCoord);
+    for (int i = 0; i < spotNum; i++)
+    {
+        light += calculateSpotLight(spotLights[i], normal, position);
+    }
 
-        for(int i = 0; i < pointNum; i++)
-        {
-            lighting += calculatePointLight(pointLights[i], Normal, FragPos, texCoord);
-        }
-
-        for(int i = 0; i < spotNum; i++)
-        {
-            SpotLight spot = spotLights[i];
-            lighting += calculateSpotLight(spot, Normal, FragPos);
-        }
-
-//        vec3 lighting  = vec3(0.03f) * Albedo * AmbientOcclusion; // hard-coded ambient component
-//        vec3 viewDir  = normalize(camPos - WorldPos);
-//
-//        vec3 F0 = vec3(0.04);
-//        F0 = mix(F0, Albedo, Metallic);
-        //vec3 ambient = vec3(0.03) * Albedo * AmbientOcclusion;
-//        for(int i = 0; i < pointNum; i++)
-//        {
-//            lighting += calculatePointLight(Roughness, Normal, Metallic, Albedo, normalize(-FragPos), F0, pointLights[i], WorldPos);
-//        }
-
-        FragColor = vec4(lighting, 1.0);
+    FragColor = vec4(light, 1.0f);
 }
+
+//void main()
+//{
+//        vec3 FragPos = texture(gPosition, TexCoords).rgb;
+//        vec3 Normal = texture(gNormal, TexCoords).rgb;
+//        vec3 Albedo = pow(texture(gAlbedo, TexCoords).rgb, vec3(2.2f));
+//        float Specular = texture(gAlbedo, TexCoords).a;
+//        vec3 WorldPos = texture(gWorldPos, TexCoords).rgb;
+//        vec3 Emissive = texture(gEmissive, TexCoords).rgb;
+//        float Metallic = texture(gMetallicRoughnessAmbient, TexCoords).r;
+//        float Roughness = texture(gMetallicRoughnessAmbient, TexCoords).g;
+//        float AmbientOcclusion = (texture(gMetallicRoughnessAmbient, TexCoords).b + texture(ssao, TexCoords).r);
+//
+//        vec2 texCoord = gl_FragCoord.xy / vec2(1920, 1080);
+//        vec3 position = calculatePosition(texCoord);
+//
+//        vec3 lighting = calculateDirLight(dirLight, Normal, FragPos, TexCoords);
+//
+//        FragColor = vec4(lighting, 1.0);
+
+// retrieve data from gbuffer
+//vec3 FragPos = texture(gPosition, TexCoords).rgb;
+//vec3 Normal = texture(gNormal, TexCoords).rgb;
+//vec3 Diffuse = texture(gAlbedo, TexCoords).rgb;
+//float AmbientOcclusion = texture(ssao, TexCoords).r;
+
+// blinn-phong (in view-space)
+//vec3 ambient = vec3(0.3 * Diffuse * AmbientOcclusion); // here we add occlusion factor
+//vec3 lighting  = ambient;
+//vec3 viewDir  = normalize(-FragPos); // viewpos is (0.0.0) in view-space
+//// diffuse
+//vec3 lightDir = normalize(pointLights[0].position - FragPos);
+//vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * pointLights[0].colors.diffuse;
+//// specular
+//vec3 halfwayDir = normalize(lightDir + viewDir);
+//float spec = pow(max(dot(Normal, halfwayDir), 0.0), 8.0);
+//vec3 specular = pointLights[0].colors.diffuse * spec;
+//// attenuation
+//float dist = length(pointLights[0].position - FragPos);
+//float attenuation = 1.0 / (1.0 + pointLights[0].linear * dist + pointLights[0].quadratic * dist * dist);
+//diffuse  *= attenuation;
+//specular *= attenuation;
+//lighting += diffuse + specular;
+//
+//FragColor = vec4(lighting, 1.0);
+//}
 
 //void main()
 //{

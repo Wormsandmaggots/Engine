@@ -24,12 +24,10 @@ FrameBuffer::FrameBuffer(int width, int height, int attachmentIndex) {
     Specification.width = width;
     Specification.height = height;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Specification.width, Specification.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentIndex, GL_TEXTURE_2D, texture, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -46,14 +44,12 @@ FrameBuffer::FrameBuffer(int width, int height, int attachmentIndex) {
 }
 
 void FrameBuffer::bind() {
-    glEnable(GL_DEPTH_TEST);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glViewport(0, 0, Specification.width, Specification.height);
+    //glViewport(0, 0, Specification.width, Specification.height);
 }
 
 void FrameBuffer::unbind() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
 }
 
 int FrameBuffer::readPixel(int attachmentIndex, int x, int y) {

@@ -44,6 +44,7 @@ void main()
     gPosition = FragPos;
     gNormal = getNormalFromMap();
     //gNormal = texture(texture_normal1,TexCoords).rgb;
+    //gNormal = normalize(Normal);
     gAlbedo.rgb = texture(texture_diffuse1, TexCoords).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
     gAlbedo.a = texture(texture_specular1, TexCoords).r;

@@ -30,6 +30,7 @@
 #include "Globals.h"
 #include "Light/DirectionalLight.h"
 #include "Light/LightManager.h"
+#include "Light/PointLight.h"
 
 
 using namespace SceneManagement;
@@ -159,6 +160,9 @@ private:
     Entity* sun;
     DirectionalLight* sunLight;
 
+    Entity* pointLight;
+    PointLight* pointLight1;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
@@ -238,7 +242,9 @@ public:
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
             sun(new Entity("Sun")),
-            sunLight(new DirectionalLight())
+            sunLight(new DirectionalLight()),
+            pointLight(new Entity("pointLight1")),
+            pointLight1(new PointLight())
     {
     }
 
@@ -291,9 +297,14 @@ public:
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+
+        pointLight->addComponent(pointLight1);
+        pointLight->getTransform()->setScale(glm::vec3(2000.f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight);
+
+
         sm.getLoadedScenes()[0]->addEntity(sun);
         sun->addComponent(sunLight);
-
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
@@ -333,6 +344,8 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         AudioManager::getInstance().playSound(path, 1.0f);
+
+        DrunkShader.setInt("screenTexture", 0);
     };
 
     void update() override{
@@ -679,9 +692,10 @@ public:
         case DrinkType::None:
             LOG_INFO("None");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0); 
+            DrunkShader.setInt("screenTexture", 0);
             break;
         }
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         ssao.renderQuad();
