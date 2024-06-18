@@ -9,7 +9,7 @@
 #include "tracy/Tracy.hpp"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-#define PROFILER
+//#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
 void* operator new(std::size_t count)
 {

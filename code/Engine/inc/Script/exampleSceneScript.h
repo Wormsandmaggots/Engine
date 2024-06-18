@@ -61,6 +61,16 @@ private:
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
 
+    glm::vec2 prevJoystickOffset;
+    glm::vec2 prevJoystickOffset2;
+    glm::vec2 prevJoystickOffset3;
+    glm::vec2 prevJoystickOffset4;
+
+    glm::vec2 joystickDiff;
+    glm::vec2 joystickDiff2;
+    glm::vec2 joystickDiff3;
+    glm::vec2 joystickDiff4;
+
     DebugInput debugInput;
 
     Shader shader;
@@ -440,10 +450,21 @@ public:
 
 
         shaderRig.use();
+
+        prevJoystickOffset = joystickOffset;
+        prevJoystickOffset2 = joystickOffset2;
+        prevJoystickOffset3 = joystickOffset3;
+        prevJoystickOffset4 = joystickOffset4;
+
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
         joystickOffset3 = playerInput1.getJoystick(2);
         joystickOffset4 = playerInput1.getJoystick(1);
+
+        joystickDiff = prevJoystickOffset - joystickOffset;
+        joystickDiff2 = prevJoystickOffset2 - joystickOffset2;
+        joystickDiff3 = prevJoystickOffset3 - joystickOffset3;
+        joystickDiff4 = prevJoystickOffset4 - joystickOffset4;
 
         joystickOffset.x = Math::Remap(
                 utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
@@ -479,11 +500,20 @@ public:
                 utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
                 0, 1, -1, 1);
 
+
         joystickOffset *= 200 * s.deltaTime;
         joystickOffset2 *= 200 * s.deltaTime;
         joystickOffset3 *= 200 * s.deltaTime;
         joystickOffset4 *= 200 * s.deltaTime;
-        //old
+
+        if(prevJoystickOffset == vec2(0.0f) && prevJoystickOffset == vec2(0.0f) ){
+            playerIK->reset("mixamorig:RightHand");
+        }
+        if(prevJoystickOffset2 == vec2(0.0f) && prevJoystickOffset2 == vec2(0.0f) ){
+            playerIK->reset("mixamorig:LeftHand");
+        }
+
+
 
         playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
         playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
