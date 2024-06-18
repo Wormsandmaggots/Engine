@@ -20,11 +20,12 @@ uniform sampler2D texture_metalic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_emissive1;
 uniform sampler2D texture_ambient1;
+uniform sampler2D texture_normal1;
 
 void main()
 {
     gPosition = FragPos;
-    gNormal = normalize(Normal);
+    gNormal = texture(texture_normal1,TexCoords).rgb;
     gAlbedo.rgb = texture(texture_diffuse1, TexCoords).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
     gAlbedo.a = texture(texture_specular1, TexCoords).r;
