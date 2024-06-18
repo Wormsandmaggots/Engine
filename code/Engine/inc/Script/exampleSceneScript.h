@@ -72,17 +72,16 @@ private:
     Shader shaderNoneDrink;
     Shader reverseShader;
     Shader bloomShader;
-    //Shader simpleBloom;
     Shader blurShader;
     Shader bloomFinalShader;
     Shader thresholdShader;
-    //Shader horizontalB;
-    //Shader verticalB;
 
     FrameBuffer buffer;
     FrameBuffer bufferSelect;
 
-    //Texture* select;
+    FrameBuffer thresholdFBO;
+    FrameBuffer blurHorizontalFBO;
+    FrameBuffer blurVerticalFBO;
 
     Shader shaderRigInstanced;
 
@@ -134,7 +133,6 @@ private:
     float time;
 
     // spawner
-    //Spawner* spawner;
     Spawner* spawner = nullptr;
     float timeToDispense;
     float timeToDispense2;
@@ -145,7 +143,6 @@ private:
     Entity* clubE;
     Entity* boxE;
     Entity* sphere1;
-    //Entity* player3;
     Entity* player;
     Entity* leftHandPointer;
     ColliderComponent* lHandcollider;
@@ -188,19 +185,18 @@ public:
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
 		    bloomShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/bloom.frag"),
-            //simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
             blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag"),
             bloomFinalShader("res/content/shaders/blur.vert", "res/content/shaders/bloom_final.frag"),
             thresholdShader("res/content/shaders/blur.vert", "res/content/shaders/threshold.frag"),
-            //horizontalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/horizontalBloom.glsl"),
-            //verticalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/verticalBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             bufferSelect(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
+            thresholdFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT),
+            blurHorizontalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT),
+            blurVerticalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            //club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
-            //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -226,7 +222,7 @@ public:
             spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
-            //clubE(new Entity("club")),
+            clubE(new Entity("club")),
             boxE(new Entity("box")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
@@ -296,11 +292,11 @@ public:
 
         //entities
 
-        /*clubE->addComponent(club);
+        clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
-        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));*/
+        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
@@ -688,117 +684,28 @@ public:
 
             break;
         }
-        /*
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, buffer.getBloomTexture());
-         */
 
-
-
-
-
-
-/*
-        // Tworzymy nowy obiekt FrameBuffer
-        FrameBuffer bloomBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-// Bindujemy framebuffer
-        bloomBuffer.bind();
-
-// Używamy shadera do wykrywania jasnych obszarów
-        simpleBloom.use();
-
-// Ustawiamy teksturę sceny
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
-        simpleBloom.setInt("scene", 0);
-
-// Ustawiamy próg
-        simpleBloom.setFloat("threshold", 0.5f);
-
-// Renderujemy do framebuffera
-        buffer.drawQuad();
-
-// Odbindowujemy framebuffer
-        bloomBuffer.unbind();
-
-// Teraz wykonujemy operację rozmycia
-        FrameBuffer blurBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-// Bindujemy framebuffer
-        blurBuffer.bind();
-
-        float blurSize = 100.0f;
-
-// Używamy shadera do rozmycia poziomego
-        horizontalB.use();
-        horizontalB.setInt("image", 0);
-        horizontalB.setFloat("blurSize", blurSize);
-
-// Rysujemy teksturę sceny
-        glActiveTexture(GL_TEXTURE0);
-        //bloomBuffer.drawQuad();
-        buffer.drawQuad();
-// Używamy shadera do rozmycia pionowego
-        verticalB.use();
-        verticalB.setInt("image", 0);
-        verticalB.setFloat("blurSize", blurSize);
-
-// Rysujemy poziomo rozmytą teksturę
-        glActiveTexture(GL_TEXTURE0);
-        //bloomBuffer.drawQuad();
-        buffer.drawQuad();
-
-// Odbindowujemy framebuffer
-        blurBuffer.unbind();
-*/
-
-
-
-
-
-
-
-
-
-
-
-        // Utwórz nowy framebuffer do przechowywania wyniku operacji threshold
-        FrameBuffer thresholdFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-// Użyj shadera threshold
+        //BLOOM---------------------------------------------------------------------------------------------------------------------------------------
         thresholdShader.use();
         thresholdShader.setInt("image", 0);
         thresholdShader.setFloat("threshold", 0.9f); // ustaw wartość progu
 
-// Binduj framebuffer
+        //selekcja kolorów
         thresholdFBO.bind();
 
-// Binduj teksturę
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
 
-// Renderuj quad
         ssao.renderQuad();
 
-// Odbinduj framebuffer
         thresholdFBO.unbind();
 
-// Teraz użyj wynikowej tekstury z operacji threshold jako wejścia do operacji rozmycia
-
-// Bind the texture that contains the result of the threshold operation
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thresholdFBO.getTexture());
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
 
-// Rozmycie
-        FrameBuffer blurHorizontalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-        FrameBuffer blurVerticalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-// Shader
+        //rozmywanie
         blurShader.use();
         blurShader.setInt("image", 0);
         blurShader.setBool("horizontal", true);
@@ -810,7 +717,7 @@ public:
         ssao.renderQuad();
         blurHorizontalFBO.unbind();
 
-// Shader 2
+
         blurVerticalFBO.bind();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, blurHorizontalFBO.getTexture());
@@ -818,6 +725,7 @@ public:
         ssao.renderQuad();
         blurVerticalFBO.unbind();
 
+        //łączenie tekstur
         bloomFinalShader.use();
         bloomFinalShader.setInt("scene", 0);
         bloomFinalShader.setInt("bloomBlur", 1);
@@ -828,24 +736,10 @@ public:
         glBindTexture(GL_TEXTURE_2D, blurVerticalFBO.getTexture()); // Rozmyta tekstura
 
         ssao.renderQuad();
-
-
-
-
-//        thresholdShader.use();
-//        thresholdShader.setInt("image", 0);
-//        thresholdShader.setFloat("threshold", 0.9f); // ustaw wartość progu
-//
-//        glActiveTexture(GL_TEXTURE0);
-//        glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
+        //BLOOM-END-----------------------------------------------------------------------------------------------------------------------------------
 
 // Renderuj quad
         ssao.renderQuad();
-
-
-
-
-
 
         /*
         //normalny widok
