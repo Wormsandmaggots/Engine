@@ -48,6 +48,18 @@ namespace SceneManagement {
             }
         }
 
+        Scene2* getSceneByName(const std::string &sceneName) {
+            auto foundedScene = std::find_if(loadedScenes.begin(), loadedScenes.end(),
+                                             [&sceneName](const Scene2* scene) { return scene->getName() == sceneName; });
+
+            if (foundedScene != loadedScenes.end()) {
+                return *foundedScene;
+            } else {
+                LOG_ERROR("Scene '" + sceneName + "' has not been loaded before.\n");
+                return nullptr;
+            }
+        }
+
     private:
         std::vector<Scene2 *> loadedScenes;
         SceneLoader sceneLoader;

@@ -251,7 +251,7 @@ public:
         sm.setCurrentScene("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(sm.getLoadedScenes()[0]);
+        spawner = new Spawner(sm.getSceneByName("MarcinScene"));
 
         //ssao
         ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -266,13 +266,13 @@ public:
         //entities
 /*
         clubE->addComponent(club);
-        sm.getLoadedScenes()[0]->addEntity(clubE);
+        sm.getSceneByName("MarcinScene")->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 */
 
-        sm.getLoadedScenes()[0]->addEntity(sphere1);
+        sm.getSceneByName("MarcinScene")->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
@@ -280,7 +280,7 @@ public:
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
-        sm.getLoadedScenes()[0]->addEntity(player);
+        sm.getSceneByName("MarcinScene")->addEntity(player);
 
         lHandcollider->start();
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
@@ -307,7 +307,7 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         //hud
-        sm.getLoadedScenes()[0]->addEntity(resBarEntity);
+        sm.getSceneByName("MarcinScene")->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
         resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
