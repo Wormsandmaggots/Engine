@@ -72,7 +72,9 @@ private:
     Shader shaderNoneDrink;
     Shader reverseShader;
     Shader bloomShader;
-    Shader simpleBloom;
+    //Shader simpleBloom;
+    Shader blurShader;
+    Shader bloomFinalShader;
     //Shader horizontalB;
     //Shader verticalB;
 
@@ -185,7 +187,9 @@ public:
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
 		    bloomShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/bloom.frag"),
-            simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
+            //simpleBloom("res/content/shaders/vertexBloom.glsl", "res/content/shaders/fragmentBloom.glsl"),
+            blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag"),
+            bloomFinalShader("res/content/shaders/blur.vert", "res/content/shaders/bloom_final.frag"),
             //horizontalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/horizontalBloom.glsl"),
             //verticalB("res/content/shaders/vertexBloom.glsl", "res/content/shaders/verticalBloom.glsl"),
             renderer(&ssao.shaderGeometryPass),
@@ -220,7 +224,7 @@ public:
             spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
-            clubE(new Entity("club")),
+            //clubE(new Entity("club")),
             boxE(new Entity("box")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
@@ -771,7 +775,7 @@ public:
         FrameBuffer blurVerticalFBO(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
         //shader
-        Shader blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag");
+        //Shader blurShader("res/content/shaders/blur.vert", "res/content/shaders/blur.frag");
         blurShader.use();
         blurShader.setInt("image", 0);
         blurShader.setBool("horizontal", true);
@@ -790,8 +794,24 @@ public:
         ssao.renderQuad();
         blurVerticalFBO.unbind();
 
+        bloomFinalShader.use();
+        bloomFinalShader.setInt("scene", 0);
+        bloomFinalShader.setInt("bloomBlur", 1);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, buffer.getTexture()); // Oryginalna scena
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, blurVerticalFBO.getTexture()); // Rozmyta tekstura
+
         ssao.renderQuad();
 
+        /*
+        //normalny widok
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
+
+        buffer.drawQuad();
+        */
         
         shaderRig.use();
      
