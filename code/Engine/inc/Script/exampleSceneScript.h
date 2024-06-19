@@ -212,7 +212,7 @@ public:
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc1/Dance3.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman/barman_animated.fbx", &shaderBarmanRig)),
-            playerModel(new Model("res/content/models/NEWCHARACTER/Character_fixed_kurwa_origin.fbx", &shaderRig)),
+            playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -261,10 +261,10 @@ public:
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(-10.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
             ir2(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(7.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc1/Dance3.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
@@ -738,6 +738,64 @@ public:
         spawner->update();
 
         cm.update();
+
+
+        shaderRig.use();
+
+
+        joystickOffset.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+
+        joystickOffset2.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset2.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset3.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset3.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+
+        joystickOffset4.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset4.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
+            0, 1, -1, 1);
+
+        joystickOffset *= 200 * s.deltaTime;
+        joystickOffset2 *= 200 * s.deltaTime;
+        joystickOffset3 *= 200 * s.deltaTime;
+        joystickOffset4 *= 200 * s.deltaTime;
+        //old
+
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
+        playerRig->update();
+
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
     };
 
