@@ -96,7 +96,7 @@ void init(){
     LOG_INFO("GLFW initialized");
 
     //CREATING WINDOW
-    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
+    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
     if (s.window == nullptr)
     {
         LOG_ERROR("Failed to Create GLFW window");
