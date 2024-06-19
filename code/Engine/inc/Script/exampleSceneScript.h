@@ -248,7 +248,7 @@ public:
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(-10.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.02f))),
             npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
@@ -718,7 +718,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         ssao.renderQuad();
 
-        
+        /*
         shaderRig.use();
      
         
@@ -768,7 +768,7 @@ public:
         playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
         playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
         playerRig->update();
-
+*/
 //        auto transforms = playerRig->GetFinalBoneMatrices();
 //        for (int i = 0; i < transforms.size(); ++i)
 //            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
