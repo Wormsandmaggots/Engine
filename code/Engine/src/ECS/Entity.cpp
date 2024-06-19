@@ -1,7 +1,6 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 #include "yaml-cpp/yaml.h"
-#include "imgui.h"
 
 
 unsigned int Entity::EntityCounter = 0;

@@ -568,11 +568,15 @@ public:
 
         //npcRig->update();
 
+        LightManager::UpdateLightShader(shaderRig, view);
+        LightManager::UpdateLightShader(shaderRigInstanced, view);
+        LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
+
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
-        renderer.updateProjectionAndView(projection, view);
+        renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

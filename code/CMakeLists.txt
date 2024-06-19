@@ -38,11 +38,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${glad_SOURCE_DIR}
         ${stb_image_SOURCE_DIR}
-        ${imgui_SOURCE_DIR}
-        ${ImGuizmo_SOURCE_DIR}
         ${miniaudio_SOURCE_DIR}
-        ${aabb_SOURCE_DIR}
-        ${ftgl_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
         ${fftw_dir}
 )

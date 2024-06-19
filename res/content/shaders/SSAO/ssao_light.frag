@@ -144,6 +144,51 @@ vec3 FresnelSchlick(float cosTheta, vec3 albedo, float metallness) {
 
 vec3 calculateDirLight(DirectionalLight lightSource, vec3 normal, vec3 position, vec2 texCoord)
 {
+    vec3 albedo     = pow(texture(gAlbedo, TexCoords).rgb, vec3(2.2));
+    float metallic  = texture(gMetallicRoughnessAmbient, TexCoords).r;
+    float roughness = texture(gMetallicRoughnessAmbient, TexCoords).g;
+    float ao        = texture(gMetallicRoughnessAmbient, TexCoords).b;
+
+    vec3 V = normalize(camPos - position);
+
+    vec3 F0 = vec3(0.04);
+    F0 = mix(F0, albedo, metallic);
+
+    vec3 L = normalize(-lightSource.direction);
+    vec3 H = normalize(V + L);
+    vec3 radiance = lightSource.colors.diffuse;
+
+    // Cook-Torrance BRDF
+    float NDF = DistributionGGX(normal, H, roughness);
+    float G   = GeometrySmith(normal, V, L, roughness);
+    vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+
+    vec3 numerator    = NDF * G * F;
+    float denominator = 4.0 * max(dot(normal, V), 0.0) * max(dot(normal, L), 0.0) + 0.0001; // + 0.0001 to prevent divide by zero
+    vec3 specular = numerator / denominator;
+
+    // kS is equal to Fresnel
+    vec3 kS = F;
+    // energy conservation
+    vec3 kD = vec3(1.0) - kS;
+    // multiply kD by the inverse metalness such that only non-metals
+    // have diffuse lighting, or a linear blend if partly metal (pure metals
+    // have no diffuse light).
+    kD *= 1.0 - metallic;
+
+    // scale light by NdotL
+    float NdotL = max(dot(normal, L), 0.0);
+
+    // add to outgoing radiance Lo
+    vec3 Lo = (kD * albedo / PI + specular) * radiance * NdotL;
+
+    vec3 ambient = vec3(0.03) * albedo * ao;
+
+    return ambient + Lo;
+}
+
+vec3 calculateDirLight2(DirectionalLight lightSource, vec3 normal, vec3 position, vec2 texCoord)
+{
     vec3 albedo = texture(gAlbedo, texCoord).rgb;
     vec3 metalnessAORoughness = texture(gMetallicRoughnessAmbient, texCoord).rgb;
 
@@ -197,7 +242,7 @@ float calculateSpotLight(SpotLight lightSource, vec3 normal, vec3 position)
     float ambientStrength = 0.1; // adjust this as needed
     vec3 ambient = ambientStrength * lightColor;
 
-    vec3 norm = normalize(normal);
+    vec3 norm = normal;
     vec3 lightDir = normalize(lightSource.position - position);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
@@ -249,7 +294,8 @@ vec3 calculatePointLight(PointLight lightSource, vec3 normal, vec3 position, vec
 
     vec3 numerator = D * G * F;
     float denominator = 4.0 * NdotV * NdotL + 0.0001;
-    vec3 specular = numerator / denominator;
+    float spec = pow(max(dot(normal, halfway), 0.0), 8.0);
+    vec3 specular = (numerator / denominator) * spec ;
 
     vec3 kS = F;
     vec3 kD = (vec3(1.0) - kS) * (1.0 - metallness);
@@ -273,47 +319,47 @@ void main()
     vec3 normal = texture(gNormal, TexCoords).rgb;
     vec3 position = texture(gPosition, TexCoords).rgb;
 
-    vec3 light = calculateDirLight(dirLight, normal, position, TexCoords);
+//    vec3 light = calculateDirLight2(dirLight, normal, texture(gWorldPos, TexCoords).rgb, TexCoords);
 
-    for(int i = 0; i < pointNum; i++)
-    {
-        light += calculatePointLight(pointLights[i], normal, position, TexCoords);
-    }
+//    for(int i = 0; i < pointNum; i++)
+//    {
+//        light += calculatePointLight(pointLights[i], normal, position, TexCoords);
+//    }
+//
+//    for (int i = 0; i < spotNum; i++)
+//    {
+//        light += calculateSpotLight(spotLights[i], normal, position);
+//    }
 
-    for (int i = 0; i < spotNum; i++)
-    {
-        light += calculateSpotLight(spotLights[i], normal, position);
-    }
-
-    FragColor = vec4(light, 1.0f);
+    FragColor = vec4(texture(gAlbedo, TexCoords).rgb, 1.0f);
 }
 
 //void main()
 //{
-//        vec3 FragPos = texture(gPosition, TexCoords).rgb;
-//        vec3 Normal = texture(gNormal, TexCoords).rgb;
-//        vec3 Albedo = pow(texture(gAlbedo, TexCoords).rgb, vec3(2.2f));
-//        float Specular = texture(gAlbedo, TexCoords).a;
-//        vec3 WorldPos = texture(gWorldPos, TexCoords).rgb;
-//        vec3 Emissive = texture(gEmissive, TexCoords).rgb;
-//        float Metallic = texture(gMetallicRoughnessAmbient, TexCoords).r;
-//        float Roughness = texture(gMetallicRoughnessAmbient, TexCoords).g;
-//        float AmbientOcclusion = (texture(gMetallicRoughnessAmbient, TexCoords).b + texture(ssao, TexCoords).r);
+////        vec3 FragPos = texture(gPosition, TexCoords).rgb;
+////        vec3 Normal = texture(gNormal, TexCoords).rgb;
+////        vec3 Albedo = pow(texture(gAlbedo, TexCoords).rgb, vec3(2.2f));
+////        float Specular = texture(gAlbedo, TexCoords).a;
+////        vec3 WorldPos = texture(gWorldPos, TexCoords).rgb;
+////        vec3 Emissive = texture(gEmissive, TexCoords).rgb;
+////        float Metallic = texture(gMetallicRoughnessAmbient, TexCoords).r;
+////        float Roughness = texture(gMetallicRoughnessAmbient, TexCoords).g;
+////        float AmbientOcclusion = (texture(gMetallicRoughnessAmbient, TexCoords).b + texture(ssao, TexCoords).r);
+////
+////        vec2 texCoord = gl_FragCoord.xy / vec2(1920, 1080);
+////        vec3 position = calculatePosition(texCoord);
+////
+////        vec3 lighting = calculateDirLight(dirLight, Normal, FragPos, TexCoords);
+////
+////        FragColor = vec4(lighting, 1.0);
 //
-//        vec2 texCoord = gl_FragCoord.xy / vec2(1920, 1080);
-//        vec3 position = calculatePosition(texCoord);
-//
-//        vec3 lighting = calculateDirLight(dirLight, Normal, FragPos, TexCoords);
-//
-//        FragColor = vec4(lighting, 1.0);
-
-// retrieve data from gbuffer
+//// retrieve data from gbuffer
 //vec3 FragPos = texture(gPosition, TexCoords).rgb;
 //vec3 Normal = texture(gNormal, TexCoords).rgb;
 //vec3 Diffuse = texture(gAlbedo, TexCoords).rgb;
 //float AmbientOcclusion = texture(ssao, TexCoords).r;
-
-// blinn-phong (in view-space)
+//
+//// blinn-phong (in view-space)
 //vec3 ambient = vec3(0.3 * Diffuse * AmbientOcclusion); // here we add occlusion factor
 //vec3 lighting  = ambient;
 //vec3 viewDir  = normalize(-FragPos); // viewpos is (0.0.0) in view-space
