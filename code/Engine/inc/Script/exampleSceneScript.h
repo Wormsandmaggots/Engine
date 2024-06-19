@@ -84,6 +84,7 @@ private:
     // model
     Model* box;
     Model* club;
+    Model* sciany;
     Model* sphere;
     Model* player2;
     Model* playerModel;
@@ -132,6 +133,7 @@ private:
 
     // entities
     Entity* clubE;
+    Entity* scianyE;
     Entity* boxE;
     Entity* sphere1;
     //Entity* player3;
@@ -193,9 +195,10 @@ public:
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+            sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
-            playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
+            playerModel(new Model("res/content/models/NEWCHARACTER/Character_fixed_kurwa_origin.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -222,6 +225,7 @@ public:
             timeToDispense2(timeToDispense),
             clubE(new Entity("club")),
             boxE(new Entity("box")),
+            scianyE(new Entity("sciany")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
@@ -301,6 +305,11 @@ public:
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
+        scianyE->addComponent(sciany);
+        sm.getLoadedScenes()[0]->addEntity(scianyE);
+        sciany->getTransform()->setScale(glm::vec3(0.5f));
+        sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
 
         pointLight->addComponent(pointLight1);
