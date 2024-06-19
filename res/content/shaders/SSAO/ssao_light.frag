@@ -229,8 +229,8 @@ vec3 calculatePointLight(PointLight lightSource, vec3 normal, vec3 position, vec
 
     float distance = length(lightVec);
 
-    if(distance > lightSource.radius)
-            return vec3(0);
+//    if(distance > lightSource.radius)
+//            return vec3(0);
 
     float attenuation = 1.0 /  (distance * distance);
     vec3 radiance = lightSource.colors.diffuse * attenuation * lightSource.intensity;
