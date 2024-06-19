@@ -1,7 +1,3 @@
-//
-// Created by Radek on 25.03.2024.
-//
-
 #ifndef ENGINE_SCENEMANAGER_H
 #define ENGINE_SCENEMANAGER_H
 

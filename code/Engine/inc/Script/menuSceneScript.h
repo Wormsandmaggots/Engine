@@ -235,7 +235,7 @@ public:
             menuWalpaper(new Entity("mainMenu")),
             ng(new Entity("startButton")),
             ex(new Entity("exitButton")),
-            dupa(new Texture("res/content/textures/dupe.png", "dupa"))
+            dupa(new Texture("res/content/textures/dupa.png", "dupa"))
     {
     }
 
