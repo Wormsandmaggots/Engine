@@ -20,6 +20,20 @@ public:
             parentTransform->setPosition(currentPosition);
         }
     }
+
+    void increaseOnImpulse(float impulse) {
+        glm::vec3 currentScale = parentTransform->getLocalScale();
+        glm::vec3 currentPosition = parentTransform->getLocalPosition();
+
+        // Zwiększamy rozmiar paska
+        currentScale.y += impulse;
+        parentTransform->setScale(currentScale);
+
+        // Przesuwamy obiekt w górę
+        currentPosition.y += impulse;
+        parentTransform->setPosition(currentPosition);
+    }
+
 };
 
 #endif

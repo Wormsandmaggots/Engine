@@ -1,18 +1,25 @@
 #pragma once
 #include <vector>
 
-class Shader; 
+class Shader;
 enum DrinkType {
-	InverseInput,
-	UpsideDown,
-	Drunk,
-	None
+    InverseInput,
+    UpsideDown,
+    Drunk,
+    None
 };
 
 extern std::vector<Shader*> globalShaders;
 extern float deltaTime;
 extern int score;
+extern int incrementScore;
 extern int combo;
 extern bool start;
 extern DrinkType currentDrink;
 extern float ballSpeed;
+extern DrinkType curentDrink;
+
+extern float lastUpdateTime;
+extern float resizeInterval; // Co sekundę
+extern float resizeAmount;
+extern int lastScore;
