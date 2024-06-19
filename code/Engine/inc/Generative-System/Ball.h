@@ -11,7 +11,7 @@ class Ball : public Entity {
 	glm::vec3 position;
 	float speed = ballSpeed;
 	bool toDestroy = false;
-public:
+public:		
 	
 	bool getToDestory() {
 		return toDestroy;
@@ -25,7 +25,7 @@ public:
 			score += 100;
 			combo += 1;
 			position = glm::vec3(100);
-			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",0.3);
+			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",1);
 		}
 	}
 	void onTriggerStay(ColliderComponent*) {

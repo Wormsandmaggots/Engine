@@ -10,6 +10,7 @@ class Drink;
 class Scene2;
 class Sound;
 class Ring;
+class Entity;
 class Spawner {
 
 
@@ -25,6 +26,9 @@ public:
 	std::vector<BadBall*> badballs;
 	std::vector<Drink*> drinks;
 	std::vector<Ring*> rings;
+
+	std::vector<Entity*> objectPool;
+	void init();
 	void update();
 	void spawnBall(const std::string& name, glm::vec3 pos);
 	void spawnBadBall(const std::string& name, glm::vec3 pos);

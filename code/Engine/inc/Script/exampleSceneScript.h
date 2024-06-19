@@ -56,7 +56,6 @@ private:
 
     PlayerInput playerInput;
     PlayerInput playerInput1;
-
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
@@ -472,7 +471,7 @@ public:
                 case sampleType::SKIP:
                     break;
             }
-           if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
+           //if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
                 spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
 
             songDataIndex++;
@@ -484,8 +483,8 @@ public:
         shaderRig.use();
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
+        joystickOffset3 = playerInput.getJoystick(2);
+        joystickOffset4 = playerInput.getJoystick(1);
 
         joystickOffset.x = Math::Remap(
                 utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
@@ -659,6 +658,8 @@ public:
         
         timer -= deltaTime;
 
+        cout << timer << endl;
+
         if (currentDrink != DrinkType::None && timer < 0) {
             timer = effectTime;
 			currentDrink = DrinkType::None;
@@ -666,15 +667,18 @@ public:
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
         switch (currentDrink) {
         case DrinkType::Drunk:
-            LOG_INFO("Drunk");
+            LOG_INFO("D");
             DrunkShader.use();
             DrunkShader.setFloat("time", time);
             DrunkShader.setInt("screenTexture", 0);
             break;
         case DrinkType::InverseInput:
-            LOG_INFO("InverseInput");
+            LOG_INFO("II");
+
             shaderNoneDrink.use();
             DrunkShader.setInt("screenTexture", 0);
             joystickOffset = -joystickOffset;
@@ -683,14 +687,15 @@ public:
             joystickOffset4 = -joystickOffset4;
             break;
         case DrinkType::UpsideDown:
-            LOG_INFO("UpsideDown");
+            LOG_INFO("UD");
 
             reverseShader.use();
             reverseShader.setFloat("time", time);
             reverseShader.setInt("screenTexture", 0);
             break;
         case DrinkType::None:
-            LOG_INFO("None");
+            LOG_INFO("N");
+
             shaderNoneDrink.use();
             DrunkShader.setInt("screenTexture", 0);
             break;

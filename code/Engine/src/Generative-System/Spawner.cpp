@@ -53,6 +53,11 @@ void Spawner::spawnDrink(const std::string& name, glm::vec3 pos)
 	drink->addChild(ring);
 }
 
+void Spawner::init()
+{
+	
+}
+
 void Spawner::update() {
 
 	for (int i = 0; i < rings.size(); i++) {
