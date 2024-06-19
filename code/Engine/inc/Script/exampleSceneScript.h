@@ -74,6 +74,8 @@ private:
     Shader DrunkShader;
     Shader shaderNoneDrink;
     Shader reverseShader;
+    Shader imageShader;
+    Shader imageShaderGreen;
 
     FrameBuffer buffer;
 
@@ -163,6 +165,11 @@ private:
     Entity* pointLight;
     PointLight* pointLight1;
 
+    //HUD
+    double lastTime;
+    ResizableImage* resBar;
+    Entity* resBarEntity;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
@@ -186,6 +193,8 @@ public:
             DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
+            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
+            imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -244,7 +253,11 @@ public:
             sun(new Entity("Sun")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
-            pointLight1(new PointLight())
+            pointLight1(new PointLight()),
+    //hud
+    resBar(new ResizableImage(&imageShaderGreen)),
+    resBarEntity(new Entity("resBar")),
+    lastTime(0.0)
     {
     }
 
@@ -342,6 +355,17 @@ public:
         rightFootPointer->setParent(*player);
         rightFootPointer->addComponent(rightFootCollider);
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+
+        //hud
+        sm.getLoadedScenes()[0]->addEntity(resBarEntity);
+        resBarEntity->addComponent(resBar);
+        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
+        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+
+//txt
+        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+
 
         AudioManager::getInstance().playSound(path, 1.0f);
 
@@ -760,11 +784,43 @@ public:
 //        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
 
-        comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        //comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        //scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
+
+
+        glDisable(GL_DEPTH_TEST);
+        //imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //hud
+        resBar->renderPlane();
+        //resizing bar
+        //temporary------------------------------------------------------------------------------------
+        double currentTime = glfwGetTime();
+        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
+        if (currentTime - lastUpdateTime >= resizeInterval) {
+            resBar->resizeOnImpulse(resizeAmount);
+            lastUpdateTime = currentTime;
+        }
+        // Jeśli score został zwiększony o incrementScore
+        if (score - lastScore >= incrementScore) {
+            resBar->increaseOnImpulse(resizeAmount);
+            lastScore = score;
+        }
+        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+            std::cout << "Koniec" << std::endl;
+        }
+        //temporary------------------------------------------------------------------------------------
+        //text
+        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
 
         spawner->update();
 
