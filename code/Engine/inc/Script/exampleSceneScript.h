@@ -253,7 +253,7 @@ public:
             rightFootPointer(new Entity("rightFootPointer")),
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
-		    timer(0),
+		    timer(10),
             path("res/content/sounds/songs/short_eurodance.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
@@ -417,7 +417,9 @@ public:
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        
         time = time + s.deltaTime;
+
         deltaTime = s.deltaTime;
 
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
@@ -544,65 +546,7 @@ public:
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }       
 
-        shaderRig.use();
-        joystickOffset = playerInput.getJoystick(2);
-        joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
-
-        joystickOffset.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-
-        joystickOffset2.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset2.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset3.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset3.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-
-        joystickOffset4.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset4.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset *= 200 * s.deltaTime;
-        joystickOffset2 *= 200 * s.deltaTime;
-        joystickOffset3 *= 200 * s.deltaTime;
-        joystickOffset4 *= 200 * s.deltaTime;
-        //old
-
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
-        playerRig->update();
-
-        auto transforms = playerRig->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+        
 
         npcAnimator->UpdateAnimation(s.deltaTime);
 
@@ -617,7 +561,7 @@ public:
         shaderBarmanRig.use();
         barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
+        for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
 
         LightManager::UpdateLightShader(shaderRig, view);
@@ -703,15 +647,13 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 //scene.update();
-        
+       
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
         joystickOffset3 = playerInput1.getJoystick(2);
         joystickOffset4 = playerInput1.getJoystick(1);
-        
-        timer -= deltaTime;
 
-        if (currentDrink != DrinkType::None && timer < 0) {
+        if (timer < 0) {
             timer = effectTime;
 			currentDrink = DrinkType::None;
 		}
@@ -720,101 +662,41 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         switch (currentDrink) {
         case DrinkType::Drunk:
-            LOG_INFO("Drunk");
             DrunkShader.use();
             DrunkShader.setFloat("time", time);
             DrunkShader.setInt("screenTexture", 0);
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::InverseInput:
-            LOG_INFO("InverseInput");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0);
+            shaderNoneDrink.setInt("screenTexture", 0);
+
             joystickOffset = -joystickOffset;
             joystickOffset2 = -joystickOffset2;
             joystickOffset3 = -joystickOffset3;
             joystickOffset4 = -joystickOffset4;
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::UpsideDown:
-            LOG_INFO("UpsideDown");
 
             reverseShader.use();
             reverseShader.setFloat("time", time);
             reverseShader.setInt("screenTexture", 0);
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::None:
-            LOG_INFO("None");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0);
+            shaderNoneDrink.setInt("screenTexture", 0);
             break;
         }
+
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         ssao.renderQuad();
-
-        /*
-        shaderRig.use();
-     
-        
-
-        joystickOffset.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-
-        joystickOffset2.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset2.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset3.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset3.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-
-        joystickOffset4.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset4.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
-
-        joystickOffset *= 200 * s.deltaTime;
-        joystickOffset2 *= 200 * s.deltaTime;
-        joystickOffset3 *= 200 * s.deltaTime;
-        joystickOffset4 *= 200 * s.deltaTime;
-        //old
-
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
-        playerRig->update();
-*/
-//        auto transforms = playerRig->GetFinalBoneMatrices();
-//        for (int i = 0; i < transforms.size(); ++i)
-//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-//        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-//        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-//        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-//        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
-
-
-        //comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        //scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-
 
 
         glDisable(GL_DEPTH_TEST);
@@ -839,6 +721,9 @@ public:
         if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
             std::cout << "Koniec" << std::endl;
         }
+
+        
+
         //temporary------------------------------------------------------------------------------------
         //text
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
