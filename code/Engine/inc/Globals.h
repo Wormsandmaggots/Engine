@@ -17,7 +17,6 @@ extern int combo;
 extern bool start;
 extern DrinkType currentDrink;
 extern float ballSpeed;
-extern DrinkType curentDrink;
 
 extern float lastUpdateTime;
 extern float resizeInterval; // Co sekundę
