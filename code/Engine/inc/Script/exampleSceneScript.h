@@ -88,6 +88,7 @@ private:
     Model* sphere;
     Model* player2;
     Model* playerModel;
+    Model* barDrinks;
 
     Model* sphereModel;
     Model* sphereModel_green;
@@ -135,6 +136,7 @@ private:
     Entity* clubE;
     Entity* scianyE;
     Entity* boxE;
+    Entity* barDrinksE;
     Entity* sphere1;
     //Entity* player3;
     Entity* player;
@@ -197,6 +199,7 @@ public:
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
+            barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/NEWCHARACTER/Character_fixed_kurwa_origin.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
@@ -226,6 +229,7 @@ public:
             clubE(new Entity("club")),
             boxE(new Entity("box")),
             scianyE(new Entity("sciany")),
+            barDrinksE(new Entity("barDrinks")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
@@ -238,7 +242,7 @@ public:
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
 		    timer(0),
-            path("res/content/sounds/songs/overcompensate.wav"),
+            path("res/content/sounds/songs/short_eurodance.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
@@ -299,7 +303,7 @@ public:
         screenShader.setInt("screenTexture", 0);
 
         //entities
-
+        //club interior
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
@@ -311,6 +315,11 @@ public:
         sciany->getTransform()->setScale(glm::vec3(0.5f));
         sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        barDrinksE->addComponent(barDrinks);
+        sm.getLoadedScenes()[0]->addEntity(barDrinksE);
+        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
+        barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
