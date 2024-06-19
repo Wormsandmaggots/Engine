@@ -708,11 +708,11 @@ public:
         //rozmywanie
         blurShader.use();
         blurShader.setInt("image", 0);
-        blurShader.setBool("horizontal", true);
+        //blurShader.setBool("horizontal", true);
 
         blurHorizontalFBO.bind();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thresholdFBO.getTexture()); // twoja tekstura z jasnymi częściami
+        glBindTexture(GL_TEXTURE_2D, thresholdFBO.getTexture()); 
         blurShader.setBool("horizontal", true);
         ssao.renderQuad();
         blurHorizontalFBO.unbind();
