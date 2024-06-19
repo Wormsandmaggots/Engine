@@ -54,18 +54,12 @@ target_link_libraries(${PROJECT_NAME}
         stb_image
         assimp
         glfw
-        imgui
         spdlog
         glm::glm
         nlohmann_json::nlohmann_json
         yaml-cpp
         freetype
         miniaudio
-        #aabb
-        effolkronium_random
-        gizmos
-        #ftgl
-        TracyClient
         sndfile
         JoyShockLibrary
         ${fftw_dir}/fftw3.lib

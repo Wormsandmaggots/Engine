@@ -184,21 +184,6 @@ void Entity::toYaml(YAML::Emitter &emitter) {
     }
 }
 
-void Entity::drawEditor() {
-    int i = 0;
-    for (Component* c : components) {
-        c->drawEditor();
-        ImGui::Button("Remove component");
-        if(ImGui::IsItemClicked())
-        {
-            removeComponent(i);
-        }
-
-        ImGui::Separator();
-        i++;
-    }
-}
-
 void Entity::removeComponent(Component *c) {
     components.erase(std::remove(components.begin(), components.end(), c), components.end());
 

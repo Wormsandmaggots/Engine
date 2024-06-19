@@ -7,7 +7,6 @@
 #include "Physics/Colliders/Collider.h"
 #include "Physics/ColliderComponent.h"
 #include "Debug/Logger.h"
-#include <tracy/Tracy.hpp>
 
 
 std::vector<Collider*> CollisionManager::Colliders;
@@ -22,8 +21,6 @@ void CollisionManager::RemoveCollider(Collider *collider) {
 }
 
 void CollisionManager::update() {
-
-    ZoneScopedN("Collision");
 
     collisions.clear();
     bool collidedWithSmth = false;

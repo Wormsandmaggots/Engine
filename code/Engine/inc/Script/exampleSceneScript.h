@@ -4,17 +4,13 @@
 #include "Script/SceneScript.h"
 
 #include "windows.h"
-#include "Debug/Profiler.h"
-#include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
 
 #include "Engine/Engine.h"
-#include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
-#include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
 #include "HUD/Image.h"
 #include "HUD/Button.h"
@@ -37,8 +33,6 @@ using namespace SceneManagement;
 
 class exampleSceneScript : public SceneScript {
 private:
-    // editor
-    EditorLayer::Editor editor;
     // collision
     CollisionManager cm;
     // scene manager
@@ -276,8 +270,6 @@ public:
     };
 
     void start() override{
-        //editor
-        editor.init(&s.camera);
 
         //audio
         audioManager.init();
@@ -576,25 +568,6 @@ public:
 
         //npcRig->update();
 
-
-        ImGui::Begin("SSAO");
-
-        {
-            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
-            ImGui::DragFloat("linear", &linear);
-            ImGui::DragFloat("quadratic", &quadratic);
-            ImGui::DragFloat("power", &power);
-            ImGui::DragFloat("kernelSize", &kernelSize);
-            ImGui::DragFloat("radius", &radius);
-            ImGui::DragFloat("bias", &bias);
-            ImGui::DragFloat2("range", glm::value_ptr(range));
-            ImGui::DragFloat("multiplier", &mul);
-            ImGui::DragFloat("texel size", &texelSize);
-            ImGui::Checkbox("Only SSAO", &onlySSAO);
-        }
-
-        ImGui::End();
-
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
@@ -602,7 +575,6 @@ public:
         renderer.updateProjectionAndView(projection, view);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        editor.draw();
 
         sm.updateLoadedScenes();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

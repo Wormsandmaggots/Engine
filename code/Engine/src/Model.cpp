@@ -1,6 +1,5 @@
 #include "Model.h"
 #include "imgui.h"
-#include "Editor/Panels/FileDialog.h"
 #include <GLFW/glfw3.h>
 #include "assimp_glm_helpers.h"
 void Model::awake() {}
@@ -209,24 +208,7 @@ void Model::setPath(std::string path) {
     this->path = path;
 }
 
-void Model::drawEditor() {
-    ImGui::Text("Model");
 
-    if(ImGui::Button(path.c_str()))
-    {
-        std::string newPath = FileDialog::openFile("");
-
-        if(!newPath.empty())
-        {
-            setPath(newPath);
-            textures_loaded.clear();
-            meshes.clear();
-            loadModel(newPath);
-        }
-    }
-
-    ImGui::NewLine();
-}
 
 auto& Model::GetBoneInfoMap() {return m_BoneInfoMap;}
 int& Model::GetBoneCount() { return m_BoneCounter;}

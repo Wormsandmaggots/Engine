@@ -1,6 +1,5 @@
 #include "Renderer/Renderer.h"
 #include <Renderer/MaterialAsset.h>
-#include <tracy/Tracy.hpp>
 
 Renderer::Renderer(Shader* shader) {
 	globalShaders.push_back(shader);
@@ -31,7 +30,6 @@ void Renderer::end()
 
 void Renderer::Render(Renderable *renderable)
 {
-    ZoneTransientN(Render, "Render", true);
 
 	if (renderable->getShader() == nullptr) {
 		defaultShader->use();

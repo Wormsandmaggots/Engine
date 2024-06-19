@@ -5,7 +5,7 @@
 #include "Physics/ColliderComponent.h"
 #include "Debug/Logger.h"
 #include "Scene/Transform2.h"
-#include "Editor/Gizmos.h"
+#include "glm/gtc/type_ptr.hpp"
 
 void ColliderComponent::start() {
     collider->setOwner(this);
@@ -54,41 +54,6 @@ void ColliderComponent::convertToYaml(YAML::Emitter &emitter) {
         float* size = glm::value_ptr(collider->getColliderShape()->size);
         emitter << YAML::Key << "Size" << YAML::Flow << YAML::BeginSeq  << size[0] << size[1] << size[2] << YAML::EndSeq;
     }
-}
-
-void ColliderComponent::drawEditor() {
-    ImGui::Text("Collider component");
-
-    const char* types[2] = {"Box", "Sphere"};
-    
-
-    static int currentItem = collider->getColliderShape()->getType() == ColliderShapes::ColliderShapeType::BOX ? 0 : 1;
-
-    if(ImGui::Combo("Collider type", &currentItem,
-                 types, IM_ARRAYSIZE(types)))
-    {
-        if(collider->getColliderShape()->getType() == ColliderShapes::ColliderShapeType::BOX && currentItem == 1)
-        {
-            collider->setColliderShape(new ColliderShapes::Sphere(glm::vec3(0.f), glm::vec3(0.f), 0.7102f));
-        }
-        else if(collider->getColliderShape()->getType() == ColliderShapes::ColliderShapeType::SPHERE && currentItem == 0)
-        {
-            collider->setColliderShape(new ColliderShapes::Box(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f)));
-        }
-    }
-
-    if(collider->getColliderShape()->getType() == ColliderShapes::ColliderShapeType::BOX)
-    {
-        ImGui::DragFloat3("Size", glm::value_ptr(collider->getColliderShape()->size), 0.1f);
-    } else{
-        static float radius = collider->getColliderShape()->getRadius();
-
-        ImGui::DragFloat("Radius", &radius, 0.1f);
-
-        collider->getColliderShape()->setRadius(radius);
-    }
-
-    ImGui::NewLine();
 }
 
 //ColliderComponent::~ColliderComponent() {

@@ -23,7 +23,6 @@ int main() {
 
     while (!glfwWindowShouldClose(s.window))
     {
-        imgui_begin();
         //update
         examplesceneScript->update();
 

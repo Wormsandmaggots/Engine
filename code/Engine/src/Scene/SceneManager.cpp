@@ -4,7 +4,6 @@
 
 #include "Engine/inc/Scene/SceneManager.h"
 #include "Debug/Logger.h"
-#include <tracy/Tracy.hpp>
 
 using namespace SceneManagement;
 
@@ -39,7 +38,6 @@ void SceneManager::updateLoadedScenes() {
  */
 
 void SceneManager::updateLoadedScenes() {
-    ZoneScopedN("Scene update");
     if (currentScene) {
         currentScene->update();
     }

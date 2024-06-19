@@ -25,7 +25,6 @@ public:
 
     Collider *getCollider() const;
 
-    void drawEditor() override;
 
 private:
     Collider* collider = new Collider(this);
