@@ -226,7 +226,11 @@ public:
         joystickOffset2 *= 200 * s.deltaTime;
         joystickOffset3 *= 200 * s.deltaTime;
         joystickOffset4 *= 200 * s.deltaTime;
+
+        renderer.updateProjectionAndView(projection, view);
         
+        editor.draw();
+        sm.updateLoadedScenes();
 
         glDisable(GL_DEPTH_TEST);
         //imageShader.use();
