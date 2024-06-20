@@ -82,7 +82,7 @@ int main() {
     sm.setCurrentScene("KubaScene");
 
     bool switched = true;
-
+    Scene2* currentScene;
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
@@ -103,7 +103,7 @@ int main() {
         glm::mat4 view = s.camera.GetViewMatrix();
 
         // Pobieranie aktualnej sceny
-        Scene2* currentScene = sm.getCurrentScene();
+        currentScene = sm.getCurrentScene();
         if (currentScene != nullptr) {
             // Sprawdzanie, która scena jest aktualnie aktywna
             if (currentScene->getName() == "KubaScene") {
@@ -111,7 +111,7 @@ int main() {
                 menusceneScript->update();
             } else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
-                //examplesceneScript->update();
+                 examplesceneScript->update();
             }
         }
 
