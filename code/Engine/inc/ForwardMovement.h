@@ -14,7 +14,9 @@ public:
 
     }
     void update() override{
-        this->getTransform()->translate(glm::vec3(0.0f,0.0f,velocity*deltaTime));
+        if(deltaTime<1){
+            this->getTransform()->translate(glm::vec3(0.0f,0.0f,velocity*deltaTime));
+        }
         //Entity::update();
         if(this->getTransform()->getPosition().z >=finish.z){
             globalVelocity = 0.0f;

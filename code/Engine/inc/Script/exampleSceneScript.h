@@ -279,7 +279,7 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 50))),
+            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
@@ -351,7 +351,7 @@ public:
         sm.getLoadedScenes()[0]->addEntity(barmanE);
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
-        barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.0f));
+        barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
 
         //lights
         pointLight->addComponent(pointLight1);
