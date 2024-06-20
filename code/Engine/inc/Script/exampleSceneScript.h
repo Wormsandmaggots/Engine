@@ -33,6 +33,7 @@ using namespace SceneManagement;
 
 class exampleSceneScript : public SceneScript {
 private:
+    EditorLayer::Editor editor;
     // collision
     CollisionManager cm;
     // scene manager
@@ -294,6 +295,7 @@ public:
         range = glm::vec2(2,2);
         mul = 4;
         texelSize = 1;
+        editor.init(&s.camera);
     };
 
     void start() override{
@@ -567,6 +569,7 @@ public:
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
+        LightManager::UpdateLightShader(shaderBarmanRig, view);
 
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
@@ -575,6 +578,7 @@ public:
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        editor.draw();
 
         sm.updateLoadedScenes();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -718,9 +722,9 @@ public:
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
         }
-        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-            std::cout << "Koniec" << std::endl;
-        }
+//        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+//            std::cout << "Koniec" << std::endl;
+//        }
 
         
 

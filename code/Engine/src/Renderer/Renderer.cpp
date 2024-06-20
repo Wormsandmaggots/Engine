@@ -48,11 +48,12 @@ void Renderer::Render(Renderable *renderable)
 	
 }
 
-void Renderer::updateProjectionAndView(glm::mat4 projection, glm::mat4 view)
+void Renderer::updateProjectionAndView(glm::mat4 projection, glm::mat4 view, glm::vec3 camPos)
 {
 	for (Shader* shader : globalShaders) {
 		shader->use();		
 		shader->setMat4("view", view);
 		shader->setMat4("projection", projection);
+        shader->setVec3("camPos", camPos);
 	}
 }
