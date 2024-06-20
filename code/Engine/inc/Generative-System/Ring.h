@@ -51,7 +51,7 @@ public:
 	}
 
 	void update() override {
-		this->getTransform()->setPosition(position);
+		this->getTransform()->translate(glm::vec3(0.0f,0.0f,(globalVelocity*deltaTime)));
 		Entity::update();
 	}
 

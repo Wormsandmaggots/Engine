@@ -258,7 +258,7 @@ public:
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
 		    timer(10),
-            path("res/content/sounds/songs/short_eurodance.wav"),
+            path("res/content/sounds/songs/if_you_dont.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
@@ -279,7 +279,7 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement("res/content/sounds/songs/short_eurodance.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 50))),
+            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 50))),
     //hud
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
@@ -417,7 +417,7 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        //AudioManager::getInstance().playSound(path, 1.0f);
+        AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
     };
@@ -448,8 +448,8 @@ public:
 
         //moving forward
         if(deltaTime < 1){
-            player->getTransform()->translate(glm::vec3(0.0f,0.0f,deltaTime*fm->velocity));
-            z += deltaTime * fm->velocity;
+            player->getTransform()->translate(glm::vec3(0.0f,0.0f,deltaTime*globalVelocity));
+            z += deltaTime * globalVelocity;
 
         }
 

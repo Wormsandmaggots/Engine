@@ -22,3 +22,5 @@ extern float lastUpdateTime;
 extern float resizeInterval; // Co sekundę
 extern float resizeAmount;
 extern int lastScore;
+
+extern float globalVelocity;

@@ -21,7 +21,7 @@ void Spawner::spawnBall(const std::string& name, glm::vec3 pos) {
 		balls.push_back(kula);
 		kula->getTransform()->setRotation(glm::vec3(90,90,90));
 		this->scene->addEntity(kula);
-		Ring* ring = new Ring(name, glm::vec3(pos.x,pos.y,-0.3), new Model(*this->ringModel));
+		Ring* ring = new Ring(name, glm::vec3(pos.x,pos.y,pos.z-5.3), new Model(*this->ringModel));
 		rings.push_back(ring);
 		ring->getTransform()->setRotation(glm::vec3(90, 90, 90));
 		kula->addChild(ring);
@@ -34,7 +34,7 @@ void Spawner::spawnBadBall(const std::string& name, glm::vec3 pos) {
 	kula->getTransform()->setRotation(glm::vec3(90, 90, 90));
 	this->scene->addEntity(kula);
 	ballsSpawned++;
-	Ring* ring = new Ring(name, glm::vec3(pos.x, pos.y, pos.x), new Model(*this->ringModel));
+	Ring* ring = new Ring(name, glm::vec3(pos.x, pos.y, pos.z-5.3), new Model(*this->ringModel));
 	rings.push_back(ring);
 	ring->getTransform()->setRotation(glm::vec3(90, 90, 90));
 	kula->addChild(ring);

@@ -9,6 +9,7 @@
 
 class BadBall : public Entity {
 	glm::vec3 position;
+    glm::vec3 startPosition;
 	float speed = ballSpeed;
 	bool toDestroy = false;
 public:
@@ -38,7 +39,7 @@ public:
 
 
 
-	BadBall(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position) {
+	BadBall(const std::string name, const glm::vec3& position, Model* model) : Entity(name), position(position), startPosition(position) {
 		ColliderComponent* collider = new ColliderComponent();
 		collider->setParent(this);
 		collider->start();
@@ -52,8 +53,8 @@ public:
 
 	void update() override {
 
-		position.z -= speed * deltaTime;
-		if (position.z < -1.5 && !toDestroy) {
+		position.z -= (speed-globalVelocity) * deltaTime;
+		if (position.z < startPosition.z-6.5 && !toDestroy) {
 			toDestroy = true;
 			position = glm::vec3(100);
 		}
