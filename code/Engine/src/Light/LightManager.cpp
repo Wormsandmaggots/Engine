@@ -47,6 +47,7 @@ void LightManager::AddLight(LightSource* light) {
 
 void LightManager::UpdateLightShader(Shader& shader, glm::mat4 view) {
 
+    shader.use();
     for (int i = 0; i < Lights.size(); ++i) {
         Lights[i]->setValuesToShader(shader, Lights[i]->lightType == LightType::SPOT ? SpotLightNum - (SpotLightNum - i) - 1 :
         PointLightsNum - (PointLightsNum - i) - 1, view);

@@ -17,7 +17,7 @@ PointLight::PointLight(const glm::vec3 &color,float intensity,float linear,float
 void PointLight::setValuesToShader(Shader &shader, int i, glm::mat4 view) {
     std::string iterator = "pointLights[" + std::to_string(i) + "].";
 
-    shader.setVec3(iterator + "position", glm::vec4((view * parentTransform->getWorldMatrix())[3]));
+    shader.setVec3(iterator + "position", glm::vec4((parentTransform->getWorldMatrix())[3]));
     //shader.setVec3(iterator + "position", glm::vec4((parentTransform->getWorldMatrix())[3]));
     shader.setVec3(iterator + "colors.ambient", parentTransform->getLocalScale());
     shader.setVec3(iterator + "colors.diffuse", parentTransform->getLocalScale());

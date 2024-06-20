@@ -18,7 +18,7 @@ public:
     void static Render(Renderable *renderable);
     virtual ~Renderer() = default;
     inline static Shader *defaultShader;
-    void updateProjectionAndView(glm::mat4 view, glm::mat4 projection);
+    void updateProjectionAndView(glm::mat4 view, glm::mat4 projection, glm::vec3 camPos);
 
     // 1) render do frame buffera
     // 3) frame buffer do post procesow

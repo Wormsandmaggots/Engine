@@ -4,17 +4,13 @@
 #include "Script/SceneScript.h"
 
 #include "windows.h"
-#include "Debug/Profiler.h"
-#include "tracy/TracyOpenGL.hpp"
 #include "Text/Text.h"
 
 #include "Engine/Engine.h"
-#include "Editor/Editor.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "ThirdPersonCamera.h"
 #include "Physics/ColliderComponent.h"
 #include "Physics/CollisionManager.h"
-#include "Editor/Gizmos.h"
 #include "Input/DebugInput.h"
 #include "HUD/Image.h"
 #include "HUD/Button.h"
@@ -37,8 +33,6 @@ using namespace SceneManagement;
 
 class exampleSceneScript : public SceneScript {
 private:
-    // editor
-    EditorLayer::Editor editor;
     // collision
     CollisionManager cm;
     // scene manager
@@ -71,6 +65,7 @@ private:
     Shader shaderPbr;
     Shader screenShader;
     Shader shaderRig;
+    Shader shaderBarmanRig;
     Shader DrunkShader;
     Shader shaderNoneDrink;
     Shader reverseShader;
@@ -90,9 +85,12 @@ private:
     // model
     Model* box;
     Model* club;
+    Model* sciany;
     Model* sphere;
     Model* player2;
     Model* playerModel;
+    Model* barDrinks;
+    Model* barman;
 
     Model* sphereModel;
     Model* sphereModel_green;
@@ -138,9 +136,12 @@ private:
 
     // entities
     Entity* clubE;
+    Entity* scianyE;
     Entity* boxE;
+    Entity* barDrinksE;
+    Entity* barmanE;
     Entity* sphere1;
-    //Entity* player3;
+    Entity* player3;
     Entity* player;
     Entity* leftHandPointer;
     ColliderComponent* lHandcollider;
@@ -154,10 +155,16 @@ private:
 
     
     Entity* dancingRobots;
+    Entity* dancingRobots2;
     InstancedRobots* ir;
+    InstancedRobots* ir2;
     Animation* npcAnimation;
     Animator* npcAnimator;
     RigPrep* npcRig;
+
+    Animation* barmanAnimation;
+    Animator* barmanAnimator;
+    RigPrep* barmanRig;
 
     Entity* sun;
     DirectionalLight* sunLight;
@@ -190,6 +197,7 @@ public:
             shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            shaderBarmanRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
@@ -199,8 +207,11 @@ public:
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+            sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
-            //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
+            barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
+            player2(new Model("res/content/models/npc1/Dance3.fbx", &ssao.shaderGeometryPass)),
+            barman(new Model("res/content/models/barman/barman_animated.fbx", &shaderBarmanRig)),
             playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -228,6 +239,9 @@ public:
             timeToDispense2(timeToDispense),
             clubE(new Entity("club")),
             boxE(new Entity("box")),
+            scianyE(new Entity("sciany")),
+            barDrinksE(new Entity("barDrinks")),
+            barmanE(new Entity("barman")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
@@ -239,17 +253,24 @@ public:
             rightFootPointer(new Entity("rightFootPointer")),
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
-		    timer(0),
-            path("res/content/sounds/songs/overcompensate.wav"),
+		    timer(10),
+            path("res/content/sounds/songs/short_eurodance.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
+            dancingRobots2(new Entity("dancingRobots2")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
-            ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5,5),
+            ir(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
+                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            ir2(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
+                                   &shaderRigInstanced,
+                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            npcAnimation(new Animation("res/content/models/npc1/Dance3.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
+            barmanAnimation(new Animation("res/content/models/barman/barman_animated.fbx", barman)),
+            barmanAnimator(new Animator(barmanAnimation)),
+            barmanRig(new RigPrep(barman)),
             sun(new Entity("Sun")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
@@ -276,8 +297,6 @@ public:
     };
 
     void start() override{
-        //editor
-        editor.init(&s.camera);
 
         //audio
         audioManager.init();
@@ -303,14 +322,31 @@ public:
         screenShader.setInt("screenTexture", 0);
 
         //entities
-
+        //club interior
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        scianyE->addComponent(sciany);
+        sm.getLoadedScenes()[0]->addEntity(scianyE);
+        sciany->getTransform()->setScale(glm::vec3(0.5f));
+        sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        barDrinksE->addComponent(barDrinks);
+        sm.getLoadedScenes()[0]->addEntity(barDrinksE);
+        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
+        barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
+        barmanE->addComponent(barman);
+        sm.getLoadedScenes()[0]->addEntity(barmanE);
+        barman->getTransform()->setScale(glm::vec3(0.02f));
+        barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
+        barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.0f));
+
+        //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
         sm.getLoadedScenes()[0]->addEntity(pointLight);
@@ -321,6 +357,9 @@ public:
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
+
+        sm.getLoadedScenes()[0]->addEntity(dancingRobots2);
+        dancingRobots->addComponent(ir2);
 
         sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -378,7 +417,9 @@ public:
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        
         time = time + s.deltaTime;
+
         deltaTime = s.deltaTime;
 
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
@@ -389,7 +430,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
+        barmanAnimator->UpdateAnimation(deltaTime);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -505,65 +546,7 @@ public:
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }       
 
-        shaderRig.use();
-        joystickOffset = playerInput.getJoystick(2);
-        joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
-
-        joystickOffset.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-
-        joystickOffset2.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset2.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset3.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset3.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-
-        joystickOffset4.x = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset4.y = Math::Remap(
-                utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0 ,1)),
-                0, 1, -1, 1);
-
-        joystickOffset *= 200 * s.deltaTime;
-        joystickOffset2 *= 200 * s.deltaTime;
-        joystickOffset3 *= 200 * s.deltaTime;
-        joystickOffset4 *= 200 * s.deltaTime;
-        //old
-
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
-        playerRig->update();
-
-        auto transforms = playerRig->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+        
 
         npcAnimator->UpdateAnimation(s.deltaTime);
 
@@ -575,34 +558,23 @@ public:
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
         //npcRig->update();
+        shaderBarmanRig.use();
+        barmanRig->update();
+        auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms3.size(); ++i)
+            shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
 
-
-        ImGui::Begin("SSAO");
-
-        {
-            ImGui::DragFloat3("light Color", glm::value_ptr(lightColor));
-            ImGui::DragFloat("linear", &linear);
-            ImGui::DragFloat("quadratic", &quadratic);
-            ImGui::DragFloat("power", &power);
-            ImGui::DragFloat("kernelSize", &kernelSize);
-            ImGui::DragFloat("radius", &radius);
-            ImGui::DragFloat("bias", &bias);
-            ImGui::DragFloat2("range", glm::value_ptr(range));
-            ImGui::DragFloat("multiplier", &mul);
-            ImGui::DragFloat("texel size", &texelSize);
-            ImGui::Checkbox("Only SSAO", &onlySSAO);
-        }
-
-        ImGui::End();
+        LightManager::UpdateLightShader(shaderRig, view);
+        LightManager::UpdateLightShader(shaderRigInstanced, view);
+        LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
 
         shaderPbr.use();
         shaderPbr.setVec3("camPos",s.camera.Position);
         shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
-        renderer.updateProjectionAndView(projection, view);
+        renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        editor.draw();
 
         sm.updateLoadedScenes();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -675,15 +647,13 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 //scene.update();
-        
+       
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
         joystickOffset3 = playerInput1.getJoystick(2);
         joystickOffset4 = playerInput1.getJoystick(1);
-        
-        timer -= deltaTime;
 
-        if (currentDrink != DrinkType::None && timer < 0) {
+        if (timer < 0) {
             timer = effectTime;
 			currentDrink = DrinkType::None;
 		}
@@ -692,42 +662,86 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         switch (currentDrink) {
         case DrinkType::Drunk:
-            LOG_INFO("Drunk");
             DrunkShader.use();
             DrunkShader.setFloat("time", time);
             DrunkShader.setInt("screenTexture", 0);
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::InverseInput:
-            LOG_INFO("InverseInput");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0);
+            shaderNoneDrink.setInt("screenTexture", 0);
+
             joystickOffset = -joystickOffset;
             joystickOffset2 = -joystickOffset2;
             joystickOffset3 = -joystickOffset3;
             joystickOffset4 = -joystickOffset4;
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::UpsideDown:
-            LOG_INFO("UpsideDown");
 
             reverseShader.use();
             reverseShader.setFloat("time", time);
             reverseShader.setInt("screenTexture", 0);
+            timer -= s.deltaTime;
+
             break;
         case DrinkType::None:
-            LOG_INFO("None");
             shaderNoneDrink.use();
-            DrunkShader.setInt("screenTexture", 0);
+            shaderNoneDrink.setInt("screenTexture", 0);
             break;
         }
+
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, buffer.getTexture());
         ssao.renderQuad();
 
+
+        glDisable(GL_DEPTH_TEST);
+        //imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //hud
+        resBar->renderPlane();
+        //resizing bar
+        //temporary------------------------------------------------------------------------------------
+        double currentTime = glfwGetTime();
+        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
+        if (currentTime - lastUpdateTime >= resizeInterval) {
+            resBar->resizeOnImpulse(resizeAmount);
+            lastUpdateTime = currentTime;
+        }
+        // Jeśli score został zwiększony o incrementScore
+        if (score - lastScore >= incrementScore) {
+            resBar->increaseOnImpulse(resizeAmount);
+            lastScore = score;
+        }
+        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+            std::cout << "Koniec" << std::endl;
+        }
+
         
+
+        //temporary------------------------------------------------------------------------------------
+        //text
+        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
+
+        comboRenderer->renderText();
+        scoreRenderer->renderText();
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
+
+        spawner->update();
+
+        cm.update();
+
+
         shaderRig.use();
-     
-        
+
 
         joystickOffset.x = Math::Remap(
             utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
@@ -775,56 +789,13 @@ public:
         playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
         playerRig->update();
 
-//        auto transforms = playerRig->GetFinalBoneMatrices();
-//        for (int i = 0; i < transforms.size(); ++i)
-//            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-//        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-//        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-//        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-//        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
-
-
-        //comboRenderer->setParameters("Score " + std::to_string(score), 100, 100, 1.0f, glm::vec3(0.6, 0.9f, 0.3f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        //scoreRenderer->setParameters("Combo " + std::to_string(combo) + "x", 100, 150, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-
-
-
-        glDisable(GL_DEPTH_TEST);
-        //imageShader.use();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //hud
-        resBar->renderPlane();
-        //resizing bar
-        //temporary------------------------------------------------------------------------------------
-        double currentTime = glfwGetTime();
-        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
-        if (currentTime - lastUpdateTime >= resizeInterval) {
-            resBar->resizeOnImpulse(resizeAmount);
-            lastUpdateTime = currentTime;
-        }
-        // Jeśli score został zwiększony o incrementScore
-        if (score - lastScore >= incrementScore) {
-            resBar->increaseOnImpulse(resizeAmount);
-            lastScore = score;
-        }
-        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-            std::cout << "Koniec" << std::endl;
-        }
-        //temporary------------------------------------------------------------------------------------
-        //text
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
-
-        comboRenderer->renderText();
-        scoreRenderer->renderText();
-
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
-
-        spawner->update();
-
-        cm.update();
+        auto transforms = playerRig->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
     };
 
