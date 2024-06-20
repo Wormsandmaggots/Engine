@@ -179,6 +179,7 @@ private:
     Entity* resBarEntity;
 
     ForwardMovement* fm;
+    float z;
 
 public:
     // Konstruktor domyślny
@@ -299,6 +300,7 @@ public:
         mul = 4;
         texelSize = 1;
         editor.init(&s.camera);
+        z =5;
     };
 
     void start() override{
@@ -421,7 +423,7 @@ public:
     };
 
     void update() override{
-        float z = 5;
+
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
@@ -448,6 +450,7 @@ public:
         if(deltaTime < 1){
             player->getTransform()->translate(glm::vec3(0.0f,0.0f,deltaTime*fm->velocity));
             z += deltaTime * fm->velocity;
+
         }
 
 // bardziej randomowe spawnowanie
