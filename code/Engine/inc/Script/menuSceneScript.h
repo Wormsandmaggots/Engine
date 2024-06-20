@@ -81,29 +81,7 @@ private:
 public:
     // Konstruktor domyślny
     menuSceneScript() :
-            audioManager(AudioManager::getInstance()),
-            sound(audioManager.loadSound("res/content/sounds/songs/queen.wav")),
-            connectedControllers(JslConnectDevices()),
-            playerInput(GLFW_JOYSTICK_1),
-            playerInput1(GLFW_JOYSTICK_2),
-            joystickOffset(glm::vec2(0)),
-            joystickOffset2(glm::vec2(0)),
-            joystickOffset3(glm::vec2(0)),
-            joystickOffset4(glm::vec2(0)),
-            shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
-            shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
-            shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
-            screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
-            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
-            imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
-            renderer(&shader),
-
-            //hud
-            resBar(new ResizableImage(&imageShaderGreen)),
-            resBarEntity(new Entity("resBar")),
-            lastTime(0.0),
-
-            //menu
+               //menu
             mainMenu(new Image(&imageShader)),
             startButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
@@ -121,10 +99,10 @@ public:
     void start() override{
         initCommonElements();
         //editor
-        editor.init(&s.camera);
+        //editor.init(&s.camera);
 
         //audio
-        audioManager.init();
+        //audioManager.init();
 
 
         //scene manager
@@ -133,19 +111,14 @@ public:
 
 
         //renderer
-        renderer.init();
+        //renderer.init();
 
         //screen shader
-        screenShader.use();
-        screenShader.setInt("screenTexture", 0);
+        //screenShader.use();
+        //screenShader.setInt("screenTexture", 0);
 
         //hud
-        sm.getSceneByName("KubaScene")->addEntity(resBarEntity);
-        resBarEntity->addComponent(resBar);
-        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
-        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
-
-        AudioManager::getInstance().playSound("res/content/sounds/songs/queen.wav", 1.0f);
+        //AudioManager::getInstance().playSound("res/content/sounds/songs/queen.wav", 1.0f);
 
         //main menu
         sm.getSceneByName("KubaScene")->addEntity(menuWalpaper);
