@@ -4,7 +4,7 @@
 #include "Input/PlayerInput.h"
 #include "Script/exampleSceneScript.h"
 #include "Script/menuSceneScript.h"
-
+#include "Engine/inc/Scene/SceneManager.h"
 
 using namespace SceneManagement;
 
@@ -32,7 +32,7 @@ int main() {
         //update
         //examplesceneScript->update();
         menusceneScript->update();
-        
+
         update();
     }
     //onDestroy
