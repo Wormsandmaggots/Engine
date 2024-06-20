@@ -44,13 +44,21 @@ private:
     PlayerInput* playerInput;
     PlayerInput* playerInput1;
     DebugInput* debugInput;
+
+    glm::vec2 joystickOffset = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset2 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset3 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset4 = glm::vec2(0.0f, 0.0f);
+
     Shader* shader;
     Shader* shaderText;
     Shader* shaderPbr;
     Shader* screenShader;
     Shader* imageShader;
     Shader* imageShaderGreen;
+
     Renderer* renderer;
+
     double lastTime;
 
     //main menu
@@ -64,11 +72,6 @@ private:
     Entity* ex;
 
     Texture* dupa;
-
-    glm::vec2 joystickOffset = glm::vec2(0.0f, 0.0f);
-    glm::vec2 joystickOffset2 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 joystickOffset3 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 joystickOffset4 = glm::vec2(0.0f, 0.0f);
 
 public:
     menuSceneScript(EditorLayer::Editor* editor, AudioManager* audioManager, SceneManager* sm, PlayerInput* playerInput,

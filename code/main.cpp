@@ -74,44 +74,18 @@ int main() {
     menusceneScript->awake();
     menusceneScript->start();
 
-//    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, audioManager, sm, playerInput, playerInput1, debugInput, shader, shaderText, shaderPbr, screenShader, imageShader, imageShaderGreen, renderer, lastTime);
-//    examplesceneScript->awake();
-//    examplesceneScript->start();
+    exampleSceneScript* examplesceneScript = new exampleSceneScript(&editor, &audioManager, &sm, &playerInput, &playerInput1, &debugInput, &shader, &shaderText, &shaderPbr, &screenShader, &imageShader, &imageShaderGreen, &renderer, lastTime);
+    examplesceneScript->awake();
+    examplesceneScript->start();
 
     // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
 
-    bool isMenuScene = true;
+    bool switched = true;
 
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
-
-        /*// Pobieranie aktualnej sceny
-        Scene2* currentScene = sm.getCurrentScene();
-        if (currentScene != nullptr) {
-            // Sprawdzanie, która scena jest aktualnie aktywna
-            if (currentScene->getName() == "KubaScene") {
-                // Wywołanie metody update dla menuSceneScript
-                menusceneScript->update();
-            } else if (currentScene->getName() == "MarcinScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                //examplesceneScript->update();
-            }
-        }
-
-        // Sprawdzanie, czy klawisz spacji został naciśnięty
-        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            if (isMenuScene) {
-                // Zmiana sceny na exampleSceneScript
-                sm.setCurrentScene("MarcinScene");
-                isMenuScene = false;
-            } else {
-                // Zmiana sceny na menuSceneScript
-                sm.setCurrentScene("KubaScene");
-                isMenuScene = true;
-            }
-        }*/
 
         // Aktualizacja wspólnych elementów
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -128,7 +102,31 @@ int main() {
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        menusceneScript->update();
+        // Pobieranie aktualnej sceny
+        Scene2* currentScene = sm.getCurrentScene();
+        if (currentScene != nullptr) {
+            // Sprawdzanie, która scena jest aktualnie aktywna
+            if (currentScene->getName() == "KubaScene") {
+                // Wywołanie metody update dla menuSceneScript
+                menusceneScript->update();
+            } else if (currentScene->getName() == "MarcinScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                //examplesceneScript->update();
+            }
+        }
+
+        // Sprawdzanie, czy klawisz spacji został naciśnięty
+        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            if (switched) {
+                // Zmiana sceny na exampleSceneScript
+                sm.setCurrentScene("MarcinScene");
+                switched = false;
+            } else {
+                // Zmiana sceny na menuSceneScript
+                sm.setCurrentScene("KubaScene");
+                switched = true;
+            }
+        }
 
         update();
     }
