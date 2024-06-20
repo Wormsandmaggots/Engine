@@ -10,9 +10,6 @@
 
 using namespace std;
 
-
-
-
 inline static double equalLoudnessContour(double frequency) {
     // These are made up values, you would need to replace these with the actual data points
     // from the Fletcher-Munson curve.
@@ -269,14 +266,18 @@ public:
     }
 
 
-    inline static void songLenth(const char* filename) {
-
+    inline static double songLenth(const char* filename) {
         SF_INFO info;
         SNDFILE* file = sf_open(filename, SFM_READ, &info);
         if (!file) {
             cerr << "Error opening file: " << sf_strerror(file) << endl;
-            return;
+            return -1.0; // Return a negative value to indicate an error
         }
+
+        double songLength = static_cast<double>(info.frames) / info.samplerate;
+        sf_close(file);
+
+        return songLength;
     }
 
     inline static void testparseSong(double chunkDuration, const char* filename, vector<SongSample>& result) {

@@ -27,7 +27,7 @@
 #include "Light/DirectionalLight.h"
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
-
+#include "ForwardMovement.h"
 
 using namespace SceneManagement;
 
@@ -178,6 +178,8 @@ private:
     ResizableImage* resBar;
     Entity* resBarEntity;
 
+    ForwardMovement* fm;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
@@ -276,6 +278,7 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
+            fm(new ForwardMovement("res/content/sounds/songs/short_eurodance.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 50))),
     //hud
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
@@ -367,6 +370,10 @@ public:
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
+        //movement
+        sm.getLoadedScenes()[0]->addEntity(fm);
+        fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
+
         //gemplay
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
@@ -408,13 +415,13 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        AudioManager::getInstance().playSound(path, 1.0f);
+        //AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
     };
 
     void update() override{
-
+        float z = 5;
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
@@ -431,17 +438,22 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
         barmanAnimator->UpdateAnimation(deltaTime);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
 
+        //moving forward
+        if(deltaTime < 1){
+            player->getTransform()->translate(glm::vec3(0.0f,0.0f,deltaTime*fm->velocity));
+            z += deltaTime * fm->velocity;
+        }
+
 // bardziej randomowe spawnowanie
         timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
-            float z = 5;
+
             switch (songData[songDataIndex].type) {
                 case sampleType::BASS:
                     //raczki
@@ -540,7 +552,7 @@ public:
                     break;
             }
            if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-                spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
+                spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
 
             songDataIndex++;
             timeToDispense2 = timeToDispense;
