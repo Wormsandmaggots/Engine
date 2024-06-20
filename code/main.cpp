@@ -70,7 +70,7 @@ int main() {
 
     // Tworzenie i ładowanie scen
     //menuSceneScript* menusceneScript = new menuSceneScript(editor, audioManager, sm, playerInput, playerInput1, debugInput, shader, shaderText, shaderPbr, screenShader, imageShader, imageShaderGreen, renderer, lastTime);
-    menuSceneScript* menusceneScript = new menuSceneScript(&editor, &audioManager, &sm, &playerInput, &playerInput1, &debugInput, &shader, &shaderText, &shaderPbr, &screenShader, /*&imageShader,*/ &imageShaderGreen, &renderer, lastTime);
+    menuSceneScript* menusceneScript = new menuSceneScript(&editor, &audioManager, &sm, &playerInput, &playerInput1, &debugInput, &shader, &shaderText, &shaderPbr, &screenShader, &imageShader, &imageShaderGreen, &renderer, lastTime);
     menusceneScript->awake();
     menusceneScript->start();
 

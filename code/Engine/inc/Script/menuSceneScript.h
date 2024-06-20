@@ -48,7 +48,7 @@ private:
     Shader* shaderText;
     Shader* shaderPbr;
     Shader* screenShader;
-    Shader imageShader;
+    Shader* imageShader;
     Shader* imageShaderGreen;
     Renderer* renderer;
     double lastTime;
@@ -73,7 +73,7 @@ private:
 public:
     menuSceneScript(EditorLayer::Editor* editor, AudioManager* audioManager, SceneManager* sm, PlayerInput* playerInput,
                     PlayerInput* playerInput1, DebugInput* debugInput, Shader* shader, Shader* shaderText, Shader* shaderPbr,
-                    Shader* screenShader, /*Shader* imageShader,*/ Shader* imageShaderGreen, Renderer* renderer, double lastTime)
+                    Shader* screenShader, Shader* imageShader, Shader* imageShaderGreen, Renderer* renderer, double lastTime)
             :
             editor(editor),
             audioManager(audioManager),
@@ -85,13 +85,13 @@ public:
             shaderText(shaderText),
             shaderPbr(shaderPbr),
             screenShader(screenShader),
-            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
+            imageShader(imageShader),
             imageShaderGreen(imageShaderGreen),
             renderer(renderer),
             lastTime(lastTime),
-            mainMenu(new Image(&imageShader)),
-            startButton(new Button(&imageShader)),
-            exitButton(new Button(&imageShader)),
+            mainMenu(new Image(imageShader)),
+            startButton(new Button(imageShader)),
+            exitButton(new Button(imageShader)),
             menuWalpaper(new Entity("mainMenu")),
             ng(new Entity("startButton")),
             ex(new Entity("exitButton")),
@@ -199,7 +199,7 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         //hud
         glActiveTexture(GL_TEXTURE0);
-        imageShader.use();
+        imageShader->use();
         mainMenu->renderPlane();
 
         glEnable(GL_DEPTH_TEST);
@@ -209,7 +209,7 @@ public:
     };
 
     void onDestroy() override{
-        audioManager->end();
+       // audioManager->end();
     };
 
     ~menuSceneScript() override = default;
