@@ -31,40 +31,27 @@
 
 using namespace SceneManagement;
 
-class menuSceneScript : public BaseSceneScript {
+class menuSceneScript : public SceneScript {
 private:
-    //EditorLayer::Editor editor;
-    //SceneManager sm;
 
-    // audio
-    //AudioManager& audioManager;
-    //std::shared_ptr<Sound> sound;
+//    std::shared_ptr<EditorLayer::Editor>* editor;
+//    std::shared_ptr<AudioManager>* audioManager;
+//    std::shared_ptr<SceneManager>* sm;
+    EditorLayer::Editor* editor;
+    AudioManager* audioManager;
+    SceneManager* sm;
 
-    // input joystick
-    //int connectedControllers;
-
-    //PlayerInput playerInput;
-    //PlayerInput playerInput1;
-
-//    glm::vec2 joystickOffset;
-//    glm::vec2 joystickOffset2;
-//    glm::vec2 joystickOffset3;
-//    glm::vec2 joystickOffset4;
-
-    //DebugInput debugInput;
-
-//    Shader shader;
-//    Shader shaderText;
-//    Shader shaderPbr;
-//    Shader screenShader;
-//    Shader imageShader;
-//    Shader imageShaderGreen;
-
-    // renderer
-    //Renderer renderer;
-
-    //HUD
-    //double lastTime;
+    PlayerInput* playerInput;
+    PlayerInput* playerInput1;
+    DebugInput* debugInput;
+    Shader* shader;
+    Shader* shaderText;
+    Shader* shaderPbr;
+    Shader* screenShader;
+    Shader imageShader;
+    Shader* imageShaderGreen;
+    Renderer* renderer;
+    double lastTime;
 
     //main menu
     Image* mainMenu;
@@ -78,14 +65,33 @@ private:
 
     Texture* dupa;
 
+    glm::vec2 joystickOffset = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset2 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset3 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 joystickOffset4 = glm::vec2(0.0f, 0.0f);
+
 public:
-    // Konstruktor domyślny
-    menuSceneScript() :
-               //menu
+    menuSceneScript(EditorLayer::Editor* editor, AudioManager* audioManager, SceneManager* sm, PlayerInput* playerInput,
+                    PlayerInput* playerInput1, DebugInput* debugInput, Shader* shader, Shader* shaderText, Shader* shaderPbr,
+                    Shader* screenShader, /*Shader* imageShader,*/ Shader* imageShaderGreen, Renderer* renderer, double lastTime)
+            :
+            editor(editor),
+            audioManager(audioManager),
+            sm(sm),
+            playerInput(playerInput),
+            playerInput1(playerInput1),
+            debugInput(debugInput),
+            shader(shader),
+            shaderText(shaderText),
+            shaderPbr(shaderPbr),
+            screenShader(screenShader),
+            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
+            imageShaderGreen(imageShaderGreen),
+            renderer(renderer),
+            lastTime(lastTime),
             mainMenu(new Image(&imageShader)),
             startButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
-
             menuWalpaper(new Entity("mainMenu")),
             ng(new Entity("startButton")),
             ex(new Entity("exitButton")),
@@ -93,35 +99,19 @@ public:
     {
     }
 
+
     void awake() override{
     };
 
     void start() override{
-        initCommonElements();
-        //editor
-        //editor.init(&s.camera);
-
-        //audio
-        //audioManager.init();
-
 
         //scene manager
-        sm.loadScene("res/content/maps/Kuba.yaml");
-        sm.setCurrentScene("KubaScene");
+        sm->loadScene("res/content/maps/Kuba.yaml");
+        sm->setCurrentScene("KubaScene");
 
-
-        //renderer
-        //renderer.init();
-
-        //screen shader
-        //screenShader.use();
-        //screenShader.setInt("screenTexture", 0);
-
-        //hud
-        //AudioManager::getInstance().playSound("res/content/sounds/songs/queen.wav", 1.0f);
 
         //main menu
-        sm.getSceneByName("KubaScene")->addEntity(menuWalpaper);
+        sm->getSceneByName("KubaScene")->addEntity(menuWalpaper);
         menuWalpaper->addComponent(mainMenu);
         mainMenu->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
         mainMenu->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -134,32 +124,30 @@ public:
     };
 
     void update() override{
-        updateCommonElements();
-
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
-        debugInput.interpretInput(s.window, s.camera, s.deltaTime);
+        debugInput->interpretInput(s.window, s.camera, s.deltaTime);
         //time = time + s.deltaTime;
         deltaTime = s.deltaTime;
 
-        debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
-        playerInput.interpretInput();
-        playerInput1.interpretInput();
+        debugInput->interpretIKInput(s.window, s.camera, s.deltaTime);
+        playerInput->interpretInput();
+        playerInput1->interpretInput();
 
         glClearColor(0.2, 0.2, 0.2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        //shaderText.use();
 
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom),(float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        joystickOffset = playerInput.getJoystick(2);
-        joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
+        joystickOffset = playerInput->getJoystick(2);
+        joystickOffset2 = playerInput->getJoystick(1);
+        joystickOffset3 = playerInput1->getJoystick(2);
+        joystickOffset4 = playerInput1->getJoystick(1);
 
         joystickOffset.x = Math::Remap(
                 utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),
@@ -200,10 +188,10 @@ public:
         joystickOffset3 *= 200 * s.deltaTime;
         joystickOffset4 *= 200 * s.deltaTime;
 
-        renderer.updateProjectionAndView(projection, view);
+        renderer->updateProjectionAndView(projection, view);
 
-        editor.draw();
-        sm.updateLoadedScenes();
+        editor->draw();
+        sm->updateLoadedScenes();
 
         glDisable(GL_DEPTH_TEST);
         //imageShader.use();
@@ -221,8 +209,7 @@ public:
     };
 
     void onDestroy() override{
-        destroyCommonElements();
-        audioManager.end();
+        audioManager->end();
     };
 
     ~menuSceneScript() override = default;
