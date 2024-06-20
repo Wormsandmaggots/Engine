@@ -92,6 +92,7 @@ private:
     Model* playerModel;
     Model* barDrinks;
     Model* barman;
+    Model* dj;
 
     Model* sphereModel;
     Model* sphereModel_green;
@@ -144,6 +145,7 @@ private:
     Entity* sphere1;
     Entity* player3;
     Entity* player;
+    Entity* djE;
     Entity* leftHandPointer;
     ColliderComponent* lHandcollider;
     Entity* rightHandPointer;
@@ -214,12 +216,14 @@ public:
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
-            player2(new Model("res/content/models/npc1/Dance3.fbx", &ssao.shaderGeometryPass)),
-            barman(new Model("res/content/models/barman/barman_animated.fbx", &shaderBarmanRig)),
-            playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
+            player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
+            barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
+            //barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
+            playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
+            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -263,24 +267,26 @@ public:
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
-            ir(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
+            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            ir2(new InstancedRobots("res/content/models/npc1/Dance3.fbx", glm::ivec2(5,5),
+            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/npc1/Dance3.fbx", ir)),
+            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
-            barmanAnimation(new Animation("res/content/models/barman/barman_animated.fbx", barman)),
+            barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation)),
             barmanRig(new RigPrep(barman)),
             sun(new Entity("Sun")),
+            djE(new Entity("dj")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
             fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
+    player3(new Entity("player3")),
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
     lastTime(0.0)
@@ -336,6 +342,14 @@ public:
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        //player3->addComponent(player2);
+        //sm.getLoadedScenes()[0]->addEntity(player3);
+        //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
+/*
+        djE->addComponent(dj);
+        sm.getLoadedScenes()[0]->addEntity(djE);
+        dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
+*/
         scianyE->addComponent(sciany);
         sm.getLoadedScenes()[0]->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -417,7 +431,7 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        AudioManager::getInstance().playSound(path, 1.0f);
+        //AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
     };
