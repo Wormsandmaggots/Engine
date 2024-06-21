@@ -28,6 +28,7 @@
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
 #include "ForwardMovement.h"
+#include "Animation/LookAt.h"
 
 using namespace SceneManagement;
 
@@ -164,6 +165,7 @@ private:
     Animation* npcAnimation;
     Animator* npcAnimator;
     RigPrep* npcRig;
+    LookAt* npcLA;
 
     Animation* barmanAnimation;
     Animator* barmanAnimator;
@@ -276,6 +278,7 @@ public:
             npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
+            npcLA(new LookAt(npcRig)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation)),
             barmanRig(new RigPrep(barman)),
@@ -582,13 +585,13 @@ public:
         npcAnimator->UpdateAnimation(s.deltaTime);
 
         shaderRigInstanced.use();
-        npcRig->update();
-
-        auto transforms2 = npcAnimator->GetFinalBoneMatrices();
+        npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
+        //npcLA->update(180);
+        auto transforms2 = npcRig->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
-        //npcRig->update();
+
         shaderBarmanRig.use();
         barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();

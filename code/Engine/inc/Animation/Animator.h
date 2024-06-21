@@ -60,6 +60,19 @@ public:
             int index = boneInfoMap[nodeName].id;
             glm::mat4 offset = boneInfoMap[nodeName].offset;
             m_FinalBoneMatrices[index] = globalTransformation * offset;
+            if(nodeName == "mixamorig:Head"){
+                glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f,1.0f,0.0f));
+                glm::mat3 newRotation = rotationMatrix * glm::mat3(m_FinalBoneMatrices[index]);
+                m_FinalBoneMatrices[index][0][0] = newRotation[0][0];
+                m_FinalBoneMatrices[index][0][1] = newRotation[0][1];
+                m_FinalBoneMatrices[index][0][2] = newRotation[0][2];
+                m_FinalBoneMatrices[index][1][0] = newRotation[1][0];
+                m_FinalBoneMatrices[index][1][1] = newRotation[1][1];
+                m_FinalBoneMatrices[index][1][2] = newRotation[1][2];
+                m_FinalBoneMatrices[index][2][0] = newRotation[2][0];
+                m_FinalBoneMatrices[index][2][1] = newRotation[2][1];
+                m_FinalBoneMatrices[index][2][2] = newRotation[2][2];
+            }
         }
 
         for (int i = 0; i < node->childrenCount; i++)

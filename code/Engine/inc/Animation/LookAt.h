@@ -19,11 +19,15 @@ public:
     }
 ///tej funkcji używamy gdy chcemy podać punkt na który ma patrzeć postać (w odniesieniu do glowy postaci)
     void update(glm::vec3 target){
+        bones = rig->getBones();
         compute(target);
+        rig->setBones(bones);
     }
     /// tej funkcji uzywamy gdy chcemy podać kąt o jaki głowa ma zostać obrócona względem jej początkowego zwrotu
     void update(float angle){
+        bones = rig->getBones();
         compute(angle);
+        rig->setBones(bones);
     }
 
     void compute(glm::vec3 pointTarget){

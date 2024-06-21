@@ -69,6 +69,9 @@ public:
         bones.insert({destBone->getName(),destBone});
     }
 
+    void SwapHierarchyData(){
+    }
+
     void CalculateBoneTransform(glm::mat4 parentTransform, Bone* bone, int offset){
 
         std::string nodeName = bone->getName();
@@ -103,6 +106,12 @@ public:
         calculateVertices(glm::mat4(1.0f), rootBone);
     }
 
+    void swapBones(std::vector<glm::mat4> matrix){
+        m_FinalBoneMatrices = matrix;
+        bones.clear();
+
+    }
+
     std::vector<glm::mat4> GetFinalBoneMatrices()
     {
         return m_FinalBoneMatrices;
@@ -114,7 +123,9 @@ public:
 
     void setBones(std::map<std::string,Bone*> _bones){
         bones = _bones;
+        update();
     }
+
 
     Bone* getBone(std::string name){
         return bones[name];
