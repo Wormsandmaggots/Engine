@@ -44,7 +44,11 @@ int main() {
     Renderer renderer(&ssao.shaderGeometryPass);
 
     //inits
-
+    audioManager.init();
+    //sm.loadScene("res/content/maps/Kuba.yaml");
+    sm.loadScene("res/content/maps/Marcin.yaml");
+    ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+    renderer.init();
     //inits - end
 
     //instance

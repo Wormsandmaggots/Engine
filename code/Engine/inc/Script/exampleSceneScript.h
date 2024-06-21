@@ -321,23 +321,23 @@ public:
     void start() override{
 
         //audio
-        audioManager.init();
+        //audioManager.init();
 
         SongAnalizer::parseSong(songSampleInterval, path, songData);
         SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
-        sm.loadScene("res/content/maps/Marcin.yaml");
+        //sm.loadScene("res/content/maps/Marcin.yaml");
         sm.setCurrentScene("MarcinScene");
 
         // Inicjalizacja spawnera
         spawner = new Spawner(sm.getSceneByName("MarcinScene"));
 
         //ssao
-        ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
+        //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
         //renderer
-        renderer.init();
+        //renderer.init();
 
         //screen shader
         screenShader.use();
