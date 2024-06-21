@@ -58,7 +58,8 @@ public:
         }
 
         glm::mat4 globalTransformation = parentTransform * nodeTransform;
-        if(npc && Bone && nodeName == "mixamorig:Head"){
+        if(npc && Bone && nodeName == "mixamorig:Head" ){
+            LOG_INFO("angle" + std::to_string(angle));
             globalTransformation = la->computeNoBone(angle, globalTransformation);
         }
         auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();

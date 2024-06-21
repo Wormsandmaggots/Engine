@@ -580,7 +580,7 @@ public:
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime, 90.0f);
+        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
 
         shaderRigInstanced.use();
         //npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
@@ -745,11 +745,18 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
+            if(lookatAngle <130.0f) {
+                lookatAngle += 1.0f;
+            }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
+            if(lookatAngle > 0.0f){
+                lookatAngle -=0.0f;
+            }
+
         }
 //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
 //            std::cout << "Koniec" << std::endl;

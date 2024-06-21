@@ -24,3 +24,4 @@ extern float resizeAmount;
 extern int lastScore;
 
 extern float globalVelocity;
+extern float lookatAngle;
