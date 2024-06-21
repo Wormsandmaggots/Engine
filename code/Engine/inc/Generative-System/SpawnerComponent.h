@@ -17,9 +17,6 @@
 class SpawnerComponent : public Component {
 public:
 	glm::vec3 originPos;
-    glm::vec3 playerPos;
-    glm::vec3 ringPos;
-    glm::vec3 vanishTreshold;
     glm::vec3 inactivePos;
 	std::vector<Collectable*> entitiesActive;
 	std::vector<Collectable*> entitiesInactive;

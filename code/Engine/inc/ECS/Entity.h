@@ -36,7 +36,7 @@ public:
     void removeComponent(Component*);
     void removeComponent(int);
 
-    bool active;
+    bool active = false;
 
     [[nodiscard]] Transform2* getTransform() const;
     [[nodiscard]] std::string getName() const;

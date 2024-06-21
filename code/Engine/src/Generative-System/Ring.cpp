@@ -14,6 +14,10 @@ void Ring::update()
 	if (active) {
 		this->getTransform()->setPosition(position);
 	}
+	else {
+		this->getTransform()->setPosition(glm::vec3(-100));
+
+	}
 	Entity::update();
 }
 
@@ -23,25 +27,9 @@ void Ring::onTriggerStay(ColliderComponent* collidedWith)
 
 void Ring::onTriggerEnter(ColliderComponent* collidedWith)
 {
-	
-
-	/*float ballPos = collidedWith->parentEntity->getTransform()->getPosition().z;
-	if (ballPos < -1.5) {
-		position = glm::vec3(100);
-		this->getTransform()->setPosition(glm::vec3(100));
-		this->active = false;
-	}*/
 }
 
 void Ring::onTriggerExit(ColliderComponent* collidedWith)
 {
-	if (collidedWith->parentEntity->getName() == "handOrb" || collidedWith->parentEntity->getName() == "footOrb" || collidedWith->parentEntity->getName() == "badOrb" || collidedWith->parentEntity->getName() == "drink") {
-		position = glm::vec3(100);
-		this->getTransform()->setPosition(glm::vec3(100));
-		this->active = false;
-	}
+	
 }
-
-//spwan w pozycji orba
-//despawn w momencie przekroczenia orba tresholdu
-//despawn w momencie trafienia raczka w orba

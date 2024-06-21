@@ -9,3 +9,4 @@ bool start = false;
 DrinkType currentDrink = DrinkType::None; // Corrected the variable name here
 float ballSpeed = 6.0f;
 float songInterval = 1.0f;
+float forwardSpeed = 0.1f;

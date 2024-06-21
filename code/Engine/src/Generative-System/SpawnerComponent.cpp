@@ -1,14 +1,12 @@
 #include "Generative-System/SpawnerComponent.h"
 
 
-SpawnerComponent::SpawnerComponent(const char* songPath, glm::vec3 originPos, unsigned int entitiesCount=14)
+SpawnerComponent::SpawnerComponent(const char* songPath, glm::vec3 originPos, unsigned int entitiesCount)
 {
 
 	this->originPos = originPos;
-	vanishTreshold = glm::vec3(originPos.x, originPos.y, originPos.z - 6.5);
-	playerPos = glm::vec3(originPos.x, originPos.y, originPos.z - 5);
-	ringPos = glm::vec3(playerPos.x, playerPos.y, playerPos.y-0.5);
 	inactivePos = glm::vec3(-100);
+
 	this->entitiesCount = entitiesCount;
 	this->orbsSpawned = 0;
 	this->songPath = songPath;
@@ -31,84 +29,85 @@ void SpawnerComponent::start()
 }
 void SpawnerComponent::update()
 {
+
 	spawnTimer -= deltaTime;
 	if (spawnTimer < 0 && songDataIndex < songData.size()) {
-        float z = 5;
         switch (songData[songDataIndex].type) {
-        case sampleType::BASS:
-            // raczki
-            
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(1 * songData[songDataIndex].bass.x, 1.5 * songData[songDataIndex].bass.y, z));
-            else
-                spawn<HandOrb>(glm::vec3(1 * songData[songDataIndex].bass.x, 1.5 * songData[songDataIndex].bass.y, z));
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-            else
-                spawn<HandOrb>(glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
+		case sampleType::BASS:
+			// raczki
+
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(1 * songData[songDataIndex].bass.x, 1.5 * songData[songDataIndex].bass.y, originPos.z));
+			else
+				spawn<HandOrb>(glm::vec3(1 * songData[songDataIndex].bass.x, 1.5 * songData[songDataIndex].bass.y, originPos.z));
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, originPos.z));
+			else
+				spawn<HandOrb>(glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, originPos.z));
 
 
-            // nozki
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(1, -2, z));
-            else
-                spawn<FootOrb>(glm::vec3(1, -2, z));
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(-1, -2, z));
-            else
-                spawn<FootOrb>(glm::vec3(-1, -2, z));
+			// nozki
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(1, -2, originPos.z));
+			else
+				spawn<FootOrb>(glm::vec3(1, -2, originPos.z));
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(-1, -2, originPos.z));
+			else
+				spawn<FootOrb>(glm::vec3(-1, -2, originPos.z));
 
 
 
-            break;
-        case sampleType::MID:
-            // raczki
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-            else
-                spawn<HandOrb>(glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-            else
-                spawn<HandOrb>(glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
+			break;
+		case sampleType::MID:
+			// raczki
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, originPos.z));
+			else
+				spawn<HandOrb>(glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, originPos.z));
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, originPos.z));
+			else
+				spawn<HandOrb>(glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, originPos.z));
 
-            // nozki
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(0.8, -0.8, z));
-            else
-                spawn<FootOrb>(glm::vec3(0.8, -0.8, z));
-            if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(-0.8, -0.8, z));
-            else
-                spawn<FootOrb>(glm::vec3(-0.8, -0.8, z));
+			// nozki
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(0.8, -0.8, originPos.z));
+			else
+				spawn<FootOrb>(glm::vec3(0.8, -0.8, originPos.z));
+			if (hasXPercentChance(20))
+				spawn<BadOrb>(glm::vec3(-0.8, -0.8, originPos.z));
+			else
+				spawn<FootOrb>(glm::vec3(-0.8, -0.8, originPos.z));
 
-            break;
+			break;
+
         case sampleType::CLAP:
             // raczki
             if (hasXPercentChance(20)) 
-                spawn<BadOrb>(glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+                spawn<BadOrb>( glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, originPos.z));
             else 
-                spawn<HandOrb>(glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+                spawn<HandOrb>(glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, originPos.z));
             if (hasXPercentChance(20)) 
-                spawn<BadOrb>(glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+                spawn<BadOrb>(glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, originPos.z));
             else
-                spawn<HandOrb>(glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+                spawn<HandOrb>( glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, originPos.z));
             // nozki
             if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(0.2, -2.25, z));
+                spawn<BadOrb>(glm::vec3(0.2, -2.25, originPos.z));
             else
-                spawn<FootOrb>(glm::vec3(0.2, -2.25, z));
+                spawn<FootOrb>(glm::vec3(0.2, -2.25, originPos.z));
             if (hasXPercentChance(20))
-                spawn<BadOrb>(glm::vec3(-0.2, -2.25, z));
+                spawn<BadOrb>(glm::vec3(-0.2, -2.25, originPos.z));
             else
-                spawn<FootOrb>(glm::vec3(-0.2, -2.25, z));
+                spawn<FootOrb>(glm::vec3(-0.2, -2.25, originPos.z));
             break;
         case sampleType::SKIP:
             break;
         }
 
         if (orbsSpawned > 50) {
-            spawn<Drink>(glm::vec3(-1, 1, 6));
+            spawn<Drink>(originPos + glm::vec3(-1, 1, originPos.z));
 			orbsSpawned = 0;
         }
 
@@ -118,10 +117,12 @@ void SpawnerComponent::update()
 
         if (!(songDataIndex < songData.size())) songDataIndex = 0;
 
+
+
 	}
 
 	for (Collectable* entity : entitiesActive) {
-		if (entity->position.z < vanishTreshold.z) {
+		if (entity->position.z < originPos.z - 6.5) {
 			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 			deactiveEntity(entity);
 		}
@@ -129,6 +130,8 @@ void SpawnerComponent::update()
 			deactiveEntity(entity);
 		}
 	}
+	originPos.z += forwardSpeed * deltaTime;
+
 }
 
 void SpawnerComponent::init()
@@ -162,8 +165,10 @@ void SpawnerComponent::init()
 }
 void SpawnerComponent::deactiveEntity(Collectable* ent) {
 	ent->active = false;
-	for (Entity* child : ent->getChildren()) {
+	for (Entity* e : ent->getChildren()) {
+		Collectable* child = dynamic_cast<Collectable*>(e);
 		child->active = false;
+		child->getTransform()->setPosition(inactivePos);
 		ent->removeChild(child);
 	}
 	ent->getTransform()->setPosition(inactivePos);
@@ -182,8 +187,8 @@ void SpawnerComponent::spawn(glm::vec3 newPos) {
 		if (typeid(*entity) == typeid(T)){
 			entity->position = newPos;
 			activateEntity(entity);
-			Collectable* ring = spawnRing(glm::vec3(newPos.x,newPos.y,ringPos.z));
-			//entity->addChild(ring);
+			Collectable* ring = spawnRing(glm::vec3(newPos.x,newPos.y,originPos.z-5.5));
+			entity->addChild(ring);
 			orbsSpawned++;
 			break;
 		}

@@ -7,7 +7,6 @@
 
 class Collectable :public Entity {
 public:
-    bool active = false;
     float speed = ballSpeed;
     glm::vec3 position;
     Model* model;

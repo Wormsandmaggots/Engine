@@ -170,90 +170,93 @@ private:
     Entity* pointLight;
     PointLight* pointLight1;
 
+    glm::vec3 playerPos;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript() :
-            audioManager(AudioManager::getInstance()),
-            songSampleInterval(1.0),
-            songDataIndex(0),
-            connectedControllers(JslConnectDevices()),
-            playerInput(GLFW_JOYSTICK_1),
-            playerInput1(GLFW_JOYSTICK_2),
-            joystickOffset(glm::vec2(0)),
-            joystickOffset2(glm::vec2(0)),
-            joystickOffset3(glm::vec2(0)),
-            joystickOffset4(glm::vec2(0)),
-            shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
-            collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
-            shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
-            colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
-            shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
-            screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
-            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
-            DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
-            shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
-            reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
-            renderer(&ssao.shaderGeometryPass),
-            buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
-            box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
-            sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
-            //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
-            playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
-            sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
-            sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
-            scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
-            playerCamera(new ThirdPersonCamera()),
-            playerRig(new RigPrep(playerModel)),
-            playerIK(new InverseKinematics(playerRig)),
-            lightPos(glm::vec3(2.0, 4.0, -2.0)),
-            lightColor(glm::vec3(0.2, 0.2, 0.7)),
-            linear(0.09f),
-            quadratic(0.032f),
-            power(1),
-            kernelSize(64),
-            radius(0.5f),
-            bias(0.025f),
-            onlySSAO(true),
-            range(glm::vec2(2, 2)),
-            mul(4),
-            texelSize(1),
-            time(0),
-            spawner(nullptr),
-            timeToDispense(songSampleInterval),
-            timeToDispense2(timeToDispense),
-            clubE(new Entity("club")),
-            boxE(new Entity("box")),
-            sphere1(new Entity("sphere")),
-            player(new Entity("Player")),
-            leftHandPointer(new Entity("leftHandPointer")),
-            lHandcollider(new ColliderComponent()),
-            rightHandPointer(new Entity("rightHandPointer")),
-            rHandcollider(new ColliderComponent()),
-            leftFootPointer(new Entity("leftFootPointer")),
-            leftFootCollider(new ColliderComponent()),
-            rightFootPointer(new Entity("rightFootPointer")),
-            rightFootCollider(new ColliderComponent()),
-            effectTime(10),
-		    timer(0),
-            path("res/content/sounds/songs/overcompensate.wav"),
-            reversed(false),
-            dancingRobots(new Entity("dancingRobots1")),
-            shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
-            ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5,5),
-                                   &shaderRigInstanced,
-                                   glm::vec3(0), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation)),
-            npcRig(new RigPrep(ir)),
-            sun(new Entity("Sun")),
-            sunLight(new DirectionalLight()),
-            pointLight(new Entity("pointLight1")),
-            pointLight1(new PointLight()),
-            spawnerEntity(new Entity("Spawner")),
-            spawnerComponent(new SpawnerComponent("res/content/sounds/songs/overcompensate.wav", glm::vec3(0, 0, 5), 30))
+        audioManager(AudioManager::getInstance()),
+        songSampleInterval(1.0),
+        songDataIndex(0),
+        connectedControllers(JslConnectDevices()),
+        playerInput(GLFW_JOYSTICK_1),
+        playerInput1(GLFW_JOYSTICK_2),
+        joystickOffset(glm::vec2(0)),
+        joystickOffset2(glm::vec2(0)),
+        joystickOffset3(glm::vec2(0)),
+        joystickOffset4(glm::vec2(0)),
+        shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
+        collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
+        shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
+        colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
+        shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
+        screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
+        shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+        DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
+        shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
+        reverseShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/reverse.frag"),
+        renderer(&ssao.shaderGeometryPass),
+        buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
+        box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
+        club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+        sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
+        //player2(new Model("res/content/models/barman/barman_animated.fbx", &ssao.shaderGeometryPass)),
+        playerModel(new Model("res/content/models/Chlop/Main_character.fbx", &shaderRig)),
+        sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
+        sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
+        sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
+        comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
+        scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
+        playerCamera(new ThirdPersonCamera()),
+        playerRig(new RigPrep(playerModel)),
+        playerIK(new InverseKinematics(playerRig)),
+        lightPos(glm::vec3(2.0, 4.0, -2.0)),
+        lightColor(glm::vec3(0.2, 0.2, 0.7)),
+        linear(0.09f),
+        quadratic(0.032f),
+        power(1),
+        kernelSize(64),
+        radius(0.5f),
+        bias(0.025f),
+        onlySSAO(true),
+        range(glm::vec2(2, 2)),
+        mul(4),
+        texelSize(1),
+        time(0),
+        spawner(nullptr),
+        timeToDispense(songSampleInterval),
+        timeToDispense2(timeToDispense),
+        clubE(new Entity("club")),
+        boxE(new Entity("box")),
+        sphere1(new Entity("sphere")),
+        player(new Entity("Player")),
+        leftHandPointer(new Entity("leftHandPointer")),
+        lHandcollider(new ColliderComponent()),
+        rightHandPointer(new Entity("rightHandPointer")),
+        rHandcollider(new ColliderComponent()),
+        leftFootPointer(new Entity("leftFootPointer")),
+        leftFootCollider(new ColliderComponent()),
+        rightFootPointer(new Entity("rightFootPointer")),
+        rightFootCollider(new ColliderComponent()),
+        effectTime(10),
+        timer(0),
+        path("res/content/sounds/songs/overcompensate.wav"),
+        reversed(false),
+        dancingRobots(new Entity("dancingRobots1")),
+        shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
+        ir(new InstancedRobots("res/content/models/barman/barman_animated.fbx", glm::ivec2(5, 5),
+            &shaderRigInstanced,
+            glm::vec3(0), glm::vec3(70, 0, 70), glm::vec3(0.01f))),
+        npcAnimation(new Animation("res/content/models/barman/barman_animated.fbx", ir)),
+        npcAnimator(new Animator(npcAnimation)),
+        npcRig(new RigPrep(ir)),
+        sun(new Entity("Sun")),
+        sunLight(new DirectionalLight()),
+        pointLight(new Entity("pointLight1")),
+        pointLight1(new PointLight()),
+        spawnerEntity(new Entity("Spawner")),
+        spawnerComponent(new SpawnerComponent("res/content/sounds/songs/overcompensate.wav", glm::vec3(0, 0, 5), 17)),
+        playerPos(0)
 
     {
     }
@@ -359,7 +362,6 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
 
-        //AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
         spawnerComponent->start();
@@ -380,123 +382,16 @@ public:
 
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+		playerPos = player->getTransform()->getPosition();
+        playerPos.z += deltaTime * forwardSpeed;
+        player->getTransform()->setPosition(playerPos);
 
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
 
-// bardziej randomowe spawnowanie
-        //timeToDispense2 -= s.deltaTime;
-        //if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
-        //    float z = 5;
-        //    switch (songData[songDataIndex].type) {
-        //        case sampleType::BASS:
-        //            //raczki
-
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
-
-        //            //nozki
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(1, -2, z));
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-        //            
-
-        //            break;
-        //        case sampleType::MID:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            ////nozki
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-        //          
-
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-        //          
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-        //            
-
-        //            break;
-        //        case sampleType::CLAP:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
-
-        //            //nozki
-        //            
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
-
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
-
-        //                      
-        //         
-        //            break;
-        //        case sampleType::SKIP:
-        //            break;
-        //    }
-        //   //if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-        //        spawner->spawnDrink("drink", glm::vec3(-1, 1, 6));
-
-        //    songDataIndex++;
-        //    timeToDispense2 = timeToDispense;
-
-        //    if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        //}       
+// bardziej randomowe spawnowanie   
 
         shaderRig.use();
         joystickOffset = playerInput.getJoystick(2);

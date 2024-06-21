@@ -17,3 +17,4 @@ extern bool start;
 extern DrinkType currentDrink;
 extern float ballSpeed;
 extern float songInterval;
+extern float forwardSpeed;

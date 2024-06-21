@@ -11,12 +11,6 @@ void FootOrb::update()
 	if (active)
 	{
 		position.z -= speed * deltaTime;
-		/*if (position.z < -1.5) {
-			active = false;
-			position = glm::vec3(-100);
-			combo = 0;
-			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.1);
-		}*/
 		this->getTransform()->setPosition(position);
 	}
 	Entity::update();
