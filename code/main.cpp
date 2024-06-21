@@ -38,31 +38,41 @@ int main() {
             imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
             shaderRigInstanced("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag");
 
+    SSAO ssao;
+
+    //Renderer renderer(&shader);
+    Renderer renderer(&ssao.shaderGeometryPass);
+
+    //inits
+
+    //inits - end
+
     //instance
-    /*exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput,
+    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                                     shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                                     imageShaderGreen, shaderRigInstanced);
     //awake
     examplesceneScript->awake();
     //start
-    examplesceneScript->start();*/
+    examplesceneScript->start();
 
-    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput,
+    /*
+    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
 
     menusceneScript->awake();
     menusceneScript->start();
-
+*/
 
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
         //update
-        //examplesceneScript->update();
-        menusceneScript->update();
+        examplesceneScript->update();
+        //menusceneScript->update();
 
         update();
     }

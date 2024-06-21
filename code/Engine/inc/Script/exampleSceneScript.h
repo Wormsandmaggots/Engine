@@ -78,10 +78,10 @@ private:
     FrameBuffer buffer;
 
     // ssao
-    SSAO ssao;
+    SSAO& ssao;
 ///////////////////////////////////////////////////
     // renderer
-    Renderer renderer;
+    Renderer& renderer;
 ///////////////////////////////////////////////////
     // model
     Model* box;
@@ -185,13 +185,15 @@ private:
 
 public:
     // Konstruktor domyślny
-    exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, AudioManager& audioManager, PlayerInput& playerInput,
+    exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
                        PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
                        Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
                        Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
             editor(editor),
             cm(cm),
             sm(sm),
+            ssao(ssao),
+            renderer(renderer),
             audioManager(audioManager),
             songSampleInterval(1.0),
             songDataIndex(0),
@@ -217,7 +219,7 @@ public:
             imageShader(imageShader),
             imageShaderGreen(imageShaderGreen),
             shaderRigInstanced(shaderRigInstanced),
-            renderer(&ssao.shaderGeometryPass),
+            //renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
@@ -329,7 +331,7 @@ public:
         sm.setCurrentScene("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(sm.getLoadedScenes()[0]);
+        spawner = new Spawner(sm.getSceneByName("MarcinScene"));
 
         //ssao
         ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -344,32 +346,32 @@ public:
         //entities
         //club interior
         clubE->addComponent(club);
-        sm.getLoadedScenes()[0]->addEntity(clubE);
+        sm.getSceneByName("MarcinScene")->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         //player3->addComponent(player2);
-        //sm.getLoadedScenes()[0]->addEntity(player3);
+        //sm.getSceneByName("MarcinScene")->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 /*
         djE->addComponent(dj);
-        sm.getLoadedScenes()[0]->addEntity(djE);
+        sm.getSceneByName("MarcinScene")->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 */
         scianyE->addComponent(sciany);
-        sm.getLoadedScenes()[0]->addEntity(scianyE);
+        sm.getSceneByName("MarcinScene")->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
         sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barDrinksE->addComponent(barDrinks);
-        sm.getLoadedScenes()[0]->addEntity(barDrinksE);
+        sm.getSceneByName("MarcinScene")->addEntity(barDrinksE);
         barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         barDrinks->getTransform()->setScale(glm::vec3(0.5f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
-        sm.getLoadedScenes()[0]->addEntity(barmanE);
+        sm.getSceneByName("MarcinScene")->addEntity(barmanE);
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
@@ -377,31 +379,31 @@ public:
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
-        sm.getLoadedScenes()[0]->addEntity(pointLight);
+        sm.getSceneByName("MarcinScene")->addEntity(pointLight);
 
 
-        sm.getLoadedScenes()[0]->addEntity(sun);
+        sm.getSceneByName("MarcinScene")->addEntity(sun);
         sun->addComponent(sunLight);
 
-        sm.getLoadedScenes()[0]->addEntity(dancingRobots);
+        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
 
-        sm.getLoadedScenes()[0]->addEntity(dancingRobots2);
+        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
         dancingRobots->addComponent(ir2);
 
-        sm.getLoadedScenes()[0]->addEntity(sphere1);
+        sm.getSceneByName("MarcinScene")->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
         //movement
-        sm.getLoadedScenes()[0]->addEntity(fm);
+        sm.getSceneByName("MarcinScene")->addEntity(fm);
         fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
 
         //gemplay
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
-        sm.getLoadedScenes()[0]->addEntity(player);
+        sm.getSceneByName("MarcinScene")->addEntity(player);
 
         lHandcollider->start();
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
@@ -428,7 +430,7 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         //hud
-        sm.getLoadedScenes()[0]->addEntity(resBarEntity);
+        sm.getSceneByName("MarcinScene")->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
         resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
