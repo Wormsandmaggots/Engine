@@ -49,6 +49,7 @@ int main() {
     sm.loadScene("res/content/maps/Marcin.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
+    editor.init(&s.camera);
     //inits - end
 
     //instance

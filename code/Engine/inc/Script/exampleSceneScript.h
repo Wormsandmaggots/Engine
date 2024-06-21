@@ -314,7 +314,6 @@ public:
         range = glm::vec2(2,2);
         mul = 4;
         texelSize = 1;
-        editor.init(&s.camera);
         z =5;
     };
 
