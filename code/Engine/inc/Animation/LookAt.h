@@ -8,6 +8,7 @@ private:
     //RigPrep* rig;
     glm::vec3 forward;
     glm::mat4 headInitPos;
+    glm::vec3 target;
 public:
     /*
     LookAt(RigPrep* _rig){
@@ -22,6 +23,8 @@ public:
     }*/
     LookAt(){
         forward = glm::vec3(0.0f, 0.0f, 1.0f); //wektor do przodu, defaultowo glowa patrzy w tym kierunku
+        target = glm::vec3(0.0f,0.0f,0.0f);
+        headInitPos = glm::mat4(0.0f);
     }
     /*
 ///tej funkcji używamy gdy chcemy podać punkt na który ma patrzeć postać (w odniesieniu do glowy postaci)
@@ -40,7 +43,9 @@ public:
         glm::mat4 newMat = givenMat;
         glm::vec3 headPos = glm::vec3(givenMat[3]);
         //glm::vec3 target = glm::vec3(headPos.x + pointTarget.x, headPos.y + pointTarget.y, headPos.z + pointTarget.z);
-        glm::vec3 target = pointTarget;
+        if(target == glm::vec3(0.0f,0.0f,0.0f)){
+            target = headPos+pointTarget;
+        }
         if(forward == glm::vec3(0.0f,0.0f,1.0f)){
             forward = glm::vec3(headPos.x , headPos.y, headPos.z + 10);
         }
@@ -57,6 +62,7 @@ public:
                 //obrot macierzy w modelspace
                 glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
                 glm::mat3 newRotation = rotationMatrix * glm::mat3(givenMat);
+                forward = rotationMatrix * forward;
                 newMat[0][0] = newRotation[0][0];
                 newMat[0][1] = newRotation[0][1];
                 newMat[0][2] = newRotation[0][2];
@@ -67,6 +73,29 @@ public:
                 newMat[2][1] = newRotation[2][1];
                 newMat[2][2] = newRotation[2][2];
             }
+        }
+        return newMat;
+    }
+    glm::mat4 computeNoBone(float angle, glm::mat4 givenMat){
+        glm::mat4 newMat = givenMat;
+        if(headInitPos ==glm::mat4(0.0f)){
+            headInitPos = givenMat;
+        }
+        if(fabs(angle) > 0.001f){
+            glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f);
+            //obrot macierzy w modelspace
+            glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis);
+            glm::mat3 newRotation = rotationMatrix * glm::mat3(headInitPos);
+            newMat[0][0] = newRotation[0][0];
+            newMat[0][1] = newRotation[0][1];
+            newMat[0][2] = newRotation[0][2];
+            newMat[1][0] = newRotation[1][0];
+            newMat[1][1] = newRotation[1][1];
+            newMat[1][2] = newRotation[1][2];
+            newMat[2][0] = newRotation[2][0];
+            newMat[2][1] = newRotation[2][1];
+            newMat[2][2] = newRotation[2][2];
+
         }
         return newMat;
     }

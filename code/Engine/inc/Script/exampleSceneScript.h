@@ -165,7 +165,6 @@ private:
     Animation* npcAnimation;
     Animator* npcAnimator;
     RigPrep* npcRig;
-    //LookAt* npcLA;
 
     Animation* barmanAnimation;
     Animator* barmanAnimator;
@@ -276,11 +275,10 @@ public:
                                    &shaderRigInstanced,
                                    glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation)),
+            npcAnimator(new Animator(npcAnimation,true)),
             npcRig(new RigPrep(ir)),
-            //npcLA(new LookAt(npcRig)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
-            barmanAnimator(new Animator(barmanAnimation)),
+            barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
@@ -457,7 +455,7 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        barmanAnimator->UpdateAnimation(deltaTime);
+        barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -582,12 +580,11 @@ public:
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime);
+        npcAnimator->UpdateAnimation(s.deltaTime, 90.0f);
 
         shaderRigInstanced.use();
-        npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
-        //npcLA->update(180);
-        auto transforms2 = npcRig->GetFinalBoneMatrices();
+        //npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
+        auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
