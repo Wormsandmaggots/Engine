@@ -20,10 +20,24 @@ int main() {
     PlayerInput playerInput(GLFW_JOYSTICK_1);
     PlayerInput playerInput1(GLFW_JOYSTICK_2);
     DebugInput debugInput;
-    Shader shader("path_to_vertex_shader", "path_to_fragment_shader");
+
+    Shader shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
+            collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
+            shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
+            colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
+            shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
+            screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
+            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            shaderBarmanRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
+            shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
+            reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
+            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
+            imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
+            shaderRigInstanced("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag");
 
     //instance
-    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput, shader);
+    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput, shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader, shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader, imageShaderGreen, shaderRigInstanced);
     //awake
     examplesceneScript->awake();
     //start

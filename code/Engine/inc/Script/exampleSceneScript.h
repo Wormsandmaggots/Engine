@@ -61,23 +61,23 @@ private:
     DebugInput& debugInput;
 
     Shader& shader;
-    Shader collisionTestShader;
-    Shader shaderText;
-    Shader colorShader;
-    Shader shaderPbr;
-    Shader screenShader;
-    Shader shaderRig;
-    Shader shaderBarmanRig;
-    Shader DrunkShader;
-    Shader shaderNoneDrink;
-    Shader reverseShader;
-    Shader imageShader;
-    Shader imageShaderGreen;
-    Shader shaderRigInstanced;
+    Shader& collisionTestShader;
+    Shader& shaderText;
+    Shader& colorShader;
+    Shader& shaderPbr;
+    Shader& screenShader;
+    Shader& shaderRig;
+    Shader& shaderBarmanRig;
+    Shader& DrunkShader;
+    Shader& shaderNoneDrink;
+    Shader& reverseShader;
+    Shader& imageShader;
+    Shader& imageShaderGreen;
+    Shader& shaderRigInstanced;
 ///////////////////////////////////////////////////
     FrameBuffer buffer;
 
-    //Shader* shaderRigInstanced;
+    //Shader& shaderRigInstanced;
 
     // ssao
     SSAO ssao;
@@ -187,7 +187,10 @@ private:
 
 public:
     // Konstruktor domyślny
-    exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, AudioManager& audioManager, PlayerInput& playerInput, PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader) :
+    exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, AudioManager& audioManager, PlayerInput& playerInput,
+                       PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
+                       Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
+                       Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
             editor(editor),
             cm(cm),
             sm(sm),
@@ -202,20 +205,20 @@ public:
             joystickOffset2(glm::vec2(0)),
             joystickOffset3(glm::vec2(0)),
             joystickOffset4(glm::vec2(0)),
-            //shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
             shader(shader),
-            collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
-            shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
-            colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
-            shaderPbr("res/content/shaders/vertexPbr.glsl", "res/content/shaders/fragmentPbr.glsl"),
-            screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
-            shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
-            shaderBarmanRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
-            DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
-            shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
-            reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
-            imageShader("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d.glsl"),
-            imageShaderGreen("res/content/shaders/vertex_2d.glsl", "res/content/shaders/fragment_2d_green.glsl"),
+            collisionTestShader(collisionTestShader),
+            shaderText(shaderText),
+            colorShader(colorShader),
+            shaderPbr(shaderPbr),
+            screenShader(screenShader),
+            shaderRig(shaderRig),
+            shaderBarmanRig(shaderBarmanRig),
+            DrunkShader(DrunkShader),
+            shaderNoneDrink(shaderNoneDrink),
+            reverseShader(reverseShader),
+            imageShader(imageShader),
+            imageShaderGreen(imageShaderGreen),
+            shaderRigInstanced(shaderRigInstanced),
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -273,7 +276,6 @@ public:
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
-            shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
