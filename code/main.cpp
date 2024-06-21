@@ -45,7 +45,7 @@ int main() {
 
     //inits
     audioManager.init();
-    //sm.loadScene("res/content/maps/Kuba.yaml");
+    sm.loadScene("res/content/maps/Kuba.yaml");
     sm.loadScene("res/content/maps/Marcin.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
@@ -61,27 +61,59 @@ int main() {
     //start
     examplesceneScript->start();
 
-    /*
-    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, renderer, audioManager, playerInput, playerInput1, debugInput,
+
+    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
 
     menusceneScript->awake();
     menusceneScript->start();
-*/
+
+// Ustawianie aktualnej sceny na menuSceneScript
+    sm.setCurrentScene("KubaScene");
+
+    bool switched = true;
+    Scene2* currentScene;
 
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
         //update
-        examplesceneScript->update();
+        //examplesceneScript->update();
         //menusceneScript->update();
+
+        // Pobieranie aktualnej sceny
+        currentScene = sm.getCurrentScene();
+        if (currentScene != nullptr) {
+            // Sprawdzanie, która scena jest aktualnie aktywna
+            if (currentScene->getName() == "KubaScene") {
+                // Wywołanie metody update dla menuSceneScript
+                menusceneScript->update();
+            } else if (currentScene->getName() == "MarcinScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                examplesceneScript->update();
+            }
+        }
+
+        // Sprawdzanie, czy klawisz spacji został naciśnięty
+        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            if (switched) {
+                // Zmiana sceny na exampleSceneScript
+                sm.setCurrentScene("MarcinScene");
+                switched = false;
+            } else {
+                // Zmiana sceny na menuSceneScript
+                sm.setCurrentScene("KubaScene");
+                switched = true;
+            }
+        }
 
         update();
     }
     //onDestroy
     //examplesceneScript->onDestroy();
+    audioManager.end();
 
 
     end();
