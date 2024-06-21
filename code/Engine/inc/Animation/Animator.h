@@ -7,6 +7,7 @@
 #include <assimp/Importer.hpp>
 #include "Animation.h"
 #include "AnimBone.h"
+#include "LookAt.h"
 
 class Animator
 {
@@ -20,6 +21,7 @@ public:
 
         for (int i = 0; i < 100; i++)
             m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
+        la = new LookAt();
     }
 
     void UpdateAnimation(float dt)
@@ -50,6 +52,10 @@ public:
         {
             Bone->Update(m_CurrentTime);
             nodeTransform = Bone->GetLocalTransform();
+            if(nodeName == "mixamorig:Head"){
+                nodeTransform = la->computeNoBone(glm::vec3(1.0f,0.0f,0.0f), nodeTransform);
+            }
+
         }
 
         glm::mat4 globalTransformation = parentTransform * nodeTransform;
@@ -60,19 +66,7 @@ public:
             int index = boneInfoMap[nodeName].id;
             glm::mat4 offset = boneInfoMap[nodeName].offset;
             m_FinalBoneMatrices[index] = globalTransformation * offset;
-            if(nodeName == "mixamorig:Head"){
-                glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f,1.0f,0.0f));
-                glm::mat3 newRotation = rotationMatrix * glm::mat3(m_FinalBoneMatrices[index]);
-                m_FinalBoneMatrices[index][0][0] = newRotation[0][0];
-                m_FinalBoneMatrices[index][0][1] = newRotation[0][1];
-                m_FinalBoneMatrices[index][0][2] = newRotation[0][2];
-                m_FinalBoneMatrices[index][1][0] = newRotation[1][0];
-                m_FinalBoneMatrices[index][1][1] = newRotation[1][1];
-                m_FinalBoneMatrices[index][1][2] = newRotation[1][2];
-                m_FinalBoneMatrices[index][2][0] = newRotation[2][0];
-                m_FinalBoneMatrices[index][2][1] = newRotation[2][1];
-                m_FinalBoneMatrices[index][2][2] = newRotation[2][2];
-            }
+
         }
 
         for (int i = 0; i < node->childrenCount; i++)
@@ -84,9 +78,13 @@ public:
         return m_FinalBoneMatrices;
     }
 
+    const aiScene* getScene(){
+        m_CurrentAnimation->getScene();
+    }
 private:
     std::vector<glm::mat4> m_FinalBoneMatrices;
     Animation* m_CurrentAnimation;
     float m_CurrentTime;
     float m_DeltaTime;
+    LookAt* la;
 };

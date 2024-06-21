@@ -165,7 +165,7 @@ private:
     Animation* npcAnimation;
     Animator* npcAnimator;
     RigPrep* npcRig;
-    LookAt* npcLA;
+    //LookAt* npcLA;
 
     Animation* barmanAnimation;
     Animator* barmanAnimator;
@@ -278,7 +278,7 @@ public:
             npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
             npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
-            npcLA(new LookAt(npcRig)),
+            //npcLA(new LookAt(npcRig)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation)),
             barmanRig(new RigPrep(barman)),
