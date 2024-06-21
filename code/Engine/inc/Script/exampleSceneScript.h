@@ -33,12 +33,13 @@ using namespace SceneManagement;
 
 class exampleSceneScript : public SceneScript {
 private:
-    EditorLayer::Editor editor;
+///////////////////////////////////////////////////
+    EditorLayer::Editor& editor;
     // collision
-    CollisionManager cm;
+    CollisionManager& cm;
     // scene manager
-    SceneManager sm;
-
+    SceneManager& sm;
+///////////////////////////////////////////////////
     // audio
     AudioManager& audioManager;
 
@@ -48,18 +49,18 @@ private:
 
     // input joystick
     int connectedControllers;
-
-    PlayerInput playerInput;
-    PlayerInput playerInput1;
-
+///////////////////////////////////////////////////
+    PlayerInput& playerInput;
+    PlayerInput& playerInput1;
+///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
+///////////////////////////////////////////////////
+    DebugInput& debugInput;
 
-    DebugInput debugInput;
-
-    Shader shader;
+    Shader& shader;
     Shader collisionTestShader;
     Shader shaderText;
     Shader colorShader;
@@ -72,17 +73,18 @@ private:
     Shader reverseShader;
     Shader imageShader;
     Shader imageShaderGreen;
-
+    Shader shaderRigInstanced;
+///////////////////////////////////////////////////
     FrameBuffer buffer;
 
-    Shader shaderRigInstanced;
+    //Shader* shaderRigInstanced;
 
     // ssao
     SSAO ssao;
-
+///////////////////////////////////////////////////
     // renderer
     Renderer renderer;
-
+///////////////////////////////////////////////////
     // model
     Model* box;
     Model* club;
@@ -185,18 +187,23 @@ private:
 
 public:
     // Konstruktor domyślny
-    exampleSceneScript() :
-            audioManager(AudioManager::getInstance()),
+    exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, AudioManager& audioManager, PlayerInput& playerInput, PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader) :
+            editor(editor),
+            cm(cm),
+            sm(sm),
+            audioManager(audioManager),
             songSampleInterval(1.0),
             songDataIndex(0),
             connectedControllers(JslConnectDevices()),
-            playerInput(GLFW_JOYSTICK_1),
-            playerInput1(GLFW_JOYSTICK_2),
+            playerInput(playerInput),
+            playerInput1(playerInput1),
+            debugInput(debugInput),
             joystickOffset(glm::vec2(0)),
             joystickOffset2(glm::vec2(0)),
             joystickOffset3(glm::vec2(0)),
             joystickOffset4(glm::vec2(0)),
-            shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
+            //shader("res/content/shaders/vertex.glsl", "res/content/shaders/fragment.glsl"),
+            shader(shader),
             collisionTestShader("res/content/shaders/vertex.glsl", "res/content/shaders/collisionTest.frag"),
             shaderText("res/content/shaders/vertexText.glsl", "res/content/shaders/fragmentText.glsl"),
             colorShader("res/content/shaders/color_v.glsl", "res/content/shaders/color_f.glsl"),
