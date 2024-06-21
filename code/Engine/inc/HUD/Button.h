@@ -71,10 +71,11 @@ public:
         }
     }
 
+    std::function<void()> onClick;
 private:
     Input* input;
     bool isPressed;
-    std::function<void()> onClick;
+    //std::function<void()> onClick;
 
     std::vector<Texture*> animationTextures;
     int currentTextureIndex = 0;

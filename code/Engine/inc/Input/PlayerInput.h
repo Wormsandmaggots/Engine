@@ -14,6 +14,21 @@ public:
         input.initializeController(joystickId);
     }
 
+    bool isKeyPressed(int key) {
+        // Sprawdzamy, czy przycisk jest naciśnięty i czy nie został już wcześniej zarejestrowany jako naciśnięty
+        if (input.getControllerButtonState(key,1) && !keysPressed[key]) {
+            keysPressed[key] = true;
+            return true;
+        }
+
+        // Jeśli przycisk nie jest naciśnięty, resetujemy jego stan
+        if (!input.isKeyPressed(key)) {
+            keysPressed[key] = false;
+        }
+
+        return false;
+    }
+
     void interpretInput()
     {
         for (int button = 0; button < 4; ++button)
@@ -25,10 +40,10 @@ public:
                 {
                 case 0: // square/A
                     start = true;
-                            LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed"); //A
+                            //LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Square is pressed"); //A
                     break;
                 case 1: // cross/B
-                    // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Cross is pressed"); //B
+                     //LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Cross is pressed"); //B
                     break;
                 case 2: // circle/X
                     // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Circle  is pressed"); //X
@@ -85,5 +100,6 @@ private:
     // Input& input;
     glm::vec2 joystick1;
     glm::vec2 joystick2;
+    std::unordered_map<int, bool> keysPressed;
 };
 #endif

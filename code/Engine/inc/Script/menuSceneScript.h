@@ -86,6 +86,27 @@ private:
     // model
 
     //HUD
+    //main menu
+    Image* manuBackground;
+
+    Button* startButton;
+    Button* exitButton;
+    Button* creditsButton;
+
+    Entity* menuWalpaper;
+    Entity* ng;
+    Entity* ex;
+    Entity* cr;
+
+    Texture* background;
+    Texture* ng_button_idle;
+    Texture* ex_button_idle;
+    Texture* cr_button_idle;
+    Texture* ng_button_activ;
+    Texture* ex_button_activ;
+    Texture* cr_button_activ;
+
+    Button* activeButton;
 
 public:
     // Konstruktor domyślny
@@ -123,9 +144,40 @@ public:
             imageShader(imageShader),
             imageShaderGreen(imageShaderGreen),
             shaderRigInstanced(shaderRigInstanced),
-            //renderer(&ssao.shaderGeometryPass),
-            buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT))
+            buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
+            //hud
+            manuBackground(new Image(&imageShader)),
+            startButton(new Button(&imageShader)),
+            exitButton(new Button(&imageShader)),
+            creditsButton(new Button(&imageShader)),
+
+            menuWalpaper(new Entity("mainMenu")),
+            ng(new Entity("startButton")),
+            ex(new Entity("exitButton")),
+            cr(new Entity("creditsButton")),
+
+            background(new Texture("res/content/textures/background.png", "background")),
+            ng_button_idle(new Texture("res/content/textures/start_d.png", "start_d")),
+            ex_button_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
+            cr_button_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
+            ng_button_activ(new Texture("res/content/textures/start_h.png", "start_h")),
+            ex_button_activ(new Texture("res/content/textures/exit_h.png", "exit_h")),
+            cr_button_activ(new Texture("res/content/textures/credits_h.png", "credits_h"))
+
     {
+    }
+
+    // Dodajemy metodę do zmiany aktywnego przycisku
+    void changeActiveButton(Button* newActiveButton) {
+        // Tutaj możemy dodać kod do zmiany wyglądu przycisków, np. zmiana koloru aktywnego przycisku
+        activeButton = newActiveButton;
+    }
+
+    // Dodajemy metodę do wywołania funkcji onClick dla aktywnego przycisku
+    void clickActiveButton() {
+        if (activeButton != nullptr) {
+            activeButton->onClick();
+        }
     }
 
     void awake() override{
@@ -134,6 +186,56 @@ public:
     void start() override{
         //scene manager
         sm.setCurrentScene("KubaScene");
+
+        //main menu
+
+        //menu background
+        sm.getSceneByName("KubaScene")->addEntity(menuWalpaper);
+        menuWalpaper->addComponent(manuBackground);
+        manuBackground->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+        manuBackground->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+        manuBackground->setTexture(background);
+
+        //new game
+        sm.getSceneByName("KubaScene")->addEntity(ng);
+        ng->addComponent(startButton);
+        startButton->getTransform()->setScale(glm::vec3(0.14f, 0.06f, 0.2f));
+        startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.031f, 0.0f));
+
+        startButton->setTexture(ng_button_idle);
+
+        startButton->setOnClick([]() {
+            // Kod do wykonania po kliknięciu przycisku start
+            std::cout << "Start button clicked!" << std::endl;
+        });
+
+        //exit
+        sm.getSceneByName("KubaScene")->addEntity(ex);
+        ex->addComponent(exitButton);
+        exitButton->getTransform()->setScale(glm::vec3(0.1f, 0.07f, 0.2f));
+        exitButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.25f, 0.0f));
+
+        exitButton->setTexture(ex_button_idle);
+
+        exitButton->setOnClick([]() {
+            // Kod do wykonania po kliknięciu przycisku exit
+            std::cout << "Exit button clicked!" << std::endl;
+        });
+
+        //credits
+        sm.getSceneByName("KubaScene")->addEntity(cr);
+        cr->addComponent(creditsButton);
+        creditsButton->getTransform()->setScale(glm::vec3(0.14f, 0.07f, 0.2f));
+        creditsButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.488f, 0.0f));
+
+        creditsButton->setTexture(cr_button_idle);
+
+        creditsButton->setOnClick([]() {
+            // Kod do wykonania po kliknięciu przycisku credits
+            std::cout << "Credits button clicked!" << std::endl;
+        });
+
     };
 
     void update() override{
@@ -151,10 +253,67 @@ public:
         playerInput.interpretInput();
         playerInput1.interpretInput();
 
+        joystickOffset = playerInput.getJoystick(2);
+        joystickOffset2 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
+
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = s.camera.GetViewMatrix();
 
+        renderer.updateProjectionAndView(projection, view, s.camera.Position);
+
+        editor.draw();
+        sm.updateLoadedScenes();
+
+        glDisable(GL_DEPTH_TEST);
+        //imageShader.use();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //hud
+        glActiveTexture(GL_TEXTURE0);
+        imageShader.use();
+        manuBackground->renderPlane();
+
+        startButton->renderPlane();
+        exitButton->renderPlane();
+        creditsButton->renderPlane();
+
+
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
+
+        if (joystickOffset.y > 0.5) {
+            // Jeśli joystick jest przesunięty w górę, zmieniamy aktywny przycisk na poprzedni
+            if (activeButton == startButton) {
+                changeActiveButton(creditsButton);
+            } else if (activeButton == exitButton) {
+                changeActiveButton(startButton);
+            } else if (activeButton == creditsButton) {
+                changeActiveButton(exitButton);
+            }
+        } else if (joystickOffset.y < -0.5) {
+            // Jeśli joystick jest przesunięty w dół, zmieniamy aktywny przycisk na następny
+            if (activeButton == startButton) {
+                changeActiveButton(exitButton);
+            } else if (activeButton == exitButton) {
+                changeActiveButton(creditsButton);
+            } else if (activeButton == creditsButton) {
+                changeActiveButton(startButton);
+            }
+        }
+
+        //std::cout << joystickOffset.y << std::endl;
+
+        // Sprawdzamy, czy przycisk na kontrolerze został naciśnięty
+        if (playerInput.isKeyPressed(1)) {
+            // Jeśli tak, wywołujemy funkcję onClick dla aktywnego przycisku
+            clickActiveButton();
+            std::cout<<"A"<<std::endl;
+        }
 
     };
 

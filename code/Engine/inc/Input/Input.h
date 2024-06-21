@@ -41,7 +41,7 @@ public:
     //keyboard
     void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
         //to handle a new kwy, at it to this if statement
-        if (key == GLFW_KEY_W || key == GLFW_KEY_A || key == GLFW_KEY_S || key == GLFW_KEY_D || key == GLFW_KEY_Q || key == GLFW_KEY_E || key == GLFW_KEY_B || key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_ESCAPE || key == GLFW_KEY_P  ||  key == GLFW_KEY_O ) {
+        //if (key == GLFW_KEY_W || key == GLFW_KEY_A || key == GLFW_KEY_S || key == GLFW_KEY_D || key == GLFW_KEY_Q || key == GLFW_KEY_E || key == GLFW_KEY_B || key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_ESCAPE || key == GLFW_KEY_P  ||  key == GLFW_KEY_O ) {
             if (action == GLFW_PRESS) {
                 keys[key] = true;
                 keysReleased[key] = false;
@@ -49,7 +49,7 @@ public:
                 keys[key] = false;
                 keysReleased[key] = true;
             }
-        }
+        //}
     }
 
     bool isKeyPressed(int key) {
