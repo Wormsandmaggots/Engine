@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Input/PlayerInput.h"
 #include "Script/exampleSceneScript.h"
+#include "Script/menuSceneScript.h"
 
 
 
@@ -17,6 +18,7 @@ int main() {
     CollisionManager cm;
     SceneManager sm;
     AudioManager& audioManager(AudioManager::getInstance());
+
     PlayerInput playerInput(GLFW_JOYSTICK_1);
     PlayerInput playerInput1(GLFW_JOYSTICK_2);
     DebugInput debugInput;
@@ -37,23 +39,35 @@ int main() {
             shaderRigInstanced("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag");
 
     //instance
-    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput, shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader, shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader, imageShaderGreen, shaderRigInstanced);
+    /*exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput,
+                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                                    imageShaderGreen, shaderRigInstanced);
     //awake
     examplesceneScript->awake();
     //start
-    examplesceneScript->start();
+    examplesceneScript->start();*/
+
+    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, audioManager, playerInput, playerInput1, debugInput,
+                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                           imageShaderGreen, shaderRigInstanced);
+
+    menusceneScript->awake();
+    menusceneScript->start();
 
 
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
         //update
-        examplesceneScript->update();
+        //examplesceneScript->update();
+        menusceneScript->update();
 
         update();
     }
     //onDestroy
-    examplesceneScript->onDestroy();
+    //examplesceneScript->onDestroy();
 
 
     end();
