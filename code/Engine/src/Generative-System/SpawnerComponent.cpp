@@ -106,9 +106,10 @@ void SpawnerComponent::update()
             break;
         }
 
-        if (orbsSpawned > 50) {
+        if (orbsSpawned > 100) {
             spawn<Drink>(originPos + glm::vec3(-1, 1, originPos.z));
 			orbsSpawned = 0;
+			spawnAfter -= freqIncrement;
         }
 
         

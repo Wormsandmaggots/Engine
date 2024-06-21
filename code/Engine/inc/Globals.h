@@ -18,3 +18,4 @@ extern DrinkType currentDrink;
 extern float ballSpeed;
 extern float songInterval;
 extern float forwardSpeed;
+extern float freqIncrement; 
