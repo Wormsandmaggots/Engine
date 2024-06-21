@@ -10,7 +10,6 @@ void Model::start() {}
 void Model::update() { 
     if (enable) 
         Renderer::Render(this);
-
 }
 
 void Model::onDestroy() {}

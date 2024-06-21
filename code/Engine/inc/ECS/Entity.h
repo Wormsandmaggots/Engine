@@ -36,6 +36,8 @@ public:
     void removeComponent(Component*);
     void removeComponent(int);
 
+    bool active;
+
     [[nodiscard]] Transform2* getTransform() const;
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] Entity* getParent() const;

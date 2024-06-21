@@ -6,6 +6,8 @@
 #include "Scene/Scene2.h"
 #include "Core/AssetManager/AssetManager.h"
 
+
+
 Spawner::Spawner(Scene2* scene) {
 	this->scene = scene;
 	this->ballModel = new Model("res/content/models/orb2/orb2.fbx");
@@ -60,12 +62,12 @@ void Spawner::init()
 
 void Spawner::update() {
 
-	for (int i = 0; i < rings.size(); i++) {
+	/*for (int i = 0; i < rings.size(); i++) {
 		if (rings[i]->getToDestory()) {
 			this->scene->removeEntity(rings[i]);
 			rings.erase(rings.begin() + i);
 		}
-	}
+	}*/
 	for (int i = 0; i < balls.size(); i++) {
 
 		if (balls[i]->getToDestory()) {
@@ -79,12 +81,12 @@ void Spawner::update() {
 			badballs.erase(badballs.begin() + i);
 		}
 	}
-	for (int i = 0; i < drinks.size(); i++) {
+	/*for (int i = 0; i < drinks.size(); i++) {
 		if (drinks[i]->getToDestory()) {
 			this->scene->removeEntity(drinks[i]);
 			drinks.erase(drinks.begin() + i);
 		}
-	}
+	}*/
 }
 
 
