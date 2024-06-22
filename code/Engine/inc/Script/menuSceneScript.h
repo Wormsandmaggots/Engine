@@ -225,11 +225,25 @@ public:
             this->sm.setCurrentScene("MarcinScene");
         });
 
+        //credits
+        sm.getSceneByName("KubaScene")->addEntity(cr);
+        cr->addComponent(creditsButton);
+        creditsButton->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
+        creditsButton->getTransform()->setPosition(glm::vec3(-0.708f, -0.3f, 0.0f));
+
+        creditsButton->setTexture(cr_button_idle);
+        creditsButton->setInactiveTexture(cr_button_idle);
+        creditsButton->setActiveTexture(cr_button_activ);
+
+        creditsButton->setOnClick([]() {
+            std::cout << "Credits button clicked!" << std::endl;
+        });
+
         //exit
         sm.getSceneByName("KubaScene")->addEntity(ex);
         ex->addComponent(exitButton);
         exitButton->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        exitButton->getTransform()->setPosition(glm::vec3(-0.8f, -0.3f, 0.0f));
+        exitButton->getTransform()->setPosition(glm::vec3(-0.793f, -0.581f, 0.0f));
 
         exitButton->setTexture(ex_button_idle);
         exitButton->setInactiveTexture(ex_button_idle);
@@ -238,20 +252,6 @@ public:
         exitButton->setOnClick([]() {
             std::cout << "Exit button clicked!" << std::endl;
             glfwSetWindowShouldClose(s.window, GL_TRUE);
-        });
-
-        //credits
-        sm.getSceneByName("KubaScene")->addEntity(cr);
-        cr->addComponent(creditsButton);
-        creditsButton->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        creditsButton->getTransform()->setPosition(glm::vec3(-0.719f, -0.581f, 0.0f));
-
-        creditsButton->setTexture(cr_button_idle);
-        creditsButton->setInactiveTexture(cr_button_idle);
-        creditsButton->setActiveTexture(cr_button_activ);
-
-        creditsButton->setOnClick([]() {
-            std::cout << "Credits button clicked!" << std::endl;
         });
 
         //buttons on scene handling
@@ -314,20 +314,20 @@ public:
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
             if (joystickOffset.y < 0.5) {
                 if (activeButton == startButton) {
-                    changeActiveButton(creditsButton);
-                } else if (activeButton == exitButton) {
-                    changeActiveButton(startButton);
-                } else if (activeButton == creditsButton) {
                     changeActiveButton(exitButton);
+                } else if (activeButton == creditsButton) {
+                    changeActiveButton(startButton);
+                } else if (activeButton == exitButton) {
+                    changeActiveButton(creditsButton);
                 }
             }
             else if (joystickOffset.y > -0.5) {
                 if (activeButton == startButton) {
-                    changeActiveButton(exitButton);
-                } else if (activeButton == exitButton) {
                     changeActiveButton(creditsButton);
-                } else if (activeButton == creditsButton) {
+                } else if (activeButton == exitButton) {
                     changeActiveButton(startButton);
+                } else if (activeButton == creditsButton) {
+                    changeActiveButton(exitButton);
                 }
             }
             lastButtonChangeTime = currentFrame;
