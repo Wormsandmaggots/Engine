@@ -108,6 +108,10 @@ private:
 
     Button* activeButton;
 
+    float lastButtonChangeTime;
+    float buttonChangeDelay;
+    bool joystickReset;
+
 public:
     // Konstruktor domyślny
     menuSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
@@ -236,8 +240,11 @@ public:
             std::cout << "Credits button clicked!" << std::endl;
         });
 
+        //buttons on scene handling
         activeButton = startButton;
-
+        lastButtonChangeTime = 0.0f;
+        buttonChangeDelay = 0.2f;
+        joystickReset = true;
     };
 
     void update() override{
@@ -287,7 +294,7 @@ public:
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
-
+        if (currentFrame - lastButtonChangeTime >= buttonChangeDelay) {
         if (joystickOffset.y > 0.5) {
             // Jeśli joystick jest przesunięty w górę, zmieniamy aktywny przycisk na poprzedni
             if (activeButton == startButton) {
@@ -307,10 +314,18 @@ public:
                 changeActiveButton(startButton);
             }
         }
+            lastButtonChangeTime = currentFrame;
+        }
 
-        // Sprawdzamy, czy przycisk na kontrolerze został naciśnięty
+        if (activeButton == startButton) {
+            std::cout << "Start button is active" << std::endl;
+        } else if (activeButton == exitButton) {
+            std::cout << "Exit button is active" << std::endl;
+        } else if (activeButton == creditsButton) {
+            std::cout << "Credits button is active" << std::endl;
+        }
+
         if (playerInput.isKeyPressed(1)) {
-            // Jeśli tak, wywołujemy funkcję onClick dla aktywnego przycisku
             clickActiveButton();
             std::cout<<"A"<<std::endl;
         }
