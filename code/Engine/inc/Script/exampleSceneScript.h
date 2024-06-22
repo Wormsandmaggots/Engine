@@ -841,7 +841,7 @@ public:
     };
 
     void onDestroy() override{
-        audioManager.end();
+        //audioManager.end();
         delete spawner;
     };
 
