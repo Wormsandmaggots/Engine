@@ -14,6 +14,7 @@ public:
         input.initializeController(joystickId);
     }
 
+    //method for checking if gamepad button is pressed
     bool isKeyPressed(int key) {
         // Sprawdzamy, czy przycisk na kontrolerze jest naciśnięty i czy nie został już wcześniej zarejestrowany jako naciśnięty
         if (input.getControllerButtonState(joystickId, key) == GLFW_PRESS && !keysPressed[key]) {
@@ -31,6 +32,7 @@ public:
 
     void interpretInput()
     {
+        // Interpret button state - depreciated, use isKeyPressed instead -------------------------------
         for (int button = 0; button < 4; ++button)
         {
             int buttonState = input.getControllerButtonState(joystickId, button);
@@ -54,8 +56,9 @@ public:
                 }
             }
         }
+        //end ^^^ Interpret button state ^^^ depreciated, use isKeyPressed instead -------------------------------
 
-        // Interpret joystick state
+        // Interpret joystick state - this is up to date
         for (int axis = 0; axis < 2; ++axis)
         {
             glm::vec2 position = input.getControllerJoystickState(joystickId, axis);

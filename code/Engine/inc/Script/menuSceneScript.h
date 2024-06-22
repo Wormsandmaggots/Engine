@@ -308,17 +308,6 @@ public:
             }
         }
 
-        //wypisz na konsoli aktywny przycisk
-//        if (activeButton == startButton) {
-//            std::cout << "Start button is active" << std::endl;
-//        } else if (activeButton == exitButton) {
-//            std::cout << "Exit button is active" << std::endl;
-//        } else if (activeButton == creditsButton) {
-//            std::cout << "Credits button is active" << std::endl;
-//        }
-
-        //std::cout << joystickOffset.y << std::endl;
-
         // Sprawdzamy, czy przycisk na kontrolerze został naciśnięty
         if (playerInput.isKeyPressed(1)) {
             // Jeśli tak, wywołujemy funkcję onClick dla aktywnego przycisku
