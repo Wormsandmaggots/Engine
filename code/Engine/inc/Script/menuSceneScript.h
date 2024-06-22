@@ -220,8 +220,9 @@ public:
         startButton->setInactiveTexture(ng_button_idle);
         startButton->setActiveTexture(ng_button_activ);
 
-        startButton->setOnClick([]() {
+        startButton->setOnClick([this]() {
             std::cout << "Start button clicked!" << std::endl;
+            this->sm.setCurrentScene("MarcinScene");
         });
 
         //exit
@@ -236,6 +237,7 @@ public:
 
         exitButton->setOnClick([]() {
             std::cout << "Exit button clicked!" << std::endl;
+            glfwSetWindowShouldClose(s.window, GL_TRUE);
         });
 
         //credits

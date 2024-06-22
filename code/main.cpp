@@ -52,7 +52,7 @@ int main() {
     editor.init(&s.camera);
     //inits - end
 
-    /*
+
     //instance
     exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
@@ -62,7 +62,7 @@ int main() {
     examplesceneScript->awake();
     //start
     examplesceneScript->start();
-*/
+
 
     menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
@@ -94,7 +94,7 @@ int main() {
                 menusceneScript->update();
             } else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
-                //examplesceneScript->update();
+                examplesceneScript->update();
             }
         }
 
@@ -114,7 +114,7 @@ int main() {
         update();
     }
     //onDestroy
-    //examplesceneScript->onDestroy();
+    examplesceneScript->onDestroy();
     audioManager.end();
 
 
