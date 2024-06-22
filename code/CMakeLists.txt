@@ -27,7 +27,6 @@ source_group(TREE ${CMAKE_SOURCE_DIR}         FILES ${ASSETS_FILES})
 
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${ASSETS_FILES}
-        Engine/inc/Script/DependencyContainer.h
         Engine/inc/ForwardMovement.h)
 
 

@@ -1,5 +1,5 @@
-#ifndef ENGINE_MAINSCENESCRIPT_H
-#define ENGINE_MAINSCENESCRIPT_H
+#ifndef ENGINE_LOSESCENESCRIPT_H
+#define ENGINE_LOSESCENESCRIPT_H
 
 #include "Script/SceneScript.h"
 
@@ -31,7 +31,7 @@
 
 using namespace SceneManagement;
 
-class menuSceneScript : public SceneScript {
+class loseSceneScript : public SceneScript {
 private:
 ///////////////////////////////////////////////////
     EditorLayer::Editor& editor;
@@ -114,7 +114,7 @@ private:
 
 public:
     // Konstruktor domyślny
-    menuSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
+    loseSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
                     PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
                     Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
                     Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
@@ -212,8 +212,8 @@ public:
         //new game
         sm.getSceneByName("KubaScene")->addEntity(ng);
         ng->addComponent(startButton);
-        startButton->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.03f, 0.0f));
+        startButton->getTransform()->setScale(glm::vec3(0.14f, 0.06f, 0.2f));
+        startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.031f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         startButton->setTexture(ng_button_activ);
@@ -228,8 +228,8 @@ public:
         //exit
         sm.getSceneByName("KubaScene")->addEntity(ex);
         ex->addComponent(exitButton);
-        exitButton->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        exitButton->getTransform()->setPosition(glm::vec3(-0.8f, -0.3f, 0.0f));
+        exitButton->getTransform()->setScale(glm::vec3(0.1f, 0.07f, 0.2f));
+        exitButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.25f, 0.0f));
 
         exitButton->setTexture(ex_button_idle);
         exitButton->setInactiveTexture(ex_button_idle);
@@ -243,8 +243,8 @@ public:
         //credits
         sm.getSceneByName("KubaScene")->addEntity(cr);
         cr->addComponent(creditsButton);
-        creditsButton->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        creditsButton->getTransform()->setPosition(glm::vec3(-0.719f, -0.581f, 0.0f));
+        creditsButton->getTransform()->setScale(glm::vec3(0.14f, 0.07f, 0.2f));
+        creditsButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.488f, 0.0f));
 
         creditsButton->setTexture(cr_button_idle);
         creditsButton->setInactiveTexture(cr_button_idle);
@@ -356,7 +356,7 @@ public:
     void onDestroy() override{
     };
 
-    ~menuSceneScript() override = default;
+    ~loseSceneScript() override = default;
 };
 
 
