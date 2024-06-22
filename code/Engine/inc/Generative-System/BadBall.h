@@ -20,13 +20,12 @@ public:
 
 	void onTriggerEnter(ColliderComponent* entity) {
 		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
-			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
 			this->getTransform()->setPosition(glm::vec3(100));
 			this->toDestroy = true;
 			score -= 100;
 			combo = 0;
 			position = glm::vec3(100);
-			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.1);
+			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 1);
 
 		}
 	}

@@ -57,6 +57,9 @@ struct PointLight {
     float quadratic;
 };
 
+uniform int material;
+uniform vec4 materialColor;
+
 vec3 getNormalFromMap()
 {
     vec3 tangentNormal = texture(texture_normal1, TexCoords).xyz * 2.0 - 1.0;
@@ -139,6 +142,7 @@ void main()
     //gNormal = texture(texture_normal1,TexCoords).rgb;
     //gNormal = normalize(Normal);
     //gAlbedo.rgb = texture(texture_diffuse1, TexCoords).rgb;
+    
     // store specular intensity in gAlbedoSpec's alpha component
     //gAlbedo.a = texture(texture_specular1, TexCoords).r;
     gWorldPos = WorldPos;
@@ -271,8 +275,14 @@ void main()
     color = pow(color, vec3(1.0/2.2));
 
     //vec3 finalColor = cel(color);
+    if(material == 1){
+    FragColor = vec4(color, 1.0)*materialColor;
+    gAlbedo = vec4(color, 1.0)*materialColor;
+    }else{
     FragColor = vec4(color, 1.0);
     gAlbedo = vec4(color, 1.0);
+    }
+
 }
 
 vec3 calculateDirLight2(DirectionalLight lightSource, vec3 normal, vec3 position, vec2 texCoord, float metallness,

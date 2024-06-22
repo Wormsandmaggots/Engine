@@ -28,6 +28,8 @@
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
 #include "ForwardMovement.h"
+#include "Generative-System/SpawnerComponent.h"
+
 
 using namespace SceneManagement;
 
@@ -130,7 +132,7 @@ private:
 
     // spawner
     //Spawner* spawner;
-    Spawner* spawner = nullptr;
+    //Spawner* spawner = nullptr;
     float timeToDispense;
     float timeToDispense2;
     float effectTime;
@@ -182,6 +184,9 @@ private:
 
     ForwardMovement* fm;
     float z;
+
+    Entity* spawner;
+    SpawnerComponent* spawnerComponent;
 
 public:
     // Konstruktor domyślny
@@ -252,7 +257,6 @@ public:
             mul(4),
             texelSize(1),
             time(0),
-            spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
             clubE(new Entity("club")),
@@ -298,7 +302,9 @@ public:
     player3(new Entity("player3")),
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
-    lastTime(0.0)
+    lastTime(0.0),
+    spawner(new Entity("Spawner")),
+    spawnerComponent(new SpawnerComponent("res/content/sounds/songs/00/dream.wav", glm::vec3(0, 0, orbDistance), 17))
     {
     }
 
@@ -322,8 +328,6 @@ public:
         //audio
         //audioManager.init();
 
-        SongAnalizer::parseSong(songSampleInterval, path, songData);
-        SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
         //sm.loadScene("res/content/maps/Marcin.yaml");
@@ -331,8 +335,9 @@ public:
         Scene2* currentScene = sm.getSceneByName("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(currentScene);
-
+        spawner->addComponent(spawnerComponent);
+        spawnerComponent->init();
+        currentScene->addEntity(spawner);
         //ssao
         //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
 
@@ -441,9 +446,9 @@ public:
 
 
         //AudioManager::getInstance().playSound(path, 1.0f);
-
         DrunkShader.setInt("screenTexture", 0);
-    };
+        spawnerComponent->start();
+};
 
     void update() override{
 
@@ -477,114 +482,114 @@ public:
         }
 
 // bardziej randomowe spawnowanie
-        timeToDispense2 -= s.deltaTime;
-        if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
+        //timeToDispense2 -= s.deltaTime;
+        //if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
 
-            switch (songData[songDataIndex].type) {
-                case sampleType::BASS:
-                    //raczki
+        //    switch (songData[songDataIndex].type) {
+        //        case sampleType::BASS:
+        //            //raczki
 
-                    if (spawner->hasXPercentChance(20)) {
-                        spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-                    }
+        //            if (spawner->hasXPercentChance(20)) {
+        //                spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
+        //            }
 
-                    if (spawner->hasXPercentChance(20)) {
+        //            if (spawner->hasXPercentChance(20)) {
 
-                        spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-                    }
+        //                spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
+        //            }
 
-                    //nozki
-                    if (spawner->hasXPercentChance(20))
-                        spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-                    else 
-                        spawner->spawnBall("ball", glm::vec3(1, -2, z));
-                    if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-                    else 
-                        spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-                    
+        //            //nozki
+        //            if (spawner->hasXPercentChance(20))
+        //                spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
+        //            else 
+        //                spawner->spawnBall("ball", glm::vec3(1, -2, z));
+        //            if (spawner->hasXPercentChance(20)) 
+        //                spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
+        //            else 
+        //                spawner->spawnBall("ball", glm::vec3(-1, -2, z));
+        //            
 
-                    break;
-                case sampleType::MID:
-                    //raczki
-                    if (spawner->hasXPercentChance(20)) {
-                        spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-                    }
+        //            break;
+        //        case sampleType::MID:
+        //            //raczki
+        //            if (spawner->hasXPercentChance(20)) {
+        //                spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
+        //            }
 
-                    if (spawner->hasXPercentChance(20)) {
+        //            if (spawner->hasXPercentChance(20)) {
 
-                        spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-                    }
-                    ////nozki
-                    if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-                    else 
-                        spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-                  
+        //                spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
+        //            }
+        //            ////nozki
+        //            if (spawner->hasXPercentChance(20)) 
+        //                spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
+        //            else 
+        //                spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
+        //          
 
-                    if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-                  
-                    else 
-                        spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-                    
+        //            if (spawner->hasXPercentChance(20)) 
+        //                spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
+        //          
+        //            else 
+        //                spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+        //            
 
-                    break;
-                case sampleType::CLAP:
-                    //raczki
-                    if (spawner->hasXPercentChance(20)) {
-                        spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-                    }
+        //            break;
+        //        case sampleType::CLAP:
+        //            //raczki
+        //            if (spawner->hasXPercentChance(20)) {
+        //                spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+        //            }
 
-                    if (spawner->hasXPercentChance(20)) {
+        //            if (spawner->hasXPercentChance(20)) {
 
-                        spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-                    }
-                    else {
-                        spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-                    }
+        //                spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+        //            }
+        //            else {
+        //                spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+        //            }
 
-                    //nozki
-                    
-                    if (spawner->hasXPercentChance(20)) 
-                        spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
-                    else
-                        spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
+        //            //nozki
+        //            
+        //            if (spawner->hasXPercentChance(20)) 
+        //                spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
+        //            else
+        //                spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
 
-                    if (spawner->hasXPercentChance(20))
-                        spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
-                    else
-                        spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
+        //            if (spawner->hasXPercentChance(20))
+        //                spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
+        //            else
+        //                spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
 
-                              
-                 
-                    break;
-                case sampleType::SKIP:
-                    break;
-            }
-           if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-                spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
+        //                      
+        //         
+        //            break;
+        //        case sampleType::SKIP:
+        //            break;
+        //    }
+        //   if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
+        //        spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
 
-            songDataIndex++;
-            timeToDispense2 = timeToDispense;
+        //    songDataIndex++;
+        //    timeToDispense2 = timeToDispense;
 
-            if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        }       
+        //    if (!(songDataIndex < songData.size())) songDataIndex = 0;
+        //}       
 
         
 
@@ -777,8 +782,6 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        spawner->update();
-
         cm.update();
 
 
@@ -843,7 +846,6 @@ public:
 
     void onDestroy() override{
         //audioManager.end();
-        delete spawner;
     };
 
     ~exampleSceneScript() override = default;

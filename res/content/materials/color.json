@@ -2,13 +2,21 @@
   "vertexShader": "res/content/shaders/SSAO/ssao_geometry.vert",
   "fragmentShader": "res/content/shaders/SSAO/ssao_fragment.frag",
   "uniforms": [
-    
-  ],
-  "textures": [
     {
-      "name": "nodes",
-      "index": 0,
-      "path": "res/content/images.jpg"
+      "type": "vec4",
+      "name": "materialColor",
+      "value": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "type": "int",
+      "name": "material",
+      "value": 1
     }
-  ]
+  ],
+  "textures": []
 }

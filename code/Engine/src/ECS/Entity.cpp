@@ -10,14 +10,10 @@ unsigned int Entity::EntityCounter = 0;
 void Entity::update() {
     //firstly update transform
     updateTransform();
-
-    //then update components because they can change transform
     for (Component* c : components) {
         c->update();
     }
-
-    //then update children
-    for (Entity* child : children) {
+    for (auto& child : children) {
         child->update();
     }
 }
@@ -80,15 +76,11 @@ void Entity::setParent(Entity &newParent) {
 
 //adds child to children of Entity and sets child's parent
 void Entity::addChild(Entity *child) {
-    if(child->parent == this) return;
-
-    if(child->parent)
-    {
+    if (child->parent == this) return;
+    if (child->parent) {
         child->parent->removeChild(child);
     }
-
     children.push_back(child);
-
     child->parent = this;
 }
 
@@ -114,6 +106,9 @@ void Entity::addChildren(std::vector<Entity *>& entities) {
     for (Entity* e : entities) {
         e->setParent(*this);
     }
+
+
+
 }
 
 int Entity::getId() const {

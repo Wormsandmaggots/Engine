@@ -1,23 +1,22 @@
 {
-  "vertexShader": "res/content/shaders/color_v.glsl",
-  "fragmentShader": "res/content/shaders/color_f.glsl",
+  "vertexShader": "res/content/shaders/SSAO/ssao_geometry.vert",
+  "fragmentShader": "res/content/shaders/SSAO/ssao_fragment.frag",
   "uniforms": [
     {
       "type": "vec4",
-      "name": "color",
+      "name": "materialColor",
       "value": [
-        1.0,
-        1.0,
         0.0,
+        0.0,
+        1.0,
         1.0
       ]
+    },
+    {
+      "type": "int",
+      "name": "material",
+      "value": 1
     }
   ],
-  "textures": [
-    {
-      "name": "nodes",
-      "index": 0,
-      "path": "res/content/images.jpg"
-    }
-  ]
+  "textures": []
 }

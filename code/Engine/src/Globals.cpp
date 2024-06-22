@@ -1,17 +1,20 @@
-#include "Globals.h"
+﻿#include "Globals.h"
 
 enum DrinkType;
 std::vector<Shader*> globalShaders;
 float deltaTime = 0.0f;
 int score = 0;
-int incrementScore = 100;
 int combo = 0;
 bool start = false;
-DrinkType currentDrink = DrinkType::None;
-float ballSpeed = 6.0f;
+DrinkType currentDrink = DrinkType::None;// typ pp i efekt drinka
+float ballSpeed = 6.0f;// predkosc orba
+float songInterval = 1.0f; // czas sampolowania do systemuGeneratywnego
+float forwardSpeed = 0.f; // predkosc w kierunku baru
+float freqIncrement = 0.0; // spawnuje sie wiecej orbow z czasem i to jest rate orb/sec 
+float orbDistance = 5.0f; // droga do spawnera do gracza
 float lastUpdateTime = 0.0f;
 float resizeInterval = 1.0f; // Co sekundę
 float resizeAmount = 0.01f;
 int lastScore = score;
 float globalVelocity = 0.0f;
-
+int incrementScore = 100;

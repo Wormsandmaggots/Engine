@@ -136,8 +136,17 @@ void init(){
     }
     LOG_INFO("GLFW initialized");
 
+
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+
+    // Get the video mode of the monitor
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+
     //CREATING WINDOW
-    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
+    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
+    //fullscreen
+    //s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", monitor, NULL);
     if (s.window == nullptr)
     {
         LOG_ERROR("Failed to Create GLFW window");

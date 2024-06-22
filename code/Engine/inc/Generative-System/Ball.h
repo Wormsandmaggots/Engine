@@ -12,22 +12,22 @@ class Ball : public Entity {
     glm::vec3 startPosition;
 	float speed = ballSpeed;
 	bool toDestroy = false;
-public:
+public:		
 	
 	bool getToDestory() {
 		return toDestroy;
 	}
 
 	void onTriggerEnter(ColliderComponent* entity) {
-		if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
-			//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
-			this->getTransform()->setPosition(glm::vec3(100));
-			this->toDestroy = true;
-			score += 100;
-			combo += 1;
-			position = glm::vec3(100);
-			AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",0.3);
-		}
+		//if (entity->parentEntity->getName() == "leftHandPointer" || entity->parentEntity->getName() == "rightHandPointer" || entity->parentEntity->getName() == "leftFootPointer" || entity->parentEntity->getName() == "rightFootPointer") {
+		//	//this->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(0, 1, 0, 1));
+		//	this->getTransform()->setPosition(glm::vec3(100));
+		//	this->toDestroy = true;
+		//	score += 100;
+		//	combo += 1;
+		//	position = glm::vec3(100);
+		//	AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav",1);
+		//}
 	}
 	void onTriggerStay(ColliderComponent*) {
 		
