@@ -198,11 +198,11 @@ public:
     void start() override{
         //scene manager
         sm.setCurrentScene("KubaScene");
-
+        Scene2* currentScene = sm.getSceneByName("KubaScene");
         //main menu
 
         //menu background
-        sm.getSceneByName("KubaScene")->addEntity(menuWalpaper);
+        currentScene->addEntity(menuWalpaper);
         menuWalpaper->addComponent(manuBackground);
         manuBackground->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
         manuBackground->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -210,7 +210,7 @@ public:
         manuBackground->setTexture(background);
 
         //new game
-        sm.getSceneByName("KubaScene")->addEntity(ng);
+        currentScene->addEntity(ng);
         ng->addComponent(startButton);
         startButton->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
         startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.03f, 0.0f));
@@ -226,7 +226,7 @@ public:
         });
 
         //credits
-        sm.getSceneByName("KubaScene")->addEntity(cr);
+        currentScene->addEntity(cr);
         cr->addComponent(creditsButton);
         creditsButton->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
         creditsButton->getTransform()->setPosition(glm::vec3(-0.708f, -0.3f, 0.0f));
@@ -240,7 +240,7 @@ public:
         });
 
         //exit
-        sm.getSceneByName("KubaScene")->addEntity(ex);
+        currentScene->addEntity(ex);
         ex->addComponent(exitButton);
         exitButton->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
         exitButton->getTransform()->setPosition(glm::vec3(-0.793f, -0.581f, 0.0f));

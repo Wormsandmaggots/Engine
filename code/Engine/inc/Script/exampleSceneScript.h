@@ -328,9 +328,10 @@ public:
         //scene manager
         //sm.loadScene("res/content/maps/Marcin.yaml");
         sm.setCurrentScene("MarcinScene");
+        Scene2* currentScene = sm.getSceneByName("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(sm.getSceneByName("MarcinScene"));
+        spawner = new Spawner(currentScene);
 
         //ssao
         //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -345,32 +346,32 @@ public:
         //entities
         //club interior
         clubE->addComponent(club);
-        sm.getSceneByName("MarcinScene")->addEntity(clubE);
+        currentScene->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         //player3->addComponent(player2);
-        //sm.getSceneByName("MarcinScene")->addEntity(player3);
+        //currentScene->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 /*
         djE->addComponent(dj);
-        sm.getSceneByName("MarcinScene")->addEntity(djE);
+        currentScene->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 */
         scianyE->addComponent(sciany);
-        sm.getSceneByName("MarcinScene")->addEntity(scianyE);
+        currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
         sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barDrinksE->addComponent(barDrinks);
-        sm.getSceneByName("MarcinScene")->addEntity(barDrinksE);
+        currentScene->addEntity(barDrinksE);
         barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         barDrinks->getTransform()->setScale(glm::vec3(0.5f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
-        sm.getSceneByName("MarcinScene")->addEntity(barmanE);
+        currentScene->addEntity(barmanE);
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
@@ -378,31 +379,31 @@ public:
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
-        sm.getSceneByName("MarcinScene")->addEntity(pointLight);
+        currentScene->addEntity(pointLight);
 
 
-        sm.getSceneByName("MarcinScene")->addEntity(sun);
+        currentScene->addEntity(sun);
         sun->addComponent(sunLight);
 
-        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
+        currentScene->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
 
-        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
+        currentScene->addEntity(dancingRobots2);
         dancingRobots->addComponent(ir2);
 
-        sm.getSceneByName("MarcinScene")->addEntity(sphere1);
+        currentScene->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
         //movement
-        sm.getSceneByName("MarcinScene")->addEntity(fm);
+        currentScene->addEntity(fm);
         fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
 
         //gemplay
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
-        sm.getSceneByName("MarcinScene")->addEntity(player);
+        currentScene->addEntity(player);
 
         lHandcollider->start();
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
@@ -429,7 +430,7 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         //hud
-        sm.getSceneByName("MarcinScene")->addEntity(resBarEntity);
+        currentScene->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
         resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
