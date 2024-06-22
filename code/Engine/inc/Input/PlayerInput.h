@@ -15,14 +15,14 @@ public:
     }
 
     bool isKeyPressed(int key) {
-        // Sprawdzamy, czy przycisk jest naciśnięty i czy nie został już wcześniej zarejestrowany jako naciśnięty
-        if (input.getControllerButtonState(key,1) && !keysPressed[key]) {
+        // Sprawdzamy, czy przycisk na kontrolerze jest naciśnięty i czy nie został już wcześniej zarejestrowany jako naciśnięty
+        if (input.getControllerButtonState(joystickId, key) == GLFW_PRESS && !keysPressed[key]) {
             keysPressed[key] = true;
             return true;
         }
 
-        // Jeśli przycisk nie jest naciśnięty, resetujemy jego stan
-        if (!input.isKeyPressed(key)) {
+        // Jeśli przycisk na kontrolerze nie jest naciśnięty, resetujemy jego stan
+        if (input.getControllerButtonState(joystickId, key) != GLFW_PRESS) {
             keysPressed[key] = false;
         }
 
