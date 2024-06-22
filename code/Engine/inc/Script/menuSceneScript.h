@@ -173,7 +173,15 @@ public:
 
     // Dodajemy metodę do zmiany aktywnego przycisku
     void changeActiveButton(Button* newActiveButton) {
-        // Tutaj możemy dodać kod do zmiany wyglądu przycisków, np. zmiana koloru aktywnego przycisku
+        if (activeButton != nullptr) {
+            activeButton->setActive(false);
+        }
+
+        activeButton = newActiveButton;
+
+        if (activeButton != nullptr) {
+            activeButton->setActive(true);
+        }
         activeButton = newActiveButton;
     }
 
@@ -207,7 +215,10 @@ public:
         startButton->getTransform()->setScale(glm::vec3(0.14f, 0.06f, 0.2f));
         startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.031f, 0.0f));
 
-        startButton->setTexture(ng_button_idle);
+        //this button will be activ from start, so we set it's texture as activ form the begining
+        startButton->setTexture(ng_button_activ);
+        startButton->setInactiveTexture(ng_button_idle);
+        startButton->setActiveTexture(ng_button_activ);
 
         startButton->setOnClick([]() {
             std::cout << "Start button clicked!" << std::endl;
@@ -220,6 +231,8 @@ public:
         exitButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.25f, 0.0f));
 
         exitButton->setTexture(ex_button_idle);
+        exitButton->setInactiveTexture(ex_button_idle);
+        exitButton->setActiveTexture(ex_button_activ);
 
         exitButton->setOnClick([]() {
             std::cout << "Exit button clicked!" << std::endl;
@@ -232,6 +245,8 @@ public:
         creditsButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.488f, 0.0f));
 
         creditsButton->setTexture(cr_button_idle);
+        creditsButton->setInactiveTexture(cr_button_idle);
+        creditsButton->setActiveTexture(cr_button_activ);
 
         creditsButton->setOnClick([]() {
             std::cout << "Credits button clicked!" << std::endl;
@@ -295,7 +310,7 @@ public:
         glDisable(GL_BLEND);
 
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            if (joystickOffset.y > 0.5) {
+            if (joystickOffset.y < 0.5) {
                 if (activeButton == startButton) {
                     changeActiveButton(creditsButton);
                 } else if (activeButton == exitButton) {
@@ -304,7 +319,7 @@ public:
                     changeActiveButton(exitButton);
                 }
             }
-            else if (joystickOffset.y < -0.5) {
+            else if (joystickOffset.y > -0.5) {
                 if (activeButton == startButton) {
                     changeActiveButton(exitButton);
                 } else if (activeButton == exitButton) {

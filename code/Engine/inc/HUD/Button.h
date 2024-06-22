@@ -7,6 +7,9 @@
 #include "Input/DebugInput.h"
 
 class Button : public Image {
+private:
+    Texture* activeTexture;
+    Texture* inactiveTexture;
 public:
     Button(Shader* shader) : Image(shader), isPressed(false), onClick([](){}), currentTextureIndex(0) {}
 
@@ -68,6 +71,22 @@ public:
                 screenY >= position.y - scale.y / 2 && screenY <= position.y + scale.y / 2) {
                 onClick();
             }
+        }
+    }
+
+    void setActiveTexture(Texture* texture) {
+        activeTexture = texture;
+    }
+
+    void setInactiveTexture(Texture* texture) {
+        inactiveTexture = texture;
+    }
+
+    void setActive(bool isActive) {
+        if (isActive) {
+            setTexture(activeTexture);
+        } else {
+            setTexture(inactiveTexture);
         }
     }
 
