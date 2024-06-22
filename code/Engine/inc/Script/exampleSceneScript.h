@@ -158,7 +158,9 @@ private:
     ColliderComponent* rightFootCollider;
     const char* path;
 
-    
+    Ring* ring1;
+    Ring* ring2;
+
     Entity* dancingRobots;
     InstancedRobots* ir;
     Animation* npcAnimation;
