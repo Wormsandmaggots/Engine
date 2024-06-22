@@ -210,7 +210,6 @@ public:
         startButton->setTexture(ng_button_idle);
 
         startButton->setOnClick([]() {
-            // Kod do wykonania po kliknięciu przycisku start
             std::cout << "Start button clicked!" << std::endl;
         });
 
@@ -223,7 +222,6 @@ public:
         exitButton->setTexture(ex_button_idle);
 
         exitButton->setOnClick([]() {
-            // Kod do wykonania po kliknięciu przycisku exit
             std::cout << "Exit button clicked!" << std::endl;
         });
 
@@ -236,7 +234,6 @@ public:
         creditsButton->setTexture(cr_button_idle);
 
         creditsButton->setOnClick([]() {
-            // Kod do wykonania po kliknięciu przycisku credits
             std::cout << "Credits button clicked!" << std::endl;
         });
 
@@ -248,7 +245,6 @@ public:
     };
 
     void update() override{
-
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
@@ -257,6 +253,9 @@ public:
         //time = time + s.deltaTime;
 
         deltaTime = s.deltaTime;
+
+        bool isDelayPassed = currentFrame - lastButtonChangeTime >= buttonChangeDelay;
+        bool isJoystickMoved = std::abs(joystickOffset.y) > 0.5;
 
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
@@ -294,40 +293,45 @@ public:
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
-        if (currentFrame - lastButtonChangeTime >= buttonChangeDelay) {
-        if (joystickOffset.y > 0.5) {
-            // Jeśli joystick jest przesunięty w górę, zmieniamy aktywny przycisk na poprzedni
-            if (activeButton == startButton) {
-                changeActiveButton(creditsButton);
-            } else if (activeButton == exitButton) {
-                changeActiveButton(startButton);
-            } else if (activeButton == creditsButton) {
-                changeActiveButton(exitButton);
+
+        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
+            if (joystickOffset.y > 0.5) {
+                if (activeButton == startButton) {
+                    changeActiveButton(creditsButton);
+                } else if (activeButton == exitButton) {
+                    changeActiveButton(startButton);
+                } else if (activeButton == creditsButton) {
+                    changeActiveButton(exitButton);
+                }
             }
-        } else if (joystickOffset.y < -0.5) {
-            // Jeśli joystick jest przesunięty w dół, zmieniamy aktywny przycisk na następny
-            if (activeButton == startButton) {
-                changeActiveButton(exitButton);
-            } else if (activeButton == exitButton) {
-                changeActiveButton(creditsButton);
-            } else if (activeButton == creditsButton) {
-                changeActiveButton(startButton);
+            else if (joystickOffset.y < -0.5) {
+                if (activeButton == startButton) {
+                    changeActiveButton(exitButton);
+                } else if (activeButton == exitButton) {
+                    changeActiveButton(creditsButton);
+                } else if (activeButton == creditsButton) {
+                    changeActiveButton(startButton);
+                }
             }
-        }
             lastButtonChangeTime = currentFrame;
+            joystickReset = false;
+        } else if (std::abs(joystickOffset.y) <= 0.5) {
+            joystickReset = true;
         }
 
-        if (activeButton == startButton) {
-            std::cout << "Start button is active" << std::endl;
-        } else if (activeButton == exitButton) {
-            std::cout << "Exit button is active" << std::endl;
-        } else if (activeButton == creditsButton) {
-            std::cout << "Credits button is active" << std::endl;
-        }
+//debugging
+//        if (activeButton == startButton) {
+//            std::cout << "Start button is active" << std::endl;
+//        } else if (activeButton == exitButton) {
+//            std::cout << "Exit button is active" << std::endl;
+//        } else if (activeButton == creditsButton) {
+//            std::cout << "Credits button is active" << std::endl;
+//        }
 
         if (playerInput.isKeyPressed(1)) {
             clickActiveButton();
-            std::cout<<"A"<<std::endl;
+            //debugging
+            //std::cout<<"B"<<std::endl;
         }
 
     };
