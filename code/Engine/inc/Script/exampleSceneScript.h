@@ -270,10 +270,10 @@ public:
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(-11.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
             npcAnimator(new Animator(npcAnimation,true)),
             npcRig(new RigPrep(ir)),
@@ -745,18 +745,17 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
-            if(lookatAngle <130.0f) {
-                lookatAngle += 1.0f;
+            if(lookatAngle > 5.0f){
+                lookatAngle -=5.0f;
             }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
-            if(lookatAngle > 0.0f){
-                lookatAngle -=0.0f;
+            if(lookatAngle <170.0f) {
+                lookatAngle += 5.0f;
             }
-
         }
 //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
 //            std::cout << "Koniec" << std::endl;

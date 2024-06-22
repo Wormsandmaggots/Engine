@@ -14,5 +14,5 @@ float resizeInterval = 1.0f; // Co sekundę
 float resizeAmount = 0.01f;
 int lastScore = score;
 float globalVelocity = 0.0f;
-float lookatAngle = 0.0f;
+float lookatAngle = 1.0f;
 
