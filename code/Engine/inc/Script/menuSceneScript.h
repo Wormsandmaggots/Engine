@@ -236,6 +236,8 @@ public:
             std::cout << "Credits button clicked!" << std::endl;
         });
 
+        activeButton = startButton;
+
     };
 
     void update() override{
@@ -305,6 +307,15 @@ public:
                 changeActiveButton(startButton);
             }
         }
+
+        //wypisz na konsoli aktywny przycisk
+//        if (activeButton == startButton) {
+//            std::cout << "Start button is active" << std::endl;
+//        } else if (activeButton == exitButton) {
+//            std::cout << "Exit button is active" << std::endl;
+//        } else if (activeButton == creditsButton) {
+//            std::cout << "Credits button is active" << std::endl;
+//        }
 
         //std::cout << joystickOffset.y << std::endl;
 
