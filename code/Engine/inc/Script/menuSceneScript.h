@@ -114,40 +114,14 @@ private:
 
 public:
     // Konstruktor domyślny
-    menuSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
-                    PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
-                    Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
-                    Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
-            editor(editor),
-            cm(cm),
-            sm(sm),
-            ssao(ssao),
-            renderer(renderer),
-            audioManager(audioManager),
+    menuSceneScript() :
             songSampleInterval(1.0),
             songDataIndex(0),
             connectedControllers(JslConnectDevices()),
-            playerInput(playerInput),
-            playerInput1(playerInput1),
-            debugInput(debugInput),
             joystickOffset(glm::vec2(0)),
             joystickOffset2(glm::vec2(0)),
             joystickOffset3(glm::vec2(0)),
             joystickOffset4(glm::vec2(0)),
-            shader(shader),
-            collisionTestShader(collisionTestShader),
-            shaderText(shaderText),
-            colorShader(colorShader),
-            shaderPbr(shaderPbr),
-            screenShader(screenShader),
-            shaderRig(shaderRig),
-            shaderBarmanRig(shaderBarmanRig),
-            DrunkShader(DrunkShader),
-            shaderNoneDrink(shaderNoneDrink),
-            reverseShader(reverseShader),
-            imageShader(imageShader),
-            imageShaderGreen(imageShaderGreen),
-            shaderRigInstanced(shaderRigInstanced),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             //hud
             manuBackground(new Image(&imageShader)),
@@ -167,7 +141,6 @@ public:
             ng_button_activ(new Texture("res/content/textures/start_h.png", "start_h")),
             ex_button_activ(new Texture("res/content/textures/exit_h.png", "exit_h")),
             cr_button_activ(new Texture("res/content/textures/credits_h.png", "credits_h"))
-
     {
     }
 
