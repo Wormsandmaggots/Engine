@@ -26,6 +26,7 @@
 #include "Generative-System/Collectable.h"
 #include "Generative-System/SpawnerComponent.h"
 #include "Generative-System/Ball.h"
+#include "Generative-System/Ring.h"
 #include "JoyShockLibrary.h"
 #include "Core/Utils/MathUtils.h"
 #include "Core/Utils/Ease.h"
@@ -169,7 +170,6 @@ private:
 
     Entity* pointLight;
     PointLight* pointLight1;
-
     glm::vec3 playerPos;
 
 public:
@@ -255,8 +255,10 @@ public:
         pointLight(new Entity("pointLight1")),
         pointLight1(new PointLight()),
         spawnerEntity(new Entity("Spawner")),
-        spawnerComponent(new SpawnerComponent("res/content/sounds/songs/overcompensate.wav", glm::vec3(0, 0, 5), 17)),
-        playerPos(0)
+        spawnerComponent(new SpawnerComponent("res/content/sounds/songs/overcompensate.wav", glm::vec3(0, 0, orbDistance), 17)),
+        playerPos(0),
+        ring1(new Ring("ring1", glm::vec3(-1, 1, 0.5), new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json")))),
+        ring2(new Ring("ring2", glm::vec3(1,1,0.5), new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"))))
 
     {
     }
@@ -307,7 +309,7 @@ public:
         //entities
 
         clubE->addComponent(club);
-        sm.getLoadedScenes()[0]->addEntity(clubE);
+        //sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
@@ -324,10 +326,10 @@ public:
         sm.getLoadedScenes()[0]->addEntity(sun);
         sun->addComponent(sunLight);
 
-        sm.getLoadedScenes()[0]->addEntity(dancingRobots);
+        //sm.getLoadedScenes()[0]->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
 
-        sm.getLoadedScenes()[0]->addEntity(sphere1);
+        //sm.getLoadedScenes()[0]->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
@@ -338,13 +340,13 @@ public:
         sm.getLoadedScenes()[0]->addEntity(player);
 
         lHandcollider->start();
-        lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
+        lHandcollider->getCollider()->getColliderShape()->setRadius(0.2);
         leftHandPointer->setParent(*player);
         leftHandPointer->addComponent(lHandcollider);
         leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
 
         rHandcollider->start();
-        rHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
+        rHandcollider->getCollider()->getColliderShape()->setRadius(0.2);
         rightHandPointer->setParent(*player);
         rightHandPointer->addComponent(rHandcollider);
         rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
@@ -361,6 +363,8 @@ public:
         rightFootPointer->addComponent(rightFootCollider);
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
+        //currentScene->addEntity(ring1);
+        //currentScene->addEntity(ring2);
 
 
         DrunkShader.setInt("screenTexture", 0);
@@ -396,8 +400,8 @@ public:
         shaderRig.use();
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput.getJoystick(2);
-        joystickOffset4 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
 
         joystickOffset.x = Math::Remap(
                 utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0 ,1)),

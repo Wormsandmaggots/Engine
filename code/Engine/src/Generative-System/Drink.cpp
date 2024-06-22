@@ -2,9 +2,7 @@
 
 Drink::Drink(const std::string name, const glm::vec3& position, Model* model): Collectable(name, position, model)
 {
-	type = (DrinkType)(rand() % 3);
 	this->getTransform()->setScale(glm::vec3(.001));
-
 }
 
 void Drink::update()
@@ -15,10 +13,6 @@ void Drink::update()
 		this->getTransform()->setPosition(position);
 	}
 	Entity::update();
-	if (!active) {
-		
-	}
-	
 
 }
 
@@ -35,7 +29,6 @@ void Drink::onTriggerEnter(ColliderComponent* collidedWith)
 		this->getTransform()->setPosition(glm::vec3(100));
 		currentDrink = (DrinkType)(rand() % 3);
 		this->active = false;
-		// drinkEnable = true;
 		//AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
 	}
 }

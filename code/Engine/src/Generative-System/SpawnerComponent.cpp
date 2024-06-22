@@ -6,7 +6,7 @@ SpawnerComponent::SpawnerComponent(const char* songPath, glm::vec3 originPos, un
 
 	this->originPos = originPos;
 	inactivePos = glm::vec3(-100);
-
+	this->orbDistance = originPos.z;
 	this->entitiesCount = entitiesCount;
 	this->orbsSpawned = 0;
 	this->songPath = songPath;
@@ -16,7 +16,7 @@ SpawnerComponent::SpawnerComponent(const char* songPath, glm::vec3 originPos, un
 	footOrbModel= new Model("res/content/models/orb1/orb1.fbx");
 	badOrbModel= new Model("res/content/models/orbWrong/orbWrong.fbx");
 	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1.fbx");
-	ringModel= new Model("res/content/models/orb2/obrys2.fbx");
+	ringModel= new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
 }
 
 void SpawnerComponent::start()
@@ -106,12 +106,12 @@ void SpawnerComponent::update()
             break;
         }
 
-        if (orbsSpawned > 100) {
-            spawn<Drink>(originPos + glm::vec3(-1, 1, originPos.z));
+        if (orbsSpawned > 100) 
+		{
+            spawn<Drink>(glm::vec3(-1, 1, originPos.z));
 			orbsSpawned = 0;
 			spawnAfter -= freqIncrement;
         }
-
         
         songDataIndex++;
         spawnTimer = spawnAfter;
@@ -123,7 +123,7 @@ void SpawnerComponent::update()
 	}
 
 	for (Collectable* entity : entitiesActive) {
-		if (entity->position.z < originPos.z - 6.5) {
+		if (entity->position.z < originPos.z -orbDistance - 1.5) {
 			AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 			deactiveEntity(entity);
 		}
@@ -142,7 +142,7 @@ void SpawnerComponent::init()
 		Collectable* handOrb = new HandOrb("handOrb", inactivePos, new Model(*handOrbModel));
 		Collectable* footOrb = new FootOrb("footOrb", inactivePos, new Model(*footOrbModel));
 		Collectable* badOrb = new BadOrb("badOrb", inactivePos, new Model(*badOrbModel));
-		Collectable* ring = new Ring("ring", inactivePos, new Model(*ringModel));
+		Collectable* ring = new Ring("ring", inactivePos, new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json")));
 
 		parentEntity->addChild(handOrb);
 		parentEntity->addChild(footOrb);
@@ -170,6 +170,7 @@ void SpawnerComponent::deactiveEntity(Collectable* ent) {
 		Collectable* child = dynamic_cast<Collectable*>(e);
 		child->active = false;
 		child->getTransform()->setPosition(inactivePos);
+		child->getComponent<Model>()->getMaterial()->SetVec4("color", glm::vec4(1, 1, 1, 1));
 		ent->removeChild(child);
 	}
 	ent->getTransform()->setPosition(inactivePos);
@@ -188,7 +189,7 @@ void SpawnerComponent::spawn(glm::vec3 newPos) {
 		if (typeid(*entity) == typeid(T)){
 			entity->position = newPos;
 			activateEntity(entity);
-			Collectable* ring = spawnRing(glm::vec3(newPos.x,newPos.y,originPos.z-5.5));
+			Collectable* ring = spawnRing(glm::vec3(newPos.x,newPos.y,originPos.z-orbDistance-0.5));
 			entity->addChild(ring);
 			orbsSpawned++;
 			break;

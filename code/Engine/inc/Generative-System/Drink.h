@@ -4,7 +4,6 @@
 class Drink : public Collectable {
 
 public:
-	DrinkType type;
 	Drink(const std::string name, const glm::vec3& position, Model* model);
 	void update() override;
 	void onTriggerStay(ColliderComponent* collidedWith) override;

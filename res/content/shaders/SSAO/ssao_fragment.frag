@@ -22,6 +22,10 @@ uniform sampler2D texture_roughness1;
 uniform sampler2D texture_emissive1;
 uniform sampler2D texture_ambient1;
 
+
+uniform int material;
+uniform vec4 color;
+
 vec3 getNormalFromMap()
 {
     vec3 tangentNormal = texture(texture_normal1, TexCoords).xyz * 2.0 - 1.0;
@@ -45,7 +49,12 @@ void main()
     gNormal = getNormalFromMap();
     //gNormal = texture(texture_normal1,TexCoords).rgb;
     //gNormal = normalize(Normal);
+    if(material==1){
+    gAlbedo.rgb = texture(texture_diffuse1, TexCoords).rgb * color.rgb;
+    }
+    else{
     gAlbedo.rgb = texture(texture_diffuse1, TexCoords).rgb;
+    }
     // store specular intensity in gAlbedoSpec's alpha component
     gAlbedo.a = texture(texture_specular1, TexCoords).r;
     gWorldPos = WorldPos;

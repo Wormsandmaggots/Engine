@@ -18,6 +18,7 @@ class SpawnerComponent : public Component {
 public:
 	glm::vec3 originPos;
     glm::vec3 inactivePos;
+    float orbDistance;
 	std::vector<Collectable*> entitiesActive;
 	std::vector<Collectable*> entitiesInactive;
     Model* handOrbModel;
