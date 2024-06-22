@@ -295,15 +295,15 @@ public:
 
         // Define the bass range (20Hz to 150Hz)
         int bass_min = 40.0 / sfinfo.samplerate * chunk_size;
-        int bass_max = 50.0 / sfinfo.samplerate * chunk_size;
+        int bass_max = 600.0 / sfinfo.samplerate * chunk_size;
 
         // Define the mid range (400Hz to 2500Hz)
-        int mid_min = 50.0 / sfinfo.samplerate * chunk_size;
-        int mid_max = 60.0 / sfinfo.samplerate * chunk_size;
+        int mid_min = 600.0 / sfinfo.samplerate * chunk_size;
+        int mid_max = 5000.0 / sfinfo.samplerate * chunk_size;
 
         // Define the clap range (2000Hz to 4000Hz)
-        int clap_min = 60.0 / sfinfo.samplerate * chunk_size;
-        int clap_max = 70.0 / sfinfo.samplerate * chunk_size;
+        int clap_min = 5000.0 / sfinfo.samplerate * chunk_size;
+        int clap_max = 10000.0 / sfinfo.samplerate * chunk_size;
 
         std::vector<double> chunk(chunk_size);
         int chunk_number = 0;

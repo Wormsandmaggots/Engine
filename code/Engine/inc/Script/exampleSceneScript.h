@@ -257,7 +257,7 @@ public:
         pointLight(new Entity("pointLight1")),
         pointLight1(new PointLight()),
         spawnerEntity(new Entity("Spawner")),
-        spawnerComponent(new SpawnerComponent("res/content/sounds/songs/overcompensate.wav", glm::vec3(0, 0, orbDistance), 17)),
+        spawnerComponent(new SpawnerComponent("res/content/sounds/songs/00/dream.wav", glm::vec3(0, 0, orbDistance), 17)),
         playerPos(0),
         ring1(new Ring("ring1", glm::vec3(-1, 1, 0.5), new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json")))),
         ring2(new Ring("ring2", glm::vec3(1,1,0.5), new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"))))

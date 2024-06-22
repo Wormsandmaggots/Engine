@@ -27,6 +27,9 @@ public:
     Model* drinkModel;
     Model* ringModel;
 
+	float xRH, yRH, xLH, yLH, xRF, yRF, xLF, yLF;
+ 
+
     std::vector<SongSample> songData;
     int songDataIndex=0;
 
