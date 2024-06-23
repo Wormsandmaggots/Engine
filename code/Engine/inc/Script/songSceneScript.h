@@ -177,10 +177,11 @@ private:
 
     //HUD
     double lastTime;
-    ResizableImage* resBar;
-    Entity* resBarEntity;
 
-    ForwardMovement* fm;
+    Image* background;
+    Entity* backgroundEntity;
+    Texture* backgroundTexture;
+
     float z;
 
 public:
@@ -293,12 +294,11 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
-    //hud
-//    player3(new Entity("player3")),
-    resBar(new ResizableImage(&imageShaderGreen)),
-    resBarEntity(new Entity("resBar")),
-    lastTime(0.0)
+            //hud
+            lastTime(0.0),
+            background(new Image(&imageShader)),
+            backgroundEntity(new Entity("backdrop")),
+            backgroundTexture(new Texture("res/content/textures/background.png", "background"))
     {
     }
 
@@ -327,10 +327,12 @@ public:
 
         //scene manager
         //sm.loadScene("res/content/maps/Marcin.yaml");
+
         sm.setCurrentScene("SongScene");
+        Scene2* currentScene = sm.getSceneByName("SongScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(sm.getSceneByName("SongScene"));
+        spawner = new Spawner(currentScene);
 
         //ssao
         //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -378,10 +380,10 @@ public:
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
-        sm.getSceneByName("SongScene")->addEntity(pointLight);
+        currentScene->addEntity(pointLight);
 
 
-        sm.getSceneByName("SongScene")->addEntity(sun);
+        currentScene->addEntity(sun);
         sun->addComponent(sunLight);
 
 //        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
@@ -390,19 +392,19 @@ public:
 //        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
 //        dancingRobots->addComponent(ir2);
 
-        sm.getSceneByName("SongScene")->addEntity(sphere1);
+        currentScene->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
         //movement
-        sm.getSceneByName("SongScene")->addEntity(fm);
-        fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
+//        currentScene->addEntity(fm);
+//        fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
 
         //gemplay
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
-        sm.getSceneByName("SongScene")->addEntity(player);
+        currentScene->addEntity(player);
 
         lHandcollider->start();
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
@@ -429,10 +431,7 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         //hud
-        sm.getSceneByName("SongScene")->addEntity(resBarEntity);
-        resBarEntity->addComponent(resBar);
-        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
-        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+
 
 //txt
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
@@ -442,6 +441,20 @@ public:
         //AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
+
+//        Image* background;
+//        Entity* backgroundEntity;
+//        Texture* backgroundTexture;
+
+        //menu background
+        currentScene->addEntity(backgroundEntity);
+        backgroundEntity->addComponent(background);
+        background->getTransform()->setScale(glm::vec3(5.0f, 5.0f, 5.0f));
+        background->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 5.10f));
+
+        background->setTexture(backgroundTexture);
+
+
     };
 
     void update() override{
@@ -501,13 +514,13 @@ public:
                     //nozki
                     if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(1, -2, z));
-                    if (spawner->hasXPercentChance(20)) 
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-                    
+
 
                     break;
                 case sampleType::MID:
@@ -527,18 +540,18 @@ public:
                         spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
                     }
                     ////nozki
-                    if (spawner->hasXPercentChance(20)) 
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-                  
 
-                    if (spawner->hasXPercentChance(20)) 
+
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-                  
-                    else 
+
+                    else
                         spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-                    
+
 
                     break;
                 case sampleType::CLAP:
@@ -559,8 +572,8 @@ public:
                     }
 
                     //nozki
-                    
-                    if (spawner->hasXPercentChance(20)) 
+
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
                     else
                         spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
@@ -570,8 +583,8 @@ public:
                     else
                         spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
 
-                              
-                 
+
+
                     break;
                 case sampleType::SKIP:
                     break;
@@ -618,6 +631,9 @@ public:
         editor.draw();
 
         sm.updateLoadedScenes();
+        imageShader.use();
+        glActiveTexture(GL_TEXTURE0);
+        background->renderPlane();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.ssaoFBO);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -687,6 +703,8 @@ public:
         glActiveTexture(GL_TEXTURE6); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
+        //glActiveTexture(GL_TEXTURE0);
+        //background->renderPlane();
 //scene.update();
        
         joystickOffset = playerInput.getJoystick(2);
@@ -745,20 +763,8 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         //hud
-        resBar->renderPlane();
         //resizing bar
         //temporary------------------------------------------------------------------------------------
-        double currentTime = glfwGetTime();
-        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
-        if (currentTime - lastUpdateTime >= resizeInterval) {
-            resBar->resizeOnImpulse(resizeAmount);
-            lastUpdateTime = currentTime;
-        }
-        // Jeśli score został zwiększony o incrementScore
-        if (score - lastScore >= incrementScore) {
-            resBar->increaseOnImpulse(resizeAmount);
-            lastScore = score;
-        }
 //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
 //            std::cout << "Koniec" << std::endl;
 //        }
@@ -775,6 +781,7 @@ public:
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
+
 
         spawner->update();
 
@@ -843,6 +850,8 @@ public:
             //debugging
             //std::cout<<"B"<<std::endl;
         }
+
+
     };
 
     void onDestroy() override{
