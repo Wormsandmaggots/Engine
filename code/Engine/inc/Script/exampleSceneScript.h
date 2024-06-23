@@ -223,6 +223,7 @@ public:
             club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
+            canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
@@ -231,7 +232,7 @@ public:
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            dj(new Model("res/content/models/mrDJ/Rigged/MrDjv2.fbx",&shaderDjRig)),
+            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx",&shaderDjRig)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -257,6 +258,7 @@ public:
             boxE(new Entity("box")),
             scianyE(new Entity("sciany")),
             barDrinksE(new Entity("barDrinks")),
+            canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
@@ -275,19 +277,19 @@ public:
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
-            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
+            ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(-11.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
-            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
+            ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
+            npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
             npcAnimator(new Animator(npcAnimation,true)),
             npcRig(new RigPrep(ir)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
-            djAnimation(new Animation("res/content/models/mrDJ/Rigged/MrDjv2.fbx", dj)),
+            djAnimation(new Animation("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", dj)),
             djAnimator(new Animator(djAnimation, false)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
@@ -346,13 +348,13 @@ public:
 
         //entities
         //club interior
-
+/*
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
+*/
         //player3->addComponent(player2);
         //sm.getLoadedScenes()[0]->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
@@ -370,9 +372,13 @@ public:
 */
         barDrinksE->addComponent(barDrinks);
         sm.getLoadedScenes()[0]->addEntity(barDrinksE);
-        //barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         barDrinks->getTransform()->setScale(glm::vec3(0.005f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
+        canistersE->addComponent(canisters);
+        sm.getLoadedScenes()[0]->addEntity(canistersE);
+        canisters->getTransform()->setScale(glm::vec3(0.005f));
+        canisters->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
         sm.getLoadedScenes()[0]->addEntity(barmanE);
