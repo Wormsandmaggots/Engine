@@ -4,6 +4,7 @@
 #include "Input/PlayerInput.h"
 #include "Script/exampleSceneScript.h"
 #include "Script/menuSceneScript.h"
+#include "Script/pauseSceneScript.h"
 
 
 
@@ -47,6 +48,7 @@ int main() {
     audioManager.init();
     sm.loadScene("res/content/maps/Kuba.yaml");
     sm.loadScene("res/content/maps/Marcin.yaml");
+    sm.loadScene("res/content/maps/Pause.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
     editor.init(&s.camera);
@@ -72,6 +74,14 @@ int main() {
     menusceneScript->awake();
     menusceneScript->start();
 
+    pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                           imageShaderGreen, shaderRigInstanced);
+
+    pausesceneScript->awake();
+    pausesceneScript->start();
+
 // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
 
@@ -96,6 +106,10 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->update();
             }
+            else if (currentScene->getName() == "PauseScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                pausesceneScript->update();
+            }
         }
 
         // Sprawdzanie, czy klawisz spacji został naciśnięty
@@ -106,7 +120,7 @@ int main() {
                 switched = false;
             } else {
                 // Zmiana sceny na menuSceneScript
-                sm.setCurrentScene("KubaScene");
+                sm.setCurrentScene("PauseScene");
                 switched = true;
             }
         }

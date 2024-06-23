@@ -183,6 +183,8 @@ private:
     ForwardMovement* fm;
     float z;
 
+    Button* activeButton;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
@@ -300,6 +302,26 @@ public:
     resBarEntity(new Entity("resBar")),
     lastTime(0.0)
     {
+    }
+
+    // Dodajemy metodę do zmiany aktywnego przycisku
+    void changeActiveButton(Button* newActiveButton) {
+        if (activeButton != nullptr) {
+            activeButton->setActive(false);
+        }
+
+        activeButton = newActiveButton;
+
+        if (activeButton != nullptr) {
+            activeButton->setActive(true);
+        }
+        activeButton = newActiveButton;
+    }
+
+    void clickActiveButton() {
+        if (activeButton != nullptr) {
+            activeButton->onClick();
+        }
     }
 
     void awake() override{
@@ -443,6 +465,7 @@ public:
         //AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
+
     };
 
     void update() override{
@@ -839,6 +862,11 @@ public:
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
+        if (playerInput.isKeyPressed(1)) {
+            sm.setCurrentScene("PauseScene");
+            //debugging
+            //std::cout<<"B"<<std::endl;
+        }
     };
 
     void onDestroy() override{
