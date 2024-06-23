@@ -68,6 +68,7 @@ private:
     Shader screenShader;
     Shader shaderRig;
     Shader shaderBarmanRig;
+    Shader shaderDjRig;
     Shader DrunkShader;
     Shader shaderNoneDrink;
     Shader reverseShader;
@@ -92,6 +93,7 @@ private:
     Model* player2;
     Model* playerModel;
     Model* barDrinks;
+    Model* canisters;
     Model* barman;
     Model* dj;
 
@@ -142,6 +144,7 @@ private:
     Entity* scianyE;
     Entity* boxE;
     Entity* barDrinksE;
+    Entity* canistersE;
     Entity* barmanE;
     Entity* sphere1;
     Entity* player3;
@@ -169,6 +172,9 @@ private:
     Animation* barmanAnimation;
     Animator* barmanAnimator;
     RigPrep* barmanRig;
+
+    Animation* djAnimation;
+    Animator* djAnimator;
 
     Entity* sun;
     DirectionalLight* sunLight;
@@ -205,6 +211,7 @@ public:
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             shaderBarmanRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            shaderDjRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
@@ -224,7 +231,7 @@ public:
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
+            dj(new Model("res/content/models/mrDJ/Rigged/MrDjv2.fbx",&shaderDjRig)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -280,6 +287,8 @@ public:
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
+            djAnimation(new Animation("res/content/models/mrDJ/Rigged/MrDjv2.fbx", dj)),
+            djAnimator(new Animator(djAnimation, false)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
             sunLight(new DirectionalLight()),
@@ -337,6 +346,7 @@ public:
 
         //entities
         //club interior
+
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
@@ -346,20 +356,22 @@ public:
         //player3->addComponent(player2);
         //sm.getLoadedScenes()[0]->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-/*
+
         djE->addComponent(dj);
         sm.getLoadedScenes()[0]->addEntity(djE);
-        dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-*/
+        //dj->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        dj->getTransform()->setScale(glm::vec3(0.005f));
+        dj->getTransform()->setPosition(glm::vec3(0.0f,-2.5f,0.0f));
+/*
         scianyE->addComponent(sciany);
         sm.getLoadedScenes()[0]->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
         sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
+*/
         barDrinksE->addComponent(barDrinks);
         sm.getLoadedScenes()[0]->addEntity(barDrinksE);
-        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
-        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
+        //barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        barDrinks->getTransform()->setScale(glm::vec3(0.005f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
@@ -456,6 +468,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
+        djAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -581,19 +594,23 @@ public:
         
 
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
-        LOG_INFO(std::to_string(lookatAngle));
         shaderRigInstanced.use();
-        //npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
 
         shaderBarmanRig.use();
-        barmanRig->update();
+        //barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
+
+        shaderDjRig.use();
+        //barmanRig->update();
+        auto transforms4 = djAnimator->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms3.size(); ++i)
+            shaderDjRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms4[i]);
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
