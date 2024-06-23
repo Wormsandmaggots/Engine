@@ -327,10 +327,10 @@ public:
 
         //scene manager
         //sm.loadScene("res/content/maps/Marcin.yaml");
-        sm.setCurrentScene("MarcinScene");
+        sm.setCurrentScene("SongScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(sm.getSceneByName("MarcinScene"));
+        spawner = new Spawner(sm.getSceneByName("SongScene"));
 
         //ssao
         //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
@@ -378,10 +378,10 @@ public:
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
-        sm.getSceneByName("MarcinScene")->addEntity(pointLight);
+        sm.getSceneByName("SongScene")->addEntity(pointLight);
 
 
-        sm.getSceneByName("MarcinScene")->addEntity(sun);
+        sm.getSceneByName("SongScene")->addEntity(sun);
         sun->addComponent(sunLight);
 
 //        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
@@ -390,19 +390,19 @@ public:
 //        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
 //        dancingRobots->addComponent(ir2);
 
-        sm.getSceneByName("MarcinScene")->addEntity(sphere1);
+        sm.getSceneByName("SongScene")->addEntity(sphere1);
         sphere1->addComponent(sphere);
         sphere->getTransform()->setPosition(lightPos);
 
         //movement
-        sm.getSceneByName("MarcinScene")->addEntity(fm);
+        sm.getSceneByName("SongScene")->addEntity(fm);
         fm->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
 
         //gemplay
         player->addComponent(playerModel);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
-        sm.getSceneByName("MarcinScene")->addEntity(player);
+        sm.getSceneByName("SongScene")->addEntity(player);
 
         lHandcollider->start();
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
@@ -429,7 +429,7 @@ public:
         rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         //hud
-        sm.getSceneByName("MarcinScene")->addEntity(resBarEntity);
+        sm.getSceneByName("SongScene")->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
         resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
