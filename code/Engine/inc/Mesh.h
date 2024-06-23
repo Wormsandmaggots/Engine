@@ -161,6 +161,7 @@ public:
         else{
             str =path;
         }
+        LOG_INFO(str);
         ZoneTransientN(Draw,str.c_str(), true);
         // bind appropriate textures
         unsigned int diffuseNr = 1;
