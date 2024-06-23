@@ -15,7 +15,7 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 	handOrbModel=new Model("res/content/models/orb2/orb2.fbx", new MaterialAsset("res/content/materials/color_green.json"));
 	footOrbModel= new Model("res/content/models/orb1/orb1.fbx");
 	badOrbModel= new Model("res/content/models/orbWrong/orbWrong.fbx");
-	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1.fbx");
+	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1_re.fbx");
 	ringModel= new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
 }
 

@@ -444,7 +444,7 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        //AudioManager::getInstance().playSound(path, 1.0f);
+        AudioManager::getInstance().playSound(pathToSong, 1.0f);
         DrunkShader.setInt("screenTexture", 0);
         spawnerComponent->start();
 };
@@ -593,9 +593,7 @@ public:
         
 
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
-        LOG_INFO(std::to_string(lookatAngle));
         shaderRigInstanced.use();
-        //npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
@@ -757,16 +755,17 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
-            if(lookatAngle <170.0f) {
-                lookatAngle += 5.0f;
+            if(lookatAngle > 5.0f){
+                lookatAngle -=5.0f;
             }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
-            if(lookatAngle > 5.0f){
-                lookatAngle -=5.0f;
+
+            if(lookatAngle <170.0f) {
+                lookatAngle += 5.0f;
             }
         }
 //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
