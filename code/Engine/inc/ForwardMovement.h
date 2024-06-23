@@ -5,10 +5,11 @@
 
 class ForwardMovement : public Entity{
 public:
-    ForwardMovement(const char* filename, glm::vec3 start, glm::vec3 _finish){
+    ForwardMovement(std::string filename, glm::vec3 start, glm::vec3 _finish){
         songLength = SongAnalizer::songLenth(filename);
         distance = _finish.z - start.z;
         velocity = distance/songLength;
+		forwardSpeed = velocity;
         globalVelocity = velocity;
         finish = _finish;
 

@@ -37,9 +37,9 @@ public:
     unsigned int orbsSpawned;
     float spawnAfter = 1;
     float spawnTimer;
-    const char* songPath;
+    std::string songPath;
 
-    SpawnerComponent(const char* songPath, glm::vec3 originPos, unsigned int enritiesCount);
+    SpawnerComponent(std::string songPath, glm::vec3 originPos, unsigned int enritiesCount);
     void update() override;
     void start() override;
     void init();

@@ -18,3 +18,4 @@ float resizeAmount = 0.01f;
 int lastScore = score;
 float globalVelocity = 0.0f;
 int incrementScore = 100;
+std::string pathToSong = "res/content/sounds/songs/80/cluster.wav";

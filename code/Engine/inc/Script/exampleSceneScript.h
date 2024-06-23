@@ -156,7 +156,6 @@ private:
     ColliderComponent* leftFootCollider;
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
-    const char* path;
 
     
     Entity* dancingRobots;
@@ -276,7 +275,6 @@ public:
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
 		    timer(10),
-            path("res/content/sounds/songs/if_you_dont.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
@@ -297,14 +295,14 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
+            fm(new ForwardMovement(pathToSong,glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
     player3(new Entity("player3")),
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
     lastTime(0.0),
     spawner(new Entity("Spawner")),
-    spawnerComponent(new SpawnerComponent("res/content/sounds/songs/00/dream.wav", glm::vec3(0, 0, orbDistance), 17))
+    spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17))
     {
     }
 

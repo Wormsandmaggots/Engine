@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <vector>
+#include <string>
 
 class Shader; 
 enum DrinkType {
@@ -22,9 +23,10 @@ extern float freqIncrement;
 extern float orbDistance;
 
 extern float lastUpdateTime;
-extern float resizeInterval; // Co sekund?
+extern float resizeInterval; // Co sekundę
 extern float resizeAmount;
 extern int lastScore;
 
 extern float globalVelocity;
 extern int incrementScore;
+extern std::string pathToSong;

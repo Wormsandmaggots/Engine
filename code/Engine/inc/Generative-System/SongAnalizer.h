@@ -97,11 +97,11 @@ public:
 
     
 
-    inline static void parseSong(double chunkDuration, const char* filename, vector<SongSample>& result) {
+    inline static void parseSong(double chunkDuration, std::string filename, vector<SongSample>& result) {
 
 
         SF_INFO info;
-        SNDFILE* file = sf_open(filename, SFM_READ, &info);
+        SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &info);
         if (!file) {
             cerr << "Error opening file: " << sf_strerror(file) << endl;
         }
@@ -266,9 +266,9 @@ public:
     }
 
 
-    inline static double songLenth(const char* filename) {
+    inline static double songLenth(std::string filename) {
         SF_INFO info;
-        SNDFILE* file = sf_open(filename, SFM_READ, &info);
+        SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &info);
         if (!file) {
             cerr << "Error opening file: " << sf_strerror(file) << endl;
             return -1.0; // Return a negative value to indicate an error
@@ -280,10 +280,10 @@ public:
         return songLength;
     }
 
-    inline static void testparseSong(double chunkDuration, const char* filename, vector<SongSample>& result) {
+    inline static void testparseSong(double chunkDuration, std::string filename, vector<SongSample>& result) {
         // Load the audio file
         SF_INFO sfinfo;
-        SNDFILE* file = sf_open(filename, SFM_READ, &sfinfo);
+        SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &sfinfo);
 
         double duration = static_cast<double>(sfinfo.frames) / sfinfo.samplerate;
 
