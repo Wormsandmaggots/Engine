@@ -25,7 +25,9 @@ public:
     Model* footOrbModel;
     Model* badOrbModel;
     Model* drinkModel;
-    Model* ringModel;
+    Model* ringXModel;
+    Model* ringUPModel;
+    Model* ringDOWNModel;
 
 	float xRH, yRH, xLH, yLH, xRF, yRF, xLF, yLF;
  
@@ -46,7 +48,7 @@ public:
 
     template<typename T>
     void spawn(glm::vec3 spawnPos);
-    Collectable* spawnRing(glm::vec3 spawnPos);
+    Collectable* spawnRing(glm::vec3 spawnPos,std::string ringType);
 
     void activateEntity(Collectable* ent);
     void deactiveEntity(Collectable* ent);

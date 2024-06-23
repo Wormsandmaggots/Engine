@@ -9,7 +9,7 @@
 #include "tracy/Tracy.hpp"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-#define PROFILER
+//#define PROFILER
 #if defined(PROFILER) //overloading operators new and delete globally for profiling
 void* operator new(std::size_t count)
 {
@@ -144,9 +144,9 @@ void init(){
 
 
     //CREATING WINDOW
-    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
+   // s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
     //fullscreen
-    //s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", monitor, NULL);
+    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", monitor, NULL);
     if (s.window == nullptr)
     {
         LOG_ERROR("Failed to Create GLFW window");

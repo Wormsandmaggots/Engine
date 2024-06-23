@@ -22,10 +22,10 @@ void Ring::update()
 		}
 		else {
 			if (collided) {
-				setColor(glm::vec3(0, 1, 0));
+				//setColor(glm::vec3(0, 1, 0));
 			}
 			else {
-				setColor(glm::vec3(1, 1, 1));
+				//setColor(glm::vec3(1, 1, 1));
 			}
 		}
 		parentPos = this->getParent()->getTransform()->getPosition();

@@ -444,7 +444,7 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        AudioManager::getInstance().playSound(pathToSong, 1.0f);
+        //AudioManager::getInstance().playSound(pathToSong, 1.0f);
         DrunkShader.setInt("screenTexture", 0);
         spawnerComponent->start();
 };
@@ -479,119 +479,7 @@ public:
             z += deltaTime * globalVelocity;
 
         }
-
-// bardziej randomowe spawnowanie
-        //timeToDispense2 -= s.deltaTime;
-        //if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
-
-        //    switch (songData[songDataIndex].type) {
-        //        case sampleType::BASS:
-        //            //raczki
-
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
-
-        //            //nozki
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(1, -2, z));
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-        //            
-
-        //            break;
-        //        case sampleType::MID:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            ////nozki
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-        //          
-
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-        //          
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-        //            
-
-        //            break;
-        //        case sampleType::CLAP:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
-
-        //            if (spawner->hasXPercentChance(20)) {
-
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
-
-        //            //nozki
-        //            
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
-
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
-
-        //                      
-        //         
-        //            break;
-        //        case sampleType::SKIP:
-        //            break;
-        //    }
-        //   if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-        //        spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
-
-        //    songDataIndex++;
-        //    timeToDispense2 = timeToDispense;
-
-        //    if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        //}       
-
-        
-
+           
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
@@ -691,10 +579,10 @@ public:
         ssao.renderQuad();
 //scene.update();
        
-        joystickOffset = playerInput.getJoystick(2);
-        joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
+        joystickOffset = playerInput1.getJoystick(2);
+        joystickOffset2 = playerInput1.getJoystick(1);
+        joystickOffset3 = playerInput.getJoystick(2);
+        joystickOffset4 = playerInput.getJoystick(1);
 
         if (timer < 0) {
             timer = effectTime;

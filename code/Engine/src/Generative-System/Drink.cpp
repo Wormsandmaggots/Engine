@@ -28,6 +28,7 @@ void Drink::onTriggerEnter(ColliderComponent* collidedWith)
 		position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		currentDrink = (DrinkType)(rand() % 3);
+		combo += 1;
 		this->active = false;
 		//AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
 	}

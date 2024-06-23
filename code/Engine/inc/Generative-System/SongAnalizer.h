@@ -196,7 +196,6 @@ public:
             }
 
             // Normalize bassMean
-            double normalized_bassMean = (bassMean - min_bassMean) / (max_bassMean - min_bassMean);
 
             double midMean = midCount > 0 ? midSum / midCount : 0;
 
@@ -208,7 +207,6 @@ public:
                 max_midMean = midMean;
             }
 
-            double normalized_midMean = (midMean - min_midMean) / (max_midMean - min_midMean);
 
             double highMean = highCount > 0 ? highSum / highCount : 0;
 
@@ -220,8 +218,17 @@ public:
                 max_highMean = highMean;
             }
 
-            double normalized_highMean = (highMean - min_highMean) / (max_highMean - min_highMean);
 
+
+
+            // Normalize bassMean to -1 to 1 range
+            double normalized_bassMean = ((bassMean - min_bassMean) / (max_bassMean - min_bassMean)) * 2 - 1;
+
+            // Normalize midMean to -1 to 1 range
+            double normalized_midMean = ((midMean - min_midMean) / (max_midMean - min_midMean)) * 2 - 1;
+
+            // Normalize highMean to -1 to 1 range
+            double normalized_highMean = ((highMean - min_highMean) / (max_highMean - min_highMean)) * 2 - 1;
 
 
 
@@ -285,57 +292,87 @@ public:
         SF_INFO sfinfo;
         SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &sfinfo);
 
-        double duration = static_cast<double>(sfinfo.frames) / sfinfo.samplerate;
-
         // Calculate the number of samples per chunk
-        int chunk_size = (chunkDuration * sfinfo.samplerate);
+        int chunk_size = static_cast<int>(chunkDuration * sfinfo.samplerate);
         std::vector<double> hammingWindow = generateHammingWindow(chunk_size);
         // Prepare the FFT
         fftw_complex* fft_result = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * chunk_size);
         fftw_plan plan = fftw_plan_dft_r2c_1d(chunk_size, NULL, fft_result, FFTW_ESTIMATE);
 
-        // Define the bass range (20Hz to 150Hz)
-        int bass_min = 40.0 / sfinfo.samplerate * chunk_size;
-        int bass_max = 600.0 / sfinfo.samplerate * chunk_size;
+        // Define frequency ranges
+        int bass_min = static_cast<int>(40.0 / sfinfo.samplerate * chunk_size);
+        int bass_max = static_cast<int>(60.0 / sfinfo.samplerate * chunk_size);
 
-        // Define the mid range (400Hz to 2500Hz)
-        int mid_min = 600.0 / sfinfo.samplerate * chunk_size;
-        int mid_max = 5000.0 / sfinfo.samplerate * chunk_size;
+        int mid_min = static_cast<int>(60.0 / sfinfo.samplerate * chunk_size);
+        int mid_max = static_cast<int>(100.0 / sfinfo.samplerate * chunk_size);
 
-        // Define the clap range (2000Hz to 4000Hz)
-        int clap_min = 5000.0 / sfinfo.samplerate * chunk_size;
-        int clap_max = 10000.0 / sfinfo.samplerate * chunk_size;
+        int clap_min = static_cast<int>(100.0 / sfinfo.samplerate * chunk_size);
+        int clap_max = static_cast<int>(140.0 / sfinfo.samplerate * chunk_size);
 
         std::vector<double> chunk(chunk_size);
         int chunk_number = 0;
-        for (int chunkStart = 0; chunkStart < sfinfo.frames; chunkStart += chunk_size) {
-            // Read the chunk
-            sf_seek(file, chunkStart, SEEK_SET);
-            sf_read_double(file, &chunk[0], chunk_size);
-            applyWindow(chunk, hammingWindow);
-             // Perform the FFT on the current chunk
-            fftw_execute_dft_r2c(plan, &chunk[0], fft_result);
+        double maxEnergy = std::numeric_limits<double>::min();
+        double minEnergy = std::numeric_limits<double>::max();
 
-            // Check if there's any bass in the current chunk
-            double energyBass = 0.0;
+        // First pass: find max and min energy values
+        for (int chunkStart = 0; chunkStart < sfinfo.frames; chunkStart += chunk_size) {
+            sf_seek(file, chunkStart, SEEK_SET);
+            sf_read_double(file, chunk.data(), chunk_size);
+            applyWindow(chunk, hammingWindow);
+            fftw_execute_dft_r2c(plan, chunk.data(), fft_result);
+
+            double energyBass = 0.0, energyMid = 0.0, energyClap = 0.0;
             for (int i = bass_min; i <= bass_max; ++i) {
                 std::complex<double> value(fft_result[i][0], fft_result[i][1]);
-                energyBass += std::norm(value); // square of the absolute value
+                energyBass += std::norm(value);
             }
-
-            // Check if there's any mid in the current chunk
-            double energyMid = 0.0;
             for (int i = mid_min; i <= mid_max; ++i) {
                 std::complex<double> value(fft_result[i][0], fft_result[i][1]);
-                energyMid += std::norm(value); // square of the absolute value
+                energyMid += std::norm(value);
             }
-
-            // Check if there's any clap in the current chunk
-            double energyClap = 0.0;
             for (int i = clap_min; i <= clap_max; ++i) {
                 std::complex<double> value(fft_result[i][0], fft_result[i][1]);
-                energyClap += std::norm(value); // square of the absolute value
+                energyClap += std::norm(value);
             }
+
+            maxEnergy = std::max(maxEnergy, std::max(energyBass, std::max(energyMid, energyClap)));
+            minEnergy = std::min(minEnergy, std::min(energyBass, std::min(energyMid, energyClap)));
+
+            ++chunk_number;
+        }
+
+        // Normalize energy function
+        auto normalizeEnergy = [minEnergy, maxEnergy](double energy) {
+            return (2.0 * (energy - minEnergy) / (maxEnergy - minEnergy)) - 1.0;
+            };
+
+        // Second pass: process and classify each chunk
+        sf_seek(file, 0, SEEK_SET); // Reset file read position
+        chunk_number = 0;
+        for (int chunkStart = 0; chunkStart < sfinfo.frames; chunkStart += chunk_size) {
+            sf_seek(file, chunkStart, SEEK_SET);
+            sf_read_double(file, chunk.data(), chunk_size);
+            applyWindow(chunk, hammingWindow);
+            fftw_execute_dft_r2c(plan, chunk.data(), fft_result);
+
+            double energyBass = 0.0, energyMid = 0.0, energyClap = 0.0;
+            for (int i = bass_min; i <= bass_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyBass += std::norm(value);
+            }
+            for (int i = mid_min; i <= mid_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyMid += std::norm(value);
+            }
+            for (int i = clap_min; i <= clap_max; ++i) {
+                std::complex<double> value(fft_result[i][0], fft_result[i][1]);
+                energyClap += std::norm(value);
+            }
+
+            // Normalize energies
+            double normalizedEnergyBass = normalizeEnergy(energyBass);
+            double normalizedEnergyMid = normalizeEnergy(energyMid);
+            double normalizedEnergyClap = normalizeEnergy(energyClap);
 
             // Calculate the timestamp for the current chunk
             double timestamp = static_cast<double>(chunkStart) / sfinfo.samplerate;
@@ -357,13 +394,19 @@ public:
             
             else if (energyClap > energyBass && energyClap > energyMid) {
                 result.at(chunk_number).type = sampleType::CLAP;
+                result.at(chunk_number).high.y = normalizedEnergyClap;
+
             }
             else if (energyBass > energyMid && energyBass > energyClap) {
                 result.at(chunk_number).type = sampleType::BASS;
+                result.at(chunk_number).bass.y = normalizedEnergyBass;
+
             }
             
             else if (energyMid > energyBass && energyMid > energyClap) {
                 result.at(chunk_number).type = sampleType::MID;
+                result.at(chunk_number).mid.y = normalizedEnergyMid;
+
             }
 
             ++chunk_number;
