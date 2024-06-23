@@ -348,13 +348,13 @@ public:
 
         //entities
         //club interior
-/*
+
         clubE->addComponent(club);
         sm.getLoadedScenes()[0]->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-*/
+
         //player3->addComponent(player2);
         //sm.getLoadedScenes()[0]->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
@@ -377,7 +377,8 @@ public:
 
         canistersE->addComponent(canisters);
         sm.getLoadedScenes()[0]->addEntity(canistersE);
-        canisters->getTransform()->setScale(glm::vec3(0.005f));
+        canisters->getTransform()->setScale(glm::vec3(0.5f));
+        canisters->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
         canisters->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
