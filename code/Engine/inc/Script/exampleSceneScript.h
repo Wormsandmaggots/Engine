@@ -346,7 +346,7 @@ public:
         //screen shader
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
-
+/*
         //entities
         //club interior
         clubE->addComponent(club);
@@ -362,7 +362,7 @@ public:
         djE->addComponent(dj);
         currentScene->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-*/
+*//*
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -379,7 +379,7 @@ public:
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
-
+*/
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
@@ -720,10 +720,10 @@ public:
         joystickOffset4 *= 200 * s.deltaTime;
         //old
 
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightHand");
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftHand");
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightFoot");
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftFoot");
+        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightHand");
+        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftHand");
+        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightFoot");
+        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftFoot");
         playerRig->update();
 
         auto transforms = playerRig->GetFinalBoneMatrices();
