@@ -23,6 +23,9 @@ public:
             m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
         la = new LookAt();
         npc = ifnpc;
+        if(npc){
+            getInitBonesPos(&m_CurrentAnimation->GetRootNode(), glm::mat4(1.0f));
+        }
     }
 
     void UpdateAnimation(float dt, float angle)
@@ -54,12 +57,10 @@ public:
             Bone->Update(m_CurrentTime);
             nodeTransform = Bone->GetLocalTransform();
 
-
         }
 
         glm::mat4 globalTransformation = parentTransform * nodeTransform;
-        if(npc && Bone && nodeName == "mixamorig:Head" ){
-            LOG_INFO("angle" + std::to_string(angle));
+        if(npc && Bone && nodeName == "mixamorig:Head"){
             globalTransformation = la->computeNoBone(angle, globalTransformation);
         }
         auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
@@ -70,9 +71,28 @@ public:
             m_FinalBoneMatrices[index] = globalTransformation * offset;
 
         }
-
         for (int i = 0; i < node->childrenCount; i++)
             CalculateBoneTransform(&node->children[i], globalTransformation, angle);
+    }
+
+    void getInitBonesPos(const AssimpNodeData* node, glm::mat4 parentTransform){
+        std::string nodeName = node->name;
+        glm::mat4 nodeTransform = node->transformation;
+
+        AnimBone* Bone = m_CurrentAnimation->FindBone(nodeName);
+
+        if (Bone)
+        {
+            nodeTransform = Bone->GetLocalTransform();
+        }
+
+        glm::mat4 globalTransformation = parentTransform * nodeTransform;
+        if(npc && Bone && nodeName == "mixamorig:Head"){
+           la->setHeadPos(globalTransformation);
+        }
+
+        for (int i = 0; i < node->childrenCount; i++)
+            getInitBonesPos(&node->children[i], globalTransformation);
     }
 
     std::vector<glm::mat4> GetFinalBoneMatrices()

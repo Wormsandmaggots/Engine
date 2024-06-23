@@ -76,16 +76,22 @@ public:
         }
         return newMat;
     }
+
+    void setHeadPos(glm::mat4 givenMat){
+        headInitPos = givenMat;
+        glm::vec3 axis = glm::vec3(1.0f,0.0f,0.0f);
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), axis);
+        headInitPos = rotationMatrix * headInitPos;
+    }
+
     glm::mat4 computeNoBone(float angle, glm::mat4 givenMat){
         glm::mat4 newMat = givenMat;
-        if(headInitPos ==glm::mat4(0.0f)){
-            headInitPos = givenMat;
-        }
+
         if(fabs(glm::radians(angle)) > 0.001f){
             glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f);
             //obrot macierzy w modelspace
             glm::mat3 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis);
-            glm::mat3 newRotation =  glm::mat3(headInitPos) * rotationMatrix;
+            glm::mat3 newRotation = rotationMatrix * glm::mat3(headInitPos) ;
             newMat[0][0] = newRotation[0][0];
             newMat[0][1] = newRotation[0][1];
             newMat[0][2] = newRotation[0][2];
