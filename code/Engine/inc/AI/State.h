@@ -20,11 +20,11 @@ public:
             givenAnimation = new Animation(contex->getComponent<Model>()->getPath(), contex->getComponent<Model>());
         }
         //Animation* animation = new Animation(contex->getComponent<Model>()->getPath(), contex->getComponent<Model>());
-        animator = new Animator(givenAnimation);
+        animator = new Animator(givenAnimation, false);
     };
     virtual void update(Entity* context) {
         context->getComponent<Model>()->getShader()->use();
-        animator->UpdateAnimation(Time::deltaTime);
+        animator->UpdateAnimation(Time::deltaTime, 90.0f);
         auto transforms = animator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             context->getComponent<Model>()->getShader()->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);

@@ -26,7 +26,7 @@ public:
     Animation(const std::string& animationPath, Model* model)
     {
         Assimp::Importer importer;
-        const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
+        scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
         assert(scene && scene->mRootNode);
         auto animation = scene->mAnimations[0];
         m_Duration = animation->mDuration;
@@ -76,7 +76,12 @@ public:
         return m_BoneInfoMap;
     }
 
+    const aiScene* getScene(){
+        return scene;
+    }
 private:
+    const aiScene* scene;
+
     void ReadMissingBones(const aiAnimation* animation, Model& model)
     {
         int size = animation->mNumChannels;

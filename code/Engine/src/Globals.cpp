@@ -19,3 +19,5 @@ int lastScore = score;
 float globalVelocity = 0.0f;
 int incrementScore = 100;
 std::string pathToSong = "res/content/sounds/songs/80/cluster.wav";
+float lookatAngle = 1.0f;
+

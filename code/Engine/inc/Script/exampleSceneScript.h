@@ -30,6 +30,7 @@
 #include "ForwardMovement.h"
 #include "Generative-System/SpawnerComponent.h"
 
+#include "Animation/LookAt.h"
 
 using namespace SceneManagement;
 
@@ -280,15 +281,15 @@ public:
             dancingRobots2(new Entity("dancingRobots2")),
             ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(-11.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+                                   glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation)),
+            npcAnimator(new Animator(npcAnimation,true)),
             npcRig(new RigPrep(ir)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
-            barmanAnimator(new Animator(barmanAnimation)),
+            barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
@@ -466,7 +467,7 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        barmanAnimator->UpdateAnimation(deltaTime);
+        barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -591,16 +592,15 @@ public:
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime);
-
+        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
+        LOG_INFO(std::to_string(lookatAngle));
         shaderRigInstanced.use();
-        npcRig->update();
-
+        //npcRig->swapBones(npcAnimator->GetFinalBoneMatrices());
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
-        //npcRig->update();
+
         shaderBarmanRig.use();
         barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
@@ -757,11 +757,17 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
+            if(lookatAngle <170.0f) {
+                lookatAngle += 5.0f;
+            }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
+            if(lookatAngle > 5.0f){
+                lookatAngle -=5.0f;
+            }
         }
 //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
 //            std::cout << "Koniec" << std::endl;

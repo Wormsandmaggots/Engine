@@ -30,3 +30,4 @@ extern int lastScore;
 extern float globalVelocity;
 extern int incrementScore;
 extern std::string pathToSong;
+extern float lookatAngle;
