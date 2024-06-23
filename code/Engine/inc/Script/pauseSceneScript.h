@@ -237,8 +237,9 @@ public:
         changeSongButton->setInactiveTexture(cs_button_idle);
         changeSongButton->setActiveTexture(cs_button_activ);
 
-        changeSongButton->setOnClick([]() {
+        changeSongButton->setOnClick([this]() {
             std::cout << "changeButton button clicked!" << std::endl;
+            this->sm.setCurrentScene("SongScene");
         });
 
         //credits

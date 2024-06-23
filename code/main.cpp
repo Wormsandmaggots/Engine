@@ -7,6 +7,8 @@
 #include "Script/pauseSceneScript.h"
 #include "Script/loseSceneScript.h"
 #include "Script/winSceneScript.h"
+#include "Script/creditsSceneScript.h"
+#include "Script/songSceneScript.h"
 
 
 
@@ -53,6 +55,8 @@ int main() {
     sm.loadScene("res/content/maps/Pause.yaml");
     sm.loadScene("res/content/maps/Lose.yaml");
     sm.loadScene("res/content/maps/Win.yaml");
+    sm.loadScene("res/content/maps/Credits.yaml");
+    sm.loadScene("res/content/maps/Song.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
     editor.init(&s.camera);
@@ -102,6 +106,22 @@ int main() {
     winsceneScript->awake();
     winsceneScript->start();
 
+    creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+                                                        shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                        shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                        imageShaderGreen, shaderRigInstanced);
+
+    creditssceneScript->awake();
+    creditssceneScript->start();
+
+    songSceneScript* songsceneScript = new songSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                                    imageShaderGreen, shaderRigInstanced);
+
+    songsceneScript->awake();
+    songsceneScript->start();
+
 // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
 
@@ -137,6 +157,14 @@ int main() {
             else if (currentScene->getName() == "WinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 winsceneScript->update();
+            }
+            else if (currentScene->getName() == "CreditsScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                creditssceneScript->update();
+            }
+            else if (currentScene->getName() == "SongScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                songsceneScript->update();
             }
         }
 

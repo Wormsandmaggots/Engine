@@ -84,15 +84,15 @@ private:
     Renderer& renderer;
 ///////////////////////////////////////////////////
     // model
-    Model* box;
-    Model* club;
-    Model* sciany;
+//    Model* box;
+//    Model* club;
+//    Model* sciany;
     Model* sphere;
     Model* player2;
     Model* playerModel;
-    Model* barDrinks;
-    Model* barman;
-    Model* dj;
+//    Model* barDrinks;
+//    Model* barman;
+//    Model* dj;
 
     Model* sphereModel;
     Model* sphereModel_green;
@@ -137,15 +137,15 @@ private:
     float timer;
 
     // entities
-    Entity* clubE;
-    Entity* scianyE;
-    Entity* boxE;
-    Entity* barDrinksE;
-    Entity* barmanE;
+//    Entity* clubE;
+//    Entity* scianyE;
+//    Entity* boxE;
+//    Entity* barDrinksE;
+//    Entity* barmanE;
     Entity* sphere1;
-    Entity* player3;
+//    Entity* player3;
     Entity* player;
-    Entity* djE;
+//    Entity* djE;
     Entity* leftHandPointer;
     ColliderComponent* lHandcollider;
     Entity* rightHandPointer;
@@ -157,17 +157,17 @@ private:
     const char* path;
 
     
-    Entity* dancingRobots;
-    Entity* dancingRobots2;
-    InstancedRobots* ir;
-    InstancedRobots* ir2;
-    Animation* npcAnimation;
-    Animator* npcAnimator;
-    RigPrep* npcRig;
+//    Entity* dancingRobots;
+//    Entity* dancingRobots2;
+//    InstancedRobots* ir;
+//    InstancedRobots* ir2;
+//    Animation* npcAnimation;
+//    Animator* npcAnimator;
+//    RigPrep* npcRig;
 
-    Animation* barmanAnimation;
-    Animator* barmanAnimator;
-    RigPrep* barmanRig;
+//    Animation* barmanAnimation;
+//    Animator* barmanAnimator;
+//    RigPrep* barmanRig;
 
     Entity* sun;
     DirectionalLight* sunLight;
@@ -221,19 +221,19 @@ public:
             shaderRigInstanced(shaderRigInstanced),
             //renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
-            box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
-            sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
+//            box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
+//            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+//            sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
-            barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
+//            barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
-            barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
+//            barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
             //barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
             playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
+//            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -255,11 +255,11 @@ public:
             spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
-            clubE(new Entity("club")),
-            boxE(new Entity("box")),
-            scianyE(new Entity("sciany")),
-            barDrinksE(new Entity("barDrinks")),
-            barmanE(new Entity("barman")),
+//            clubE(new Entity("club")),
+//            boxE(new Entity("box")),
+//            scianyE(new Entity("sciany")),
+//            barDrinksE(new Entity("barDrinks")),
+//            barmanE(new Entity("barman")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
@@ -274,28 +274,28 @@ public:
 		    timer(10),
             path("res/content/sounds/songs/if_you_dont.wav"),
             reversed(false),
-            dancingRobots(new Entity("dancingRobots1")),
-            dancingRobots2(new Entity("dancingRobots2")),
-            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
-                                   &shaderRigInstanced,
-                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
-                                   &shaderRigInstanced,
-                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation)),
-            npcRig(new RigPrep(ir)),
-            barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
-            barmanAnimator(new Animator(barmanAnimation)),
-            barmanRig(new RigPrep(barman)),
+//            dancingRobots(new Entity("dancingRobots1")),
+//            dancingRobots2(new Entity("dancingRobots2")),
+//            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
+//                                   &shaderRigInstanced,
+//                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+//            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
+//                                   &shaderRigInstanced,
+//                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+//            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
+//            npcAnimator(new Animator(npcAnimation)),
+//            npcRig(new RigPrep(ir)),
+//            barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
+//            barmanAnimator(new Animator(barmanAnimation)),
+//            barmanRig(new RigPrep(barman)),
             sun(new Entity("Sun")),
-            djE(new Entity("dj")),
+//            djE(new Entity("dj")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
             fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
-    player3(new Entity("player3")),
+//    player3(new Entity("player3")),
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
     lastTime(0.0)
@@ -344,11 +344,11 @@ public:
 
         //entities
         //club interior
-        clubE->addComponent(club);
-        sm.getSceneByName("MarcinScene")->addEntity(clubE);
-        club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
-        club->getTransform()->setScale(glm::vec3(0.5f));
-        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+//        clubE->addComponent(club);
+//        sm.getSceneByName("MarcinScene")->addEntity(clubE);
+//        club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+//        club->getTransform()->setScale(glm::vec3(0.5f));
+//        club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         //player3->addComponent(player2);
         //sm.getSceneByName("MarcinScene")->addEntity(player3);
@@ -358,22 +358,22 @@ public:
         sm.getSceneByName("MarcinScene")->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 */
-        scianyE->addComponent(sciany);
-        sm.getSceneByName("MarcinScene")->addEntity(scianyE);
-        sciany->getTransform()->setScale(glm::vec3(0.5f));
-        sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
-        barDrinksE->addComponent(barDrinks);
-        sm.getSceneByName("MarcinScene")->addEntity(barDrinksE);
-        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
-        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
-        barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
-        barmanE->addComponent(barman);
-        sm.getSceneByName("MarcinScene")->addEntity(barmanE);
-        barman->getTransform()->setScale(glm::vec3(0.02f));
-        barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
-        barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
+//        scianyE->addComponent(sciany);
+//        sm.getSceneByName("MarcinScene")->addEntity(scianyE);
+//        sciany->getTransform()->setScale(glm::vec3(0.5f));
+//        sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+//
+//        barDrinksE->addComponent(barDrinks);
+//        sm.getSceneByName("MarcinScene")->addEntity(barDrinksE);
+//        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+//        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
+//        barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+//
+//        barmanE->addComponent(barman);
+//        sm.getSceneByName("MarcinScene")->addEntity(barmanE);
+//        barman->getTransform()->setScale(glm::vec3(0.02f));
+//        barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
+//        barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
 
         //lights
         pointLight->addComponent(pointLight1);
@@ -384,11 +384,11 @@ public:
         sm.getSceneByName("MarcinScene")->addEntity(sun);
         sun->addComponent(sunLight);
 
-        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
-        dancingRobots->addComponent(ir);
-
-        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
-        dancingRobots->addComponent(ir2);
+//        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots);
+//        dancingRobots->addComponent(ir);
+//
+//        sm.getSceneByName("MarcinScene")->addEntity(dancingRobots2);
+//        dancingRobots->addComponent(ir2);
 
         sm.getSceneByName("MarcinScene")->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -462,7 +462,7 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        barmanAnimator->UpdateAnimation(deltaTime);
+//        barmanAnimator->UpdateAnimation(deltaTime);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -587,21 +587,21 @@ public:
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime);
+//        npcAnimator->UpdateAnimation(s.deltaTime);
 
         shaderRigInstanced.use();
-        npcRig->update();
+//        npcRig->update();
 
-        auto transforms2 = npcAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms2.size(); ++i)
-            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
+//        auto transforms2 = npcAnimator->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms2.size(); ++i)
+//            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
         //npcRig->update();
-        shaderBarmanRig.use();
-        barmanRig->update();
-        auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms3.size(); ++i)
-            shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
+//        shaderBarmanRig.use();
+//        barmanRig->update();
+//        auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
+//        for (int i = 0; i < transforms3.size(); ++i)
+//            shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
@@ -838,6 +838,11 @@ public:
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
+        if (playerInput.isKeyPressed(0)) {
+            sm.setCurrentScene("MarcinScene");
+            //debugging
+            //std::cout<<"B"<<std::endl;
+        }
     };
 
     void onDestroy() override{

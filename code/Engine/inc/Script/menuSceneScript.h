@@ -222,7 +222,7 @@ public:
 
         startButton->setOnClick([this]() {
             std::cout << "Start button clicked!" << std::endl;
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("SongScene");
         });
 
         //credits
@@ -235,8 +235,9 @@ public:
         creditsButton->setInactiveTexture(cr_button_idle);
         creditsButton->setActiveTexture(cr_button_activ);
 
-        creditsButton->setOnClick([]() {
-            std::cout << "Credits button clicked!" << std::endl;
+        creditsButton->setOnClick([this]() {
+            std::cout << "Start button clicked!" << std::endl;
+            this->sm.setCurrentScene("CreditsScene");
         });
 
         //exit
