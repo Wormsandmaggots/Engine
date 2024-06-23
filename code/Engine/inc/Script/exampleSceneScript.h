@@ -462,7 +462,7 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        //AudioManager::getInstance().playSound(path, 1.0f);
+        AudioManager::getInstance().playSound(path, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
 
