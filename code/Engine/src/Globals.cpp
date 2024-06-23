@@ -18,7 +18,7 @@ float resizeAmount = 0.01f;
 int lastScore = score;
 float globalVelocity = 0.0f;
 int incrementScore = 100;
-std::string pathToSong = "res/content/sounds/songs/00/vengeance.wav";
+std::string pathToSong = "res/content/sounds/songs/80/goddess.wav";
 float lookatAngle = 1.0f;
 int badOrbChance = 5; // w procentach szansa na zly orb
 

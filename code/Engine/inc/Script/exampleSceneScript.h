@@ -472,6 +472,7 @@ public:
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
+        s.camera.MoveForwardZ(forwardSpeed*deltaTime);
 
         //moving forward
         if(deltaTime < 1){
@@ -579,10 +580,10 @@ public:
         ssao.renderQuad();
 //scene.update();
        
-        joystickOffset = playerInput1.getJoystick(2);
-        joystickOffset2 = playerInput1.getJoystick(1);
-        joystickOffset3 = playerInput.getJoystick(2);
-        joystickOffset4 = playerInput.getJoystick(1);
+        joystickOffset = playerInput.getJoystick(2);
+        joystickOffset2 = playerInput.getJoystick(1);
+        joystickOffset3 = playerInput1.getJoystick(2);
+        joystickOffset4 = playerInput1.getJoystick(1);
 
         if (timer < 0) {
             timer = effectTime;

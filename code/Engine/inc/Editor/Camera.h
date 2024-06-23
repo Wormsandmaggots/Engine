@@ -150,6 +150,9 @@ public:
         // Recalculate orientation vectors based on the new Pitch angle
         updateCameraVectors();
     }
+    void MoveForwardZ(float distance) {
+        Position.z += distance; // Assuming OpenGL's right-handed coordinate system where positive Z is out of the screen.
+    }
 
 private:
     // calculates the front vector from the Camera's (updated) Euler Angles
@@ -165,6 +168,10 @@ private:
         Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         Up    = glm::normalize(glm::cross(Right, Front));
     }
+
+   
+
+
 };
 
 

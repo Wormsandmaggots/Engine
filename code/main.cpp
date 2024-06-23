@@ -73,7 +73,7 @@ int main() {
     menusceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("MarcinScene");
+    sm.setCurrentScene("KubaScene");
 
     bool switched = true;
     Scene2* currentScene;
