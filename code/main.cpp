@@ -31,6 +31,7 @@ int main() {
             screenShader("res/content/shaders/framebuffer.vert", "res/content/shaders/framebuffer.frag"),
             shaderRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             shaderBarmanRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
+            shaderDjRig("res/content/shaders/vertexRig.glsl", "res/content/shaders/SSAO/ssao_fragment.frag"),
             DrunkShader("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/chromaticAberration.frag"),
             shaderNoneDrink("res/content/shaders/SSAO/ssao.vert", "res/content/shaders/framebuffer.frag"),
             reverseShader("res/content/shaders/SSAO/ssao.vert","res/content/shaders/reverse.frag"),
@@ -57,7 +58,7 @@ int main() {
     exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                                     shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                                    imageShaderGreen, shaderRigInstanced);
+                                                                    imageShaderGreen, shaderRigInstanced, shaderDjRig);
     //awake
     examplesceneScript->awake();
     //start
