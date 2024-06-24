@@ -134,10 +134,10 @@ void SpawnerComponent::update()
 
 
 
-		// nozki - Adjusting yRF and yLF to not be higher than yRH and yLH respectively
+		// nozki 
 		if (xRF > -0.5 && xRF < 2.0f && yRF < 0.5 && yRF > -2.5f)
 		{
-			float adjustedYRF = std::min(yRF, std::max(yRH, yLH)); // Ensure yRF is not higher than both hand orbs
+			float adjustedYRF = std::min(yRF, std::max(yRH, yLH)); 
 			checkAndAdjustForOverlap(xRF, yRF, xRH, yRH, orbRadius);
 			checkAndAdjustForOverlap(xRF, yRF, xLF, yLF, orbRadius);
 			checkAndAdjustForOverlap(xRF, yRF, xLH, yLH, orbRadius);
@@ -152,7 +152,7 @@ void SpawnerComponent::update()
 			checkAndAdjustForOverlap(xLF, yLF, xRH, yRH, orbRadius);
 			checkAndAdjustForOverlap(xLF, yLF, xRF, yRF, orbRadius);
 			checkAndAdjustForOverlap(xLF, yLF, xLH, yLH, orbRadius);
-			float adjustedYLF = std::min(yLF, std::max(yRH, yLH)); // Ensure yLF is not higher than both hand orbs
+			float adjustedYLF = std::min(yLF, std::max(yRH, yLH));
 			if (hasXPercentChance(badOrbChance))
 				spawn<BadOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 			else

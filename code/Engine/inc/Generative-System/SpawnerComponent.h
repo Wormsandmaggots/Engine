@@ -39,7 +39,7 @@ public:
 
     unsigned int entitiesCount;
     unsigned int orbsSpawned;
-    float spawnAfter = 1;
+    float spawnAfter = songInterval;
     float spawnTimer;
     std::string songPath;
 
@@ -56,12 +56,12 @@ public:
     void deactiveEntity(Collectable* ent);
 
     bool hasXPercentChance(int x) {
-        std::random_device rd; // Obtain a random number from hardware
-        std::mt19937 gen(rd()); // Seed the generator
-        std::uniform_int_distribution<> distr(1, 100); // Define the range
+        std::random_device rd;
+        std::mt19937 gen(rd()); 
+        std::uniform_int_distribution<> distr(1, 100);
 
-        int chance = distr(gen); // Generate a number between 1 and 100
-        return chance <= x; // 20% chance if the number is between 1 and 20
+        int chance = distr(gen);
+        return chance <= x; 
     }
     void checkAndAdjustForOverlap(float& x1, float& y1, float& x2, float& y2, float radius) {
         glm::vec2 pos1(x1, y1);
