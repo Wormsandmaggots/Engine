@@ -33,13 +33,11 @@ using namespace SceneManagement;
 
 class menuSceneScript : public SceneScript {
 private:
-///////////////////////////////////////////////////
     EditorLayer::Editor& editor;
     // collision
     CollisionManager& cm;
     // scene manager
     SceneManager& sm;
-///////////////////////////////////////////////////
     // audio
     AudioManager& audioManager;
 
@@ -49,15 +47,12 @@ private:
 
     // input joystick
     int connectedControllers;
-///////////////////////////////////////////////////
     PlayerInput& playerInput;
     PlayerInput& playerInput1;
-///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
-///////////////////////////////////////////////////
     DebugInput& debugInput;
 
     Shader& shader;
@@ -74,15 +69,12 @@ private:
     Shader& imageShader;
     Shader& imageShaderGreen;
     Shader& shaderRigInstanced;
-///////////////////////////////////////////////////
     FrameBuffer buffer;
 
     // ssao
     SSAO ssao;
-///////////////////////////////////////////////////
     // renderer
     Renderer& renderer;
-///////////////////////////////////////////////////
     // model
 
     //HUD
@@ -337,19 +329,8 @@ public:
             joystickReset = true;
         }
 
-//debugging
-//        if (activeButton == startButton) {
-//            std::cout << "Start button is active" << std::endl;
-//        } else if (activeButton == exitButton) {
-//            std::cout << "Exit button is active" << std::endl;
-//        } else if (activeButton == creditsButton) {
-//            std::cout << "Credits button is active" << std::endl;
-//        }
-
         if (playerInput.isKeyPressed(1)) {
             clickActiveButton();
-            //debugging
-            //std::cout<<"B"<<std::endl;
         }
 
     };

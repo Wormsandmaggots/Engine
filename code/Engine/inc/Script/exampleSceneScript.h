@@ -348,18 +348,11 @@ public:
         SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
-        //sm.loadScene("res/content/maps/Marcin.yaml");
         sm.setCurrentScene("MarcinScene");
         Scene2* currentScene = sm.getSceneByName("MarcinScene");
 
         // Inicjalizacja spawnera
         spawner = new Spawner(currentScene);
-
-        //ssao
-        //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-        //renderer
-        //renderer.init();
 
         //screen shader
         screenShader.use();
@@ -783,11 +776,6 @@ public:
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
         }
-//        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-//            std::cout << "Koniec" << std::endl;
-//        }
-
-        
 
         //temporary------------------------------------------------------------------------------------
         //text
@@ -864,8 +852,6 @@ public:
 
         if (playerInput.isKeyPressed(1)) {
             sm.setCurrentScene("PauseScene");
-            //debugging
-            //std::cout<<"B"<<std::endl;
         }
     };
 

@@ -33,13 +33,11 @@ using namespace SceneManagement;
 
 class loseSceneScript : public SceneScript {
 private:
-///////////////////////////////////////////////////
     EditorLayer::Editor& editor;
     // collision
     CollisionManager& cm;
     // scene manager
     SceneManager& sm;
-///////////////////////////////////////////////////
     // audio
     AudioManager& audioManager;
 
@@ -49,15 +47,12 @@ private:
 
     // input joystick
     int connectedControllers;
-///////////////////////////////////////////////////
     PlayerInput& playerInput;
     PlayerInput& playerInput1;
-///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
-///////////////////////////////////////////////////
     DebugInput& debugInput;
 
     Shader& shader;
@@ -74,15 +69,12 @@ private:
     Shader& imageShader;
     Shader& imageShaderGreen;
     Shader& shaderRigInstanced;
-///////////////////////////////////////////////////
     FrameBuffer buffer;
 
     // ssao
     SSAO ssao;
-///////////////////////////////////////////////////
     // renderer
     Renderer& renderer;
-///////////////////////////////////////////////////
     // model
 
     //HUD
@@ -149,22 +141,17 @@ public:
             imageShaderGreen(imageShaderGreen),
             shaderRigInstanced(shaderRigInstanced),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
-            //hud
             pauseWallpaper(new Image(&imageShader)),
-            //continueButton(new Button(&imageShader)),
             changeSongButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
 
             pauseBackground(new Entity("mainMenu")),
-            //cn(new Entity("continueButton")),
             cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
             background(new Texture("res/content/textures/lose/you_lost.png", "background")),
-            //cn_button_idle(new Texture("res/content/textures/pause/continue_d.png", "continue_d")),
             cs_button_idle(new Texture("res/content/textures/lose/choose_d.png", "change_d")),
             ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
-            //cn_button_activ(new Texture("res/content/textures/pause/continue_h.png", "continue_h")),
             cs_button_activ(new Texture("res/content/textures/lose/choose_h.png", "change_h")),
             ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
 
@@ -211,23 +198,6 @@ public:
 
         pauseWallpaper->setTexture(background);
 
-        //new game
-//        currentScene->addEntity(cn);
-//        cn->addComponent(continueButton);
-//        continueButton->getTransform()->setScale(glm::vec3(0.16f, 0.04f, 0.2f));
-//        continueButton->getTransform()->setPosition(glm::vec3(0.0f, -0.031f, 0.0f));
-//
-//        //this button will be activ from start, so we set it's texture as activ form the begining
-//        continueButton->setTexture(cn_button_activ);
-//        continueButton->setInactiveTexture(cn_button_idle);
-//        continueButton->setActiveTexture(cn_button_activ);
-//
-//        continueButton->setOnClick([this]() {
-//            std::cout << "Start button clicked!" << std::endl;
-//            this->sm.setCurrentScene("MarcinScene");
-//        });
-
-        //exit
         currentScene->addEntity(cs);
         cs->addComponent(changeSongButton);
         changeSongButton->getTransform()->setScale(glm::vec3(0.35f, 0.055f, 0.2f));
@@ -242,7 +212,6 @@ public:
             this->sm.setCurrentScene("SongScene");
         });
 
-        //credits
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
         exitButton->getTransform()->setScale(glm::vec3(0.17f, 0.047f, 0.2f));
@@ -335,19 +304,8 @@ public:
             joystickReset = true;
         }
 
-//debugging
-//        if (activeButton == continueButton) {
-//            std::cout << "Start button is active" << std::endl;
-//        } else if (activeButton == changeSongButton) {
-//            std::cout << "Exit button is active" << std::endl;
-//        } else if (activeButton == exitButton) {
-//            std::cout << "Credits button is active" << std::endl;
-//        }
-
         if (playerInput.isKeyPressed(1)) {
             clickActiveButton();
-            //debugging
-            //std::cout<<"B"<<std::endl;
         }
 
     };

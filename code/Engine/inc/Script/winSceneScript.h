@@ -33,13 +33,11 @@ using namespace SceneManagement;
 
 class winSceneScript : public SceneScript {
 private:
-///////////////////////////////////////////////////
     EditorLayer::Editor& editor;
     // collision
     CollisionManager& cm;
     // scene manager
     SceneManager& sm;
-///////////////////////////////////////////////////
     // audio
     AudioManager& audioManager;
 
@@ -49,15 +47,13 @@ private:
 
     // input joystick
     int connectedControllers;
-///////////////////////////////////////////////////
+
     PlayerInput& playerInput;
     PlayerInput& playerInput1;
-///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
-///////////////////////////////////////////////////
     DebugInput& debugInput;
 
     Shader& shader;
@@ -74,15 +70,12 @@ private:
     Shader& imageShader;
     Shader& imageShaderGreen;
     Shader& shaderRigInstanced;
-///////////////////////////////////////////////////
     FrameBuffer buffer;
 
     // ssao
     SSAO ssao;
-///////////////////////////////////////////////////
     // renderer
     Renderer& renderer;
-///////////////////////////////////////////////////
     // model
 
     //HUD
@@ -196,14 +189,11 @@ public:
     };
 
     void start() override{
-        //scene manager
         sm.setCurrentScene("WinScene");
 
         Scene2* currentScene = sm.getSceneByName("WinScene");
 
-        //main menu
 
-        //menu background
         currentScene->addEntity(pauseBackground);
         pauseBackground->addComponent(pauseWallpaper);
         pauseWallpaper->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -211,23 +201,6 @@ public:
 
         pauseWallpaper->setTexture(background);
 
-        //new game
-//        currentScene->addEntity(cn);
-//        cn->addComponent(continueButton);
-//        continueButton->getTransform()->setScale(glm::vec3(0.16f, 0.04f, 0.2f));
-//        continueButton->getTransform()->setPosition(glm::vec3(0.0f, -0.031f, 0.0f));
-//
-//        //this button will be activ from start, so we set it's texture as activ form the begining
-//        continueButton->setTexture(cn_button_activ);
-//        continueButton->setInactiveTexture(cn_button_idle);
-//        continueButton->setActiveTexture(cn_button_activ);
-//
-//        continueButton->setOnClick([this]() {
-//            std::cout << "Start button clicked!" << std::endl;
-//            this->sm.setCurrentScene("MarcinScene");
-//        });
-
-        //exit
         currentScene->addEntity(cs);
         cs->addComponent(changeSongButton);
         changeSongButton->getTransform()->setScale(glm::vec3(0.35f, 0.055f, 0.2f));
@@ -242,7 +215,6 @@ public:
             this->sm.setCurrentScene("SongScene");
         });
 
-        //credits
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
         exitButton->getTransform()->setScale(glm::vec3(0.17f, 0.047f, 0.2f));
@@ -335,19 +307,9 @@ public:
             joystickReset = true;
         }
 
-//debugging
-//        if (activeButton == continueButton) {
-//            std::cout << "Start button is active" << std::endl;
-//        } else if (activeButton == changeSongButton) {
-//            std::cout << "Exit button is active" << std::endl;
-//        } else if (activeButton == exitButton) {
-//            std::cout << "Credits button is active" << std::endl;
-//        }
 
         if (playerInput.isKeyPressed(1)) {
             clickActiveButton();
-            //debugging
-            //std::cout<<"B"<<std::endl;
         }
 
     };
