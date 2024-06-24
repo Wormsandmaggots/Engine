@@ -266,8 +266,8 @@ void main()
     for(int i = 0; i < spotNum; i++)
     {
         SpotLight s = spotLights[i];
-        float spotlightIntensity = calculateSpotLight(s.position, s.direction, s.cutoff, s.outercutoff, s.colors.diffuse, N, FragPos, V);
-        color += vec3(spotlightIntensity);
+        float spotlightIntensity = calculateSpotLight(s.position, s.direction, s.cutoff, s.outercutoff, s.colors.diffuse, N, WorldPos, V);
+        color += spotlightIntensity;
     }
 
     // HDR tonemapping
