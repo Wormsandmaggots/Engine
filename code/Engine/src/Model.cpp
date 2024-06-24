@@ -179,6 +179,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), displacementMaps.begin(), displacementMaps.end());
         vector<Texture> emissiveMaps = loadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emissive");
         textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
+        vector<Texture> emissiveColorMaps = loadMaterialTextures(material, aiTextureType_EMISSION_COLOR, "texture_emissive_color");
+        textures.insert(textures.end(), emissiveColorMaps.begin(), emissiveColorMaps.end());
     }
     ExtractBoneWeightForVertices(vertices,mesh,scene);
     return Mesh(vertices, indices, textures);

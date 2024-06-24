@@ -558,7 +558,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ssao.shaderLightingPass.use();
         ssao.shaderLightingPass.setVec3("camPos", s.camera.Position);
-        LightManager::UpdateLightShader(ssao.shaderLightingPass, view);
+        //LightManager::UpdateLightShader(ssao.shaderLightingPass, view);
 // send light relevant uniforms
 //        glm::vec3 lightPosView = glm::vec3(s.camera.GetViewMatrix() * glm::vec4(sphere1->getTransform()->getLocalPosition(), 1.0));
 //        ssao.shaderLightingPass.setVec3("light.Position", lightPosView);

@@ -145,9 +145,9 @@ void init(){
 
 
     //CREATING WINDOW
-   // s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
+    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", NULL, NULL);
     //fullscreen
-    s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", monitor, NULL);
+    //s.window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Just Hero", monitor, NULL);
     if (s.window == nullptr)
     {
         LOG_ERROR("Failed to Create GLFW window");

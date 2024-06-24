@@ -171,6 +171,7 @@ public:
         unsigned int roughnessNr = 1;
         unsigned int displacementNr = 1;
         unsigned int emissiveNr = 1;
+        bool useEmissive = false;
         std::map<TextureType, int> textureNumberMap;
         for (unsigned int i = 0; i < textures.size(); i++)
         {
@@ -179,6 +180,11 @@ public:
             std::string number;
             std::string name = textures[i].textureName;
             number = std::to_string(1 + textureNumberMap[textures[i].textureType]++);
+
+            if(textures[i].textureType == TextureType::EMISSIVE)
+            {
+                useEmissive = true;
+            }
 //            if (type == TextureType::DIFFUSE)
 //                number = std::to_string(diffuseNr++);
 //            else if (type == TextureType::SPECULAR)
@@ -214,6 +220,15 @@ public:
             //now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
             textures[i].bind();
+        }
+
+        if(useEmissive)
+        {
+            shader->setBool("useEmissive", true);
+        }
+        else
+        {
+            shader->setBool("useEmissive", false);
         }
 
         // draw mesh

@@ -8,7 +8,8 @@ std::map<std::string, TextureType> Texture::textureMap = {
         {"texture_ambient", TextureType::AMBIENT},
         {"texture_roughness", TextureType::ROUGHNESS},
         {"texture_displacement", TextureType::DISPLACEMENT},
-        {"texture_emissive", TextureType::EMISSIVE}};
+        {"texture_emissive", TextureType::EMISSIVE},
+        {"texture_emissive_color", TextureType::EMISSIVECOLOR}};
 
 Texture::Texture(const std::string& path, const std::string& name)
 {

@@ -9,7 +9,7 @@ layout (location = 2) out vec4 gAlbedo;
 layout (location = 3) out vec3 gWorldPos;
 //r - metallic, g - roughness, b - ambient
 layout (location = 4) out vec3 gMetallicRoughnessAmbient;
-layout (location = 5) out vec3 gEmissive;
+layout (location = 5) out vec4 gEmissive;
 
 in vec2 TexCoords;
 in vec3 FragPos;
@@ -22,7 +22,10 @@ uniform sampler2D texture_specular1;
 uniform sampler2D texture_metalic1;
 uniform sampler2D texture_roughness1;
 uniform sampler2D texture_emissive1;
+uniform sampler2D texture_emissive_color1;
 uniform sampler2D texture_ambient1;
+
+uniform bool useEmissive;
 
 uniform vec3 camPos;
 
@@ -147,7 +150,8 @@ void main()
     // store specular intensity in gAlbedoSpec's alpha component
     //gAlbedo.a = texture(texture_specular1, TexCoords).r;
     gWorldPos = WorldPos;
-    gEmissive = texture(texture_emissive1, TexCoords).rgb;
+    gEmissive.rgb = texture(texture_emissive1, TexCoords).rgb;
+    gEmissive.a = texture(texture_emissive_color1, TexCoords).r;
     gMetallicRoughnessAmbient.r = texture(texture_metalic1, TexCoords).r;
     gMetallicRoughnessAmbient.g = texture(texture_roughness1, TexCoords).g;
     gMetallicRoughnessAmbient.b = texture(texture_ambient1, TexCoords).b;
@@ -276,6 +280,15 @@ void main()
     color = pow(color, vec3(1.0/2.2));
 
     //vec3 finalColor = cel(color);
+    if(useEmissive)
+    {
+        float emissivelen = length(texture(texture_emissive1, TexCoords).rgb);
+        if(emissivelen > 0.01f && emissivelen < 0.99f)
+            color += texture(texture_emissive_color1, TexCoords).rgb * 2;
+        //color /= 2;
+    }
+
+
     if(material == 1){
     FragColor = vec4(color, 1.0)*materialColor;
     gAlbedo = vec4(color, 1.0)*materialColor;

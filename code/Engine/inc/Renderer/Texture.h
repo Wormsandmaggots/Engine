@@ -16,7 +16,8 @@ enum TextureType{
     AMBIENT,
     ROUGHNESS,
     DISPLACEMENT,
-    EMISSIVE
+    EMISSIVE,
+    EMISSIVECOLOR
 };
 
 

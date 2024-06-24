@@ -332,6 +332,7 @@ void main()
 //    }
 
     FragColor = vec4(texture(gAlbedo, TexCoords).rgb, 1.0f);
+    //FragColor = texture(gEmissive, TexCoords);
 }
 
 //void main()
