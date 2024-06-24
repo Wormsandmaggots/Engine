@@ -200,8 +200,8 @@ void InstancedRobots::Draw(Shader *shader) {
 
     //shader->use();
 
-    for ( Mesh mesh : meshes) {
-        mesh.Draw(*shader, path, instanced, amount.x * amount.y);
+    for (Mesh& mesh : meshes) {
+        mesh.Draw(shader, path, instanced, amount.x * amount.y);
         //mesh.Draw(*shader, path);
     }
 }

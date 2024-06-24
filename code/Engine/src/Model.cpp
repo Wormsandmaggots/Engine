@@ -69,12 +69,13 @@ Model::Model(){
 
 void Model::Draw(Shader *shader) {
 
+    ZoneTransientN(ModelDraw, "modelDraw", true);
     if (material != nullptr) {
         material->bindMaterial();
     }
 
-    for (auto &meshe: meshes)
-        meshe.Draw(*shader, path);
+    for (Mesh &meshe: meshes)
+        meshe.Draw(shader, path);
 
     if (material != nullptr)
     material->unbindMaterial();
@@ -85,8 +86,20 @@ void Model::loadModel(string const &path) {
     // read file via ASSIMP
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
-                                             aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
-                                             aiProcess_CalcTangentSpace);
+                                             aiProcess_Triangulate |
+                                             aiProcess_GenSmoothNormals |
+                                             aiProcess_FlipUVs |
+                                             aiProcess_CalcTangentSpace |
+                                             aiProcess_JoinIdenticalVertices |
+                                             aiProcess_ValidateDataStructure |
+                                             aiProcess_ImproveCacheLocality |
+                                             aiProcess_RemoveRedundantMaterials |
+                                             aiProcess_FindDegenerates |
+                                             aiProcess_FindInvalidData |
+                                             aiProcess_GenUVCoords |
+                                             aiProcess_OptimizeMeshes |
+                                             aiProcess_TransformUVCoords |
+                                             aiProcess_SplitLargeMeshes);
     modelScene = new aiScene(*scene);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
@@ -157,7 +170,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         vector<Texture> ambientMaps = loadMaterialTextures(material,
                                                              aiTextureType_AMBIENT, "texture_ambient");
         textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
-        vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_SHININESS, "texture_roughness");
+        vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE_ROUGHNESS, "texture_roughness");
         textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
         vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
         textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());

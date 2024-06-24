@@ -110,6 +110,7 @@ void SetCallbacks(GLFWwindow* window)
 
 void imgui_begin()
 {
+    ZoneTransientN(imgui, "ImguiInit", true);
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -181,10 +182,6 @@ void init(){
     #endif
 }
 void update(){
-    #if defined(PROFILER)
-        Profiler::get().markFrame();
-                Profiler::get().zoneScope();
-    #endif
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

@@ -11,8 +11,8 @@ public:
     float Cutoff;
     float Outercutoff;
 
-    SpotLight(float cutoff = glm::cos(glm::radians(12.5f)),
-              float outercutoff = glm::cos(glm::radians(17.5f)),
+    SpotLight(float cutoff = glm::cos(glm::radians(0.0f)),
+              float outercutoff = glm::cos(glm::radians(45.0f)),
               glm::vec3 color = glm::vec3(1,1,1));
 
     void setValuesToShader(Shader &, int, glm::mat4) override;

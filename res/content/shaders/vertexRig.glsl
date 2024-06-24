@@ -24,6 +24,8 @@ out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoords;
 
+vec3 localNormal;
+
 void main()
 {
     vec4 totalPosition = vec4(0.0f);
@@ -39,7 +41,7 @@ void main()
         }
         vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(pos,1.0f);
         totalPosition += localPosition * weights[i];
-        vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;
+        localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;
     }
 
     WorldPos = vec3(model * totalPosition);
@@ -47,7 +49,7 @@ void main()
     vec4 viewPos = view * model * totalPosition;
     FragPos = viewPos.xyz;
 
-    Normal = normalMatrix * norm;
+    Normal = localNormal;
 
     gl_Position =  projection * viewModel * totalPosition;
     TexCoords = tex;

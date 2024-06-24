@@ -134,6 +134,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 
 float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, float outerCutOff, vec3 color, vec3 normal, vec3 fragPos, vec3 viewDir);
 
+float mulMetallic = 2.0f;
 
 void main()
 {
@@ -265,8 +266,8 @@ void main()
     for(int i = 0; i < spotNum; i++)
     {
         SpotLight s = spotLights[i];
-        float spotlightIntensity = calculateSpotLight(s.position, s.direction, s.cutoff, s.outercutoff, s.colors.diffuse, N, WorldPos, V);
-        color += spotlightIntensity;
+        float spotlightIntensity = calculateSpotLight(s.position, s.direction, s.cutoff, s.outercutoff, s.colors.diffuse, N, FragPos, V);
+        color += vec3(spotlightIntensity);
     }
 
     // HDR tonemapping
@@ -336,7 +337,7 @@ float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, flo
     float ambientStrength = 0.1; // adjust this as needed
     vec3 ambient = ambientStrength * lightColor;
 
-    vec3 norm = normalize(normal);
+    vec3 norm = normal;
     vec3 lightDir = normalize(spotLightPos - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;

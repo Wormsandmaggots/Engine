@@ -29,6 +29,7 @@
 #include "Light/PointLight.h"
 #include "ForwardMovement.h"
 #include "Generative-System/SpawnerComponent.h"
+#include "Light/SpotLight.h"
 
 #include "Animation/LookAt.h"
 
@@ -346,7 +347,12 @@ public:
         //screen shader
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
-/*
+
+        Entity* spotLight = new Entity("Spot");
+        spotLight->addComponent(new SpotLight());
+
+        currentScene->addEntity(spotLight);
+
         //entities
         //club interior
         clubE->addComponent(club);
@@ -358,11 +364,11 @@ public:
         //player3->addComponent(player2);
         //currentScene->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-/*
+
         djE->addComponent(dj);
         currentScene->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-*//*
+
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -379,7 +385,7 @@ public:
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
-*/
+
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));

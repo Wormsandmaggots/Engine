@@ -32,6 +32,7 @@ public:
 
     void interpretInput()
     {
+        ZoneTransientN(Input, "Input", true);
         // Interpret button state - depreciated, use isKeyPressed instead -------------------------------
         for (int button = 0; button < 4; ++button)
         {
