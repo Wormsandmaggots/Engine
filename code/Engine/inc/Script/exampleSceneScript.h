@@ -172,7 +172,6 @@ private:
     InstancedRobots* ir2;
     InstancedRobots* ir3;
     Animation* npcAnimation;
-    Animation* npcAnimation2;
     Animator* npcAnimator;
     Animator* npcAnimator2;
 
@@ -191,14 +190,14 @@ private:
     Entity* pointLight3E;
     Entity* pointLight4E;
     Entity* pointLight5E;
+    Entity* pointLight6E;
     PointLight* pointLight1;
     PointLight* pointLight2;
     PointLight* pointLight3;
     PointLight* pointLight4;
     PointLight* pointLight5;
+    PointLight* pointLight6;
 
-    Entity* spotLight1E;
-    SpotLight* spotLight1;
     //HUD
     double lastTime;
     ResizableImage* resBar;
@@ -307,7 +306,6 @@ public:
                                     &shaderRigInstanced2,
                                     glm::vec3(15.0f,5.0f,10.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
-            npcAnimation2(new Animation("res/content/models/npc/npc23.fbx", ir2)),
             npcAnimator(new Animator(npcAnimation,true)),
             npcAnimator2(new Animator(npcAnimation,true)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
@@ -328,8 +326,8 @@ public:
             pointLight4(new PointLight()),
             pointLight5E(new Entity("pointLight5bar")),
             pointLight5(new PointLight()),
-            spotLight1E(new Entity("spotLight1")),
-            spotLight1(new SpotLight()),
+            pointLight6E(new Entity("pointLight6dj")),
+            pointLight6(new PointLight()),
             fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
     player3(new Entity("player3")),
@@ -388,10 +386,6 @@ public:
         club->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
-        //player3->addComponent(player2);
-        //sm.getLoadedScenes()[0]->addEntity(player3);
-        //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 
         djE->addComponent(dj);
         sm.getLoadedScenes()[0]->addEntity(djE);
@@ -461,10 +455,10 @@ public:
         pointLight5E->getTransform()->setPosition(glm::vec3(3.0f,3.0f,53.7f));
         sm.getLoadedScenes()[0]->addEntity(pointLight5E);
 
-        spotLight1E->addComponent(spotLight1);
-        spotLight1E->getTransform()->setScale(glm::vec3(100.0f));
-        sm.getLoadedScenes()[0]->addEntity(spotLight1E);
-
+        pointLight6E->addComponent(pointLight6);
+        pointLight6E->getTransform()->setScale(glm::vec3(80.0f,135.0f,245.0f));
+        pointLight6E->getTransform()->setPosition(glm::vec3(-0.27f,8.33f,54.1f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight6E);
 
         sm.getLoadedScenes()[0]->addEntity(sun);
         sun->addComponent(sunLight);
@@ -549,7 +543,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
-        drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
+        //drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
         djAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
@@ -701,9 +695,6 @@ public:
         LightManager::UpdateLightShader(shaderBarmanRig, view);
         LightManager::UpdateLightShader(shaderDjRig, view);
 
-        //shaderPbr.use();
-        //shaderPbr.setVec3("camPos",s.camera.Position);
-        //shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
