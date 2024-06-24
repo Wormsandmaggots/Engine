@@ -98,6 +98,7 @@ private:
     Model* barman;
     Model* drinkBarman;
     Model* dj;
+    Model* chairs;
 
     Model* sphereModel;
     Model* sphereModel_green;
@@ -147,6 +148,7 @@ private:
     Entity* boxE;
     Entity* barDrinksE;
     Entity* canistersE;
+    Entity* chairsE;
     Entity* barmanE;
     Entity* drinkBarmanE;
     Entity* player3;
@@ -165,8 +167,10 @@ private:
     
     Entity* dancingRobots;
     Entity* dancingRobots2;
+    Entity* dancingRobots3;
     InstancedRobots* ir;
     InstancedRobots* ir2;
+    InstancedRobots* ir3;
     Animation* npcAnimation;
     Animation* npcAnimation2;
     Animator* npcAnimator;
@@ -236,6 +240,7 @@ public:
             club(new Model("res/content/models/klub/klubiec2.fbx", &ssao.shaderGeometryPass)),
             sciany(new Model("res/content/models/roofwalls/roof_walls.fbx", &ssao.shaderGeometryPass)),
             canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
+            chairs(new Model("res/content/models/krzesla/krzeslo/krzesla.fbx", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
@@ -273,6 +278,7 @@ public:
             canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
             drinkBarmanE(new Entity("barmanDrink")),
+            chairsE(new Entity("chairs")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
             lHandcollider(new ColliderComponent()),
@@ -288,6 +294,7 @@ public:
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
+            dancingRobots3(new Entity("dancingRobots3")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             shaderRigInstanced2(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
@@ -296,6 +303,9 @@ public:
             ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced2,
                                    glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
+            ir3(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
+                                    &shaderRigInstanced2,
+                                    glm::vec3(15.0f,5.0f,10.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
             npcAnimation2(new Animation("res/content/models/npc/npc23.fbx", ir2)),
             npcAnimator(new Animator(npcAnimation,true)),
@@ -406,11 +416,25 @@ public:
         canisters->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
         canisters->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
+        chairsE->addComponent(chairs);
+        sm.getLoadedScenes()[0]->addEntity(chairsE);
+        chairs->getTransform()->setScale(glm::vec3(0.005f));
+        //chairs->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
+        chairs->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
         barmanE->addComponent(barman);
         sm.getLoadedScenes()[0]->addEntity(barmanE);
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
+
+
+        //sm.getLoadedScenes()[0]->addEntity(drinkBarmanE);
+        drinkBarmanE->setParent(*barmanE);
+        drinkBarmanE->addComponent(drinkBarman);
+        drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
+        drinkBarman->getTransform()->setScale(glm::vec3(0.02f));
+        sm.getLoadedScenes()[0]->addEntity(drinkBarmanE);
 
         //lights
         pointLight->addComponent(pointLight1);
@@ -451,6 +475,9 @@ public:
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots2);
         dancingRobots->addComponent(ir2);
+
+        sm.getLoadedScenes()[0]->addEntity(dancingRobots3);
+        dancingRobots->addComponent(ir3);
 
 
         //movement
@@ -493,7 +520,7 @@ public:
         resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
 
-//txt
+        //txt
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
@@ -522,6 +549,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
+        drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
         djAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
