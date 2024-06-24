@@ -346,7 +346,7 @@ public:
         //screen shader
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
-/*
+
         //entities
         //club interior
         clubE->addComponent(club);
@@ -358,11 +358,11 @@ public:
         //player3->addComponent(player2);
         //currentScene->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-/*
+
         djE->addComponent(dj);
         currentScene->addEntity(djE);
         dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-*//*
+
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -379,7 +379,7 @@ public:
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f,180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,50.728f));
-*/
+
         //lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(2000.f));
@@ -446,7 +446,6 @@ public:
 
         //AudioManager::getInstance().playSound(pathToSong, 1.0f);
         DrunkShader.setInt("screenTexture", 0);
-        spawnerComponent->start();
 };
 
     void update() override{
@@ -472,7 +471,7 @@ public:
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        s.camera.MoveForwardZ(forwardSpeed*deltaTime);
+        s.camera.MoveForwardZ(globalVelocity *deltaTime);
 
         //moving forward
         if(deltaTime < 1){

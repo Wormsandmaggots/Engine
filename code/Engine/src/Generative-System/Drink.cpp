@@ -2,7 +2,7 @@
 
 Drink::Drink(const std::string name, const glm::vec3& position, Model* model): Collectable(name, position, model)
 {
-	this->getTransform()->setScale(glm::vec3(.001));
+	this->getTransform()->setScale(glm::vec3(.5));
 }
 
 void Drink::update()
