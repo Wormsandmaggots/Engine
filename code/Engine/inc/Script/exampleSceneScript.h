@@ -28,9 +28,6 @@
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
 #include "ForwardMovement.h"
-#include "Generative-System/SpawnerComponent.h"
-
-#include "Animation/LookAt.h"
 
 using namespace SceneManagement;
 
@@ -71,7 +68,6 @@ private:
     Shader& screenShader;
     Shader& shaderRig;
     Shader& shaderBarmanRig;
-    Shader& shaderDjRig;
     Shader& DrunkShader;
     Shader& shaderNoneDrink;
     Shader& reverseShader;
@@ -95,7 +91,6 @@ private:
     Model* player2;
     Model* playerModel;
     Model* barDrinks;
-    Model* canisters;
     Model* barman;
     Model* dj;
 
@@ -135,7 +130,7 @@ private:
 
     // spawner
     //Spawner* spawner;
-    //Spawner* spawner = nullptr;
+    Spawner* spawner = nullptr;
     float timeToDispense;
     float timeToDispense2;
     float effectTime;
@@ -146,7 +141,6 @@ private:
     Entity* scianyE;
     Entity* boxE;
     Entity* barDrinksE;
-    Entity* canistersE;
     Entity* barmanE;
     Entity* sphere1;
     Entity* player3;
@@ -160,6 +154,7 @@ private:
     ColliderComponent* leftFootCollider;
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
+    const char* path;
 
     
     Entity* dancingRobots;
@@ -173,9 +168,6 @@ private:
     Animation* barmanAnimation;
     Animator* barmanAnimator;
     RigPrep* barmanRig;
-
-    Animation* djAnimation;
-    Animator* djAnimator;
 
     Entity* sun;
     DirectionalLight* sunLight;
@@ -191,15 +183,14 @@ private:
     ForwardMovement* fm;
     float z;
 
-    Entity* spawner;
-    SpawnerComponent* spawnerComponent;
+    Button* activeButton;
 
 public:
     // Konstruktor domyślny
     exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
                        PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
                        Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
-                       Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced, Shader& shaderDjRig) :
+                       Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
             editor(editor),
             cm(cm),
             sm(sm),
@@ -230,7 +221,6 @@ public:
             imageShader(imageShader),
             imageShaderGreen(imageShaderGreen),
             shaderRigInstanced(shaderRigInstanced),
-            shaderDjRig(shaderDjRig),
             //renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -238,15 +228,14 @@ public:
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
-            canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
-            player2(new Model("res/content/models/npc/npc23.fbx", &ssao.shaderGeometryPass)),
+            player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
             //barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
             playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx",&shaderDjRig)),
+            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -265,13 +254,13 @@ public:
             mul(4),
             texelSize(1),
             time(0),
+            spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
             clubE(new Entity("club")),
             boxE(new Entity("box")),
             scianyE(new Entity("sciany")),
             barDrinksE(new Entity("barDrinks")),
-            canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
@@ -285,37 +274,54 @@ public:
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
 		    timer(10),
+            path("res/content/sounds/songs/if_you_dont.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
-            ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
+            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(-11.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
-            ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
+                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
-                                   glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation,true)),
+                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
+            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
+            npcAnimator(new Animator(npcAnimation)),
             npcRig(new RigPrep(ir)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
-            barmanAnimator(new Animator(barmanAnimation, false)),
+            barmanAnimator(new Animator(barmanAnimation)),
             barmanRig(new RigPrep(barman)),
-            djAnimation(new Animation("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", dj)),
-            djAnimator(new Animator(djAnimation, false)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement(pathToSong,glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
+            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
     player3(new Entity("player3")),
     resBar(new ResizableImage(&imageShaderGreen)),
     resBarEntity(new Entity("resBar")),
-    lastTime(0.0),
-    spawner(new Entity("Spawner")),
-    spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17))
+    lastTime(0.0)
     {
+    }
+
+    // Dodajemy metodę do zmiany aktywnego przycisku
+    void changeActiveButton(Button* newActiveButton) {
+        if (activeButton != nullptr) {
+            activeButton->setActive(false);
+        }
+
+        activeButton = newActiveButton;
+
+        if (activeButton != nullptr) {
+            activeButton->setActive(true);
+        }
+        activeButton = newActiveButton;
+    }
+
+    void clickActiveButton() {
+        if (activeButton != nullptr) {
+            activeButton->onClick();
+        }
     }
 
     void awake() override{
@@ -338,21 +344,15 @@ public:
         //audio
         //audioManager.init();
 
+        SongAnalizer::parseSong(songSampleInterval, path, songData);
+        SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
-        //sm.loadScene("res/content/maps/Marcin.yaml");
         sm.setCurrentScene("MarcinScene");
         Scene2* currentScene = sm.getSceneByName("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner->addComponent(spawnerComponent);
-        spawnerComponent->init();
-        currentScene->addEntity(spawner);
-        //ssao
-        //ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
-
-        //renderer
-        //renderer.init();
+        spawner = new Spawner(currentScene);
 
         //screen shader
         screenShader.use();
@@ -369,12 +369,11 @@ public:
         //player3->addComponent(player2);
         //currentScene->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-
+/*
         djE->addComponent(dj);
         currentScene->addEntity(djE);
-        dj->getTransform()->setScale(glm::vec3(0.005f));
-        dj->getTransform()->setPosition(glm::vec3(0.0f,-2.5f,0.0f));
-
+        dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
+*/
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -382,14 +381,9 @@ public:
 
         barDrinksE->addComponent(barDrinks);
         currentScene->addEntity(barDrinksE);
-        barDrinks->getTransform()->setScale(glm::vec3(0.005f));
+        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-
-        canistersE->addComponent(canisters);
-        currentScene->addEntity(canistersE);
-        canisters->getTransform()->setScale(glm::vec3(0.5f));
-        canisters->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
-        canisters->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barmanE->addComponent(barman);
         currentScene->addEntity(barmanE);
@@ -461,10 +455,11 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        AudioManager::getInstance().playSound(pathToSong, 1.0f);
+        AudioManager::getInstance().playSound(path, 1.0f);
+
         DrunkShader.setInt("screenTexture", 0);
-        spawnerComponent->start();
-};
+
+    };
 
     void update() override{
 
@@ -484,8 +479,7 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
-        djAnimator->UpdateAnimation(deltaTime, 90.0f);
+        barmanAnimator->UpdateAnimation(deltaTime);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -499,135 +493,132 @@ public:
         }
 
 // bardziej randomowe spawnowanie
-        //timeToDispense2 -= s.deltaTime;
-        //if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
+        timeToDispense2 -= s.deltaTime;
+        if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
 
-        //    switch (songData[songDataIndex].type) {
-        //        case sampleType::BASS:
-        //            //raczki
+            switch (songData[songDataIndex].type) {
+                case sampleType::BASS:
+                    //raczki
 
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
-        //            }
+                    if (spawner->hasXPercentChance(20)) {
+                        spawner->spawnBadBall("ball", glm::vec3(1* songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(1*songData[songDataIndex].bass.x, 1.5* songData[songDataIndex].bass.y, z));
+                    }
 
-        //            if (spawner->hasXPercentChance(20)) {
+                    if (spawner->hasXPercentChance(20)) {
 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
-        //            }
+                        spawner->spawnBadBall("ball", glm::vec3(-1*songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(-1 * songData[songDataIndex].bass.y, 1.5 * songData[songDataIndex].bass.x, z));
+                    }
 
-        //            //nozki
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(1, -2, z));
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-        //            
+                    //nozki
+                    if (spawner->hasXPercentChance(20))
+                        spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
+                    else 
+                        spawner->spawnBall("ball", glm::vec3(1, -2, z));
+                    if (spawner->hasXPercentChance(20)) 
+                        spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
+                    else 
+                        spawner->spawnBall("ball", glm::vec3(-1, -2, z));
+                    
 
-        //            break;
-        //        case sampleType::MID:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
-        //            }
+                    break;
+                case sampleType::MID:
+                    //raczki
+                    if (spawner->hasXPercentChance(20)) {
+                        spawner->spawnBadBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(1.55 * songData[songDataIndex].mid.x, 0.16 * songData[songDataIndex].mid.y, z));
+                    }
 
-        //            if (spawner->hasXPercentChance(20)) {
+                    if (spawner->hasXPercentChance(20)) {
 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
-        //            }
-        //            ////nozki
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-        //          
+                        spawner->spawnBadBall("ball", glm::vec3(-1.55 * songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
+                    }
+                    ////nozki
+                    if (spawner->hasXPercentChance(20)) 
+                        spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
+                    else 
+                        spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
+                  
 
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-        //          
-        //            else 
-        //                spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-        //            
+                    if (spawner->hasXPercentChance(20)) 
+                        spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
+                  
+                    else 
+                        spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
+                    
 
-        //            break;
-        //        case sampleType::CLAP:
-        //            //raczki
-        //            if (spawner->hasXPercentChance(20)) {
-        //                spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
-        //            }
+                    break;
+                case sampleType::CLAP:
+                    //raczki
+                    if (spawner->hasXPercentChance(20)) {
+                        spawner->spawnBadBall("ball", glm::vec3(1.1*songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(1.1 * songData[songDataIndex].high.x, -0.5 * songData[songDataIndex].high.y, z));
+                    }
 
-        //            if (spawner->hasXPercentChance(20)) {
+                    if (spawner->hasXPercentChance(20)) {
 
-        //                spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
-        //            else {
-        //                spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
-        //            }
+                        spawner->spawnBadBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+                    }
+                    else {
+                        spawner->spawnBall("ball", glm::vec3(-1.1 * songData[songDataIndex].high.y, -0.5 * songData[songDataIndex].high.x, z));
+                    }
 
-        //            //nozki
-        //            
-        //            if (spawner->hasXPercentChance(20)) 
-        //                spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
+                    //nozki
+                    
+                    if (spawner->hasXPercentChance(20)) 
+                        spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
+                    else
+                        spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
 
-        //            if (spawner->hasXPercentChance(20))
-        //                spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
-        //            else
-        //                spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
+                    if (spawner->hasXPercentChance(20))
+                        spawner->spawnBadBall("ball", glm::vec3(-0.2, -2.25, z));
+                    else
+                        spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
 
-        //                      
-        //         
-        //            break;
-        //        case sampleType::SKIP:
-        //            break;
-        //    }
-        //   if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
-        //        spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
+                              
+                 
+                    break;
+                case sampleType::SKIP:
+                    break;
+            }
+           if (spawner->ballsSpawned % 50 == 0 && spawner->ballsSpawned != 0)
+                spawner->spawnDrink("drink", glm::vec3(-1, 1, z));
 
-        //    songDataIndex++;
-        //    timeToDispense2 = timeToDispense;
+            songDataIndex++;
+            timeToDispense2 = timeToDispense;
 
-        //    if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        //}       
+            if (!(songDataIndex < songData.size())) songDataIndex = 0;
+        }       
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
+        npcAnimator->UpdateAnimation(s.deltaTime);
+
         shaderRigInstanced.use();
+        npcRig->update();
+
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
-
+        //npcRig->update();
         shaderBarmanRig.use();
         barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
-
-        shaderDjRig.use();
-        auto transforms4 = djAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms3.size(); ++i)
-            shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms4[i]);
-
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
@@ -779,24 +770,12 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
-            if(lookatAngle > 5.0f){
-                lookatAngle -=5.0f;
-            }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
-
-            if(lookatAngle <170.0f) {
-                lookatAngle += 5.0f;
-            }
         }
-//        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-//            std::cout << "Koniec" << std::endl;
-//        }
-
-        
 
         //temporary------------------------------------------------------------------------------------
         //text
@@ -808,6 +787,8 @@ public:
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
+
+        spawner->update();
 
         cm.update();
 
@@ -869,10 +850,14 @@ public:
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
+        if (playerInput.isKeyPressed(1)) {
+            sm.setCurrentScene("PauseScene");
+        }
     };
 
     void onDestroy() override{
         //audioManager.end();
+        delete spawner;
     };
 
     ~exampleSceneScript() override = default;

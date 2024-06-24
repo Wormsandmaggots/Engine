@@ -33,13 +33,11 @@ using namespace SceneManagement;
 
 class creditsSceneScript : public SceneScript {
 private:
-///////////////////////////////////////////////////
     EditorLayer::Editor& editor;
     // collision
     CollisionManager& cm;
     // scene manager
     SceneManager& sm;
-///////////////////////////////////////////////////
     // audio
     AudioManager& audioManager;
 
@@ -49,15 +47,12 @@ private:
 
     // input joystick
     int connectedControllers;
-///////////////////////////////////////////////////
     PlayerInput& playerInput;
     PlayerInput& playerInput1;
-///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
-///////////////////////////////////////////////////
     DebugInput& debugInput;
 
     Shader& shader;
@@ -74,37 +69,27 @@ private:
     Shader& imageShader;
     Shader& imageShaderGreen;
     Shader& shaderRigInstanced;
-///////////////////////////////////////////////////
     FrameBuffer buffer;
 
     // ssao
     SSAO ssao;
-///////////////////////////////////////////////////
     // renderer
     Renderer& renderer;
-///////////////////////////////////////////////////
     // model
 
     //HUD
     //main menu
-    Image* manuBackground;
+    Image* pauseWallpaper;
 
-    Button* startButton;
+    Button* changeSongButton;
     Button* exitButton;
-    Button* creditsButton;
 
-    Entity* menuWalpaper;
-    Entity* ng;
+    Entity* pauseBackground;
     Entity* ex;
-    Entity* cr;
 
     Texture* background;
-    Texture* ng_button_idle;
     Texture* ex_button_idle;
-    Texture* cr_button_idle;
-    Texture* ng_button_activ;
     Texture* ex_button_activ;
-    Texture* cr_button_activ;
 
     Button* activeButton;
 
@@ -150,23 +135,16 @@ public:
             shaderRigInstanced(shaderRigInstanced),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             //hud
-            manuBackground(new Image(&imageShader)),
-            startButton(new Button(&imageShader)),
+            pauseWallpaper(new Image(&imageShader)),
+            changeSongButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
-            creditsButton(new Button(&imageShader)),
 
-            menuWalpaper(new Entity("mainMenu")),
-            ng(new Entity("startButton")),
+            pauseBackground(new Entity("mainMenu")),
             ex(new Entity("exitButton")),
-            cr(new Entity("creditsButton")),
 
-            background(new Texture("res/content/textures/background.png", "background")),
-            ng_button_idle(new Texture("res/content/textures/start_d.png", "start_d")),
-            ex_button_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
-            cr_button_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
-            ng_button_activ(new Texture("res/content/textures/start_h.png", "start_h")),
-            ex_button_activ(new Texture("res/content/textures/exit_h.png", "exit_h")),
-            cr_button_activ(new Texture("res/content/textures/credits_h.png", "credits_h"))
+            background(new Texture("res/content/textures/hud_back.png", "background")),
+            ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
+            ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
 
     {
     }
@@ -197,65 +175,36 @@ public:
 
     void start() override{
         //scene manager
-        sm.setCurrentScene("KubaScene");
+        sm.setCurrentScene("CreditsScene");
+
+        Scene2* currentScene = sm.getSceneByName("CreditsScene");
 
         //main menu
 
         //menu background
-        sm.getSceneByName("KubaScene")->addEntity(menuWalpaper);
-        menuWalpaper->addComponent(manuBackground);
-        manuBackground->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-        manuBackground->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        currentScene->addEntity(pauseBackground);
+        pauseBackground->addComponent(pauseWallpaper);
+        pauseWallpaper->getTransform()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+        pauseWallpaper->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-        manuBackground->setTexture(background);
+        pauseWallpaper->setTexture(background);
 
-        //new game
-        sm.getSceneByName("KubaScene")->addEntity(ng);
-        ng->addComponent(startButton);
-        startButton->getTransform()->setScale(glm::vec3(0.14f, 0.06f, 0.2f));
-        startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.031f, 0.0f));
-
-        //this button will be activ from start, so we set it's texture as activ form the begining
-        startButton->setTexture(ng_button_activ);
-        startButton->setInactiveTexture(ng_button_idle);
-        startButton->setActiveTexture(ng_button_activ);
-
-        startButton->setOnClick([this]() {
-            std::cout << "Start button clicked!" << std::endl;
-            this->sm.setCurrentScene("MarcinScene");
-        });
-
-        //exit
-        sm.getSceneByName("KubaScene")->addEntity(ex);
+        //credits
+        currentScene->addEntity(ex);
         ex->addComponent(exitButton);
-        exitButton->getTransform()->setScale(glm::vec3(0.1f, 0.07f, 0.2f));
-        exitButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.25f, 0.0f));
+        exitButton->getTransform()->setScale(glm::vec3(0.17f, 0.047f, 0.2f));
+        exitButton->getTransform()->setPosition(glm::vec3(0.0f, -0.488f, 0.0f));
 
-        exitButton->setTexture(ex_button_idle);
+        exitButton->setTexture(ex_button_activ);
         exitButton->setInactiveTexture(ex_button_idle);
         exitButton->setActiveTexture(ex_button_activ);
 
-        exitButton->setOnClick([]() {
-            std::cout << "Exit button clicked!" << std::endl;
-            glfwSetWindowShouldClose(s.window, GL_TRUE);
-        });
-
-        //credits
-        sm.getSceneByName("KubaScene")->addEntity(cr);
-        cr->addComponent(creditsButton);
-        creditsButton->getTransform()->setScale(glm::vec3(0.14f, 0.07f, 0.2f));
-        creditsButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.488f, 0.0f));
-
-        creditsButton->setTexture(cr_button_idle);
-        creditsButton->setInactiveTexture(cr_button_idle);
-        creditsButton->setActiveTexture(cr_button_activ);
-
-        creditsButton->setOnClick([]() {
-            std::cout << "Credits button clicked!" << std::endl;
+        exitButton->setOnClick([this]() {
+            this->sm.setCurrentScene("KubaScene");
         });
 
         //buttons on scene handling
-        activeButton = startButton;
+        activeButton = exitButton;
         lastButtonChangeTime = 0.0f;
         buttonChangeDelay = 0.2f;
         joystickReset = true;
@@ -301,54 +250,18 @@ public:
         //hud
         glActiveTexture(GL_TEXTURE0);
         imageShader.use();
-        manuBackground->renderPlane();
+        pauseWallpaper->renderPlane();
 
-        startButton->renderPlane();
+        //continueButton->renderPlane();
+        changeSongButton->renderPlane();
         exitButton->renderPlane();
-        creditsButton->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            if (joystickOffset.y < 0.5) {
-                if (activeButton == startButton) {
-                    changeActiveButton(creditsButton);
-                } else if (activeButton == exitButton) {
-                    changeActiveButton(startButton);
-                } else if (activeButton == creditsButton) {
-                    changeActiveButton(exitButton);
-                }
-            }
-            else if (joystickOffset.y > -0.5) {
-                if (activeButton == startButton) {
-                    changeActiveButton(exitButton);
-                } else if (activeButton == exitButton) {
-                    changeActiveButton(creditsButton);
-                } else if (activeButton == creditsButton) {
-                    changeActiveButton(startButton);
-                }
-            }
-            lastButtonChangeTime = currentFrame;
-            joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
-            joystickReset = true;
-        }
-
-//debugging
-//        if (activeButton == startButton) {
-//            std::cout << "Start button is active" << std::endl;
-//        } else if (activeButton == exitButton) {
-//            std::cout << "Exit button is active" << std::endl;
-//        } else if (activeButton == creditsButton) {
-//            std::cout << "Credits button is active" << std::endl;
-//        }
-
         if (playerInput.isKeyPressed(1)) {
             clickActiveButton();
-            //debugging
-            //std::cout<<"B"<<std::endl;
         }
 
     };
