@@ -63,6 +63,9 @@ public:
         if(npc && Bone && nodeName == "mixamorig:Head"){
             globalTransformation = la->computeNoBone(angle, globalTransformation);
         }
+        if(Bone && nodeName == "mixamorig:LeftHand"){
+            handPos = globalTransformation;
+        }
         auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
         if (boneInfoMap.find(nodeName) != boneInfoMap.end())
         {
@@ -90,6 +93,9 @@ public:
         if(npc && Bone && nodeName == "mixamorig:Head"){
            la->setHeadPos(globalTransformation);
         }
+        if(Bone && nodeName == "mixamorig:LeftHand"){
+            handPos = globalTransformation;
+        }
 
         for (int i = 0; i < node->childrenCount; i++)
             getInitBonesPos(&node->children[i], globalTransformation);
@@ -100,14 +106,15 @@ public:
         return m_FinalBoneMatrices;
     }
 
-    const aiScene* getScene(){
-        m_CurrentAnimation->getScene();
+    glm::mat4 getHandPos(){
+        return handPos;
     }
 private:
     std::vector<glm::mat4> m_FinalBoneMatrices;
     Animation* m_CurrentAnimation;
     float m_CurrentTime;
     float m_DeltaTime;
+    glm::mat4 handPos;
     LookAt* la;
     bool npc;
 };
