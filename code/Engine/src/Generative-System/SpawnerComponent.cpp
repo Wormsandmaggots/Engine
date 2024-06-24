@@ -12,8 +12,8 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 	this->songPath = songPath;
 	spawnTimer=0;
 
-	footOrbModel =new Model("res/content/models/orbUP/orbUP.fbx");
-	handOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx");
+	handOrbModel =new Model("res/content/models/orbUP/orbUP.fbx");
+	footOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx");
 	badOrbModel= new Model("res/content/models/orbX/orbX.fbx");
 	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1_re.fbx");
 	ringXModel = new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
@@ -41,10 +41,10 @@ void SpawnerComponent::update()
 	spawnTimer -= deltaTime;
 	if (spawnTimer < 0 && songDataIndex < songData.size()) {
 
-		cout << "Type: " << songData[songDataIndex].type << endl;
+		/*cout << "Type: " << songData[songDataIndex].type << endl;
 		cout << "Bass: " << songData[songDataIndex].bass.x << " " << songData[songDataIndex].bass.y << endl;
 		cout << "Mid: " << songData[songDataIndex].mid.x << " " << songData[songDataIndex].mid.y << endl;
-		cout << "High: " << songData[songDataIndex].high.x << " " << songData[songDataIndex].high.y << endl << endl;
+		cout << "High: " << songData[songDataIndex].high.x << " " << songData[songDataIndex].high.y << endl << endl;*/
 
         switch (songData[songDataIndex].type) {
 		case sampleType::BASS:
@@ -159,7 +159,7 @@ void SpawnerComponent::update()
 				spawn<FootOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 		}
 
-        //if (orbsSpawned > 100) 
+        if (orbsSpawned > 100) 
 		{
             spawn<Drink>(glm::vec3(-1, 1, originPos.z));
 			orbsSpawned = 0;
@@ -212,6 +212,8 @@ void SpawnerComponent::init()
 		Collectable* footRing = new Ring("footRing", inactivePos, new Model(*ringDOWNModel));
 		Collectable* badRing = new Ring("badRing", inactivePos, new Model(*ringXModel));
 		
+		handOrb->getTransform()->rotate(glm::vec3(180,0,0));
+		footOrb->getTransform()->rotate(glm::vec3(180, 0, 0));
 
 		parentEntity->addChild(handOrb);
 		parentEntity->addChild(footOrb);

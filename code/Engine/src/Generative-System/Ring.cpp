@@ -23,10 +23,10 @@ void Ring::update()
 			setColor(glm::vec3(((parentPos.z - position.z + 1.5) / orbDistance)));
 		}
 		else if (this->getParent()->getName() == "handOrb") {
-			setColor(glm::vec3(0,0,0.8* ((parentPos.z - position.z + 1.5) / orbDistance)));
+			setColor(glm::vec3(0.8 * ((parentPos.z - position.z + 1.5) / orbDistance), 0.8 * ((parentPos.z - position.z + 1.5) / orbDistance), 0));
 		}
 		else if (this->getParent()->getName() == "footOrb") {
-			setColor(glm::vec3(0.8* ((parentPos.z - position.z + 1.5) / orbDistance), 0.8* ((parentPos.z - position.z + 1.5) / orbDistance), 0));
+			setColor(glm::vec3(0, 0, 0.8 * ((parentPos.z - position.z + 1.5) / orbDistance)));
 		}
 
 		else {
