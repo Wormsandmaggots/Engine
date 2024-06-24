@@ -8,7 +8,8 @@ public:
     ForwardMovement(std::string filename, glm::vec3 start, glm::vec3 _finish){
         songLength = SongAnalizer::songLenth(filename);
         distance = _finish.z - start.z;
-        velocity = distance/songLength;
+        velocity = distance / songLength;
+        //velocity = 0;
 		forwardSpeed = velocity;
         globalVelocity = velocity;
         finish = _finish;
@@ -22,7 +23,6 @@ public:
         if(this->getTransform()->getPosition().z >=finish.z){
             globalVelocity = 0.0f;
         }
-        LOG_INFO(std::to_string(this->getTransform()->getPosition().z ));
     }
     float velocity;
 private:

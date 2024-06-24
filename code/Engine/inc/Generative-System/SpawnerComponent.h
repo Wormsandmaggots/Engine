@@ -25,17 +25,21 @@ public:
     Model* footOrbModel;
     Model* badOrbModel;
     Model* drinkModel;
-    Model* ringModel;
+    Model* ringXModel;
+    Model* ringUPModel;
+    Model* ringDOWNModel;
 
 	float xRH, yRH, xLH, yLH, xRF, yRF, xLF, yLF;
- 
+    float orbRadius = 0.3;
 
     std::vector<SongSample> songData;
     int songDataIndex=0;
 
+    bool started = false;
+
     unsigned int entitiesCount;
     unsigned int orbsSpawned;
-    float spawnAfter = 1;
+    float spawnAfter = songInterval;
     float spawnTimer;
     std::string songPath;
 
@@ -46,17 +50,32 @@ public:
 
     template<typename T>
     void spawn(glm::vec3 spawnPos);
-    Collectable* spawnRing(glm::vec3 spawnPos);
+    Collectable* spawnRing(glm::vec3 spawnPos,std::string ringType);
 
     void activateEntity(Collectable* ent);
     void deactiveEntity(Collectable* ent);
 
     bool hasXPercentChance(int x) {
-        std::random_device rd; // Obtain a random number from hardware
-        std::mt19937 gen(rd()); // Seed the generator
-        std::uniform_int_distribution<> distr(1, 100); // Define the range
+        std::random_device rd;
+        std::mt19937 gen(rd()); 
+        std::uniform_int_distribution<> distr(1, 100);
 
-        int chance = distr(gen); // Generate a number between 1 and 100
-        return chance <= x; // 20% chance if the number is between 1 and 20
+        int chance = distr(gen);
+        return chance <= x; 
+    }
+    void checkAndAdjustForOverlap(float& x1, float& y1, float& x2, float& y2, float radius) {
+        glm::vec2 pos1(x1, y1);
+        glm::vec2 pos2(x2, y2);
+        if (glm::distance(pos1, pos2) < 2 * radius) {
+            // Adjust positions to avoid overlap
+            glm::vec2 direction = glm::normalize(pos2 - pos1);
+            glm::vec2 midpoint = (pos1 + pos2) / 2.0f;
+            pos1 = midpoint - direction * radius;
+            pos2 = midpoint + direction * radius;
+            x1 = pos1.x;
+            y1 = pos1.y;
+            x2 = pos2.x;
+            y2 = pos2.y;
+        }
     }
 };

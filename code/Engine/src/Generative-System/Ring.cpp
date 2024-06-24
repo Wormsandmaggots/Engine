@@ -18,14 +18,23 @@ void Ring::update()
 {
 	if (active) {
 		if (this->getParent()->getName() == "badOrb") {
-			setColor(glm::vec3(1,0,0));
+			setColor(glm::vec3(((parentPos.z - position.z + 1.5) / orbDistance),0,0));
+		}else if (this->getParent()->getName() == "drink") {
+			setColor(glm::vec3(((parentPos.z - position.z + 1.5) / orbDistance)));
 		}
+		else if (this->getParent()->getName() == "handOrb") {
+			setColor(glm::vec3(0,0,0.8* ((parentPos.z - position.z + 1.5) / orbDistance)));
+		}
+		else if (this->getParent()->getName() == "footOrb") {
+			setColor(glm::vec3(0.8* ((parentPos.z - position.z + 1.5) / orbDistance), 0.8* ((parentPos.z - position.z + 1.5) / orbDistance), 0));
+		}
+
 		else {
 			if (collided) {
-				setColor(glm::vec3(0, 1, 0));
+				//setColor(glm::vec3(0, 1, 0));
 			}
 			else {
-				setColor(glm::vec3(1, 1, 1));
+				//setColor(glm::vec3(1, 1, 1));
 			}
 		}
 		parentPos = this->getParent()->getTransform()->getPosition();
