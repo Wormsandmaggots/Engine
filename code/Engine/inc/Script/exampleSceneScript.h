@@ -78,6 +78,7 @@ private:
     FrameBuffer buffer;
 
     Shader shaderRigInstanced;
+    Shader shaderRigInstanced2;
 
     // ssao
     SSAO ssao;
@@ -95,6 +96,7 @@ private:
     Model* barDrinks;
     Model* canisters;
     Model* barman;
+    Model* drinkBarman;
     Model* dj;
 
     Model* sphereModel;
@@ -146,6 +148,7 @@ private:
     Entity* barDrinksE;
     Entity* canistersE;
     Entity* barmanE;
+    Entity* drinkBarmanE;
     Entity* sphere1;
     Entity* player3;
     Entity* player;
@@ -166,8 +169,9 @@ private:
     InstancedRobots* ir;
     InstancedRobots* ir2;
     Animation* npcAnimation;
+    Animation* npcAnimation2;
     Animator* npcAnimator;
-    RigPrep* npcRig;
+    Animator* npcAnimator2;
 
     Animation* barmanAnimation;
     Animator* barmanAnimator;
@@ -220,14 +224,14 @@ public:
             renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-            club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
+            club(new Model("res/content/models/klub/klubiec2.fbx", &ssao.shaderGeometryPass)),
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
-            //barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
+            drinkBarman(new Model("res/content/models/kieliszki/drink1/drink1_re.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -260,6 +264,7 @@ public:
             barDrinksE(new Entity("barDrinks")),
             canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
+            drinkBarmanE(new Entity("barmanDrink")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
@@ -277,15 +282,17 @@ public:
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
             shaderRigInstanced(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
+            shaderRigInstanced2(Shader("res/content/shaders/vertexRigInstanced.glsl", "res/content/shaders/SSAO/ssao_fragment.frag")),
             ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
                                    &shaderRigInstanced,
                                    glm::vec3(-11.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
-                                   &shaderRigInstanced,
+                                   &shaderRigInstanced2,
                                    glm::vec3(5.0f,-3.0f,0.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
             npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
+            npcAnimation2(new Animation("res/content/models/npc/npc23.fbx", ir2)),
             npcAnimator(new Animator(npcAnimation,true)),
-            npcRig(new RigPrep(ir)),
+            npcAnimator2(new Animator(npcAnimation,true)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
@@ -600,27 +607,30 @@ public:
 
         
 
-        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
+        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle );
+        npcAnimator2->UpdateAnimation(s.deltaTime, lookatAngle * (-1.0f));
         shaderRigInstanced.use();
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
-
+        shaderRigInstanced2.use();
+        auto transforms5 = npcAnimator2->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms5.size(); ++i)
+            shaderRigInstanced2.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms5[i]);
 
         shaderBarmanRig.use();
-        //barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
 
         shaderDjRig.use();
-        //barmanRig->update();
         auto transforms4 = djAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms3.size(); ++i)
+        for (int i = 0; i < transforms4.size(); ++i)
             shaderDjRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms4[i]);
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
+        LightManager::UpdateLightShader(shaderRigInstanced2, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
         LightManager::UpdateLightShader(shaderBarmanRig, view);
 
