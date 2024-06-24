@@ -705,9 +705,10 @@ public:
                 lookatAngle += 5.0f;
             }
         }
-        //        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-        //            std::cout << "Koniec" << std::endl;
-        //        }
+                if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+                    //std::cout << "Koniec" << std::endl;
+                    sm.setCurrentScene("LoseScene");
+                }
 
         // temporary------------------------------------------------------------------------------------
         // text
