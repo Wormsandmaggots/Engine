@@ -16,7 +16,7 @@ void SpotLight::setValuesToShader(Shader &shader, int i, glm::mat4 view) {
 
     shader.setVec3("spotLights[" + iterator + "].position", glm::vec3((view * glm::vec4(parentTransform->getWorldMatrix()[3]))[3]));
     shader.setVec3("spotLights[" + iterator + "].direction", extractEulerAngles(parentTransform->getWorldMatrix()));
-    shader.setVec3("spotLights[" + iterator + "].color", Color);
+    shader.setVec3("spotLights[" + iterator + "].color.diffuse", Color);
     shader.setFloat("spotLights[" + iterator + "].cutoff", Cutoff);
     shader.setFloat("spotLights[" + iterator + "].outercutoff", Outercutoff);
 }

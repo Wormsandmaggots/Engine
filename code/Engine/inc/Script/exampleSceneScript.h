@@ -27,6 +27,7 @@
 #include "Light/DirectionalLight.h"
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
+#include "Light/SpotLight.h"
 #include "ForwardMovement.h"
 #include "Animation/LookAt.h"
 
@@ -90,7 +91,6 @@ private:
     Model* box;
     Model* club;
     Model* sciany;
-    Model* sphere;
     Model* player2;
     Model* playerModel;
     Model* barDrinks;
@@ -149,7 +149,6 @@ private:
     Entity* canistersE;
     Entity* barmanE;
     Entity* drinkBarmanE;
-    Entity* sphere1;
     Entity* player3;
     Entity* player;
     Entity* djE;
@@ -184,8 +183,18 @@ private:
     DirectionalLight* sunLight;
 
     Entity* pointLight;
+    Entity* pointLight2E;
+    Entity* pointLight3E;
+    Entity* pointLight4E;
+    Entity* pointLight5E;
     PointLight* pointLight1;
+    PointLight* pointLight2;
+    PointLight* pointLight3;
+    PointLight* pointLight4;
+    PointLight* pointLight5;
 
+    Entity* spotLight1E;
+    SpotLight* spotLight1;
     //HUD
     double lastTime;
     ResizableImage* resBar;
@@ -225,8 +234,7 @@ public:
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
             club(new Model("res/content/models/klub/klubiec2.fbx", &ssao.shaderGeometryPass)),
-            sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
-            sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
+            sciany(new Model("res/content/models/roofwalls/roof_walls.fbx", &ssao.shaderGeometryPass)),
             canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
@@ -265,7 +273,6 @@ public:
             canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
             drinkBarmanE(new Entity("barmanDrink")),
-            sphere1(new Entity("sphere")),
             player(new Entity("Player")),
             leftHandPointer(new Entity("leftHandPointer")),
             lHandcollider(new ColliderComponent()),
@@ -303,6 +310,16 @@ public:
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
+            pointLight2E(new Entity("pointLight2bar")),
+            pointLight2(new PointLight()),
+            pointLight3E(new Entity("pointLight3bar")),
+            pointLight3(new PointLight()),
+            pointLight4E(new Entity("pointLight4dj")),
+            pointLight4(new PointLight()),
+            pointLight5E(new Entity("pointLight5bar")),
+            pointLight5(new PointLight()),
+            spotLight1E(new Entity("spotLight1")),
+            spotLight1(new SpotLight()),
             fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
     //hud
     player3(new Entity("player3")),
@@ -371,12 +388,13 @@ public:
         //dj->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         dj->getTransform()->setScale(glm::vec3(0.005f));
         dj->getTransform()->setPosition(glm::vec3(0.0f,-2.5f,0.0f));
-/*
+
         scianyE->addComponent(sciany);
         sm.getLoadedScenes()[0]->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
+        sciany->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
         sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
-*/
+
         barDrinksE->addComponent(barDrinks);
         sm.getLoadedScenes()[0]->addEntity(barDrinksE);
         barDrinks->getTransform()->setScale(glm::vec3(0.005f));
@@ -396,12 +414,37 @@ public:
 
         //lights
         pointLight->addComponent(pointLight1);
-        pointLight->getTransform()->setScale(glm::vec3(2000.f));
+        pointLight->getTransform()->setScale(glm::vec3(5.f));
         sm.getLoadedScenes()[0]->addEntity(pointLight);
+
+        pointLight2E->addComponent(pointLight2);
+        pointLight2E->getTransform()->setScale(glm::vec3(74.0f,7.0f,100.0f));
+        pointLight2E->getTransform()->setPosition(glm::vec3(6.0f,-0.7f,52.0f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight2E);
+
+        pointLight3E->addComponent(pointLight3);
+        pointLight3E->getTransform()->setScale(glm::vec3(20.0f,135.0f,245.0f));
+        pointLight3E->getTransform()->setPosition(glm::vec3(-5.0f,-0.7f,52.0f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight3E);
+
+        pointLight4E->addComponent(pointLight4);
+        pointLight4E->getTransform()->setScale(glm::vec3(74.0f,7.0f,100.0f));
+        pointLight4E->getTransform()->setPosition(glm::vec3(-2.5f,3.0f,53.7f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight4E);
+
+        pointLight5E->addComponent(pointLight5);
+        pointLight5E->getTransform()->setScale(glm::vec3(20.0f,135.0f,245.0f));
+        pointLight5E->getTransform()->setPosition(glm::vec3(3.0f,3.0f,53.7f));
+        sm.getLoadedScenes()[0]->addEntity(pointLight5E);
+
+        spotLight1E->addComponent(spotLight1);
+        spotLight1E->getTransform()->setScale(glm::vec3(100.0f));
+        sm.getLoadedScenes()[0]->addEntity(spotLight1E);
 
 
         sm.getLoadedScenes()[0]->addEntity(sun);
         sun->addComponent(sunLight);
+
 
         sm.getLoadedScenes()[0]->addEntity(dancingRobots);
         dancingRobots->addComponent(ir);
@@ -409,9 +452,6 @@ public:
         sm.getLoadedScenes()[0]->addEntity(dancingRobots2);
         dancingRobots->addComponent(ir2);
 
-        sm.getLoadedScenes()[0]->addEntity(sphere1);
-        sphere1->addComponent(sphere);
-        sphere->getTransform()->setPosition(lightPos);
 
         //movement
         sm.getLoadedScenes()[0]->addEntity(fm);
@@ -486,7 +526,6 @@ public:
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
-
 
         //moving forward
         if(deltaTime < 1){
@@ -605,7 +644,6 @@ public:
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
         }       
 
-        
 
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle );
         npcAnimator2->UpdateAnimation(s.deltaTime, lookatAngle * (-1.0f));
@@ -633,10 +671,11 @@ public:
         LightManager::UpdateLightShader(shaderRigInstanced2, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
         LightManager::UpdateLightShader(shaderBarmanRig, view);
+        LightManager::UpdateLightShader(shaderDjRig, view);
 
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos",s.camera.Position);
-        shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
+        //shaderPbr.use();
+        //shaderPbr.setVec3("camPos",s.camera.Position);
+        //shaderPbr.setVec3("lightPos",sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
