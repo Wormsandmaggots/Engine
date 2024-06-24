@@ -851,7 +851,6 @@ public:
         {
             sm.setCurrentScene("PauseScene");
         }
-        AudioManager::getInstance().playThisSong("bicik");
     };
 
     void onExit() {

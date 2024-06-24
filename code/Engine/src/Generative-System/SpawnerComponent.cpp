@@ -26,12 +26,17 @@ void SpawnerComponent::start()
 	SongAnalizer::parseSong(spawnAfter, songPath, songData);
 	SongAnalizer::testparseSong(spawnAfter, songPath, songData);
 	//AudioManager::getInstance().playSound(songPath,1);
+    //i put this here so played song will be in sync wit spawning orbs
+    AudioManager::getInstance().playThisSong("bicik");
 
 }
 
 
 void SpawnerComponent::update()
 {
+    //i put this here so played song will be in sync wit spawning orbs
+    AudioManager::getInstance().playThisSong("bicik");
+
 	if (!started) {
 		start();
 		started = true;
