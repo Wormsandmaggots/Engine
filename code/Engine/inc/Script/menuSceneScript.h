@@ -214,7 +214,9 @@ public:
 
         startButton->setOnClick([this]() {
             std::cout << "Start button clicked!" << std::endl;
-            this->sm.setCurrentScene("SongScene");
+            //this->sm.setCurrentScene("SongScene");
+            //skiping choose song screne
+            this->sm.setCurrentScene("MarcinScene");
         });
 
         //credits

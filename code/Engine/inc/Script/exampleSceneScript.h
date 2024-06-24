@@ -28,6 +28,8 @@
 #include "Light/LightManager.h"
 #include "Light/PointLight.h"
 #include "ForwardMovement.h"
+#include "Generative-System/SpawnerComponent.h"
+#include "Animation/LookAt.h"
 
 using namespace SceneManagement;
 
@@ -68,6 +70,7 @@ private:
     Shader& screenShader;
     Shader& shaderRig;
     Shader& shaderBarmanRig;
+    Shader& shaderDjRig;
     Shader& DrunkShader;
     Shader& shaderNoneDrink;
     Shader& reverseShader;
@@ -91,6 +94,7 @@ private:
     Model* player2;
     Model* playerModel;
     Model* barDrinks;
+    Model* canisters;
     Model* barman;
     Model* dj;
 
@@ -130,7 +134,7 @@ private:
 
     // spawner
     //Spawner* spawner;
-    Spawner* spawner = nullptr;
+    //Spawner* spawner = nullptr;
     float timeToDispense;
     float timeToDispense2;
     float effectTime;
@@ -141,6 +145,7 @@ private:
     Entity* scianyE;
     Entity* boxE;
     Entity* barDrinksE;
+    Entity* canistersE;
     Entity* barmanE;
     Entity* sphere1;
     Entity* player3;
@@ -154,9 +159,8 @@ private:
     ColliderComponent* leftFootCollider;
     Entity* rightFootPointer;
     ColliderComponent* rightFootCollider;
-    const char* path;
 
-    
+
     Entity* dancingRobots;
     Entity* dancingRobots2;
     InstancedRobots* ir;
@@ -168,6 +172,9 @@ private:
     Animation* barmanAnimation;
     Animator* barmanAnimator;
     RigPrep* barmanRig;
+
+    Animation* djAnimation;
+    Animator* djAnimator;
 
     Entity* sun;
     DirectionalLight* sunLight;
@@ -183,6 +190,9 @@ private:
     ForwardMovement* fm;
     float z;
 
+    Entity* spawner;
+    SpawnerComponent* spawnerComponent;
+
     Button* activeButton;
 
 public:
@@ -190,7 +200,7 @@ public:
     exampleSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
                        PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
                        Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
-                       Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
+                       Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced, Shader& shaderDjRig) :
             editor(editor),
             cm(cm),
             sm(sm),
@@ -221,6 +231,7 @@ public:
             imageShader(imageShader),
             imageShaderGreen(imageShaderGreen),
             shaderRigInstanced(shaderRigInstanced),
+            shaderDjRig(shaderDjRig),
             //renderer(&ssao.shaderGeometryPass),
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
@@ -228,6 +239,7 @@ public:
             sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
             sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
+            canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
             barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
             //barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
@@ -235,7 +247,7 @@ public:
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
             sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
             sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
-            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/MrDJ.fbx",&ssao.shaderGeometryPass)),
+            dj(new Model("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", &shaderDjRig)),
             comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
             playerCamera(new ThirdPersonCamera()),
@@ -254,13 +266,14 @@ public:
             mul(4),
             texelSize(1),
             time(0),
-            spawner(nullptr),
+            //spawner(nullptr),
             timeToDispense(songSampleInterval),
             timeToDispense2(timeToDispense),
             clubE(new Entity("club")),
             boxE(new Entity("box")),
             scianyE(new Entity("sciany")),
             barDrinksE(new Entity("barDrinks")),
+            canistersE(new Entity("canisters")),
             barmanE(new Entity("barman")),
             sphere1(new Entity("sphere")),
             player(new Entity("Player")),
@@ -273,38 +286,41 @@ public:
             rightFootPointer(new Entity("rightFootPointer")),
             rightFootCollider(new ColliderComponent()),
             effectTime(10),
-		    timer(10),
-            path("res/content/sounds/songs/if_you_dont.wav"),
+            timer(10),
+            //path("res/content/sounds/songs/if_you_dont.wav"),
             reversed(false),
             dancingRobots(new Entity("dancingRobots1")),
             dancingRobots2(new Entity("dancingRobots2")),
-            ir(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
+            ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
                                    &shaderRigInstanced,
-                                   glm::vec3(-9.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            ir2(new InstancedRobots("res/content/models/npc/npcv2.fbx", glm::ivec2(5,5),
-                                   &shaderRigInstanced,
-                                   glm::vec3(6.0f,-3.0f,0.0f), glm::vec3(70,0,70), glm::vec3(0.01f))),
-            npcAnimation(new Animation("res/content/models/npc/npcv2.fbx", ir)),
-            npcAnimator(new Animator(npcAnimation)),
+                                   glm::vec3(-11.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
+            ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
+                                    &shaderRigInstanced,
+                                    glm::vec3(5.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
+            npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
+            npcAnimator(new Animator(npcAnimation, true)),
             npcRig(new RigPrep(ir)),
             barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
-            barmanAnimator(new Animator(barmanAnimation)),
+            barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
+            djAnimation(new Animation("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", dj)),
+            djAnimator(new Animator(djAnimation, false)),
             sun(new Entity("Sun")),
             djE(new Entity("dj")),
             sunLight(new DirectionalLight()),
             pointLight(new Entity("pointLight1")),
             pointLight1(new PointLight()),
-            fm(new ForwardMovement("res/content/sounds/songs/if_you_dont.wav",glm::vec3(0, -2.5, 0),glm::vec3(0, -2.5, 47))),
-    //hud
-    player3(new Entity("player3")),
-    resBar(new ResizableImage(&imageShaderGreen)),
-    resBarEntity(new Entity("resBar")),
-    lastTime(0.0)
+            fm(new ForwardMovement(pathToSong, glm::vec3(0, -2.5, 0), glm::vec3(0, -2.5, 47))),
+            //hud
+            player3(new Entity("player3")),
+            resBar(new ResizableImage(&imageShaderGreen)),
+            resBarEntity(new Entity("resBar")),
+            lastTime(0.0),
+    spawner(new Entity("Spawner")),
+    spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17))
     {
     }
 
-    // Dodajemy metodę do zmiany aktywnego przycisku
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
@@ -344,15 +360,16 @@ public:
         //audio
         //audioManager.init();
 
-        SongAnalizer::parseSong(songSampleInterval, path, songData);
-        SongAnalizer::testparseSong(songSampleInterval, path, songData);
 
         //scene manager
         sm.setCurrentScene("MarcinScene");
         Scene2* currentScene = sm.getSceneByName("MarcinScene");
 
         // Inicjalizacja spawnera
-        spawner = new Spawner(currentScene);
+        //spawner = new Spawner(currentScene);
+        spawner->addComponent(spawnerComponent);
+        spawnerComponent->init();
+        currentScene->addEntity(spawner);
 
         //screen shader
         screenShader.use();
@@ -369,11 +386,12 @@ public:
         //player3->addComponent(player2);
         //currentScene->addEntity(player3);
         //player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-/*
+
         djE->addComponent(dj);
         currentScene->addEntity(djE);
-        dj->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
-*/
+        dj->getTransform()->setScale(glm::vec3(0.005f));
+        dj->getTransform()->setPosition(glm::vec3(0.0f, -2.5f, 0.0f));
+
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
@@ -381,9 +399,16 @@ public:
 
         barDrinksE->addComponent(barDrinks);
         currentScene->addEntity(barDrinksE);
-        barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
-        barDrinks->getTransform()->setScale(glm::vec3(0.5f));
+        //barDrinks->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        barDrinks->getTransform()->setScale(glm::vec3(0.005f));
         barDrinks->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
+        canistersE->addComponent(canisters);
+        currentScene->addEntity(canistersE);
+        canisters->getTransform()->setScale(glm::vec3(0.5f));
+        canisters->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
+        canisters->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
+
 
         barmanE->addComponent(barman);
         currentScene->addEntity(barmanE);
@@ -455,9 +480,10 @@ public:
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920/2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float) s.WINDOW_WIDTH,(float) s.WINDOW_HEIGHT);
 
 
-        AudioManager::getInstance().playSound(path, 1.0f);
+        AudioManager::getInstance().playSound(pathToSong, 1.0f);
 
         DrunkShader.setInt("screenTexture", 0);
+        spawnerComponent->start();
 
     };
 
@@ -467,7 +493,7 @@ public:
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
-        
+
         time = time + s.deltaTime;
 
         deltaTime = s.deltaTime;
@@ -479,7 +505,8 @@ public:
         glClearColor(0.8, 0.8, 0.8, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        barmanAnimator->UpdateAnimation(deltaTime);
+        barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
+        djAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
@@ -493,7 +520,7 @@ public:
         }
 
 // bardziej randomowe spawnowanie
-        timeToDispense2 -= s.deltaTime;
+        /*timeToDispense2 -= s.deltaTime;
         if (timeToDispense2 < 0 && songDataIndex < songData.size()) {
 
             switch (songData[songDataIndex].type) {
@@ -518,13 +545,13 @@ public:
                     //nozki
                     if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(1, -2, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(1, -2, z));
-                    if (spawner->hasXPercentChance(20)) 
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(-1, -2, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(-1, -2, z));
-                    
+
 
                     break;
                 case sampleType::MID:
@@ -544,18 +571,18 @@ public:
                         spawner->spawnBall("ball", glm::vec3(-1.55* songData[songDataIndex].mid.y, 0.16 * songData[songDataIndex].mid.x, z));
                     }
                     ////nozki
-                    if (spawner->hasXPercentChance(20)) 
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(0.8, -0.8, z));
-                    else 
+                    else
                         spawner->spawnBall("ball", glm::vec3(0.8, -0.8, z));
-                  
 
-                    if (spawner->hasXPercentChance(20)) 
+
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(-0.8, -0.8, z));
-                  
-                    else 
+
+                    else
                         spawner->spawnBall("ball", glm::vec3(-0.8, -0.8, z));
-                    
+
 
                     break;
                 case sampleType::CLAP:
@@ -576,8 +603,8 @@ public:
                     }
 
                     //nozki
-                    
-                    if (spawner->hasXPercentChance(20)) 
+
+                    if (spawner->hasXPercentChance(20))
                         spawner->spawnBadBall("ball", glm::vec3(0.2, -2.25, z));
                     else
                         spawner->spawnBall("ball", glm::vec3(0.2, -2.25, z));
@@ -587,8 +614,8 @@ public:
                     else
                         spawner->spawnBall("ball", glm::vec3(-0.2, -2.25, z));
 
-                              
-                 
+
+
                     break;
                 case sampleType::SKIP:
                     break;
@@ -600,25 +627,28 @@ public:
             timeToDispense2 = timeToDispense;
 
             if (!(songDataIndex < songData.size())) songDataIndex = 0;
-        }       
+        }
+        */
 
-        
 
-        npcAnimator->UpdateAnimation(s.deltaTime);
-
+        npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
-        npcRig->update();
 
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
-        //npcRig->update();
         shaderBarmanRig.use();
         barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
+
+        shaderDjRig.use();
+        auto transforms4 = djAnimator->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms3.size(); ++i)
+            shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms4[i]);
+
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
@@ -705,7 +735,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 //scene.update();
-       
+
         joystickOffset = playerInput.getJoystick(2);
         joystickOffset2 = playerInput.getJoystick(1);
         joystickOffset3 = playerInput1.getJoystick(2);
@@ -713,42 +743,42 @@ public:
 
         if (timer < 0) {
             timer = effectTime;
-			currentDrink = DrinkType::None;
-		}
+            currentDrink = DrinkType::None;
+        }
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         switch (currentDrink) {
-        case DrinkType::Drunk:
-            DrunkShader.use();
-            DrunkShader.setFloat("time", time);
-            DrunkShader.setInt("screenTexture", 0);
-            timer -= s.deltaTime;
+            case DrinkType::Drunk:
+                DrunkShader.use();
+                DrunkShader.setFloat("time", time);
+                DrunkShader.setInt("screenTexture", 0);
+                timer -= s.deltaTime;
 
-            break;
-        case DrinkType::InverseInput:
-            shaderNoneDrink.use();
-            shaderNoneDrink.setInt("screenTexture", 0);
+                break;
+            case DrinkType::InverseInput:
+                shaderNoneDrink.use();
+                shaderNoneDrink.setInt("screenTexture", 0);
 
-            joystickOffset = -joystickOffset;
-            joystickOffset2 = -joystickOffset2;
-            joystickOffset3 = -joystickOffset3;
-            joystickOffset4 = -joystickOffset4;
-            timer -= s.deltaTime;
+                joystickOffset = -joystickOffset;
+                joystickOffset2 = -joystickOffset2;
+                joystickOffset3 = -joystickOffset3;
+                joystickOffset4 = -joystickOffset4;
+                timer -= s.deltaTime;
 
-            break;
-        case DrinkType::UpsideDown:
+                break;
+            case DrinkType::UpsideDown:
 
-            reverseShader.use();
-            reverseShader.setFloat("time", time);
-            reverseShader.setInt("screenTexture", 0);
-            timer -= s.deltaTime;
+                reverseShader.use();
+                reverseShader.setFloat("time", time);
+                reverseShader.setInt("screenTexture", 0);
+                timer -= s.deltaTime;
 
-            break;
-        case DrinkType::None:
-            shaderNoneDrink.use();
-            shaderNoneDrink.setInt("screenTexture", 0);
-            break;
+                break;
+            case DrinkType::None:
+                shaderNoneDrink.use();
+                shaderNoneDrink.setInt("screenTexture", 0);
+                break;
         }
 
 
@@ -770,12 +800,22 @@ public:
         if (currentTime - lastUpdateTime >= resizeInterval) {
             resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
+            if (lookatAngle > 5.0f) {
+                lookatAngle -= 5.0f;
+            }
         }
         // Jeśli score został zwiększony o incrementScore
         if (score - lastScore >= incrementScore) {
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
+
+            if (lookatAngle < 170.0f) {
+                lookatAngle += 5.0f;
+            }
         }
+//        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+//            std::cout << "Koniec" << std::endl;
+//        }
 
         //temporary------------------------------------------------------------------------------------
         //text
@@ -788,7 +828,6 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        spawner->update();
 
         cm.update();
 
@@ -797,38 +836,38 @@ public:
 
 
         joystickOffset.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
 
         joystickOffset2.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset2.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset3.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset3.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
 
         joystickOffset4.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset4.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
-            0, 1, -1, 1);
+                utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
+                0, 1, -1, 1);
 
         joystickOffset *= 200 * s.deltaTime;
         joystickOffset2 *= 200 * s.deltaTime;
@@ -856,8 +895,7 @@ public:
     };
 
     void onDestroy() override{
-        //audioManager.end();
-        delete spawner;
+
     };
 
     ~exampleSceneScript() override = default;
