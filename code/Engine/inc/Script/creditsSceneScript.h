@@ -80,8 +80,7 @@ private:
     //HUD
     //main menu
     Image* pauseWallpaper;
-
-    Button* changeSongButton;
+    
     Button* exitButton;
 
     Entity* pauseBackground;
@@ -136,7 +135,6 @@ public:
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             //hud
             pauseWallpaper(new Image(&imageShader)),
-            changeSongButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
 
             pauseBackground(new Entity("mainMenu")),
@@ -252,8 +250,6 @@ public:
         imageShader.use();
         pauseWallpaper->renderPlane();
 
-        //continueButton->renderPlane();
-        changeSongButton->renderPlane();
         exitButton->renderPlane();
 
 
