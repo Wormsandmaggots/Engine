@@ -78,6 +78,7 @@ private:
     Shader &imageShader;
     Shader &imageShaderGreen;
     Shader &shaderRigInstanced;
+    Shader &shaderRigInstanced2;
     ///////////////////////////////////////////////////
     FrameBuffer buffer;
 
@@ -98,6 +99,7 @@ private:
     Model *canisters;
     Model *barman;
     Model *dj;
+    Model *chairs;
 
     Model *sphereModel;
     Model *sphereModel_green;
@@ -152,6 +154,7 @@ private:
     Entity *player3;
     Entity *player;
     Entity *djE;
+    Entity *chairsE;
     Entity *leftHandPointer;
     ColliderComponent *lHandcollider;
     Entity *rightHandPointer;
@@ -163,15 +166,16 @@ private:
 
     Entity *dancingRobots;
     Entity *dancingRobots2;
+    Entity* dancingRobots3;
     InstancedRobots *ir;
     InstancedRobots *ir2;
+    InstancedRobots *ir3;
     Animation *npcAnimation;
     Animator *npcAnimator;
-    RigPrep *npcRig;
+    Animator *npcAnimator2;
 
     Animation *barmanAnimation;
     Animator *barmanAnimator;
-    RigPrep *barmanRig;
 
     Animation *djAnimation;
     Animator *djAnimator;
@@ -180,7 +184,18 @@ private:
     DirectionalLight *sunLight;
 
     Entity *pointLight;
-    PointLight *pointLight1;
+    Entity* pointLight2E;
+    Entity* pointLight3E;
+    Entity* pointLight4E;
+    Entity* pointLight5E;
+    Entity* pointLight6E;
+
+    PointLight* pointLight1;
+    PointLight* pointLight2;
+    PointLight* pointLight3;
+    PointLight* pointLight4;
+    PointLight* pointLight5;
+    PointLight* pointLight6;
 
     // HUD
     double lastTime;
@@ -200,7 +215,7 @@ public:
     exampleSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, AudioManager &audioManager, PlayerInput &playerInput,
                        PlayerInput &playerInput1, DebugInput &debugInput, Shader &shader, Shader &collisionTestShader, Shader &shaderText,
                        Shader &colorShader, Shader &shaderPbr, Shader &screenShader, Shader &shaderRig, Shader &shaderBarmanRig, Shader &DrunkShader,
-                       Shader &shaderNoneDrink, Shader &reverseShader, Shader &imageShader, Shader &imageShaderGreen, Shader &shaderRigInstanced, Shader &shaderDjRig) : editor(editor),
+                       Shader &shaderNoneDrink, Shader &reverseShader, Shader &imageShader, Shader &imageShaderGreen, Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2) : editor(editor),
                                                                                                                                                                          cm(cm),
                                                                                                                                                                          sm(sm),
                                                                                                                                                                          ssao(ssao),
@@ -231,17 +246,18 @@ public:
                                                                                                                                                                          imageShaderGreen(imageShaderGreen),
                                                                                                                                                                          shaderRigInstanced(shaderRigInstanced),
                                                                                                                                                                          shaderDjRig(shaderDjRig),
+                                                                                                                                                                         shaderRigInstanced2(shaderRigInstanced2),
                                                                                                                                                                          // renderer(&ssao.shaderGeometryPass),
                                                                                                                                                                          buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
                                                                                                                                                                          box(new Model("res/content/models/box/box.obj", &ssao.shaderGeometryPass)),
-                                                                                                                                                                         club(new Model("res/content/models/klub/klubiec.fbx", &ssao.shaderGeometryPass)),
-                                                                                                                                                                         sciany(new Model("res/content/models/club2/sciany.fbx", &ssao.shaderGeometryPass)),
+                                                                                                                                                                         club(new Model("res/content/models/klub/klubiec2.fbx", &ssao.shaderGeometryPass)),
+                                                                                                                                                                         sciany(new Model("res/content/models/roofwalls/roof_walls.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                          sphere(new Model("res\\content\\models\\sphere\\untitled.obj", &ssao.shaderGeometryPass)),
                                                                                                                                                                          barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                          canisters(new Model("res/content/models/Canister/Canister/kanistry.fbx", &ssao.shaderGeometryPass)),
+                                                                                                                                                                         chairs(new Model("res/content/models/krzesla/krzeslo/krzesla.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                          player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                          barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
-                                                                                                                                                                         // barman(new Model("res/content/models/npc/npcv2.fbx", &shaderBarmanRig)),
                                                                                                                                                                          playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
                                                                                                                                                                          sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
                                                                                                                                                                          sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -273,6 +289,7 @@ public:
                                                                                                                                                                          scianyE(new Entity("sciany")),
                                                                                                                                                                          barDrinksE(new Entity("barDrinks")),
                                                                                                                                                                          canistersE(new Entity("canisters")),
+                                                                                                                                                                         chairsE(new Entity("chairs")),
                                                                                                                                                                          barmanE(new Entity("barman")),
                                                                                                                                                                          sphere1(new Entity("sphere")),
                                                                                                                                                                          player(new Entity("Player")),
@@ -290,18 +307,21 @@ public:
                                                                                                                                                                          reversed(false),
                                                                                                                                                                          dancingRobots(new Entity("dancingRobots1")),
                                                                                                                                                                          dancingRobots2(new Entity("dancingRobots2")),
+                                                                                                                                                                         dancingRobots3(new Entity("dancingRobots3")),
                                                                                                                                                                          ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
                                                                                                                                                                                                 &shaderRigInstanced,
                                                                                                                                                                                                 glm::vec3(-11.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
                                                                                                                                                                          ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
-                                                                                                                                                                                                 &shaderRigInstanced,
+                                                                                                                                                                                                 &shaderRigInstanced2,
                                                                                                                                                                                                  glm::vec3(5.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
+                                                                                                                                                                         ir3(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
+                                                                                                                                                                                                 &shaderRigInstanced2,
+                                                                                                                                                                                                 glm::vec3(15.0f,3.0f,10.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
                                                                                                                                                                          npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
                                                                                                                                                                          npcAnimator(new Animator(npcAnimation, true)),
-                                                                                                                                                                         npcRig(new RigPrep(ir)),
+                                                                                                                                                                         npcAnimator2(new Animator(npcAnimation, true)),
                                                                                                                                                                          barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
                                                                                                                                                                          barmanAnimator(new Animator(barmanAnimation, false)),
-                                                                                                                                                                         barmanRig(new RigPrep(barman)),
                                                                                                                                                                          djAnimation(new Animation("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", dj)),
                                                                                                                                                                          djAnimator(new Animator(djAnimation, false)),
                                                                                                                                                                          sun(new Entity("Sun")),
@@ -309,6 +329,16 @@ public:
                                                                                                                                                                          sunLight(new DirectionalLight()),
                                                                                                                                                                          pointLight(new Entity("pointLight1")),
                                                                                                                                                                          pointLight1(new PointLight()),
+                                                                                                                                                                         pointLight2E(new Entity("pointLight2bar")),
+                                                                                                                                                                         pointLight2(new PointLight()),
+                                                                                                                                                                         pointLight3E(new Entity("pointLight3bar")),
+                                                                                                                                                                         pointLight3(new PointLight()),
+                                                                                                                                                                         pointLight4E(new Entity("pointLight4dj")),
+                                                                                                                                                                         pointLight4(new PointLight()),
+                                                                                                                                                                         pointLight5E(new Entity("pointLight5bar")),
+                                                                                                                                                                         pointLight5(new PointLight()),
+                                                                                                                                                                         pointLight6E(new Entity("pointLight6dj")),
+                                                                                                                                                                         pointLight6(new PointLight()),
                                                                                                                                                                          fm(new ForwardMovement(pathToSong, glm::vec3(0, -2.5, 0), glm::vec3(0, -2.5, 47))),
                                                                                                                                                                          // hud
                                                                                                                                                                          player3(new Entity("player3")),
@@ -400,7 +430,8 @@ public:
         scianyE->addComponent(sciany);
         currentScene->addEntity(scianyE);
         sciany->getTransform()->setScale(glm::vec3(0.5f));
-        sciany->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
+        sciany->getTransform()->rotate(glm::vec3(270.0f,0.0f, 0.0f));
+        sciany->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
 
         barDrinksE->addComponent(barDrinks);
         currentScene->addEntity(barDrinksE);
@@ -414,6 +445,12 @@ public:
         canisters->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
         canisters->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
 
+        chairsE->addComponent(chairs);
+        currentScene->addEntity(chairsE);
+        chairs->getTransform()->setScale(glm::vec3(0.005f));
+        //chairs->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
+        chairs->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,0.0f));
+
         barmanE->addComponent(barman);
         currentScene->addEntity(barmanE);
         barman->getTransform()->setScale(glm::vec3(0.02f));
@@ -422,8 +459,33 @@ public:
 
         // lights
         pointLight->addComponent(pointLight1);
-        pointLight->getTransform()->setScale(glm::vec3(2000.f));
+        pointLight->getTransform()->setScale(glm::vec3(5.f));
         currentScene->addEntity(pointLight);
+
+        pointLight2E->addComponent(pointLight2);
+        pointLight2E->getTransform()->setScale(glm::vec3(74.0f,7.0f,100.0f));
+        pointLight2E->getTransform()->setPosition(glm::vec3(6.0f,-0.7f,52.0f));
+        currentScene->addEntity(pointLight2E);
+
+        pointLight3E->addComponent(pointLight3);
+        pointLight3E->getTransform()->setScale(glm::vec3(20.0f,135.0f,245.0f));
+        pointLight3E->getTransform()->setPosition(glm::vec3(-5.0f,-0.7f,52.0f));
+        currentScene->addEntity(pointLight3E);
+
+        pointLight4E->addComponent(pointLight4);
+        pointLight4E->getTransform()->setScale(glm::vec3(74.0f,7.0f,100.0f));
+        pointLight4E->getTransform()->setPosition(glm::vec3(-2.5f,3.0f,53.7f));
+        currentScene->addEntity(pointLight4E);
+
+        pointLight5E->addComponent(pointLight5);
+        pointLight5E->getTransform()->setScale(glm::vec3(20.0f,135.0f,245.0f));
+        pointLight5E->getTransform()->setPosition(glm::vec3(3.0f,3.0f,53.7f));
+        currentScene->addEntity(pointLight5E);
+
+        pointLight6E->addComponent(pointLight6);
+        pointLight6E->getTransform()->setScale(glm::vec3(80.0f,135.0f,245.0f));
+        pointLight6E->getTransform()->setPosition(glm::vec3(-0.27f,8.33f,54.1f));
+        currentScene->addEntity(pointLight6E);
 
         currentScene->addEntity(sun);
         sun->addComponent(sunLight);
@@ -433,6 +495,9 @@ public:
 
         currentScene->addEntity(dancingRobots2);
         dancingRobots->addComponent(ir2);
+
+        currentScene->addEntity(dancingRobots3);
+        dancingRobots->addComponent(ir3);
 
         currentScene->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -522,30 +587,33 @@ public:
 
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
-
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms2.size(); ++i)
             shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms2[i]);
 
+        npcAnimator2->UpdateAnimation(s.deltaTime, lookatAngle * (-1.0f));
+        shaderRigInstanced2.use();
+        auto transforms5 = npcAnimator->GetFinalBoneMatrices();
+        for (int i = 0; i < transforms5.size(); ++i)
+            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms5[i]);
+
         shaderBarmanRig.use();
-        barmanRig->update();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms3.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms3[i]);
 
         shaderDjRig.use();
         auto transforms4 = djAnimator->GetFinalBoneMatrices();
-        for (int i = 0; i < transforms3.size(); ++i)
+        for (int i = 0; i < transforms4.size(); ++i)
             shaderBarmanRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms4[i]);
 
         LightManager::UpdateLightShader(shaderRig, view);
         LightManager::UpdateLightShader(shaderRigInstanced, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
         LightManager::UpdateLightShader(shaderBarmanRig, view);
+        LightManager::UpdateLightShader(shaderRigInstanced2, view);
+        LightManager::UpdateLightShader(shaderDjRig, view);
 
-        shaderPbr.use();
-        shaderPbr.setVec3("camPos", s.camera.Position);
-        shaderPbr.setVec3("lightPos", sphere->getTransform()->getLocalPosition());
         ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
