@@ -7,8 +7,12 @@
 #include <memory>
 #include "Audio/Sound.h"
 #include "Core/AssetManager/AssetManager.h"
+#include <map>
 
 class AudioManager : public AssetManager {
+private:
+    std::shared_ptr<Sound> currentSound;
+    std::map<std::string, std::shared_ptr<Sound>> soundMap;
 public:
     static AudioManager& getInstance() {
         static AudioManager instance; // Guaranteed to be destroyed and instantiated on first use.
@@ -19,6 +23,11 @@ public:
     void operator=(const AudioManager&) = delete; // Delete copy assignment operator
 
     void playSound(const std::string& filePath,float);
+
+    //dodane przez Kube - przepraszam
+    void playThisSound(const std::string& name, const std::string& filePath, float volume);
+    void playThisSong(const std::string& name);
+    void pauseThisSong(const std::string& name);
 
     int init();
     void end();

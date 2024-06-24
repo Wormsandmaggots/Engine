@@ -150,6 +150,7 @@ int main() {
             }
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
+                examplesceneScript->onExit();
                 pausesceneScript->update();
             }
             else if (currentScene->getName() == "LoseScene") {

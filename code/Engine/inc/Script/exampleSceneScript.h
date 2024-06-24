@@ -547,7 +547,7 @@ public:
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
-        // AudioManager::getInstance().playSound(pathToSong, 1.0f);
+        AudioManager::getInstance().playThisSound("bicik",pathToSong, 1.0f);
         DrunkShader.setInt("screenTexture", 0);
     };
 
@@ -562,7 +562,7 @@ public:
         time = time + s.deltaTime;
 
         deltaTime = s.deltaTime;
-
+//        AudioManager::getInstance().playThisSong("bicik");
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
         playerInput1.interpretInput();
@@ -793,6 +793,8 @@ public:
 
         shaderRig.use();
 
+//        AudioManager::getInstance().playThisSong("bicik");
+
         joystickOffset.x = Math::Remap(
             utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
             0, 1, -1, 1);
@@ -849,6 +851,11 @@ public:
         {
             sm.setCurrentScene("PauseScene");
         }
+        AudioManager::getInstance().playThisSong("bicik");
+    };
+
+    void onExit() {
+        AudioManager::getInstance().pauseThisSong("bicik");
     };
 
     void onDestroy() override {

@@ -467,7 +467,7 @@ public:
         time = time + s.deltaTime;
 
         deltaTime = s.deltaTime;
-
+//        AudioManager::getInstance().pauseThisSong("bicik");
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
         playerInput1.interpretInput();

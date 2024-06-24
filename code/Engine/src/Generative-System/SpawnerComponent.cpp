@@ -25,7 +25,7 @@ void SpawnerComponent::start()
 {
 	SongAnalizer::parseSong(spawnAfter, songPath, songData);
 	SongAnalizer::testparseSong(spawnAfter, songPath, songData);
-	AudioManager::getInstance().playSound(songPath,1);
+	//AudioManager::getInstance().playSound(songPath,1);
 
 }
 
