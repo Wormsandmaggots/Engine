@@ -834,7 +834,7 @@ public:
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
-
+        ScoreNumbers::getInstance().update();
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
