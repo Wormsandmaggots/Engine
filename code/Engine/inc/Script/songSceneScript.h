@@ -212,7 +212,7 @@ public:
         currentScene->addEntity(ng);
         ng->addComponent(era00);
         era00->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        era00->getTransform()->setPosition(glm::vec3(-1.75f, -0.03f, 0.0f));
+        era00->getTransform()->setPosition(glm::vec3(0.75f, -0.03f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         era00->setTexture(button00_activ);
@@ -221,7 +221,8 @@ public:
 
         era00->setOnClick([this]() {
             std::cout << "00 button clicked!" << std::endl;
-            pathToSong = "res/content/sounds/songs/00/dream.wav";
+//            pathToSong = "res/content/sounds/songs/00/dream.wav";
+            pathToSong = "res/content/sounds/effects/kicked out.wav";
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -229,7 +230,7 @@ public:
         currentScene->addEntity(cr);
         cr->addComponent(era90);
         era90->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        era90->getTransform()->setPosition(glm::vec3(-1.708f, -0.3f, 0.0f));
+        era90->getTransform()->setPosition(glm::vec3(0.708f, -0.3f, 0.0f));
 
         era90->setTexture(button90_idle);
         era90->setInactiveTexture(button90_idle);
@@ -245,7 +246,7 @@ public:
         currentScene->addEntity(ex);
         ex->addComponent(era80);
         era80->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        era80->getTransform()->setPosition(glm::vec3(-1.793f, -0.581f, 0.0f));
+        era80->getTransform()->setPosition(glm::vec3(0.793f, -0.581f, 0.0f));
 
         era80->setTexture(button80_idle);
         era80->setInactiveTexture(button80_idle);

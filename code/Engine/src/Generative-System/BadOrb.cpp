@@ -10,6 +10,7 @@ BadOrb::BadOrb(const std::string name, const glm::vec3& position, Model* model) 
 void BadOrb::update()
 {
 	if (active) {
+        if(deltaTime<1)
 		position.z -= speed * deltaTime;
 		this->getTransform()->setPosition(position);
 	}

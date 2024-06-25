@@ -11,6 +11,7 @@ void HandOrb::update()
 {
 	if (active) 
 	{
+        if(deltaTime<1)
 		position.z -= speed * deltaTime;
 		this->getTransform()->setPosition(position);
 	}

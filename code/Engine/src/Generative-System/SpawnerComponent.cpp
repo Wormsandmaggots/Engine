@@ -23,10 +23,11 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 void SpawnerComponent::start()
 {
-	SongAnalizer::parseSong(spawnAfter, songPath, songData);
-	SongAnalizer::testparseSong(spawnAfter, songPath, songData);
+	SongAnalizer::parseSong(spawnAfter, pathToSong, songData);
+	SongAnalizer::testparseSong(spawnAfter, pathToSong, songData);
 	//AudioManager::getInstance().playSound(songPath,1);
     //i put this here so played song will be in sync wit spawning orbs
+    AudioManager::getInstance().playThisSound("bicik",pathToSong, 1.0f);
     AudioManager::getInstance().playThisSong("bicik");
 
 }
@@ -202,6 +203,7 @@ void SpawnerComponent::update()
 			deactiveEntity(entity);
 		}
 	}
+    if(deltaTime<1)
 	originPos.z += globalVelocity * deltaTime;
 
 }

@@ -143,6 +143,7 @@ private:
     float effectTime;
     float timer;
 
+
     // entities
     Entity *clubE;
     Entity *scianyE;
@@ -547,7 +548,7 @@ public:
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
-        AudioManager::getInstance().playThisSound("bicik",pathToSong, 1.0f);
+
         DrunkShader.setInt("screenTexture", 0);
     };
 
@@ -576,14 +577,17 @@ public:
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
 
-        s.camera.MoveForwardZ(globalVelocity * deltaTime);
+//        s.camera.MoveForwardZ(globalVelocity * deltaTime);
 
         // moving forward
         if (deltaTime < 1)
         {
             player->getTransform()->translate(glm::vec3(0.0f, 0.0f, deltaTime * globalVelocity));
             z += deltaTime * globalVelocity;
+            s.camera.MoveForwardZ(globalVelocity * deltaTime);
         }
+
+        LOG_INFO(std::to_string(globalVelocity));
 
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
@@ -755,11 +759,12 @@ public:
         // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
         if (currentTime - lastUpdateTime >= resizeInterval)
         {
-            resBar->resizeOnImpulse(resizeAmount);
+            if(time < songLenghtGlobal)
+                resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
-            if (lookatAngle > 5.0f)
+            if (lookatAngle < 170.0f)
             {
-                lookatAngle -= 5.0f;
+                lookatAngle += 5.0f;
             }
         }
         // Jeśli score został zwiększony o incrementScore
@@ -768,21 +773,22 @@ public:
             resBar->increaseOnImpulse(resizeAmount);
             lastScore = score;
 
-            if (lookatAngle < 170.0f)
+            if (lookatAngle > 5.0f)
             {
-                lookatAngle += 5.0f;
+                lookatAngle -= 5.0f;
             }
         }
 //std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
 //giving a 2 second chance to player to bumpup the bar
-        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-            if (!isCounting) {
-                isCounting = true; // Rozpocznij odliczanie
-            }
-        } else {
-            isCounting = false; // Zatrzymaj odliczanie i zresetuj czas
-            timeLeft = 2.0f;
+    if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+        if (!isCounting) {
+            isCounting = true; // Rozpocznij odliczanie
         }
+    } else {
+        isCounting = false; // Zatrzymaj odliczanie i zresetuj czas
+        timeLeft = 2.0f;
+    }
+
 
         if (isCounting) {
             timeLeft -= deltaTime; // deltaTime to czas, który upłynął od ostatniej klatki
@@ -863,6 +869,11 @@ public:
         if (playerInput.isKeyPressed(1))
         {
             sm.setCurrentScene("PauseScene");
+        }
+
+        if(time > songLenghtGlobal + 5)
+        {
+            sm.setCurrentScene("WinScene");
         }
     };
 
