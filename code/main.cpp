@@ -116,13 +116,13 @@ int main() {
     creditssceneScript->awake();
     creditssceneScript->start();
 
-//    songSceneScript* songsceneScript = new songSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-//                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-//                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-//                                                                    imageShaderGreen, shaderRigInstanced);
-//
-//    songsceneScript->awake();
-//    songsceneScript->start();
+    songSceneScript* songsceneScript = new songSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+                                                                    imageShaderGreen, shaderRigInstanced);
+
+    songsceneScript->awake();
+    songsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
@@ -165,10 +165,10 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 creditssceneScript->update();
             }
-//            else if (currentScene->getName() == "SongScene") {
-//                // Wywołanie metody update dla exampleSceneScript
-//                songsceneScript->update();
-//            }
+            else if (currentScene->getName() == "SongScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                songsceneScript->update();
+            }
         }
 
         // Sprawdzanie, czy klawisz spacji został naciśnięty

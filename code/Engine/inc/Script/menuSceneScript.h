@@ -216,7 +216,7 @@ public:
             std::cout << "Start button clicked!" << std::endl;
             //this->sm.setCurrentScene("SongScene");
             //skiping choose song screne
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("SongScene");
         });
 
         //credits
