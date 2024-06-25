@@ -88,17 +88,7 @@ void Model::loadModel(string const &path) {
                                              aiProcess_Triangulate |
                                              aiProcess_GenSmoothNormals |
                                              aiProcess_FlipUVs |
-                                             aiProcess_CalcTangentSpace |
-                                             aiProcess_JoinIdenticalVertices |
-                                             aiProcess_ValidateDataStructure |
-                                             aiProcess_ImproveCacheLocality |
-                                             aiProcess_RemoveRedundantMaterials |
-                                             aiProcess_FindDegenerates |
-                                             aiProcess_FindInvalidData |
-                                             aiProcess_GenUVCoords |
-                                             aiProcess_OptimizeMeshes |
-                                             aiProcess_TransformUVCoords |
-                                             aiProcess_SplitLargeMeshes);
+                                             aiProcess_CalcTangentSpace );
     modelScene = new aiScene(*scene);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
