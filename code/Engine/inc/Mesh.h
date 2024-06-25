@@ -181,10 +181,10 @@ public:
             std::string name = textures[i].textureName;
             number = std::to_string(1 + textureNumberMap[textures[i].textureType]++);
 
-            if(textures[i].textureType == TextureType::EMISSIVE)
-            {
-                useEmissive = true;
-            }
+//            if(textures[i].textureType == TextureType::EMISSIVE)
+//            {
+//                useEmissive = true;
+//            }
 //            if (type == TextureType::DIFFUSE)
 //                number = std::to_string(diffuseNr++);
 //            else if (type == TextureType::SPECULAR)
@@ -222,14 +222,14 @@ public:
             textures[i].bind();
         }
 
-        if(useEmissive)
-        {
-            shader->setBool("useEmissive", true);
-        }
-        else
-        {
-            shader->setBool("useEmissive", false);
-        }
+//        if(useEmissive)
+//        {
+//            shader->setBool("useEmissive", true);
+//        }
+//        else
+//        {
+//            shader->setBool("useEmissive", false);
+//        }
 
         // draw mesh
         if(!isGenerated && !instanced)

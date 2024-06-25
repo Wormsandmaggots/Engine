@@ -280,13 +280,14 @@ void main()
     color = pow(color, vec3(1.0/2.2));
 
     //vec3 finalColor = cel(color);
-    if(useEmissive)
-    {
-        float emissivelen = length(texture(texture_emissive1, TexCoords).rgb);
-        if(emissivelen > 0.01f && emissivelen < 0.99f)
-            color += texture(texture_emissive_color1, TexCoords).rgb * 2;
-        //color /= 2;
-    }
+//    if(useEmissive)
+//    {
+//        float emissivelen = length(texture(texture_specular1, TexCoords).a);
+//
+//        if(emissivelen == 1.0f)
+//            color += texture(texture_specular1, TexCoords).rgb * 2;
+//        //color /= 2;
+//    }
 
 
     if(material == 1){

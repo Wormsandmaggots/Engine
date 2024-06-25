@@ -189,7 +189,7 @@ void InstancedRobots::setupTranslations(glm::vec3 startPoint, glm::vec3 offset, 
             m = glm::scale(m, scale);
             m = glm::translate(m, glm::vec3(offset.x * i, offset.y * i, offset.z * j));
 
-            translations[i * amount.x + j] = glm::mat4(m);
+            translations[j * amount.x + i] = glm::mat4(m);
         }
 
     }
