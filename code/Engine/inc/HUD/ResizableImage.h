@@ -5,7 +5,10 @@
 
 class ResizableImage : public Image {
 public:
-    ResizableImage(Shader* shader) : Image(shader) {}
+    ResizableImage(Shader* shader) : Image(shader) {
+        shader->use();
+        shader->setFloat("scale", parentTransform->getLocalScale().y);
+    }
 
     void resizeOnImpulse(float impulse) {
         glm::vec3 currentScale = parentTransform->getLocalScale();
@@ -19,6 +22,8 @@ public:
             currentPosition.y -= impulse;
             parentTransform->setPosition(currentPosition);
         }
+
+        shader->setFloat("scale", currentScale.y);
     }
 
     void increaseOnImpulse(float impulse) {
@@ -34,6 +39,8 @@ public:
         currentPosition.y += impulse;
         parentTransform->setPosition(currentPosition);
         }
+
+        shader->setFloat("scale", currentScale.y);
     }
 
     void showScale() {
