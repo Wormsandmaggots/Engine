@@ -7,7 +7,7 @@ class ResizableImage : public Image {
 public:
     ResizableImage(Shader* shader) : Image(shader) {
         shader->use();
-        shader->setFloat("scale", parentTransform->getLocalScale().y);
+        shader->setFloat("scale", 0.3f);
     }
 
     void resizeOnImpulse(float impulse) {
