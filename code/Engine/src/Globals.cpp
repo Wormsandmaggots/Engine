@@ -27,3 +27,5 @@ std::string pathToSong = "res/content/sounds/songs/00/dream.wav";
 float lookatAngle = 1.0f;
 int badOrbChance = 5; // w procentach szansa na zly orb
 
+float songLenghtGlobal = 0.0f;
+

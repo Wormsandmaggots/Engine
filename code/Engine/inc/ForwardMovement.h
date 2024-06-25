@@ -5,17 +5,23 @@
 
 class ForwardMovement : public Entity{
 public:
-    ForwardMovement(std::string filename, glm::vec3 start, glm::vec3 _finish){
-        songLength = SongAnalizer::songLenth(filename);
-        distance = _finish.z - start.z;
-        velocity = distance / songLength;
+    ForwardMovement(std::string _filename, glm::vec3 _start, glm::vec3 _finish){
+
+
         //velocity = 0;
-		forwardSpeed = velocity;
-        globalVelocity = velocity;
+
         finish = _finish;
+        //filename = _filename;
+        startPoint = _start;
 
     }
     void update() override{
+
+        if(!started){
+            start();
+            started = true;
+        }
+
         if(deltaTime<1){
             this->getTransform()->translate(glm::vec3(0.0f,0.0f,velocity*deltaTime));
         }
@@ -24,9 +30,21 @@ public:
             globalVelocity = 0.0f;
         }
     }
+
+    void start (){
+        songLength = SongAnalizer::songLenth(pathToSong);
+        distance = finish.z - startPoint.z;
+        velocity = distance / songLength;
+        forwardSpeed = velocity;
+        globalVelocity = velocity;
+        songLenghtGlobal = songLength;
+    }
     float velocity;
 private:
     float distance;
     float songLength;
     glm::vec3 finish;
+    //std::string filename;
+    glm::vec3 startPoint;
+    bool started = false;
 };
