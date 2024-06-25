@@ -168,9 +168,11 @@ private:
     Entity *dancingRobots;
     Entity *dancingRobots2;
     Entity* dancingRobots3;
+    Entity* dancingRobots4;
     InstancedRobots *ir;
     InstancedRobots *ir2;
     InstancedRobots *ir3;
+    InstancedRobots *ir4;
     Animation *npcAnimation;
     Animator *npcAnimator;
     Animator *npcAnimator2;
@@ -190,6 +192,8 @@ private:
     Entity* pointLight4E;
     Entity* pointLight5E;
     Entity* pointLight6E;
+    Entity* pointLight7E;
+    Entity* pointLight8E;
 
     PointLight* pointLight1;
     PointLight* pointLight2;
@@ -197,6 +201,8 @@ private:
     PointLight* pointLight4;
     PointLight* pointLight5;
     PointLight* pointLight6;
+    PointLight* pointLight7;
+    PointLight* pointLight8;
 
     // HUD
     double lastTime;
@@ -309,15 +315,19 @@ public:
                                              dancingRobots(new Entity("dancingRobots1")),
                                              dancingRobots2(new Entity("dancingRobots2")),
                                              dancingRobots3(new Entity("dancingRobots3")),
-                                             ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
+                                             dancingRobots4(new Entity("dancingRobots4")),
+                                             ir(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 15),
                                                                     &shaderRigInstanced,
-                                                                    glm::vec3(-11.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
-                                             ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 5),
+                                                                    glm::vec3(-12.0f, -3.0f, 0.0f), glm::vec3(250, 0, 400), glm::vec3(0.008f))),
+                                             ir2(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5, 15),
                                                                      &shaderRigInstanced2,
-                                                                     glm::vec3(5.0f, -3.0f, 0.0f), glm::vec3(150, 0, 300), glm::vec3(0.01f))),
-                                             ir3(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(5,5),
+                                                                     glm::vec3(4.0f, -3.0f, 0.0f), glm::vec3(250, 0, 400), glm::vec3(0.008f))),
+                                             ir3(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(2,10),
                                                                      &shaderRigInstanced2,
-                                                                     glm::vec3(15.0f,3.0f,10.0f), glm::vec3(150,0,300), glm::vec3(0.01f))),
+                                                                     glm::vec3(18.0f,3.0f,15.0f), glm::vec3(150,0,300), glm::vec3(0.008f))),
+                                             ir4(new InstancedRobots("res/content/models/npc/npc23.fbx", glm::ivec2(2,10),
+                                                                     &shaderRigInstanced,
+                                                                     glm::vec3(-19.0f,3.0f,15.0f), glm::vec3(150,0,300), glm::vec3(0.008f))),
                                              npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
                                              npcAnimator(new Animator(npcAnimation, true)),
                                              npcAnimator2(new Animator(npcAnimation, true)),
@@ -340,6 +350,10 @@ public:
                                              pointLight5(new PointLight()),
                                              pointLight6E(new Entity("pointLight6dj")),
                                              pointLight6(new PointLight()),
+                                             pointLight7E(new Entity("pointLight7")),
+                                             pointLight7(new PointLight()),
+                                             pointLight8E(new Entity("pointLight8")),
+                                             pointLight8(new PointLight()),
                                              fm(new ForwardMovement(pathToSong, glm::vec3(0, -2.5, 0), glm::vec3(0, -2.5, 47))),
                                              // hud
                                              player3(new Entity("player3")),
@@ -488,6 +502,16 @@ public:
         pointLight6E->getTransform()->setPosition(glm::vec3(-0.27f,8.33f,54.1f));
         currentScene->addEntity(pointLight6E);
 
+        pointLight7E->addComponent(pointLight7);
+        pointLight7E->getTransform()->setScale(glm::vec3(20.0f,135.0f,245.0f));
+        pointLight7E->getTransform()->setPosition(glm::vec3(3.0f,3.0f,3.7f));
+        currentScene->addEntity(pointLight7E);
+
+        pointLight8E->addComponent(pointLight8);
+        pointLight8E->getTransform()->setScale(glm::vec3(80.0f,135.0f,245.0f));
+        pointLight8E->getTransform()->setPosition(glm::vec3(0.0f,3.0f,0.0f));
+        currentScene->addEntity(pointLight8E);
+
         currentScene->addEntity(sun);
         sun->addComponent(sunLight);
 
@@ -499,6 +523,9 @@ public:
 
         currentScene->addEntity(dancingRobots3);
         dancingRobots->addComponent(ir3);
+
+        currentScene->addEntity(dancingRobots4);
+        dancingRobots->addComponent(ir4);
 
         currentScene->addEntity(sphere1);
         sphere1->addComponent(sphere);
@@ -585,6 +612,7 @@ public:
             player->getTransform()->translate(glm::vec3(0.0f, 0.0f, deltaTime * globalVelocity));
             z += deltaTime * globalVelocity;
             s.camera.MoveForwardZ(globalVelocity * deltaTime);
+            pointLight8E->getTransform()->translate(glm::vec3(0.0f, 0.0f, deltaTime * globalVelocity));
         }
 
         LOG_INFO(std::to_string(globalVelocity));
@@ -597,7 +625,7 @@ public:
 
         npcAnimator2->UpdateAnimation(s.deltaTime, lookatAngle * (-1.0f));
         shaderRigInstanced2.use();
-        auto transforms5 = npcAnimator->GetFinalBoneMatrices();
+        auto transforms5 = npcAnimator2->GetFinalBoneMatrices();
         for (int i = 0; i < transforms5.size(); ++i)
             shaderRigInstanced2.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms5[i]);
 
