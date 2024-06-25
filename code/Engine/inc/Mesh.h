@@ -152,7 +152,7 @@ public:
     }
 
     // render the mesh
-    void Draw(Shader shader,const std::string path, bool instanced = false, int amount = 0)
+    void Draw(Shader* shader,const std::string& path, bool instanced = false, int amount = 0)
     {
         std::string str = "";
         if(textures.size()>0){
@@ -212,7 +212,7 @@ public:
 //            else if (name == "texture_emissive")
 //                number = std::to_string(emissiveNr++);
             //now set the sampler to the correct texture unit
-            glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+            glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
             textures[i].bind();
         }
 

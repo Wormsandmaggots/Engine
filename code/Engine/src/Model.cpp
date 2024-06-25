@@ -74,7 +74,7 @@ void Model::Draw(Shader *shader) {
     }
 
     for (auto &meshe: meshes)
-        meshe.Draw(*shader, path);
+        meshe.Draw(shader, path);
 
     if (material != nullptr)
     material->unbindMaterial();
@@ -85,8 +85,20 @@ void Model::loadModel(string const &path) {
     // read file via ASSIMP
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
-                                             aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
-                                             aiProcess_CalcTangentSpace);
+                                             aiProcess_Triangulate |
+                                             aiProcess_GenSmoothNormals |
+                                             aiProcess_FlipUVs |
+                                             aiProcess_CalcTangentSpace |
+                                             aiProcess_JoinIdenticalVertices |
+                                             aiProcess_ValidateDataStructure |
+                                             aiProcess_ImproveCacheLocality |
+                                             aiProcess_RemoveRedundantMaterials |
+                                             aiProcess_FindDegenerates |
+                                             aiProcess_FindInvalidData |
+                                             aiProcess_GenUVCoords |
+                                             aiProcess_OptimizeMeshes |
+                                             aiProcess_TransformUVCoords |
+                                             aiProcess_SplitLargeMeshes);
     modelScene = new aiScene(*scene);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
