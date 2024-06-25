@@ -242,7 +242,7 @@ public:
             chairs(new Model("res/content/models/krzesla/krzeslo/krzesla.fbx", &ssao.shaderGeometryPass)),
             barDrinks(new Model("res/content/models/kieliszki/drineczki_re.fbx",&ssao.shaderGeometryPass)),
             player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
-            barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
+            barman(new Model("res/content/models/barman_rignorig/Barman_drink1.fbx", &shaderBarmanRig)),
             drinkBarman(new Model("res/content/models/kieliszki/drink1/drink1_re.fbx", &ssao.shaderGeometryPass)),
             playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
             sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
@@ -308,7 +308,7 @@ public:
             npcAnimation(new Animation("res/content/models/npc/npc23.fbx", ir)),
             npcAnimator(new Animator(npcAnimation,true)),
             npcAnimator2(new Animator(npcAnimation,true)),
-            barmanAnimation(new Animation("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", barman)),
+            barmanAnimation(new Animation("res/content/models/barman_rignorig/Barman_drink1.fbx", barman)),
             barmanAnimator(new Animator(barmanAnimation, false)),
             barmanRig(new RigPrep(barman)),
             djAnimation(new Animation("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", dj)),
@@ -427,7 +427,8 @@ public:
         drinkBarmanE->setParent(*barmanE);
         drinkBarmanE->addComponent(drinkBarman);
         drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
-        drinkBarman->getTransform()->setScale(glm::vec3(0.02f));
+        drinkBarmanE->getTransform()->translate(glm::vec3(0.0f,-3.4f,50.728f));
+        //drinkBarmanE->getTransform()->setScale(glm::vec3(0.02f));
         sm.getLoadedScenes()[0]->addEntity(drinkBarmanE);
 
         //lights
@@ -543,7 +544,11 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
-        //drinkBarmanE->getTransform()->setPosition(barmanAnimator->getHandPos()[3] * 0.02f);
+        drinkBarmanE->getTransform()->setPosition(glm::vec3(0.0f,-3.4f,49.728f));
+         drinkBarmanE->getTransform()->translate(barmanAnimator->getHandPos()[3] * 0.02f);
+        //drinkBarmanE->getTransform()->setTransform(barmanAnimator->getHandPos()* 0.02f);
+
+       // drinkBarmanE->getTransform()->setScale(glm::vec3(0.1f));
         djAnimator->UpdateAnimation(deltaTime, 90.0f);
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
