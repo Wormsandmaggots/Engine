@@ -1,5 +1,5 @@
 ﻿#include "Generative-System/SpawnerComponent.h"
-
+#include "ScoreNumbers.h"
 
 SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, unsigned int entitiesCount)
 {
@@ -192,6 +192,7 @@ void SpawnerComponent::update()
 				AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
 				score += 100;
 				combo += 1;
+                ScoreNumbers::getInstance().calculateViewPos(entity->getTransform()->getPosition());
 			}
 			if (entity->getName() == "handOrb" || entity->getName() == "footOrb") {
 				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);

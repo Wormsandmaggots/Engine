@@ -10,6 +10,7 @@
 #include "Generative-System/Drink.h"
 #include "Generative-System/Ring.h"
 #include "Generative-System/SongAnalizer.h"
+#include "ScoreNumbers.h"
 
 #include "Debug/Logger.h"
 #include "Model.h"
