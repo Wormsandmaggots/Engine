@@ -54,11 +54,13 @@ int main() {
     audioManager.init();
     sm.loadScene("res/content/maps/Kuba.yaml");
     sm.loadScene("res/content/maps/Marcin.yaml");
+    /*
     sm.loadScene("res/content/maps/Pause.yaml");
     sm.loadScene("res/content/maps/Lose.yaml");
     sm.loadScene("res/content/maps/Win.yaml");
     sm.loadScene("res/content/maps/Credits.yaml");
     sm.loadScene("res/content/maps/Song.yaml");
+     */
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
     editor.init(&s.camera);
@@ -80,7 +82,7 @@ int main() {
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
-
+/*
     menusceneScript->awake();
     menusceneScript->start();
 
@@ -123,9 +125,9 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-
+    */
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("KubaScene");
+    sm.setCurrentScene("MarcinScene");
 
     bool switched = true;
     Scene2* currentScene;
@@ -148,6 +150,7 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->update();
             }
+            /*
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->onExit();
@@ -168,7 +171,7 @@ int main() {
             else if (currentScene->getName() == "SongScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
-            }
+            }*/
         }
 
         // Sprawdzanie, czy klawisz spacji został naciśnięty
