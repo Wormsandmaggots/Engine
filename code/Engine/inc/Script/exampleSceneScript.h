@@ -599,7 +599,7 @@ public:
         shaderRigInstanced2.use();
         auto transforms5 = npcAnimator->GetFinalBoneMatrices();
         for (int i = 0; i < transforms5.size(); ++i)
-            shaderRigInstanced.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms5[i]);
+            shaderRigInstanced2.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms5[i]);
 
         shaderBarmanRig.use();
         auto transforms3 = barmanAnimator->GetFinalBoneMatrices();
