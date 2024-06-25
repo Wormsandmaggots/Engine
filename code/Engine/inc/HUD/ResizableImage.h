@@ -25,6 +25,7 @@ public:
         glm::vec3 currentScale = parentTransform->getLocalScale();
         glm::vec3 currentPosition = parentTransform->getLocalPosition();
 
+        if (currentScale.y + impulse < 0.3) {
         // Zwiększamy rozmiar paska
         currentScale.y += impulse;
         parentTransform->setScale(currentScale);
@@ -32,6 +33,12 @@ public:
         // Przesuwamy obiekt w górę
         currentPosition.y += impulse;
         parentTransform->setPosition(currentPosition);
+        }
+    }
+
+    void showScale() {
+        glm::vec3 currentScale = parentTransform->getLocalScale();
+        std::cout << "Scale: " << currentScale.x << " " << currentScale.y << " " << currentScale.z << std::endl;
     }
 
 };
