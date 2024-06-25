@@ -774,10 +774,22 @@ public:
             }
         }
 //std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
-                if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
-                    //std::cout << "Koniec" << std::endl;
-                    sm.setCurrentScene("LoseScene");
-                }
+//giving a 2 second chance to player to bumpup the bar
+        if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+            if (!isCounting) {
+                isCounting = true; // Rozpocznij odliczanie
+            }
+        } else {
+            isCounting = false; // Zatrzymaj odliczanie i zresetuj czas
+            timeLeft = 2.0f;
+        }
+
+        if (isCounting) {
+            timeLeft -= deltaTime; // deltaTime to czas, który upłynął od ostatniej klatki
+            if (timeLeft <= 0.0f) {
+                sm.setCurrentScene("LoseScene");
+            }
+        }
 
         // temporary------------------------------------------------------------------------------------
         // text

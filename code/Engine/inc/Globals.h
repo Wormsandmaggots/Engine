@@ -25,6 +25,8 @@ extern float orbDistance;
 extern float lastUpdateTime;
 extern float resizeInterval; // Co sekundę
 extern float resizeAmount;
+extern float timeLeft; // Czas na podbicie paska
+extern bool isCounting; // Czy odliczamy czas
 extern int lastScore;
 
 extern float globalVelocity;
