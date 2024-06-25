@@ -1,4 +1,4 @@
-#include "Generative-System/SpawnerComponent.h"
+﻿#include "Generative-System/SpawnerComponent.h"
 
 
 SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, unsigned int entitiesCount)
@@ -12,8 +12,8 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 	this->songPath = songPath;
 	spawnTimer=0;
 
-	footOrbModel =new Model("res/content/models/orbUP/orbUP.fbx");
-	handOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx");
+	handOrbModel =new Model("res/content/models/orbUP/orbUP.fbx");
+	footOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx");
 	badOrbModel= new Model("res/content/models/orbX/orbX.fbx");
 	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1_re.fbx");
 	ringXModel = new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
@@ -23,24 +23,33 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 void SpawnerComponent::start()
 {
-	init();
 	SongAnalizer::parseSong(spawnAfter, songPath, songData);
 	SongAnalizer::testparseSong(spawnAfter, songPath, songData);
-	AudioManager::getInstance().playSound(songPath,1);
+	//AudioManager::getInstance().playSound(songPath,1);
+    //i put this here so played song will be in sync wit spawning orbs
+    AudioManager::getInstance().playThisSong("bicik");
 
 }
+
+
 void SpawnerComponent::update()
 {
+    //i put this here so played song will be in sync wit spawning orbs
+    AudioManager::getInstance().playThisSong("bicik");
 
+	if (!started) {
+		start();
+		started = true;
+	}
 
 
 	spawnTimer -= deltaTime;
 	if (spawnTimer < 0 && songDataIndex < songData.size()) {
 
-		cout << "Type: " << songData[songDataIndex].type << endl;
+		/*cout << "Type: " << songData[songDataIndex].type << endl;
 		cout << "Bass: " << songData[songDataIndex].bass.x << " " << songData[songDataIndex].bass.y << endl;
 		cout << "Mid: " << songData[songDataIndex].mid.x << " " << songData[songDataIndex].mid.y << endl;
-		cout << "High: " << songData[songDataIndex].high.x << " " << songData[songDataIndex].high.y << endl << endl;
+		cout << "High: " << songData[songDataIndex].high.x << " " << songData[songDataIndex].high.y << endl << endl;*/
 
         switch (songData[songDataIndex].type) {
 		case sampleType::BASS:
@@ -99,9 +108,17 @@ void SpawnerComponent::update()
         }
 
 
+
+
+
+
 		// raczki
 		if (xRH > -0.5 && xRH < 2.0f && yRH > -0.5 && yRH < 2.5f)
 		{
+			checkAndAdjustForOverlap(xRH, yRH, xLH, yLH, orbRadius);
+			checkAndAdjustForOverlap(xRH, yRH, xLF, yLF, orbRadius);
+			checkAndAdjustForOverlap(xRH, yRH, xRF, yRF, orbRadius);
+
 			if (hasXPercentChance(badOrbChance))
 				spawn<BadOrb>(glm::vec3(xRH, yRH, originPos.z));
 			else
@@ -110,31 +127,41 @@ void SpawnerComponent::update()
 		
 		if (xLH < 0.5 && xLH > -2.0f && yLH > -0.5 && yLH < 2.5f) 
 		{
+			checkAndAdjustForOverlap(xLH, yLH, xRH, yRH, orbRadius);
+			checkAndAdjustForOverlap(xLH, yLH, xLF, yLF, orbRadius);
+			checkAndAdjustForOverlap(xLH, yLH, xRF, yRF, orbRadius);
 			if (hasXPercentChance(badOrbChance))
 				spawn<BadOrb>(glm::vec3(xLH, yLH, originPos.z));
 			else
 				spawn<HandOrb>(glm::vec3(xLH, yLH, originPos.z));
 		}
 
-		
 
 
 
-		// nozki
+		// nozki 
 		if (xRF > -0.5 && xRF < 2.0f && yRF < 0.5 && yRF > -2.5f)
 		{
+			float adjustedYRF = std::min(yRF, std::max(yRH, yLH)); 
+			checkAndAdjustForOverlap(xRF, yRF, xRH, yRH, orbRadius);
+			checkAndAdjustForOverlap(xRF, yRF, xLF, yLF, orbRadius);
+			checkAndAdjustForOverlap(xRF, yRF, xLH, yLH, orbRadius);
 			if (hasXPercentChance(badOrbChance))
-				spawn<BadOrb>(glm::vec3(xRF, yRF, originPos.z));
+				spawn<BadOrb>(glm::vec3(xRF, adjustedYRF, originPos.z));
 			else
-				spawn<FootOrb>(glm::vec3(xRF, yRF, originPos.z));
+				spawn<FootOrb>(glm::vec3(xRF, adjustedYRF, originPos.z));
 		}
-		
+
 		if (xLF < 0.5 && xLF > -2.0f && yLF < 0.5 && yLF > -2.5f)
 		{
+			checkAndAdjustForOverlap(xLF, yLF, xRH, yRH, orbRadius);
+			checkAndAdjustForOverlap(xLF, yLF, xRF, yRF, orbRadius);
+			checkAndAdjustForOverlap(xLF, yLF, xLH, yLH, orbRadius);
+			float adjustedYLF = std::min(yLF, std::max(yRH, yLH));
 			if (hasXPercentChance(badOrbChance))
-				spawn<BadOrb>(glm::vec3(xLF, yLF, originPos.z));
+				spawn<BadOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 			else
-				spawn<FootOrb>(glm::vec3(xLF, yLF, originPos.z));
+				spawn<FootOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 		}
 
         if (orbsSpawned > 100) 
@@ -144,13 +171,17 @@ void SpawnerComponent::update()
 			spawnAfter -= freqIncrement;
         }
         
-        songDataIndex++;
         spawnTimer = spawnAfter;
 
-        if (!(songDataIndex < songData.size())) songDataIndex = 0;
-
-
-
+		if (!(songDataIndex <= songData.size())) {
+		
+			cout << "YOU WIN!" << endl;
+			//zmiana sceny i odkomentować started zeby przy nastepnej piosence tez sie wywołał start();
+			//started = false;
+		}
+		else {
+			songDataIndex++;
+		}
 	}
 
 	for (Collectable* entity : entitiesActive) {
@@ -186,8 +217,8 @@ void SpawnerComponent::init()
 		Collectable* footRing = new Ring("footRing", inactivePos, new Model(*ringDOWNModel));
 		Collectable* badRing = new Ring("badRing", inactivePos, new Model(*ringXModel));
 		
-		footRing->model->getMaterial()->SetVec4("materialColor", glm::vec4(0.8, 0.8, 0, 1));
-		handRing->model->getMaterial()->SetVec4("materialColor", glm::vec4(0,0,0.8,1));
+		handOrb->getTransform()->rotate(glm::vec3(180,0,0));
+		footOrb->getTransform()->rotate(glm::vec3(180, 0, 0));
 
 		parentEntity->addChild(handOrb);
 		parentEntity->addChild(footOrb);

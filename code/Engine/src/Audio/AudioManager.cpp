@@ -13,6 +13,33 @@ void AudioManager::playSound(const std::string& filePath, float volume)
     sound->play();
 }
 
+void AudioManager::playThisSound(const std::string& name, const std::string& filePath, float volume)
+{
+    auto sound = loadSound(filePath);
+    if (!sound) {
+        LOG_ERROR("Failed to load sound: " + filePath);
+        return;
+    }
+    sound->setVolume(volume);
+    soundMap[name] = sound;
+}
+
+void AudioManager::playThisSong(const std::string& name) {
+    auto it = soundMap.find(name);
+    if (it != soundMap.end()) {
+        it->second->play();
+    }
+}
+
+void AudioManager::pauseThisSong(const std::string& name) {
+    auto it = soundMap.find(name);
+    if (it != soundMap.end()) {
+        it->second->stop();
+    }
+}
+
+
+
 
 int AudioManager::init() {
     if (ma_engine_init(nullptr, &engine) != MA_SUCCESS)
@@ -47,3 +74,4 @@ void AudioManager::end() {
     loadedSounds.clear();
     ma_engine_uninit(&engine);
 }
+
