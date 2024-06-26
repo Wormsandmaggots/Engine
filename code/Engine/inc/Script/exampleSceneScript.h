@@ -853,6 +853,7 @@ public:
         //hud2
         imageShader.use();
         scoreImage->renderPlane();
+        if(combo>0)
         comboImage->renderPlane();
         humanImage->renderPlane();
         robotImage->renderPlane();
@@ -929,6 +930,7 @@ public:
         comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
+        if(combo>0)
         comboRenderer->renderText();
         scoreRenderer->renderText();
         ScoreNumbers::getInstance().update();
