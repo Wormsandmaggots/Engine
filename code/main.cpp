@@ -133,7 +133,7 @@ int main() {
 //    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("PauseScene");
+    sm.setCurrentScene("WinScene");
 
     bool switched = true;
     Scene2* currentScene;
