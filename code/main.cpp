@@ -108,7 +108,7 @@ int main() {
 
     winsceneScript->awake();
     winsceneScript->start();
-/*
+
     creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                         shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                         shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -124,7 +124,7 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-*/
+
 //    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
 //                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
 //                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -133,7 +133,7 @@ int main() {
 //    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("LoseScene");
+    sm.setCurrentScene("KubaScene");
 
     bool switched = true;
     Scene2* currentScene;
@@ -168,7 +168,7 @@ int main() {
             else if (currentScene->getName() == "WinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 winsceneScript->update();
-            }/*
+            }
             else if (currentScene->getName() == "CreditsScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 creditssceneScript->update();
@@ -182,7 +182,6 @@ int main() {
 //                // Wywołanie metody update dla exampleSceneScript
 //                calibrationsceneScript->update();
 //            }
- */
         }
 
 
