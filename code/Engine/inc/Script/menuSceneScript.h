@@ -152,7 +152,7 @@ public:
             ex(new Entity("exitButton")),
             cr(new Entity("creditsButton")),
 
-            background(new Texture("res/content/textures/background.png", "background")),
+            background(new Texture("res/content/textures/mainmenu_b.png", "background")),
             ng_button_idle(new Texture("res/content/textures/start_d.png", "start_d")),
             ex_button_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
             cr_button_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
@@ -205,7 +205,7 @@ public:
         currentScene->addEntity(ng);
         ng->addComponent(startButton);
         startButton->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        startButton->getTransform()->setPosition(glm::vec3(-0.75f, -0.03f, 0.0f));
+        startButton->getTransform()->setPosition(glm::vec3(-0.8f, 0.7f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         startButton->setTexture(ng_button_activ);
@@ -223,7 +223,7 @@ public:
         currentScene->addEntity(cr);
         cr->addComponent(creditsButton);
         creditsButton->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        creditsButton->getTransform()->setPosition(glm::vec3(-0.708f, -0.3f, 0.0f));
+        creditsButton->getTransform()->setPosition(glm::vec3(-0.75f, 0.5f, 0.0f));
 
         creditsButton->setTexture(cr_button_idle);
         creditsButton->setInactiveTexture(cr_button_idle);
@@ -238,7 +238,7 @@ public:
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
         exitButton->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        exitButton->getTransform()->setPosition(glm::vec3(-0.793f, -0.581f, 0.0f));
+        exitButton->getTransform()->setPosition(glm::vec3(-0.83f, 0.3f, 0.0f));
 
         exitButton->setTexture(ex_button_idle);
         exitButton->setInactiveTexture(ex_button_idle);

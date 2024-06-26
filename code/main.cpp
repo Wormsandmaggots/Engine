@@ -84,7 +84,7 @@ int main() {
 
     menusceneScript->awake();
     menusceneScript->start();
-
+/*
     pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -124,7 +124,7 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-
+*/
 //    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
 //                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
 //                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -155,7 +155,7 @@ int main() {
             } else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->update();
-            }
+            }/*
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->onExit();
@@ -181,6 +181,7 @@ int main() {
 //                // Wywołanie metody update dla exampleSceneScript
 //                calibrationsceneScript->update();
 //            }
+ */
         }
 
 
