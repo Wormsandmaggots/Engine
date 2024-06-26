@@ -85,10 +85,16 @@ private:
     Button* era80;
     Button* era90;
 
+    Button* backToMenu;
+    Button* startGame;
+
     Entity* menuWalpaper;
     Entity* ng;
     Entity* ex;
     Entity* cr;
+
+    Entity* bm;
+    Entity* sg;
 
     Texture* background;
     Texture* button00_idle;
@@ -97,6 +103,11 @@ private:
     Texture* button00_activ;
     Texture* button80_activ;
     Texture* button90_activ;
+
+    Texture* buttonmenu_idle;
+    Texture* buttonmenu_activ;
+    Texture* buttonstart_idle;
+    Texture* buttonstart_activ;
 
     Button* activeButton;
 
@@ -159,13 +170,13 @@ public:
 //            button00_activ(new Texture("res/content/textures/britney.png", "start_h")),
 //            button80_activ(new Texture("res/content/textures/john.png", "exit_h")),
 //            button90_activ(new Texture("res/content/textures/queen.png", "credits_h"))
-            background(new Texture("res/content/textures/background.png", "background")),
-            button00_idle(new Texture("res/content/textures/start_d.png", "start_d")),
-            button90_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
-            button80_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
-            button00_activ(new Texture("res/content/textures/start_h.png", "start_h")),
-            button90_activ(new Texture("res/content/textures/exit_h.png", "exit_h")),
-            button80_activ(new Texture("res/content/textures/credits_h.png", "credits_h"))
+            background(new Texture("res/content/textures/songscene_b.png", "background")),
+            button00_idle(new Texture("res/content/textures/songScene/00_d.png", "start_d")),
+            button90_idle(new Texture("res/content/textures/songScene/90_d.png", "exit_d")),
+            button80_idle(new Texture("res/content/textures/songScene/80_d.png", "credits_d")),
+            button00_activ(new Texture("res/content/textures/songScene/00_h.png", "start_h")),
+            button90_activ(new Texture("res/content/textures/songScene/90_h.png", "exit_h")),
+            button80_activ(new Texture("res/content/textures/songScene/80_h.png", "credits_h"))
 
     {
     }
@@ -174,12 +185,14 @@ public:
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
+            activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
         }
 
         activeButton = newActiveButton;
 
         if (activeButton != nullptr) {
             activeButton->setActive(true);
+            activeButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
         }
         activeButton = newActiveButton;
     }
@@ -211,8 +224,8 @@ public:
         //new game
         currentScene->addEntity(ng);
         ng->addComponent(era00);
-        era00->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        era00->getTransform()->setPosition(glm::vec3(0.75f, -0.03f, 0.0f));
+        era00->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
+        era00->getTransform()->setPosition(glm::vec3(0.0f, -0.30f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         era00->setTexture(button00_activ);
@@ -230,8 +243,8 @@ public:
         //credits
         currentScene->addEntity(cr);
         cr->addComponent(era90);
-        era90->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        era90->getTransform()->setPosition(glm::vec3(0.708f, -0.3f, 0.0f));
+        era90->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        era90->getTransform()->setPosition(glm::vec3(0.0f, -0.45f, 0.0f));
 
         era90->setTexture(button90_idle);
         era90->setInactiveTexture(button90_idle);
@@ -247,8 +260,8 @@ public:
         //exit
         currentScene->addEntity(ex);
         ex->addComponent(era80);
-        era80->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        era80->getTransform()->setPosition(glm::vec3(0.793f, -0.581f, 0.0f));
+        era80->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        era80->getTransform()->setPosition(glm::vec3(0.0f, -0.60f, 0.0f));
 
         era80->setTexture(button80_idle);
         era80->setInactiveTexture(button80_idle);
