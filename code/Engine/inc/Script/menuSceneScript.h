@@ -205,7 +205,7 @@ public:
         currentScene->addEntity(ng);
         ng->addComponent(startButton);
         startButton->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        startButton->getTransform()->setPosition(glm::vec3(-0.8f, 0.7f, 0.0f));
+        startButton->getTransform()->setPosition(glm::vec3(-0.79f, 0.7f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         startButton->setTexture(ng_button_activ);

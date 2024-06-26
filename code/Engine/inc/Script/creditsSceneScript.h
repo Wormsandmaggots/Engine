@@ -140,9 +140,9 @@ public:
             pauseBackground(new Entity("mainMenu")),
             ex(new Entity("exitButton")),
 
-            background(new Texture("res/content/textures/hud_back.png", "background")),
-            ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
-            ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
+            background(new Texture("res/content/textures/credits/credits_background.png", "background")),
+            ex_button_idle(new Texture("res/content/textures/credits/back_h.png", "exit_d")),
+            ex_button_activ(new Texture("res/content/textures/credits/back_h.png", "exit_h"))
 
     {
     }
@@ -190,8 +190,8 @@ public:
         //credits
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
-        exitButton->getTransform()->setScale(glm::vec3(0.17f, 0.047f, 0.2f));
-        exitButton->getTransform()->setPosition(glm::vec3(0.0f, -0.488f, 0.0f));
+        exitButton->getTransform()->setScale(glm::vec3(0.216f, 0.06f, 0.254f));
+        exitButton->getTransform()->setPosition(glm::vec3(0.0f, -0.65f, 0.0f));
 
         exitButton->setTexture(ex_button_activ);
         exitButton->setInactiveTexture(ex_button_idle);
