@@ -152,7 +152,7 @@ public:
             cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
-            background(new Texture("res/content/textures/pause/pause.png", "background")),
+            background(new Texture("res/content/textures/pause/pause_background.png", "background")),
             cn_button_idle(new Texture("res/content/textures/pause/continue_d.png", "continue_d")),
             cs_button_idle(new Texture("res/content/textures/pause/change_d.png", "change_d")),
             ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
@@ -167,12 +167,24 @@ public:
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
+            if(activeButton == continueButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.16f,0.04f,0.2f));
+            }
+            else if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.22f, 0.043f, 0.2f));
+            }
         }
 
         activeButton = newActiveButton;
 
         if (activeButton != nullptr) {
             activeButton->setActive(true);
+            if(activeButton == continueButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.18f,0.06f,0.2f));
+            }
+            else if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.235f, 0.059f, 0.214f));
+            }
         }
         activeButton = newActiveButton;
     }
@@ -206,7 +218,7 @@ public:
         //new game
         currentScene->addEntity(cn);
         cn->addComponent(continueButton);
-        continueButton->getTransform()->setScale(glm::vec3(0.16f, 0.04f, 0.2f));
+        continueButton->getTransform()->setScale(glm::vec3(0.18f,0.06f,0.2f));
         continueButton->getTransform()->setPosition(glm::vec3(0.0f, -0.031f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
@@ -222,7 +234,7 @@ public:
         //exit
         currentScene->addEntity(cs);
         cs->addComponent(changeSongButton);
-        changeSongButton->getTransform()->setScale(glm::vec3(0.22f, 0.045f, 0.2f));
+        changeSongButton->getTransform()->setScale(glm::vec3(0.22f, 0.043f, 0.2f));
         changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
 
         changeSongButton->setTexture(cs_button_idle);

@@ -85,10 +85,16 @@ private:
     Button* era80;
     Button* era90;
 
+    Button* backToMenu;
+    Button* startGame;
+
     Entity* menuWalpaper;
     Entity* ng;
     Entity* ex;
     Entity* cr;
+
+    Entity* bm;
+    Entity* sg;
 
     Texture* background;
     Texture* button00_idle;
@@ -97,6 +103,11 @@ private:
     Texture* button00_activ;
     Texture* button80_activ;
     Texture* button90_activ;
+
+    Texture* buttonmenu_idle;
+    Texture* buttonmenu_activ;
+    Texture* buttonstart_idle;
+    Texture* buttonstart_activ;
 
     Button* activeButton;
 
@@ -146,11 +157,16 @@ public:
             era00(new Button(&imageShader)),
             era80(new Button(&imageShader)),
             era90(new Button(&imageShader)),
+            startGame(new Button(&imageShader)),
+            backToMenu(new Button(&imageShader)),
+
 
             menuWalpaper(new Entity("mainMenu")),
             ng(new Entity("era00")),
             ex(new Entity("era80")),
             cr(new Entity("era90")),
+            sg(new Entity("startGame")),
+            bm(new Entity("backToMenu")),
 
 //            background(new Texture("res/content/textures/background.png", "background")),
 //            button00_idle(new Texture("ares/content/textures/britney.png", "start_d")),
@@ -159,14 +175,17 @@ public:
 //            button00_activ(new Texture("res/content/textures/britney.png", "start_h")),
 //            button80_activ(new Texture("res/content/textures/john.png", "exit_h")),
 //            button90_activ(new Texture("res/content/textures/queen.png", "credits_h"))
-            background(new Texture("res/content/textures/background.png", "background")),
-            button00_idle(new Texture("res/content/textures/start_d.png", "start_d")),
-            button90_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
-            button80_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
-            button00_activ(new Texture("res/content/textures/start_h.png", "start_h")),
-            button90_activ(new Texture("res/content/textures/exit_h.png", "exit_h")),
-            button80_activ(new Texture("res/content/textures/credits_h.png", "credits_h"))
-
+            background(new Texture("res/content/textures/songscene_b.png", "background")),
+            button00_idle(new Texture("res/content/textures/songScene/00_d.png", "start_d")),
+            button90_idle(new Texture("res/content/textures/songScene/90_d.png", "exit_d")),
+            button80_idle(new Texture("res/content/textures/songScene/80_d.png", "credits_d")),
+            button00_activ(new Texture("res/content/textures/songScene/00_h.png", "start_h")),
+            button90_activ(new Texture("res/content/textures/songScene/90_h.png", "exit_h")),
+            button80_activ(new Texture("res/content/textures/songScene/80_h.png", "credits_h")),
+            buttonmenu_idle(new Texture("res/content/textures/songScene/mainmenu_d.png", "menu_d")),
+            buttonstart_idle(new Texture("res/content/textures/songScene/letsdance_d.png", "letsdance_d")),
+            buttonmenu_activ(new Texture("res/content/textures/songScene/mainmenu_h.png", "menu_h")),
+            buttonstart_activ(new Texture("res/content/textures/songScene/letsdance_h.png", "letsdance_h"))
     {
     }
 
@@ -174,12 +193,14 @@ public:
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
+            activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
         }
 
         activeButton = newActiveButton;
 
         if (activeButton != nullptr) {
             activeButton->setActive(true);
+            activeButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
         }
         activeButton = newActiveButton;
     }
@@ -211,8 +232,8 @@ public:
         //new game
         currentScene->addEntity(ng);
         ng->addComponent(era00);
-        era00->getTransform()->setScale(glm::vec3(0.15f, 0.06f, 0.2f));
-        era00->getTransform()->setPosition(glm::vec3(0.75f, -0.03f, 0.0f));
+        era00->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
+        era00->getTransform()->setPosition(glm::vec3(0.0f, -0.30f, 0.0f));
 
         //this button will be activ from start, so we set it's texture as activ form the begining
         era00->setTexture(button00_activ);
@@ -230,8 +251,8 @@ public:
         //credits
         currentScene->addEntity(cr);
         cr->addComponent(era90);
-        era90->getTransform()->setScale(glm::vec3(0.19f, 0.06f, 0.2f));
-        era90->getTransform()->setPosition(glm::vec3(0.708f, -0.3f, 0.0f));
+        era90->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        era90->getTransform()->setPosition(glm::vec3(0.0f, -0.50f, 0.0f));
 
         era90->setTexture(button90_idle);
         era90->setInactiveTexture(button90_idle);
@@ -247,8 +268,8 @@ public:
         //exit
         currentScene->addEntity(ex);
         ex->addComponent(era80);
-        era80->getTransform()->setScale(glm::vec3(0.11f, 0.06f, 0.2f));
-        era80->getTransform()->setPosition(glm::vec3(0.793f, -0.581f, 0.0f));
+        era80->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        era80->getTransform()->setPosition(glm::vec3(0.0f, -0.70f, 0.0f));
 
         era80->setTexture(button80_idle);
         era80->setInactiveTexture(button80_idle);
@@ -257,6 +278,40 @@ public:
         era80->setOnClick([this]() {
             std::cout << "80 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
+            this->sm.setCurrentScene("MarcinScene");
+        });
+
+        //mainmenu
+        currentScene->addEntity(bm);
+        bm->addComponent(backToMenu);
+        backToMenu->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        backToMenu->getTransform()->setPosition(glm::vec3(-0.628f, -0.828f, 0.0f));
+
+        backToMenu->setTexture(buttonmenu_idle);
+        backToMenu->setInactiveTexture(buttonmenu_idle);
+        backToMenu->setActiveTexture(buttonmenu_activ);
+
+        backToMenu->setOnClick([this]() {
+            std::cout << "backToMenu button clicked!" << std::endl;
+            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
+            this->sm.setCurrentScene("KubaScene");
+        });
+
+        //letsdance
+        currentScene->addEntity(sg);
+        sg->addComponent(startGame);
+        startGame->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        startGame->getTransform()->setPosition(glm::vec3(0.611f, -0.828f, 0.0f));
+
+        startGame->setTexture(buttonstart_idle);
+        startGame->setInactiveTexture(buttonstart_idle);
+        startGame->setActiveTexture(buttonstart_activ);
+
+        startGame->setOnClick([this]() {
+            std::cout << "startgame button clicked!" << std::endl;
+            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
             //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
@@ -313,12 +368,15 @@ public:
         era00->renderPlane();
         era80->renderPlane();
         era90->renderPlane();
+        startGame->renderPlane();
+        backToMenu->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
+            LOG_INFO(std::to_string(joystickOffset.x));
             if (joystickOffset.y < 0.5) {
                 if (activeButton == era00) {
                     changeActiveButton(era80);
@@ -336,6 +394,12 @@ public:
                 } else if (activeButton == era90) {
                     changeActiveButton(era80);
                 }
+            }
+            else if (joystickOffset.x > -0.5){
+                changeActiveButton(backToMenu);
+            }
+            else if (joystickOffset.x < 0.5){
+                changeActiveButton(startGame);
             }
             lastButtonChangeTime = currentFrame;
             joystickReset = false;

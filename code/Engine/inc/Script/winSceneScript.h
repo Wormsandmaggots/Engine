@@ -153,12 +153,12 @@ public:
             cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
-            background(new Texture("res/content/textures/you_survived.png", "background")),
+            background(new Texture("res/content/textures/win/youwon_b.png", "background")),
             //cn_button_idle(new Texture("res/content/textures/pause/continue_d.png", "continue_d")),
-            cs_button_idle(new Texture("res/content/textures/lose/choose_d.png", "change_d")),
+            cs_button_idle(new Texture("res/content/textures/lose/choose_d.png", "restart_d")),
             ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
             //cn_button_activ(new Texture("res/content/textures/pause/continue_h.png", "continue_h")),
-            cs_button_activ(new Texture("res/content/textures/lose/choose_h.png", "change_h")),
+            cs_button_activ(new Texture("res/content/textures/lose/choose_h.png", "restart_h")),
             ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
 
     {
@@ -168,12 +168,18 @@ public:
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.37f, 0.050f, 0.182f));
+            }
         }
 
         activeButton = newActiveButton;
 
         if (activeButton != nullptr) {
             activeButton->setActive(true);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
+            }
         }
         activeButton = newActiveButton;
     }
@@ -203,7 +209,7 @@ public:
 
         currentScene->addEntity(cs);
         cs->addComponent(changeSongButton);
-        changeSongButton->getTransform()->setScale(glm::vec3(0.35f, 0.055f, 0.2f));
+        changeSongButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
         changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
 
         changeSongButton->setTexture(cs_button_activ);

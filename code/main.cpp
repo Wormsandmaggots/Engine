@@ -173,6 +173,7 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 creditssceneScript->update();
             }
+
             else if (currentScene->getName() == "SongScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
