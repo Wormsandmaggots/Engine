@@ -15,7 +15,6 @@ void FootOrb::update()
 			position.z -= speed * deltaTime;
 		this->getTransform()->setPosition(position);
 	}
-	this->model->getMaterial()->SetVec4("materialColor", glm::vec4(1, 1, 1, distanceToPlayer / orbDistance));
 	Entity::update();
 }
 
