@@ -42,15 +42,15 @@ private:
     // scene manager
     SceneManager &sm;
     // audio
-    AudioManager &audioManager;
+//    AudioManager &audioManager;
     // input joystick
     int connectedControllers;
     PlayerInput &playerInput;
     PlayerInput &playerInput1;
-    glm::vec2 joystickOffset;
-    glm::vec2 joystickOffset2;
-    glm::vec2 joystickOffset3;
-    glm::vec2 joystickOffset4;
+    glm::vec2 joystickOffsetCalibra;
+    glm::vec2 joystickOffset2Calibra;
+    glm::vec2 joystickOffset3Calibra;
+    glm::vec2 joystickOffset4Calibra;
     DebugInput &debugInput;
 
     Shader &shader;
@@ -60,25 +60,25 @@ private:
     Shader &shaderPbr;
     Shader &screenShader;
     Shader &shaderRig;
-    Shader &shaderBarmanRig;
-    Shader &shaderDjRig;
-    Shader &DrunkShader;
-    Shader &shaderNoneDrink;
-    Shader &reverseShader;
+//    Shader &shaderBarmanRig;
+//    Shader &shaderDjRig;
+//    Shader &DrunkShader;
+    //Shader &shaderNoneDrink;
+//    Shader &reverseShader;
     Shader &imageShader;
     Shader &imageShaderGreen;
-    Shader &shaderRigInstanced;
-    Shader &shaderRigInstanced2;
+//    Shader &shaderRigInstanced;
+//    Shader &shaderRigInstanced2;
     FrameBuffer buffer;
 
     // ssao
     SSAO &ssao;
     // renderer
     Renderer &renderer;
-    Model *playerModel;
+    Model *playerModelCalibra;
 
-    RigPrep *playerRig;
-    InverseKinematics *playerIK;
+    RigPrep *playerRigCalibra;
+    InverseKinematics *playerIKCalibra;
 
     bool reversed;
 
@@ -130,23 +130,23 @@ private:
 
 public:
     // Konstruktor domyślny
-    calibrationSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, AudioManager &audioManager, PlayerInput &playerInput,
+    calibrationSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, /*AudioManager &audioManager, */PlayerInput &playerInput,
                        PlayerInput &playerInput1, DebugInput &debugInput, Shader &shader, Shader &collisionTestShader, Shader &shaderText,
-                       Shader &colorShader, Shader &shaderPbr, Shader &screenShader, Shader &shaderRig, Shader &shaderBarmanRig, Shader &DrunkShader,
-                       Shader &shaderNoneDrink, Shader &reverseShader, Shader &imageShader, Shader &imageShaderGreen, Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2) : editor(editor),
+                       Shader &colorShader, Shader &shaderPbr, Shader &screenShader, Shader &shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
+                       /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/ Shader &imageShader, Shader &imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/) : editor(editor),
                                              cm(cm),
                                              sm(sm),
                                              ssao(ssao),
                                              renderer(renderer),
-                                             audioManager(audioManager),
+                                             //audioManager(audioManager),
                                              connectedControllers(JslConnectDevices()),
                                              playerInput(playerInput),
                                              playerInput1(playerInput1),
                                              debugInput(debugInput),
-                                             joystickOffset(glm::vec2(0)),
-                                             joystickOffset2(glm::vec2(0)),
-                                             joystickOffset3(glm::vec2(0)),
-                                             joystickOffset4(glm::vec2(0)),
+                                             joystickOffsetCalibra(glm::vec2(0)),
+                                             joystickOffset2Calibra(glm::vec2(0)),
+                                             joystickOffset3Calibra(glm::vec2(0)),
+                                             joystickOffset4Calibra(glm::vec2(0)),
                                              shader(shader),
                                              collisionTestShader(collisionTestShader),
                                              shaderText(shaderText),
@@ -154,19 +154,20 @@ public:
                                              shaderPbr(shaderPbr),
                                              screenShader(screenShader),
                                              shaderRig(shaderRig),
-                                             shaderBarmanRig(shaderBarmanRig),
-                                             DrunkShader(DrunkShader),
-                                             shaderNoneDrink(shaderNoneDrink),
-                                             reverseShader(reverseShader),
+//                                             shaderBarmanRig(shaderBarmanRig),
+//                                             DrunkShader(DrunkShader),
+                                             //shaderNoneDrink(shaderNoneDrink),
+//                                             reverseShader(reverseShader),
                                              imageShader(imageShader),
                                              imageShaderGreen(imageShaderGreen),
-                                             shaderRigInstanced(shaderRigInstanced),
-                                             shaderDjRig(shaderDjRig),
-                                             shaderRigInstanced2(shaderRigInstanced2),
+//                                             shaderRigInstanced(shaderRigInstanced),
+//                                             shaderDjRig(shaderDjRig),
+//                                             shaderRigInstanced2(shaderRigInstanced2),
                                              buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
-                                             playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
-                                             playerRig(new RigPrep(playerModel)),
-                                             playerIK(new InverseKinematics(playerRig)),
+
+                                             playerModelCalibra(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
+                                             playerRigCalibra(new RigPrep(playerModelCalibra)),
+                                             playerIKCalibra(new InverseKinematics(playerRigCalibra)),
                                              lightPos(glm::vec3(2.0, 4.0, -2.0)),
                                              lightColor(glm::vec3(0.2, 0.2, 0.7)),
                                              linear(0.09f),
@@ -235,7 +236,7 @@ public:
         sun->addComponent(sunLight);
 
         // gemplay
-        player->addComponent(playerModel);
+        player->addComponent(playerModelCalibra);
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         player->getTransform()->setScale(glm::vec3(0.01f));
         currentScene->addEntity(player);
@@ -244,25 +245,25 @@ public:
         lHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
         leftHandPointer->setParent(*player);
         leftHandPointer->addComponent(lHandcollider);
-        leftHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(playerRigCalibra->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
 
         rHandcollider->start();
         rHandcollider->getCollider()->getColliderShape()->setRadius(0.08);
         rightHandPointer->setParent(*player);
         rightHandPointer->addComponent(rHandcollider);
-        rightHandPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        rightHandPointer->getTransform()->setPosition(playerRigCalibra->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
 
         leftFootCollider->start();
         leftFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
         leftFootPointer->setParent(*player);
         leftFootPointer->addComponent(leftFootCollider);
-        leftFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(playerRigCalibra->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
         rightFootCollider->start();
         rightFootCollider->getCollider()->getColliderShape()->setRadius(0.08);
         rightFootPointer->setParent(*player);
         rightFootPointer->addComponent(rightFootCollider);
-        rightFootPointer->getTransform()->setPosition(playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(playerRigCalibra->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
         glm::vec3 inactivePos = glm::vec3(5,5,5);
         glm::vec3 inactivePos2 = glm::vec3(-5,5,5);
@@ -301,11 +302,11 @@ public:
         glm::mat4 view = s.camera.GetViewMatrix();
 
         LightManager::UpdateLightShader(shaderRig, view);
-        LightManager::UpdateLightShader(shaderRigInstanced, view);
+        //LightManager::UpdateLightShader(shaderRigCalibraInstanced, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
-        LightManager::UpdateLightShader(shaderBarmanRig, view);
-        LightManager::UpdateLightShader(shaderRigInstanced2, view);
-        LightManager::UpdateLightShader(shaderDjRig, view);
+//        LightManager::UpdateLightShader(shaderBarmanRig, view);
+//        LightManager::UpdateLightShader(shaderRigInstanced2, view);
+//        LightManager::UpdateLightShader(shaderDjRig, view);
 
         ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
@@ -384,10 +385,10 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 
-        joystickOffset = playerInput.getJoystick(2);
-        joystickOffset2 = playerInput.getJoystick(1);
-        joystickOffset3 = playerInput1.getJoystick(2);
-        joystickOffset4 = playerInput1.getJoystick(1);
+        joystickOffsetCalibra = playerInput.getJoystick(2);
+        joystickOffset2Calibra = playerInput.getJoystick(1);
+        joystickOffset3Calibra = playerInput1.getJoystick(2);
+        joystickOffset4Calibra = playerInput1.getJoystick(1);
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -408,57 +409,57 @@ public:
 
         shaderRig.use();
 
-        joystickOffset.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
+        joystickOffsetCalibra.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffsetCalibra.x, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset.y, -1, 1, 0, 1)),
+        joystickOffsetCalibra.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffsetCalibra.y, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset2.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.x, -1, 1, 0, 1)),
+        joystickOffset2Calibra.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2Calibra.x, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset2.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset2.y, -1, 1, 0, 1)),
+        joystickOffset2Calibra.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset2Calibra.y, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset3.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.x, -1, 1, 0, 1)),
+        joystickOffset3Calibra.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3Calibra.x, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset3.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset3.y, -1, 1, 0, 1)),
+        joystickOffset3Calibra.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset3Calibra.y, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset4.x = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.x, -1, 1, 0, 1)),
+        joystickOffset4Calibra.x = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4Calibra.x, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset4.y = Math::Remap(
-            utils::easeInOutQuint(Math::Remap(joystickOffset4.y, -1, 1, 0, 1)),
+        joystickOffset4Calibra.y = Math::Remap(
+            utils::easeInOutQuint(Math::Remap(joystickOffset4Calibra.y, -1, 1, 0, 1)),
             0, 1, -1, 1);
 
-        joystickOffset *= 200 * s.deltaTime;
-        joystickOffset2 *= 200 * s.deltaTime;
-        joystickOffset3 *= 200 * s.deltaTime;
-        joystickOffset4 *= 200 * s.deltaTime;
+        joystickOffsetCalibra *= 200 * s.deltaTime;
+        joystickOffset2Calibra *= 200 * s.deltaTime;
+        joystickOffset3Calibra *= 200 * s.deltaTime;
+        joystickOffset4Calibra *= 200 * s.deltaTime;
         // old
 
-        playerIK->update(-joystickOffset3[0], -joystickOffset3[1], "mixamorig:RightHand");
-        playerIK->update(-joystickOffset4[0], -joystickOffset4[1], "mixamorig:LeftHand");
-        playerIK->update(-joystickOffset[0], -joystickOffset[1], "mixamorig:RightFoot");
-        playerIK->update(-joystickOffset2[0], -joystickOffset2[1], "mixamorig:LeftFoot");
-        playerRig->update();
+        playerIKCalibra->update(-joystickOffset3Calibra[0], -joystickOffset3Calibra[1], "mixamorig:RightHand");
+        playerIKCalibra->update(-joystickOffset4Calibra[0], -joystickOffset4Calibra[1], "mixamorig:LeftHand");
+        playerIKCalibra->update(-joystickOffsetCalibra[0], -joystickOffsetCalibra[1], "mixamorig:RightFoot");
+        playerIKCalibra->update(-joystickOffset2Calibra[0], -joystickOffset2Calibra[1], "mixamorig:LeftFoot");
+        playerRigCalibra->update();
 
-        auto transforms = playerRig->GetFinalBoneMatrices();
+        auto transforms = playerRigCalibra->GetFinalBoneMatrices();
         for (int i = 0; i < transforms.size(); ++i)
             shaderRig.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
-        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
-        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
-        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+        rightHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:LeftHand")->getModelPosition() * 0.01f);
+        leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
+        rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
+        leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
         if (playerInput.isKeyPressed(1))
         {
@@ -467,9 +468,68 @@ public:
 
     };
 
-    void onExit() {
-    };
+   /* void onExit() {
+        if(playerModelCalibra != nullptr) {
+            delete playerModelCalibra;
+            playerModelCalibra = nullptr;
+        }
 
+        if(playerRigCalibra != nullptr) {
+            delete playerRigCalibra;
+            playerRigCalibra = nullptr;
+        }
+
+        if(playerIKCalibra != nullptr) {
+            delete playerIKCalibra;
+            playerIKCalibra = nullptr;
+        }
+
+//        if(player != nullptr) {
+//            delete player;
+//            player = nullptr;
+//        }
+
+        if(leftHandPointer != nullptr) {
+            delete leftHandPointer;
+            leftHandPointer = nullptr;
+        }
+
+        if(rightHandPointer != nullptr) {
+            delete rightHandPointer;
+            rightHandPointer = nullptr;
+        }
+
+        if(leftFootPointer != nullptr) {
+            delete leftFootPointer;
+            leftFootPointer = nullptr;
+        }
+
+        if(rightFootPointer != nullptr) {
+            delete rightFootPointer;
+            rightFootPointer = nullptr;
+        }
+
+//        if(sun != nullptr) {
+//            delete sun;
+//            sun = nullptr;
+//        }
+
+//        if(pointLight != nullptr) {
+//            delete pointLight;
+//            pointLight = nullptr;
+//        }
+//
+//        if(handOrbEntity != nullptr) {
+//            delete handOrbEntity;
+//            handOrbEntity = nullptr;
+//        }
+//
+//        if(footOrbEntity != nullptr) {
+//            delete footOrbEntity;
+//            footOrbEntity = nullptr;
+//        }
+    }
+*/
     void onDestroy() override {
 
     };

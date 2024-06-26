@@ -125,12 +125,12 @@ int main() {
     songsceneScript->awake();
     songsceneScript->start();
 
-//    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-//                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-//                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-//                                                                                imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
-//    calibrationsceneScript->awake();
-//    calibrationsceneScript->start();
+    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, /*AudioManager &audioManager, */playerInput,
+                                                                                playerInput1, debugInput, shader, collisionTestShader, shaderText,
+                                                                                colorShader, shaderPbr, screenShader, shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
+            /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/imageShader, imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/);
+    calibrationsceneScript->awake();
+    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
@@ -154,6 +154,7 @@ int main() {
                 menusceneScript->update();
             } else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
+                //calibrationsceneScript->onExit();
                 examplesceneScript->update();
             }
             else if (currentScene->getName() == "PauseScene") {
@@ -177,10 +178,10 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
             }
-//            else if (currentScene->getName() == "CalibrationScene") {
-//                // Wywołanie metody update dla exampleSceneScript
-//                calibrationsceneScript->update();
-//            }
+            else if (currentScene->getName() == "CalibrationScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                calibrationsceneScript->update();
+            }
         }
 
 

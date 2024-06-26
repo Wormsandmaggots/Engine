@@ -459,7 +459,7 @@ public:
         // Inicjalizacja spawnera
         // spawner = new Spawner(currentScene);
         spawner->addComponent(spawnerComponent);
-        spawnerComponent->init();
+       //spawnerComponent->init();
         currentScene->addEntity(spawner);
 
         // screen shader
@@ -498,11 +498,11 @@ public:
         canisters->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
         canisters->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
 
-        chairsE->addComponent(chairs);
-        currentScene->addEntity(chairsE);
-        chairs->getTransform()->setScale(glm::vec3(0.005f));
-        // chairs->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
-        chairs->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
+//        chairsE->addComponent(chairs);
+//        currentScene->addEntity(chairsE);
+//        chairs->getTransform()->setScale(glm::vec3(0.005f));
+//        // chairs->getTransform()->rotate(glm::vec3(270.0f,0.0f,0.0f));
+//        chairs->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
 
         barmanE->addComponent(barman);
         currentScene->addEntity(barmanE);

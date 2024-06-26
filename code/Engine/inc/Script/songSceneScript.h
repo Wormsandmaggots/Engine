@@ -223,8 +223,8 @@ public:
             std::cout << "00 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/00/dream.wav";
 //            pathToSong = "res/content/sounds/effects/kicked out.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //credits
@@ -240,8 +240,8 @@ public:
         era90->setOnClick([this]() {
             std::cout << "90 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/90/eurodance.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //exit

@@ -22,6 +22,7 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 void SpawnerComponent::start()
 {
+    init();
 	SongAnalizer::parseSong(spawnAfter, pathToSong, songData);
 	SongAnalizer::testparseSong(spawnAfter, pathToSong, songData);
 	// AudioManager::getInstance().playSound(songPath,1);
