@@ -5,7 +5,7 @@ Collectable::Collectable(const std::string name, const glm::vec3& position, Mode
 	this->model = model;
 	collider->setParent(this);
 	collider->start();
-	collider->getCollider()->getColliderShape()->setRadius(0.6);
+	collider->getCollider()->getColliderShape()->setRadius(0.65);
 	this->position = position;
 	this->getTransform()->setPosition(position);
 	Entity::addComponent(model);

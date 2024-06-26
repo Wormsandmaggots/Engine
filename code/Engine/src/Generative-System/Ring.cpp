@@ -19,7 +19,7 @@ void Ring::update()
 		if (this->getParent()->getName() == "badOrb") {
 			setColor(glm::vec3(((parentPos.z - position.z + 1.5) / orbDistance),0,0));
 		}else if (this->getParent()->getName() == "drink") {
-			setColor(glm::vec3(((parentPos.z - position.z + 1.5) / orbDistance)));
+			setColor(glm::vec3(1));
 		}
 		else if (this->getParent()->getName() == "handOrb") {
 			setColor(glm::vec3(0.8 * ((parentPos.z - position.z + 1.5) / orbDistance), 0.8 * ((parentPos.z - position.z + 1.5) / orbDistance), 0));
@@ -28,19 +28,11 @@ void Ring::update()
 			setColor(glm::vec3(0, 0, 0.8 * ((parentPos.z - position.z + 1.5) / orbDistance)));
 		}
 
-		else {
-			if (collided) {
-				//setColor(glm::vec3(0, 1, 0));
-			}
-			else {
-				//setColor(glm::vec3(1, 1, 1));
-			}
-		}
 		parentPos = this->getParent()->getTransform()->getPosition();
 		this->getTransform()->setScale(glm::vec3(0.4*((parentPos.z - position.z + 1.5) / orbDistance)));
 		this->getTransform()->setPosition(position);
 	}
-
+	
 	Entity::update();
 }
 
@@ -58,7 +50,6 @@ void Ring::onTriggerEnter(ColliderComponent* collidedWith)
 
 void Ring::onTriggerExit(ColliderComponent* collidedWith)// to chyba nie dziala
 {
-
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer" || collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer") {
 		collided = false;
 	}

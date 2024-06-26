@@ -36,3 +36,5 @@ extern float lookatAngle;
 extern int badOrbChance;
 extern bool reset;
 extern float songLenghtGlobal;
+extern bool lost;
+extern bool won;

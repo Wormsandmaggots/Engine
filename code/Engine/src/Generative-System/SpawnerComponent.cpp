@@ -46,7 +46,7 @@ void SpawnerComponent::update()
 	if (spawnTimer < 0 && songDataIndex < songData.size())
 	{
 
-		spawnAnimationRing(glm::vec3(-8.4, 2.4, 53.0), "drink");
+		//spawnAnimationRing(glm::vec3(-8.4, 2.4, 53.0), "drink");
 
 		/*cout << "Type: " << songData[songDataIndex].type << endl;
 		cout << "Bass: " << songData[songDataIndex].bass.x << " " << songData[songDataIndex].bass.y << endl;
@@ -158,9 +158,9 @@ void SpawnerComponent::update()
 				spawn<FootOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 		}
 
-		if (orbsSpawned > 50)
+		if (orbsSpawned > 10)
 		{
-			spawn<Drink>(glm::vec3(xRH, yLF, originPos.z));
+			spawn<Drink>(glm::vec3(generateRandomFloat(-1.5, 1.5), generateRandomFloat(-1.5, 1.5), originPos.z));
 			orbsSpawned = 0;
 			spawnAfter -= freqIncrement;
 		}
@@ -176,7 +176,7 @@ void SpawnerComponent::update()
 			songDataIndex++;
 		}
 
-		spawnAnimationRing(glm::vec3(8.4, -1.7, 53.0), "drink");
+		//spawnAnimationRing(glm::vec3(8.4, -1.7, 53.0), "drink");
 	}
 
 	for (Collectable *entity : entitiesActive)
@@ -186,7 +186,7 @@ void SpawnerComponent::update()
 			spawnAnimationRing(entity->animationPos, entity->getName());
 			entity->animation = false;
 		}
-		if (entity->position.z < originPos.z - orbDistance - 1.5)
+		if (entity->position.z < originPos.z - orbDistance - 2.0)
 		{
 
 			if (entity->getName() == "badOrb")
@@ -213,6 +213,7 @@ void SpawnerComponent::update()
 			deactiveEntity(entity);
 		}
 	}
+
 	if (deltaTime < 1)
 		originPos.z += globalVelocity * deltaTime;
 }
@@ -279,6 +280,7 @@ void SpawnerComponent::deactiveEntity(Collectable *ent)
 		Collectable *child = dynamic_cast<Collectable *>(e);
 		child->active = false;
 		child->getTransform()->setPosition(inactivePos);
+		child->getTransform()->setScale(glm::vec3(0.1));
 		// child->getComponent<Model>()->getMaterial()->SetVec4("materialColor", glm::vec4(1, 1, 1, 1));
 		ent->removeChild(child);
 	}

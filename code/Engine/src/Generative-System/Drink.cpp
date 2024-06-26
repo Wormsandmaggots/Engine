@@ -3,7 +3,7 @@
 
 Drink::Drink(const std::string name, const glm::vec3 &position, Model *model) : Collectable(name, position, model)
 {
-	this->getTransform()->setScale(glm::vec3(.5));
+	this->getTransform()->setScale(glm::vec3(.7));
 }
 
 void Drink::update()
@@ -29,8 +29,8 @@ void Drink::onTriggerEnter(ColliderComponent *collidedWith)
 		this->animationPos = position;
 		this->animation = true;
 		ScoreNumbers::getInstance().calculateViewPos(position, "FREEZE!");
-		position = glm::vec3(100);
-		this->getTransform()->setPosition(glm::vec3(100));
+		position = glm::vec3(-100);
+		this->getTransform()->setPosition(glm::vec3(-100));
 		currentDrink = (DrinkType)(rand() % 3);
 		combo += 1;
 		this->active = false;

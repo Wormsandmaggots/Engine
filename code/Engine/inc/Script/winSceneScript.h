@@ -240,9 +240,16 @@ public:
         lastButtonChangeTime = 0.0f;
         buttonChangeDelay = 0.2f;
         joystickReset = true;
+
     };
 
     void update() override{
+
+        if (won) {
+            AudioManager::getInstance().playSound("res/content/sounds/effects/yeeeeaa.mp3", 1);
+            won = false;
+        }
+
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;

@@ -29,11 +29,11 @@ void BadOrb::onTriggerEnter(ColliderComponent *collidedWith)
 		this->animationPos = position;
 		this->animation = true;
 		ScoreNumbers::getInstance().calculateViewPos(position, "-100");
-		position = glm::vec3(100);
-		this->getTransform()->setPosition(glm::vec3(100));
+		position = glm::vec3(-100);
+		this->getTransform()->setPosition(glm::vec3(-100));
 		score -= 100;
 		combo = 0;
-		position = glm::vec3(100);
+		position = glm::vec3(-100);
 		AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 	}
 }

@@ -427,12 +427,14 @@ public:
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         spawnerComponent->reset();
         time = 0;
-        s.camera.SetPosition(glm::vec3(0.0f, .3f, -8.0f));
+        s.camera.SetPosition(glm::vec3(0.0f, 1.0f, -9.5f));
         pointLight8E->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
         resBar->resetScaleAndPosition();
         playerRig->restart(playerModel);
         playerIK->restart(playerRig);
         spawnerComponent->orbsSpawned = 0;
+		currentDrink = DrinkType::None;
+        lookatAngle = 0;
 
         spawnerComponent->xRH = 0;
         spawnerComponent->yRH = 0;
@@ -671,8 +673,12 @@ public:
 
     void update() override
     {
-
-        
+     
+        if (reset)
+        {
+            resetGame();
+            reset = false;
+        }
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
@@ -687,7 +693,7 @@ public:
         playerInput.interpretInput();
         playerInput1.interpretInput();
 
-        glClearColor(0.8, 0.8, 0.8, 1);
+        glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         barmanAnimator->UpdateAnimation(deltaTime, 90.0f);
@@ -955,6 +961,7 @@ public:
             {
                 AudioManager::getInstance().pauseThisSong("bicik");
                 sm.setCurrentScene("LoseScene");
+                lost = true;
             }
         }
 
@@ -1042,11 +1049,7 @@ public:
             sm.setCurrentScene("WinScene");
         }
 
-        if (reset)
-        {
-            resetGame();
-            reset = false;
-        }
+        
     };
 
     void onExit()

@@ -83,4 +83,11 @@ public:
             y2 = pos2.y;
         }
     }
+
+    float generateRandomFloat(float x, float y) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<> distr(x, y);
+		return distr(gen);
+    }
 };

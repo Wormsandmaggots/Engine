@@ -254,6 +254,10 @@ public:
         lastButtonChangeTime = 0.0f;
         buttonChangeDelay = 0.2f;
         joystickReset = true;
+
+        AudioManager::getInstance().playThisSound("menu", "res/content/sounds/songs/sci_fi_song.wav", 1);
+        AudioManager::getInstance().playThisSong("menu");
+
     };
 
     void update() override{
@@ -335,6 +339,11 @@ public:
             clickActiveButton();
         }
 
+    };
+
+    void onExit()
+    {
+        AudioManager::getInstance().pauseThisSong("bicik");
     };
 
     void onDestroy() override{
