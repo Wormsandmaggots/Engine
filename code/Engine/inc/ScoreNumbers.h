@@ -21,22 +21,29 @@ public:
         return instance;
     }
 
-    void calculateViewPos(glm::vec3 pos){
+    void calculateViewPos(glm::vec3 pos, int points){
         glm::vec4 orbClipSpace = projection * view * glm::vec4(pos, 1.0f);
-        glm::vec3 orbNDC = glm::vec3(orbClipSpace) / orbClipSpace.w;
+        glm::vec3 orbNDC = glm::vec3(orbClipSpace)/orbClipSpace.w;
         glm::vec2 orbScreenPos;
         orbScreenPos.x = (orbNDC.x * 0.5f + 0.5f) * width;
         orbScreenPos.y = (orbNDC.y * 0.5f + 0.5f) * height;
-        orbScreenPos.y = height - orbScreenPos.y;
-        LOG_INFO(std::to_string(orbScreenPos.x) + " " + std::to_string(orbScreenPos.x));
-        pointsStorage.push_back(Points(orbScreenPos.x, orbScreenPos.x, -100, 0));
+        //orbScreenPos.y = height - orbScreenPos.y;
+        pointsStorage.push_back(Points(orbScreenPos.x, orbScreenPos.y, points, 1));
+        LOG_INFO(std::to_string(orbScreenPos.x) + " " +std::to_string(orbScreenPos.y));
     }
 
     void update(){
-        for (Points& point : pointsStorage) {
-            textRenderer->setParameters(std::to_string(point.p), point.x, point.y, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), width, height);
+        for (auto it = pointsStorage.begin(); it != pointsStorage.end(); ) {
+            textRenderer->setParameters(std::to_string(it->p), it->x, it->y, 1.2f/it->t, glm::vec3(0.5, 0.8f, 0.2f), width, height);
+            if (it->t < 50) {
+                it->t += 1;
+                ++it;
+                textRenderer->renderText();
+            } else {
+                it = pointsStorage.erase(it);
+            }
         }
-        textRenderer->renderText();
+
     }
 
     void setProjection(glm::mat4 p){

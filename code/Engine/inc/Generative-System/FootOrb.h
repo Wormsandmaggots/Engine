@@ -1,6 +1,6 @@
 #pragma once
 #include "Generative-System/Collectable.h"
-
+#include "ScoreNumbers.h"
 class FootOrb : public Collectable {
 
 public:

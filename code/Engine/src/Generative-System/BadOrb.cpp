@@ -1,4 +1,5 @@
 #include "Generative-System/BadOrb.h"
+#include "ScoreNumbers.h"
 
 BadOrb::BadOrb(const std::string name, const glm::vec3& position, Model* model) : Collectable(name, position, model)
 {
@@ -25,7 +26,8 @@ void BadOrb::onTriggerStay(ColliderComponent* collidedWith)
 void BadOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer" || collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer") {
-		position = glm::vec3(100);
+        ScoreNumbers::getInstance().calculateViewPos(position,-100);
+        position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		score -= 100;
 		combo = 0;
