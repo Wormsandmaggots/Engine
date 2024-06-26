@@ -74,6 +74,14 @@ public:
         }
     }
 
+    Texture* getInactiveTexture() {
+        return inactiveTexture;
+    }
+
+    Texture* getActiveTexture() {
+        return activeTexture;
+    }
+
     void setActiveTexture(Texture* texture) {
         activeTexture = texture;
     }

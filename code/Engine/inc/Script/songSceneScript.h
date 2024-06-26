@@ -115,6 +115,8 @@ private:
     float buttonChangeDelay;
     bool joystickReset;
 
+    Button* activeEraButton;
+
 public:
     // Konstruktor domyślny
     songSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
@@ -189,11 +191,21 @@ public:
     {
     }
 
+    void clickActiveButton() {
+        if (activeButton != nullptr) {
+            activeButton->onClick();
+        }
+    }
+
     // Dodajemy metodę do zmiany aktywnego przycisku
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
             activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+            // Ustawiamy teksturę na nieaktywną dla poprzedniego aktywnego przycisku era
+            if (activeButton == era00 || activeButton == era90 || activeButton == era80) {
+                activeButton->setTexture(activeButton->getInactiveTexture());
+            }
         }
 
         activeButton = newActiveButton;
@@ -201,14 +213,13 @@ public:
         if (activeButton != nullptr) {
             activeButton->setActive(true);
             activeButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
+            // Ustawiamy teksturę na aktywną dla nowego aktywnego przycisku
+            activeButton->setTexture(activeButton->getActiveTexture());
         }
-        activeButton = newActiveButton;
-    }
 
-    // Dodajemy metodę do wywołania funkcji onClick dla aktywnego przycisku
-    void clickActiveButton() {
-        if (activeButton != nullptr) {
-            activeButton->onClick();
+        // Aktualizujemy activeEraButton tylko wtedy, gdy nowy aktywny przycisk jest jednym z przycisków era00, era90, era80
+        if (activeButton == era00 || activeButton == era90 || activeButton == era80) {
+            activeEraButton = activeButton;
         }
     }
 
@@ -242,9 +253,12 @@ public:
 
         era00->setOnClick([this]() {
             std::cout << "00 button clicked!" << std::endl;
+            // Dezaktywujemy poprzedni aktywny przycisk era
+            if (activeEraButton != nullptr) {
+                activeEraButton->setActive(false);
+                activeEraButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+            }
             pathToSong = "res/content/sounds/songs/00/dream.wav";
-//            pathToSong = "res/content/sounds/effects/kicked out.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -260,8 +274,12 @@ public:
 
         era90->setOnClick([this]() {
             std::cout << "90 button clicked!" << std::endl;
+            // Dezaktywujemy poprzedni aktywny przycisk era
+            if (activeEraButton != nullptr) {
+                activeEraButton->setActive(false);
+                activeEraButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+            }
             pathToSong = "res/content/sounds/songs/90/eurodance.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -277,8 +295,12 @@ public:
 
         era80->setOnClick([this]() {
             std::cout << "80 button clicked!" << std::endl;
+            // Dezaktywujemy poprzedni aktywny przycisk era
+            if (activeEraButton != nullptr) {
+                activeEraButton->setActive(false);
+                activeEraButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+            }
             pathToSong = "res/content/sounds/songs/80/goddess.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -311,8 +333,14 @@ public:
 
         startGame->setOnClick([this]() {
             std::cout << "startgame button clicked!" << std::endl;
-            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
+            // Aktualizujemy pathToSong na wartość przypisaną do activeEraButton przed wywołaniem obecnej instrukcji
+            if (activeEraButton == era00) {
+                pathToSong = "res/content/sounds/songs/00/dream.wav";
+            } else if (activeEraButton == era90) {
+                pathToSong = "res/content/sounds/songs/90/eurodance.wav";
+            } else if (activeEraButton == era80) {
+                pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            }
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -375,35 +403,51 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            LOG_INFO(std::to_string(joystickOffset.x));
-            if (joystickOffset.y < 0.5) {
-                if (activeButton == era00) {
-                    changeActiveButton(era80);
-                } else if (activeButton == era90) {
-                    changeActiveButton(era00);
-                } else if (activeButton == era80) {
-                    changeActiveButton(era90);
+        LOG_INFO("Joystick 1: x=" + std::to_string(joystickOffset.x) + ", y=" + std::to_string(joystickOffset.y));
+        bool isJoystickMovedX = std::abs(joystickOffset.x) >= 0.8;
+        bool isJoystickMovedY = std::abs(joystickOffset.y) >= 0.8;
+
+        // Wektory przycisków
+        std::vector<Button*> horizontalButtons = {backToMenu, era80, startGame};
+        std::vector<Button*> verticalButtons = {era00, era90, era80};
+
+        // Indeksy aktywnych przycisków
+        int activeHorizontalButtonIndex = std::find(horizontalButtons.begin(), horizontalButtons.end(), activeButton) - horizontalButtons.begin();
+        int activeVerticalButtonIndex = std::find(verticalButtons.begin(), verticalButtons.end(), activeButton) - verticalButtons.begin();
+
+        if ((isDelayPassed && isJoystickMovedX) || (joystickReset && isJoystickMovedX)) {
+            if (activeButton == era00 || activeButton == era90) {
+                // Jeśli aktualnie aktywny przycisk to era00 lub era90, pozwalamy na przełączanie między backToMenu i startGame
+                if (joystickOffset.x < -0.8) {
+                    changeActiveButton(backToMenu);
                 }
-            }
-            else if (joystickOffset.y > -0.5) {
-                if (activeButton == era00) {
-                    changeActiveButton(era90);
-                } else if (activeButton == era80) {
-                    changeActiveButton(era00);
-                } else if (activeButton == era90) {
-                    changeActiveButton(era80);
+                else if (joystickOffset.x > 0.8) {
+                    changeActiveButton(startGame);
                 }
-            }
-            else if (joystickOffset.x > -0.5){
-                changeActiveButton(backToMenu);
-            }
-            else if (joystickOffset.x < 0.5){
-                changeActiveButton(startGame);
+            } else {
+                if (joystickOffset.x < -0.8) {
+                    activeHorizontalButtonIndex = (activeHorizontalButtonIndex - 1 + horizontalButtons.size()) % horizontalButtons.size();
+                }
+                else if (joystickOffset.x > 0.8) {
+                    activeHorizontalButtonIndex = (activeHorizontalButtonIndex + 1) % horizontalButtons.size();
+                }
+                changeActiveButton(horizontalButtons[activeHorizontalButtonIndex]);
             }
             lastButtonChangeTime = currentFrame;
             joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
+        }
+        else if ((isDelayPassed && isJoystickMovedY) || (joystickReset && isJoystickMovedY)) {
+            if (joystickOffset.y < -0.8) {
+                activeVerticalButtonIndex = (activeVerticalButtonIndex - 1 + verticalButtons.size()) % verticalButtons.size();
+            }
+            else if (joystickOffset.y > 0.8) {
+                activeVerticalButtonIndex = (activeVerticalButtonIndex + 1) % verticalButtons.size();
+            }
+            changeActiveButton(verticalButtons[activeVerticalButtonIndex]);
+            lastButtonChangeTime = currentFrame;
+            joystickReset = false;
+        }
+        else if (std::abs(joystickOffset.y) < 0.8 && std::abs(joystickOffset.x) < 0.8) {
             joystickReset = true;
         }
 

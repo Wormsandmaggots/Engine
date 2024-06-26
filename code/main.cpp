@@ -72,7 +72,8 @@ int main() {
     editor.init(&s.camera);
 
     //Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("KubaScene");
+//    sm.setCurrentScene("KubaScene");
+    sm.setCurrentScene("SongScene");
 
     //CREATING WINDOW
     GLFWwindow* window = glfwCreateWindow(s.WINDOW_WIDTH, s.WINDOW_HEIGHT, "Loading...", NULL, s.window);
@@ -156,56 +157,56 @@ int main() {
 
 
     //instance
-    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                                    imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
-    //awake
-    examplesceneScript->awake();
-    //start
-    examplesceneScript->start();
-
-
-    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                           imageShaderGreen, shaderRigInstanced);
-
-    menusceneScript->awake();
-    menusceneScript->start();
-
-    pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                           imageShaderGreen, shaderRigInstanced);
-
-    pausesceneScript->awake();
-    pausesceneScript->start();
-
-    loseSceneScript* losesceneScript = new loseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                              shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                              shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                              imageShaderGreen, shaderRigInstanced);
-
-    losesceneScript->awake();
-    losesceneScript->start();
-
-    winSceneScript* winsceneScript = new winSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                           imageShaderGreen, shaderRigInstanced);
-
-    winsceneScript->awake();
-    winsceneScript->start();
-
-    creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-                                                        shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-                                                        shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-                                                        imageShaderGreen, shaderRigInstanced);
-
-    creditssceneScript->awake();
-    creditssceneScript->start();
-
+//    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                                    shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                                    shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                                    imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
+//    //awake
+//    examplesceneScript->awake();
+//    //start
+//    examplesceneScript->start();
+//
+//
+//    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                           imageShaderGreen, shaderRigInstanced);
+//
+//    menusceneScript->awake();
+//    menusceneScript->start();
+//
+//    pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                           imageShaderGreen, shaderRigInstanced);
+//
+//    pausesceneScript->awake();
+//    pausesceneScript->start();
+//
+//    loseSceneScript* losesceneScript = new loseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                              shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                              shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                              imageShaderGreen, shaderRigInstanced);
+//
+//    losesceneScript->awake();
+//    losesceneScript->start();
+//
+//    winSceneScript* winsceneScript = new winSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                           shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                           shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                           imageShaderGreen, shaderRigInstanced);
+//
+//    winsceneScript->awake();
+//    winsceneScript->start();
+//
+//    creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                        shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                        shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                        imageShaderGreen, shaderRigInstanced);
+//
+//    creditssceneScript->awake();
+//    creditssceneScript->start();
+//
     songSceneScript* songsceneScript = new songSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                                     shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -242,50 +243,52 @@ int main() {
         //examplesceneScript->update();
         //menusceneScript->update();
 
-        // Pobieranie aktualnej sceny
-        currentScene = sm.getCurrentScene();
-        if (currentScene != nullptr) {
-            // Sprawdzanie, która scena jest aktualnie aktywna
-            if (currentScene->getName() == "KubaScene") {
-                // Wywołanie metody update dla menuSceneScript
-                menusceneScript->update();
-            } else if (currentScene->getName() == "MarcinScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                examplesceneScript->update();
-            }
-            else if (currentScene->getName() == "PauseScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                examplesceneScript->onExit();
-                pausesceneScript->update();
-            }
-            else if (currentScene->getName() == "LoseScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                losesceneScript->update();
-            }
-            else if (currentScene->getName() == "WinScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                winsceneScript->update();
-            }
-            else if (currentScene->getName() == "CreditsScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                creditssceneScript->update();
-            }
+        songsceneScript->update();
 
-            else if (currentScene->getName() == "SongScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                songsceneScript->update();
-            }
+        // Pobieranie aktualnej sceny
+//        currentScene = sm.getCurrentScene();
+//        if (currentScene != nullptr) {
+//            // Sprawdzanie, która scena jest aktualnie aktywna
+//            if (currentScene->getName() == "KubaScene") {
+//                // Wywołanie metody update dla menuSceneScript
+//                menusceneScript->update();
+//            } else if (currentScene->getName() == "MarcinScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                examplesceneScript->update();
+//            }
+//            else if (currentScene->getName() == "PauseScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                examplesceneScript->onExit();
+//                pausesceneScript->update();
+//            }
+//            else if (currentScene->getName() == "LoseScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                losesceneScript->update();
+//            }
+//            else if (currentScene->getName() == "WinScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                winsceneScript->update();
+//            }
+//            else if (currentScene->getName() == "CreditsScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                creditssceneScript->update();
+//            }
+//
+//            else if (currentScene->getName() == "SongScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                songsceneScript->update();
+//            }
 //            else if (currentScene->getName() == "CalibrationScene") {
 //                // Wywołanie metody update dla exampleSceneScript
 //                calibrationsceneScript->update();
 //            }
-        }
+//        }
 
 
         update();
     }
     //onDestroy
-    examplesceneScript->onDestroy();
+    //examplesceneScript->onDestroy();
     audioManager.end();
 
 
