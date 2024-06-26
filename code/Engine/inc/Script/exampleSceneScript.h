@@ -611,8 +611,8 @@ public:
         resBarEntity->addComponent(resBar);
 //        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
 //        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
-        resBar->getTransform()->setScale(glm::vec3(0.166f, 0.041f, 0.0f));
-        resBar->getTransform()->setPosition(glm::vec3(-0.65f, -0.699f, 0.0f));
+        resBar->getTransform()->setScale(glm::vec3(0.2f, 0.041f, 0.0f));
+        resBar->getTransform()->setPosition(glm::vec3(-0.699f, -0.699f, 0.0f));
 
         // txt
         comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
@@ -634,19 +634,19 @@ public:
         currentScene->addEntity(humanEntity);
         humanEntity->addComponent(humanImage);
         humanImage->getTransform()->setScale(glm::vec3(0.024f, 0.04f, 0.0f));
-        humanImage->getTransform()->setPosition(glm::vec3(-0.853f, -0.7f, 0.0f));
+        humanImage->getTransform()->setPosition(glm::vec3(-0.942f, -0.7f, 0.0f));
         humanImage->setTexture(humanTexture);
 
         currentScene->addEntity(robotEntity);
         robotEntity->addComponent(robotImage);
         robotImage->getTransform()->setScale(glm::vec3(0.018f, 0.05f, 0.0f));
-        robotImage->getTransform()->setPosition(glm::vec3(-0.45f, -0.7f, 0.0f));
+        robotImage->getTransform()->setPosition(glm::vec3(-0.46f, -0.7f, 0.0f));
         robotImage->setTexture(robotTexture);
 
         currentScene->addEntity(frameEntity);
         frameEntity->addComponent(frameImage);
-        frameImage->getTransform()->setScale(glm::vec3(0.17f, 0.05f, 0.0f));
-        frameImage->getTransform()->setPosition(glm::vec3(-0.65f, -0.7f, 0.0f));
+        frameImage->getTransform()->setScale(glm::vec3(0.204f, 0.05f, 0.0f));
+        frameImage->getTransform()->setPosition(glm::vec3(-0.699f, -0.7f, 0.0f));
         frameImage->setTexture(frameTexture);
 
 
@@ -868,8 +868,8 @@ public:
         frameImage->renderPlane();
 
         resBar->renderPlane();
-        // resizing bar
-        // temporary------------------------------------------------------------------------------------
+         //resizing bar
+         //temporary------------------------------------------------------------------------------------
         double currentTime = glfwGetTime();
         // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
         if (currentTime - lastUpdateTime >= resizeInterval)
@@ -906,7 +906,7 @@ public:
         } else {
             imageShaderGreen.setBool("isBarLocked", true);
         }
-//std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
+std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
 //giving a 2 second chance to player to bumpup the bar
     if (resBar->getTransform()->getLocalScale().x <= 0.01f) {
         if (!isCounting) {
@@ -1002,7 +1002,7 @@ public:
 
         if (playerInput.isKeyPressed(1))
         {
-            sm.setCurrentScene("PauseScene");
+            resBar->resetScaleAndPosition();
         }
 
 //        if(time > songLenghtGlobal + 5)

@@ -16,13 +16,12 @@ public:
 
         if (currentScale.x - impulse > 0) {
             currentScale.x -= impulse;
-            currentPosition.x -= impulse; // Przesuwamy obiekt w dół tylko jeśli skala jest większa od zera
-        } else {
-            currentScale.x = 0; // Ustawiamy wartość skali na zero, jeżeli nowa wartość byłaby ujemna
-        }
+            parentTransform->setScale(currentScale);
 
-        parentTransform->setScale(currentScale);
-        parentTransform->setPosition(currentPosition);
+            // Przesunięcie obiektu w dół
+            currentPosition.x -= impulse;
+            parentTransform->setPosition(currentPosition);
+        }
 
         shader->setFloat("scale", currentScale.x);
     }
@@ -31,23 +30,33 @@ public:
         glm::vec3 currentScale = parentTransform->getLocalScale();
         glm::vec3 currentPosition = parentTransform->getLocalPosition();
 
-        if (currentScale.x + impulse <= 0.166) {
+        if (currentScale.x + impulse < 0.3) {
             // Zwiększamy rozmiar paska
             currentScale.x += impulse;
-            currentPosition.x += impulse; // Przesuwamy obiekt w górę tylko jeśli skala jest mniejsza od 0.166
-        } else {
-            currentScale.x = 0.166; // Ustawiamy wartość skali na 0.166, jeżeli nowa wartość byłaby większa
-        }
+            parentTransform->setScale(currentScale);
 
-        parentTransform->setScale(currentScale);
-        parentTransform->setPosition(currentPosition);
+            // Przesuwamy obiekt w górę
+            currentPosition.x += impulse;
+            parentTransform->setPosition(currentPosition);
+        }
 
         shader->setFloat("scale", currentScale.x);
     }
 
+    void resetScaleAndPosition() {
+        // Ustawiamy skalę na pierwotną wartość
+        glm::vec3 originalScale(0.2f, 0.041f, 0.0f);
+        parentTransform->setScale(originalScale);
+        shader->setFloat("scale", 0.166f);
+
+        // Ustawiamy pozycję na pierwotną wartość
+        glm::vec3 originalPosition(-0.699f, -0.699f, 0.0f);
+        parentTransform->setPosition(originalPosition);
+    }
+
     void showScale() {
         glm::vec3 currentScale = parentTransform->getLocalScale();
-        std::cout << "Scale: " << currentScale.x << " " << currentScale.y << " " << currentScale.z << std::endl;
+        std::cout << "Scale: " << currentScale.x << " " << currentScale.x << " " << currentScale.z << std::endl;
     }
 
 };
