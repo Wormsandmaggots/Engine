@@ -29,12 +29,12 @@ void HandOrb::onTriggerEnter(ColliderComponent *collidedWith)
 	{
 		this->animationPos = position;
 		this->animation = true;
-		ScoreNumbers::getInstance().calculateViewPos(position, "100");
+		ScoreNumbers::getInstance().calculateViewPos(position, std::to_string(incrementScore));
 		position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		this->active = false;
-		score += 100;
+		score = score + incrementScore * (1.00 + combo * 0.05);
 		combo += 1;
-		AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 1);
+		AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
 	}
 }

@@ -49,7 +49,7 @@ void AudioManager::restartThisSong(const std::string& name)
         ma_result result = ma_sound_seek_to_pcm_frame(&it->second->getSound(), 0);
         if (result != MA_SUCCESS) {
             // Handle error, for example, log it
-            LOG_ERROR("Failed to seek to start of song: " + name);
+            LOG_ERROR("Failed to s  eek to start of song: " + name);
             return;
         }
 

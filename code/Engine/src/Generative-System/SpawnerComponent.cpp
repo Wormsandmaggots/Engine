@@ -191,7 +191,7 @@ void SpawnerComponent::update()
 			if (entity->getName() == "badOrb")
 			{
 				AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
-				score += 100;
+				score = score + incrementScore * (1.00 + combo * 0.05);
 				combo += 1;
 			}
 			if (entity->getName() == "handOrb" || entity->getName() == "footOrb")
@@ -199,6 +199,11 @@ void SpawnerComponent::update()
 				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 				combo = 0;
 			}
+			if (entity->getName() == "drink")
+			{
+				AudioManager::getInstance().playSound("res/content/sounds/effects/shattered glass.wav", 0.4);
+			}
+
 			deactiveEntity(entity);
 		}
 

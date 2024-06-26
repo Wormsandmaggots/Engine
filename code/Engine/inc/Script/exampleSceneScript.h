@@ -773,6 +773,7 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
 
             break;
         case DrinkType::InverseInput:
@@ -786,6 +787,8 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
+
 
             break;
         case DrinkType::UpsideDown:
@@ -796,11 +799,14 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
 
             break;
         case DrinkType::None:
             shaderNoneDrink.use();
             shaderNoneDrink.setInt("screenTexture", 0);
+            incrementScore = 100;
+
             break;
         }
 
@@ -875,15 +881,16 @@ public:
             timeLeft -= s.deltaTime;
             if (timeLeft <= 0.0f)
             {
-                sm.setCurrentScene("LoseScene");
+                AudioManager::getInstance().pauseThisSong("bicik");
+                //sm.setCurrentScene("LoseScene");
             }
         }
 
         // temporary------------------------------------------------------------------------------------
         // text
 
-        score = score * (1.0 + 0.01 * combo);
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        if (combo > 0 )
+            comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
         comboRenderer->renderText();
@@ -963,6 +970,7 @@ public:
 
         if (time > songLenghtGlobal + 5)
         {
+            AudioManager::getInstance().pauseThisSong("bicik");
             sm.setCurrentScene("WinScene");
         }
     };

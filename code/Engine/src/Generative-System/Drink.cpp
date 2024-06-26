@@ -34,6 +34,6 @@ void Drink::onTriggerEnter(ColliderComponent *collidedWith)
 		currentDrink = (DrinkType)(rand() % 3);
 		combo += 1;
 		this->active = false;
-		// AudioManager::getInstance().playSound("res/content/sounds/effects/clap.wav"); // DZWIEK DO PODMIANY
+		AudioManager::getInstance().playSound("res/content/sounds/effects/drink.wav", 0.4);
 	}
 }
