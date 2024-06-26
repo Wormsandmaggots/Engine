@@ -437,7 +437,7 @@ public:
 
         // entities
         // club interior
-        /*
+
         clubE->addComponent(club);
         currentScene->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
@@ -479,7 +479,7 @@ public:
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f, 180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 50.728f));
-*/
+
         // lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(5.f));

@@ -30,7 +30,6 @@ public:
         orbScreenPos.y = (orbNDC.y * 0.5f + 0.5f) * height;
         //orbScreenPos.y = height - orbScreenPos.y;
         pointsStorage.push_back(Points(orbScreenPos.x, orbScreenPos.y, points, 1));
-        LOG_INFO(std::to_string(orbScreenPos.x) + " " +std::to_string(orbScreenPos.y));
     }
 
     void update(){
@@ -53,8 +52,6 @@ public:
                 it = pointsStorage.erase(it);
             }
         }
-        LOG_INFO(std::to_string(pointsStorage.size()));
-
     }
 
     void setProjection(glm::mat4 p){
