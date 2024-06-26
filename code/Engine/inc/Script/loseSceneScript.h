@@ -215,7 +215,8 @@ public:
 
         changeSongButton->setOnClick([this]() {
             std::cout << "changeButton button clicked!" << std::endl;
-            this->sm.setCurrentScene("SongScene");
+			reset = true;
+            this->sm.setCurrentScene("MarcinScene");
         });
 
         currentScene->addEntity(ex);

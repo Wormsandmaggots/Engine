@@ -221,22 +221,22 @@ private:
     float clock;
     float fallStop;
 
-    //hud2
-    Entity* scoreEntity;
-    Image* scoreImage;
-    Texture* scoreTexture;
-    Entity* comboEntity;
-    Image* comboImage;
-    Texture* comboTexture;
-    Entity* humanEntity;
-    Image* humanImage;
-    Texture* humanTexture;
-    Entity* robotEntity;
-    Image* robotImage;
-    Texture* robotTexture;
-    Entity* frameEntity;
-    Image* frameImage;
-    Texture* frameTexture;
+    // hud2
+    Entity *scoreEntity;
+    Image *scoreImage;
+    Texture *scoreTexture;
+    Entity *comboEntity;
+    Image *comboImage;
+    Texture *comboTexture;
+    Entity *humanEntity;
+    Image *humanImage;
+    Texture *humanTexture;
+    Entity *robotEntity;
+    Image *robotImage;
+    Texture *robotTexture;
+    Entity *frameEntity;
+    Image *frameImage;
+    Texture *frameTexture;
 
 public:
     // Konstruktor domyślny
@@ -418,6 +418,19 @@ public:
             activeButton->setActive(true);
         }
         activeButton = newActiveButton;
+    }
+
+    void resetGame()
+    {
+        score = 0;
+        combo = 0;
+        player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
+        spawnerComponent->reset();
+        time = 0;
+        s.camera.SetPosition(glm::vec3(0.0f, .3f, -8.0f));
+        pointLight8E->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+        AudioManager::getInstance();
+        LOG_INFO("Game restarted");
     }
 
     void clickActiveButton()
@@ -614,7 +627,7 @@ public:
         // scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         // scoreRenderer->setParameters("Score " + std::to_string(score), 768, 601, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
-        //hud2
+        // hud2
         currentScene->addEntity(scoreEntity);
         scoreEntity->addComponent(scoreImage);
         scoreImage->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
@@ -646,6 +659,12 @@ public:
 
     void update() override
     {
+
+        if (reset)
+        {
+            resetGame();
+            reset = false;
+        }
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
@@ -810,6 +829,7 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
 
             break;
         case DrinkType::InverseInput:
@@ -823,6 +843,7 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
 
             break;
         case DrinkType::UpsideDown:
@@ -833,11 +854,14 @@ public:
             timer -= s.deltaTime;
             clock -= s.deltaTime;
             canDecreaseBar = false;
+            incrementScore = 300;
 
             break;
         case DrinkType::None:
             shaderNoneDrink.use();
             shaderNoneDrink.setInt("screenTexture", 0);
+            incrementScore = 100;
+
             break;
         }
 
@@ -850,11 +874,11 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // hud
-        //hud2
+        // hud2
         imageShader.use();
         scoreImage->renderPlane();
-        if(combo>0)
-        comboImage->renderPlane();
+        if (combo > 0)
+            comboImage->renderPlane();
         humanImage->renderPlane();
         robotImage->renderPlane();
         frameImage->renderPlane();
@@ -921,7 +945,8 @@ public:
             timeLeft -= s.deltaTime;
             if (timeLeft <= 0.0f)
             {
-                //sm.setCurrentScene("LoseScene");
+                AudioManager::getInstance().pauseThisSong("bicik");
+                sm.setCurrentScene("LoseScene");
             }
         }
 
@@ -930,8 +955,8 @@ public:
         comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
-        if(combo>0)
-        comboRenderer->renderText();
+        if (combo > 0)
+            comboRenderer->renderText();
         scoreRenderer->renderText();
         ScoreNumbers::getInstance().update();
         glEnable(GL_DEPTH_TEST);
@@ -998,8 +1023,14 @@ public:
             sm.setCurrentScene("PauseScene");
         }
 
+        if (playerInput.isKeyPressed(GLFW_GAMEPAD_BUTTON_Y))
+        {
+            reset = true;
+        }
+
         if (time > songLenghtGlobal + 5)
         {
+            AudioManager::getInstance().pauseThisSong("bicik");
             sm.setCurrentScene("WinScene");
         }
     };

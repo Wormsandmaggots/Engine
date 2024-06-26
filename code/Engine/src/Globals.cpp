@@ -28,5 +28,6 @@ std::string pathToSong = "res/content/sounds/songs/00/vengeance.wav";
 float lookatAngle = 1.0f;
 int badOrbChance = 5; // w procentach szansa na zly orb
 
+bool reset = false;
 float songLenghtGlobal = 0.0f;
 

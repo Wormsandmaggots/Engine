@@ -5,7 +5,7 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 	this->originPos = originPos;
 	inactivePos = glm::vec3(-100);
-	this->orbDistance = originPos.z;
+	//this->orbDistance = originPos.z;
 	this->entitiesCount = entitiesCount;
 	this->orbsSpawned = 0;
 	this->songPath = songPath;
@@ -191,7 +191,7 @@ void SpawnerComponent::update()
 			if (entity->getName() == "badOrb")
 			{
 				AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
-				score += 100;
+				score = score + incrementScore * (1.00 + combo * 0.05);
 				combo += 1;
 			}
 			if (entity->getName() == "handOrb" || entity->getName() == "footOrb")
@@ -199,6 +199,11 @@ void SpawnerComponent::update()
 				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 				combo = 0;
 			}
+			if (entity->getName() == "drink")
+			{
+				AudioManager::getInstance().playSound("res/content/sounds/effects/shattered glass.wav", 0.4);
+			}
+
 			deactiveEntity(entity);
 		}
 
@@ -255,6 +260,12 @@ void SpawnerComponent::init()
 	parentEntity->addChild(drink2);
 	entitiesInactive.push_back(drink1);
 	entitiesInactive.push_back(drink2);
+}
+void SpawnerComponent::reset()
+{
+	songDataIndex = 0;
+	originPos = glm::vec3(0, 0, orbDistance);
+	AudioManager::getInstance().restartThisSong("bicik");
 }
 void SpawnerComponent::deactiveEntity(Collectable *ent)
 {

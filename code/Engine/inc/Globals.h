@@ -34,5 +34,5 @@ extern int incrementScore;
 extern std::string pathToSong;
 extern float lookatAngle;
 extern int badOrbChance;
-
+extern bool reset;
 extern float songLenghtGlobal;
