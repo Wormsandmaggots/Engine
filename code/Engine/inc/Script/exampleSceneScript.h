@@ -741,6 +741,7 @@ public:
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         switch (currentDrink)
         {
         case DrinkType::Drunk:
@@ -818,10 +819,10 @@ public:
             }
         }
         //resBar może nowu spadać
-        if (!canDecreaseBar && clock < 0)
+        if (!canDecreaseBar && timer < 0)
         {
             canDecreaseBar = true;
-            clock = fallStop; // resetujemy timer
+            //lock = fallStop; // resetujemy timer
         }
         //zmiana koloru paska na szary gdy nie mozę spadać
         imageShaderGreen.use();
