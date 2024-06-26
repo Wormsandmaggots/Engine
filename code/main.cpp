@@ -233,6 +233,8 @@ int main() {
 
     glfwMakeContextCurrent(s.window);
 
+    glfwDestroyWindow(window);
+
     while (!glfwWindowShouldClose(s.window))
     {
         imgui_begin();
