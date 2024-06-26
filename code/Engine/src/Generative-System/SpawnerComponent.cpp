@@ -1,6 +1,5 @@
 ﻿#include "Generative-System/SpawnerComponent.h"
 
-
 SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, unsigned int entitiesCount)
 {
 

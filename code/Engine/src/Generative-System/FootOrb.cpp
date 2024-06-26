@@ -1,5 +1,5 @@
 #include "Generative-System/FootOrb.h"
-
+#include "ScoreNumbers.h"
 FootOrb::FootOrb(const std::string name, const glm::vec3& position, Model* model) : Collectable(name, position, model)
 {
 	this->getTransform()->setRotation(glm::vec3(90, 90, 90));
@@ -25,7 +25,8 @@ void FootOrb::onTriggerStay(ColliderComponent* collidedWith)
 void FootOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer") {
-		position = glm::vec3(100);
+        ScoreNumbers::getInstance().calculateViewPos(position,"100");
+        position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		score += 100;
 		combo += 1;

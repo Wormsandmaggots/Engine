@@ -411,6 +411,8 @@ public:
         mul = 4;
         texelSize = 1;
         z = 5;
+        ScoreNumbers::getInstance().setWidth(s.WINDOW_WIDTH);
+        ScoreNumbers::getInstance().setHeight(s.WINDOW_HEIGHT);
     };
 
     void start() override
@@ -435,15 +437,13 @@ public:
 
         // entities
         // club interior
+        /*
         clubE->addComponent(club);
         currentScene->addEntity(clubE);
         club->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
         club->getTransform()->setScale(glm::vec3(0.5f));
         club->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 0.0f));
 
-        // player3->addComponent(player2);
-        // currentScene->addEntity(player3);
-        // player3->getTransform()->setPosition(glm::vec3(2, -2.5, 0));
 
         djE->addComponent(dj);
         currentScene->addEntity(djE);
@@ -479,7 +479,7 @@ public:
         barman->getTransform()->setScale(glm::vec3(0.02f));
         barman->getTransform()->rotate(glm::vec3(0.0f, 180.0f, 0.0f));
         barman->getTransform()->setPosition(glm::vec3(0.0f, -3.4f, 50.728f));
-
+*/
         // lights
         pointLight->addComponent(pointLight1);
         pointLight->getTransform()->setScale(glm::vec3(5.f));
@@ -580,8 +580,9 @@ public:
         resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
 
         // txt
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        //comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        //scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        //scoreRenderer->setParameters("Score " + std::to_string(score), 768, 601, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
 
         DrunkShader.setInt("screenTexture", 0);
@@ -611,7 +612,8 @@ public:
 
         glm::mat4 projection = glm::perspective(glm::radians(s.camera.Zoom), (float)s.WINDOW_WIDTH / (float)s.WINDOW_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = s.camera.GetViewMatrix();
-
+        ScoreNumbers::getInstance().setProjection(projection);
+        ScoreNumbers::getInstance().setView(view);
 //        s.camera.MoveForwardZ(globalVelocity * deltaTime);
 
         // moving forward
@@ -857,7 +859,7 @@ public:
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
-
+        ScoreNumbers::getInstance().update();
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
