@@ -10,6 +10,7 @@ Collectable::Collectable(const std::string name, const glm::vec3& position, Mode
 	this->getTransform()->setPosition(position);
 	Entity::addComponent(model);
 	this->addComponent(collider);
+	this->animationPos = glm::vec3(0);
 }
 
 void Collectable::setChildInactive() {

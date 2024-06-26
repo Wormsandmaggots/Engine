@@ -9,49 +9,51 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 	this->entitiesCount = entitiesCount;
 	this->orbsSpawned = 0;
 	this->songPath = songPath;
-	spawnTimer=0;
+	spawnTimer = 0;
 
-	handOrbModel =new Model("res/content/models/orbUP/orbUP.fbx");
-	footOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx");
-	badOrbModel= new Model("res/content/models/orbX/orbX.fbx");
-	drinkModel= new Model("res/content/models/kieliszki/drink1/drink1_re.fbx");
+	handOrbModel = new Model("res/content/models/orbUP/orbUP.fbx");
+	footOrbModel = new Model("res/content/models/orbDOWN/orbDown.fbx", new MaterialAsset("res/content/materials/color.json"));
+	badOrbModel = new Model("res/content/models/orbX/orbX.fbx");
+	drinkModel = new Model("res/content/models/kieliszki/drink1/drink1_re.fbx");
 	ringXModel = new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
 	ringUPModel = new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
-	ringDOWNModel= new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
+	ringDOWNModel = new Model("res/content/models/orb2/obrys2.fbx", new MaterialAsset("res/content/materials/color.json"));
 }
 
 void SpawnerComponent::start()
 {
 	SongAnalizer::parseSong(spawnAfter, pathToSong, songData);
 	SongAnalizer::testparseSong(spawnAfter, pathToSong, songData);
-	//AudioManager::getInstance().playSound(songPath,1);
-    //i put this here so played song will be in sync wit spawning orbs
-    AudioManager::getInstance().playThisSound("bicik",pathToSong, 1.0f);
-    AudioManager::getInstance().playThisSong("bicik");
-
+	// AudioManager::getInstance().playSound(songPath,1);
+	// i put this here so played song will be in sync wit spawning orbs
+	AudioManager::getInstance().playThisSound("bicik", pathToSong, 1.0f);
+	AudioManager::getInstance().playThisSong("bicik");
 }
-
 
 void SpawnerComponent::update()
 {
-    //i put this here so played song will be in sync wit spawning orbs
-    AudioManager::getInstance().playThisSong("bicik");
+	// i put this here so played song will be in sync wit spawning orbs
+	AudioManager::getInstance().playThisSong("bicik");
 
-	if (!started) {
+	if (!started)
+	{
 		start();
 		started = true;
 	}
 
-
 	spawnTimer -= deltaTime;
-	if (spawnTimer < 0 && songDataIndex < songData.size()) {
+	if (spawnTimer < 0 && songDataIndex < songData.size())
+	{
+
+		spawnAnimationRing(glm::vec3(-8.4, 2.4, 53.0), "drink");
 
 		/*cout << "Type: " << songData[songDataIndex].type << endl;
 		cout << "Bass: " << songData[songDataIndex].bass.x << " " << songData[songDataIndex].bass.y << endl;
 		cout << "Mid: " << songData[songDataIndex].mid.x << " " << songData[songDataIndex].mid.y << endl;
 		cout << "High: " << songData[songDataIndex].high.x << " " << songData[songDataIndex].high.y << endl << endl;*/
 
-        switch (songData[songDataIndex].type) {
+		switch (songData[songDataIndex].type)
+		{
 		case sampleType::BASS:
 			xRH = 1 * songData[songDataIndex].bass.x;
 			yRH = 1.5 * songData[songDataIndex].bass.y;
@@ -92,25 +94,19 @@ void SpawnerComponent::update()
 
 			break;
 
-
 		case sampleType::SKIP:
-			xRH =0;
-			yRH =0;
-			xLH =0;
-			yLH =0;
+			xRH = 0;
+			yRH = 0;
+			xLH = 0;
+			yLH = 0;
 
-			xRF =0;
-			yRF =0;
-			xLF =0;
-			yLF =0;
+			xRF = 0;
+			yRF = 0;
+			xLF = 0;
+			yLF = 0;
 
 			break;
-        }
-
-
-
-
-
+		}
 
 		// raczki
 		if (xRH > -0.5 && xRH < 2.0f && yRH > -0.5 && yRH < 2.5f)
@@ -124,8 +120,8 @@ void SpawnerComponent::update()
 			else
 				spawn<HandOrb>(glm::vec3(xRH, yRH, originPos.z));
 		}
-		
-		if (xLH < 0.5 && xLH > -2.0f && yLH > -0.5 && yLH < 2.5f) 
+
+		if (xLH < 0.5 && xLH > -2.0f && yLH > -0.5 && yLH < 2.5f)
 		{
 			checkAndAdjustForOverlap(xLH, yLH, xRH, yRH, orbRadius);
 			checkAndAdjustForOverlap(xLH, yLH, xLF, yLF, orbRadius);
@@ -136,13 +132,10 @@ void SpawnerComponent::update()
 				spawn<HandOrb>(glm::vec3(xLH, yLH, originPos.z));
 		}
 
-
-
-
-		// nozki 
+		// nozki
 		if (xRF > -0.5 && xRF < 2.0f && yRF < 0.5 && yRF > -2.5f)
 		{
-			float adjustedYRF = std::min(yRF, std::max(yRH, yLH)); 
+			float adjustedYRF = std::min(yRF, std::max(yRH, yLH));
 			checkAndAdjustForOverlap(xRF, yRF, xRH, yRH, orbRadius);
 			checkAndAdjustForOverlap(xRF, yRF, xLF, yLF, orbRadius);
 			checkAndAdjustForOverlap(xRF, yRF, xLH, yLH, orbRadius);
@@ -164,61 +157,75 @@ void SpawnerComponent::update()
 				spawn<FootOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 		}
 
-        if (orbsSpawned > 100) 
+		if (orbsSpawned > 50)
 		{
-            spawn<Drink>(glm::vec3(-1, 1, originPos.z));
+			spawn<Drink>(glm::vec3(xRH, yLF, originPos.z));
 			orbsSpawned = 0;
 			spawnAfter -= freqIncrement;
-        }
-        
-        spawnTimer = spawnAfter;
-
-		if (!(songDataIndex <= songData.size())) {
-		
-			cout << "YOU WIN!" << endl;
-			//zmiana sceny i odkomentować started zeby przy nastepnej piosence tez sie wywołał start();
-			//started = false;
 		}
-		else {
+
+		spawnTimer = spawnAfter;
+
+		if (!(songDataIndex <= songData.size()))
+		{
+			songDataIndex = 0;
+		}
+		else
+		{
 			songDataIndex++;
 		}
+
+		spawnAnimationRing(glm::vec3(8.4, -1.7, 53.0), "drink");
 	}
 
-	for (Collectable* entity : entitiesActive) {
-		if (entity->position.z < originPos.z -orbDistance - 1.5) {
+	for (Collectable *entity : entitiesActive)
+	{
+		if (entity->animation)
+		{
+			spawnAnimationRing(entity->animationPos, entity->getName());
+			entity->animation = false;
+		}
+		if (entity->position.z < originPos.z - orbDistance - 1.5)
+		{
 
-			if (entity->getName() == "badOrb") {
+			if (entity->getName() == "badOrb")
+			{
 				AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
 				score += 100;
 				combo += 1;
 			}
-			if (entity->getName() == "handOrb" || entity->getName() == "footOrb") {
+			if (entity->getName() == "handOrb" || entity->getName() == "footOrb")
+			{
 				AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 0.4);
 				combo = 0;
 			}
 			deactiveEntity(entity);
 		}
-		if (!entity->active) {
+
+		if (!entity->active)
+		{
 			deactiveEntity(entity);
 		}
 	}
-    if(deltaTime<1)
-	originPos.z += globalVelocity * deltaTime;
-
+	if (deltaTime < 1)
+		originPos.z += globalVelocity * deltaTime;
 }
 
 void SpawnerComponent::init()
 {
 	for (int i = 0; i < entitiesCount; i++)
 	{
-		Collectable* handOrb = new HandOrb("handOrb", inactivePos, new Model(*handOrbModel));
-		Collectable* footOrb = new FootOrb("footOrb", inactivePos, new Model(*footOrbModel));
-		Collectable* badOrb = new BadOrb("badOrb", inactivePos, new Model(*badOrbModel));
-		Collectable* handRing = new Ring("handRing", inactivePos, new Model(*ringUPModel));
-		Collectable* footRing = new Ring("footRing", inactivePos, new Model(*ringDOWNModel));
-		Collectable* badRing = new Ring("badRing", inactivePos, new Model(*ringXModel));
-		
-		handOrb->getTransform()->rotate(glm::vec3(180,0,0));
+		Collectable *handOrb = new HandOrb("handOrb", inactivePos, new Model(*handOrbModel));
+		Collectable *footOrb = new FootOrb("footOrb", inactivePos, new Model(*footOrbModel));
+		Collectable *badOrb = new BadOrb("badOrb", inactivePos, new Model(*badOrbModel));
+		Collectable *handRing = new Ring("handRing", inactivePos, new Model(*ringUPModel));
+		Collectable *footRing = new Ring("footRing", inactivePos, new Model(*ringDOWNModel));
+		Collectable *badRing = new Ring("badRing", inactivePos, new Model(*ringXModel));
+		Collectable *animationRing1 = new AnimationRing("animationRing", inactivePos, new Model(*ringXModel));
+		Collectable *animationRing2 = new AnimationRing("animationRing", inactivePos, new Model(*ringXModel));
+		Collectable *animationRing3 = new AnimationRing("animationRing", inactivePos, new Model(*ringXModel));
+
+		handOrb->getTransform()->rotate(glm::vec3(180, 0, 0));
 		footOrb->getTransform()->rotate(glm::vec3(180, 0, 0));
 
 		parentEntity->addChild(handOrb);
@@ -227,6 +234,9 @@ void SpawnerComponent::init()
 		parentEntity->addChild(handRing);
 		parentEntity->addChild(footRing);
 		parentEntity->addChild(badRing);
+		parentEntity->addChild(animationRing1);
+		parentEntity->addChild(animationRing2);
+		parentEntity->addChild(animationRing3);
 
 		entitiesInactive.push_back(handOrb);
 		entitiesInactive.push_back(footOrb);
@@ -234,64 +244,88 @@ void SpawnerComponent::init()
 		entitiesInactive.push_back(footRing);
 		entitiesInactive.push_back(handRing);
 		entitiesInactive.push_back(badRing);
+		entitiesInactive.push_back(animationRing1);
+		entitiesInactive.push_back(animationRing2);
+		entitiesInactive.push_back(animationRing3);
 	}
 
-	Collectable* drink1 = new Drink("drink", inactivePos, new Model(*drinkModel));
-	Collectable* drink2 = new Drink("drink", inactivePos, new Model(*drinkModel));
+	Collectable *drink1 = new Drink("drink", inactivePos, new Model(*drinkModel));
+	Collectable *drink2 = new Drink("drink", inactivePos, new Model(*drinkModel));
 	parentEntity->addChild(drink1);
 	parentEntity->addChild(drink2);
 	entitiesInactive.push_back(drink1);
 	entitiesInactive.push_back(drink2);
-
-
 }
-void SpawnerComponent::deactiveEntity(Collectable* ent) {
+void SpawnerComponent::deactiveEntity(Collectable *ent)
+{
 	ent->active = false;
-	for (Entity* e : ent->getChildren()) {
-		Collectable* child = dynamic_cast<Collectable*>(e);
+	for (Entity *e : ent->getChildren())
+	{
+		Collectable *child = dynamic_cast<Collectable *>(e);
 		child->active = false;
 		child->getTransform()->setPosition(inactivePos);
-		//child->getComponent<Model>()->getMaterial()->SetVec4("materialColor", glm::vec4(1, 1, 1, 1));
+		// child->getComponent<Model>()->getMaterial()->SetVec4("materialColor", glm::vec4(1, 1, 1, 1));
 		ent->removeChild(child);
 	}
 	ent->getTransform()->setPosition(inactivePos);
 	entitiesInactive.push_back(ent);
 	entitiesActive.erase(std::remove(entitiesActive.begin(), entitiesActive.end(), ent), entitiesActive.end());
 }
-void SpawnerComponent::activateEntity(Collectable* ent) {
+void SpawnerComponent::activateEntity(Collectable *ent)
+{
 	ent->active = true;
 	entitiesActive.push_back(ent);
 	entitiesInactive.erase(std::remove(entitiesInactive.begin(), entitiesInactive.end(), ent), entitiesInactive.end());
 }
 
-template<typename T>
-void SpawnerComponent::spawn(glm::vec3 newPos) {
-	if (newPos.x == 0 || newPos.y == 0) return;
-	for (Collectable* entity : entitiesInactive) {
-		if (typeid(*entity) == typeid(T)){
+template <typename T>
+void SpawnerComponent::spawn(glm::vec3 newPos)
+{
+	if (newPos.x == 0 || newPos.y == 0)
+		return;
+	for (Collectable *entity : entitiesInactive)
+	{
+		if (typeid(*entity) == typeid(T))
+		{
 			entity->position = newPos;
 			activateEntity(entity);
-			Collectable* ring;
-			if(entity->getName() == "handOrb")
-				ring = spawnRing(glm::vec3(newPos.x,newPos.y,originPos.z-orbDistance-0.5),"handRing");
+			Collectable *ring;
+			if (entity->getName() == "handOrb")
+				ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "handRing");
 			else if (entity->getName() == "footOrb")
-				 ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "footRing");
+				ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "footRing");
 			else if (entity->getName() == "badOrb")
 				ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "badRing");
 			else
-				 ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "badRing");
+				ring = spawnRing(glm::vec3(newPos.x, newPos.y, originPos.z - orbDistance - 0.5), "badRing");
 			entity->addChild(ring);
 			orbsSpawned++;
 			break;
 		}
 	}
 }
-Collectable* SpawnerComponent::spawnRing(glm::vec3 newPos,std::string ringType) {
-	for (Collectable* entity : entitiesInactive) {
-		if (typeid(*entity) == typeid(Ring)&& entity->getName() == ringType) {
+Collectable *SpawnerComponent::spawnRing(glm::vec3 newPos, std::string ringType)
+{
+	for (Collectable *entity : entitiesInactive)
+	{
+		if (typeid(*entity) == typeid(Ring) && entity->getName() == ringType)
+		{
 			entity->position = newPos;
 			activateEntity(entity);
 			return entity;
+		}
+	}
+}
+void SpawnerComponent::spawnAnimationRing(glm::vec3 newPos, std::string ringType)
+{
+	for (Collectable *entity : entitiesInactive)
+	{
+		if (typeid(*entity) == typeid(AnimationRing))
+		{
+			entity->ringType = ringType;
+			entity->position = newPos;
+			activateEntity(entity);
+			break;
 		}
 	}
 }

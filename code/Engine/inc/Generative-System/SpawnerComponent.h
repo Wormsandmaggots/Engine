@@ -10,6 +10,7 @@
 #include "Generative-System/Drink.h"
 #include "Generative-System/Ring.h"
 #include "Generative-System/SongAnalizer.h"
+#include "Generative-System/AnimationRing.h"
 
 #include "Debug/Logger.h"
 #include "Model.h"
@@ -51,6 +52,8 @@ public:
     template<typename T>
     void spawn(glm::vec3 spawnPos);
     Collectable* spawnRing(glm::vec3 spawnPos,std::string ringType);
+    void spawnAnimationRing(glm::vec3 spawnPos, std::string ringType);
+
 
     void activateEntity(Collectable* ent);
     void deactiveEntity(Collectable* ent);
