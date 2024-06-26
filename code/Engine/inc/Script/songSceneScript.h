@@ -221,8 +221,9 @@ public:
 
         era00->setOnClick([this]() {
             std::cout << "00 button clicked!" << std::endl;
-//            pathToSong = "res/content/sounds/songs/00/dream.wav";
-            pathToSong = "res/content/sounds/effects/kicked out.wav";
+            pathToSong = "res/content/sounds/songs/00/dream.wav";
+//            pathToSong = "res/content/sounds/effects/kicked out.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -239,6 +240,7 @@ public:
         era90->setOnClick([this]() {
             std::cout << "90 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/90/eurodance.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 
@@ -255,6 +257,7 @@ public:
         era80->setOnClick([this]() {
             std::cout << "80 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
 

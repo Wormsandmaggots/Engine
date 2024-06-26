@@ -9,7 +9,7 @@
 #include "Script/winSceneScript.h"
 #include "Script/creditsSceneScript.h"
 #include "Script/songSceneScript.h"
-
+#include "Script/calibrationSceneScript.h"
 
 
 using namespace SceneManagement;
@@ -59,6 +59,7 @@ int main() {
     sm.loadScene("res/content/maps/Win.yaml");
     sm.loadScene("res/content/maps/Credits.yaml");
     sm.loadScene("res/content/maps/Song.yaml");
+    sm.loadScene("res/content/maps/Calibration.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
     editor.init(&s.camera);
@@ -124,6 +125,13 @@ int main() {
     songsceneScript->awake();
     songsceneScript->start();
 
+//    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+//                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
+//                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
+//                                                                                imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
+//    calibrationsceneScript->awake();
+//    calibrationsceneScript->start();
+
 // Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
 
@@ -169,21 +177,12 @@ int main() {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
             }
+//            else if (currentScene->getName() == "CalibrationScene") {
+//                // Wywołanie metody update dla exampleSceneScript
+//                calibrationsceneScript->update();
+//            }
         }
 
-        // Sprawdzanie, czy klawisz spacji został naciśnięty
-        if (glfwGetKey(s.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            if (switched) {
-                // Zmiana sceny na exampleSceneScript
-                sm.setCurrentScene("MarcinScene");
-                switched = false;
-            } else {
-                // Zmiana sceny na menuSceneScript
-                //sm.setCurrentScene("PauseScene");
-                sm.setCurrentScene("WinScene");
-                switched = true;
-            }
-        }
 
         update();
     }
