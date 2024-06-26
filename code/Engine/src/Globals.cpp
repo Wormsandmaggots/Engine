@@ -7,11 +7,11 @@ int score = 0;
 int combo = 0;
 bool start = false;
 DrinkType currentDrink = DrinkType::None;// typ pp i efekt drinka
-float ballSpeed = 6.0f;// predkosc orba
-float songInterval = 1.5f; // czas sampolowania do systemuGeneratywnego
+float ballSpeed = 4.0f;// predkosc orba
+float songInterval = 2.0f; // czas sampolowania do systemuGeneratywnego
 float forwardSpeed = 0.f; // predkosc w kierunku baru
 float freqIncrement = 0.1; // spawnuje sie wiecej orbow z czasem i to jest rate orb/sec 
-float orbDistance = 10.0f; // droga do spawnera do gracza
+float orbDistance = 8.5f; // droga do spawnera do gracza
 float lastUpdateTime = 0.0f;
 
 //resizableBar

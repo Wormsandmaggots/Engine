@@ -286,7 +286,7 @@ public:
                                                                                                                                                                                                       chairs(new Model("res/content/models/krzesla/krzeslo/krzesla.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                                                       player2(new Model("res/content/models/npc/npcv2.fbx", &ssao.shaderGeometryPass)),
                                                                                                                                                                                                       barman(new Model("res/content/models/barman_rignorig/BARMAN_ANIMATIONv2.fbx", &shaderBarmanRig)),
-                                                                                                                                                                                                      playerModel(new Model("res/content/models/postacKalibracja/mainCharacterCalibration.fbx", &shaderRig)),
+                                                                                                                                                                                                      playerModel(new Model("res/content/models/Chlop/MainCharacter.fbx", &shaderRig)),
                                                                                                                                                                                                       sphereModel(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color.json"))),
                                                                                                                                                                                                       sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
                                                                                                                                                                                                       sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
@@ -429,8 +429,9 @@ public:
         time = 0;
         s.camera.SetPosition(glm::vec3(0.0f, .3f, -8.0f));
         pointLight8E->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
-        AudioManager::getInstance();
         resBar->resetScaleAndPosition();
+        playerRig->restart(playerModel);
+        playerIK->restart(playerRig);
         spawnerComponent->orbsSpawned = 0;
 
         spawnerComponent->xRH = 0;
@@ -671,11 +672,7 @@ public:
     void update() override
     {
 
-        if (reset)
-        {
-            resetGame();
-            reset = false;
-        }
+        
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
@@ -1043,6 +1040,12 @@ public:
         {
             AudioManager::getInstance().pauseThisSong("bicik");
             sm.setCurrentScene("WinScene");
+        }
+
+        if (reset)
+        {
+            resetGame();
+            reset = false;
         }
     };
 

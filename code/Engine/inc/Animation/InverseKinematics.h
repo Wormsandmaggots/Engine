@@ -94,5 +94,11 @@ public:
             updateChildren(child); // Recursively update children
         }
     }
+
+    void restart(RigPrep* _rig) {
+        rig = _rig;
+        bones = rig->getBones();
+        hingeAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+    }
 };
 #endif // INVERSE_KINEMATICS_H

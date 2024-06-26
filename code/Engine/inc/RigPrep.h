@@ -129,6 +129,8 @@ public:
     }
 
     void restart(Model* model) {
+        m_BoneInfoMap.clear();
+		bones.clear();
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(model->getPath(),
             aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
