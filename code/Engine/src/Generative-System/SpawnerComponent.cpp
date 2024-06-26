@@ -22,6 +22,7 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 void SpawnerComponent::start()
 {
+	init();
 	SongAnalizer::parseSong(spawnAfter, pathToSong, songData);
 	SongAnalizer::testparseSong(spawnAfter, pathToSong, songData);
 	// AudioManager::getInstance().playSound(songPath,1);
@@ -265,6 +266,9 @@ void SpawnerComponent::reset()
 {
 	songDataIndex = 0;
 	originPos = glm::vec3(0, 0, orbDistance);
+	for (Collectable* ent : entitiesActive) {
+		deactiveEntity(ent);
+	}
 	AudioManager::getInstance().restartThisSong("bicik");
 }
 void SpawnerComponent::deactiveEntity(Collectable *ent)
