@@ -25,7 +25,7 @@ void FootOrb::onTriggerStay(ColliderComponent* collidedWith)
 void FootOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer") {
-        ScoreNumbers::getInstance().calculateViewPos(position,100);
+        ScoreNumbers::getInstance().calculateViewPos(position,"100");
         position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		score += 100;

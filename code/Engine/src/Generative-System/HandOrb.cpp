@@ -1,4 +1,5 @@
 #include "Generative-System/HandOrb.h"
+#include "ScoreNumbers.h"
 
 HandOrb::HandOrb(const std::string name, const glm::vec3& position, Model* model) : Collectable(name, position, model)
 {
@@ -27,7 +28,8 @@ void HandOrb::onTriggerStay(ColliderComponent* collidedWith)
 void HandOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer") {
-		position = glm::vec3(100);
+        ScoreNumbers::getInstance().calculateViewPos(position,"100");
+        position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		this->active = false;
 		score += 100;

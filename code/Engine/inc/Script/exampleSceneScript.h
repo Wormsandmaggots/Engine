@@ -617,8 +617,6 @@ public:
             pointLight8E->getTransform()->translate(glm::vec3(0.0f, 0.0f, deltaTime * globalVelocity));
         }
 
-        LOG_INFO(std::to_string(globalVelocity));
-
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();

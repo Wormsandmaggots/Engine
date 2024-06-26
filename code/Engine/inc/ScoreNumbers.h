@@ -9,8 +9,9 @@
 class ScoreNumbers{
 public:
     struct Points {
-        int x, y, p, t;
-        Points(int x, int y, int p, int t) : x(x), y(y), p(p), t(t) {}
+        int x, y, t;
+        std::string p;
+        Points(int x, int y, std::string p, int t) : x(x), y(y), p(p), t(t) {}
     };
 
     ScoreNumbers(const ScoreNumbers&) = delete;
@@ -21,7 +22,7 @@ public:
         return instance;
     }
 
-    void calculateViewPos(glm::vec3 pos, int points){
+    void calculateViewPos(glm::vec3 pos, std::string points){
         glm::vec4 orbClipSpace = projection * view * glm::vec4(pos, 1.0f);
         glm::vec3 orbNDC = glm::vec3(orbClipSpace)/orbClipSpace.w;
         glm::vec2 orbScreenPos;
@@ -34,7 +35,13 @@ public:
 
     void update(){
         for (auto it = pointsStorage.begin(); it != pointsStorage.end(); ) {
-            textRenderer->setParameters(std::to_string(it->p), it->x, it->y, 1.2f/it->t, glm::vec3(0.5, 0.8f, 0.2f), width, height);
+            if(it->p == "-100"){
+                textRenderer->setParameters(it->p, it->x, it->y, 4.2f/it->t, glm::vec3(0.5f, 0.0f, 0.0f), width, height);
+            }
+            else{
+                textRenderer->setParameters(it->p, it->x, it->y, 4.2f/it->t, glm::vec3(0.5f, 0.8f, 0.2f), width, height);
+            }
+
             if (it->t < 50) {
                 it->t += 1;
                 ++it;
@@ -43,6 +50,7 @@ public:
                 it = pointsStorage.erase(it);
             }
         }
+        LOG_INFO(std::to_string(pointsStorage.size()));
 
     }
 
@@ -62,7 +70,7 @@ public:
 
 private:
     ScoreNumbers() {
-        textRenderer = new Text("res/content/fonts/ARCADECLASSIC.TTF");
+        textRenderer = new Text("res/content/fonts/nasalization.otf");
     }
     ~ScoreNumbers() {}
     glm::mat4 projection;
