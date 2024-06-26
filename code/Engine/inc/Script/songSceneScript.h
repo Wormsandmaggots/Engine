@@ -109,11 +109,18 @@ private:
     Texture* buttonstart_idle;
     Texture* buttonstart_activ;
 
-    Button* activeButton;
+    //Button* activeButton;
 
     float lastButtonChangeTime;
     float buttonChangeDelay;
     bool joystickReset;
+
+    Button* secondActiveButton;
+
+    std::vector<Button*> eraButtons; // Wektor przycisków era...
+    std::vector<Button*> menuButtons; // Wektor przycisków backToMenu i startGame
+    Button* activeButton; // Aktywny przycisk z eraButtons
+    Button* activeButton2; // Aktywny przycisk z menuButtons
 
 public:
     // Konstruktor domyślny
@@ -189,8 +196,7 @@ public:
     {
     }
 
-    // Dodajemy metodę do zmiany aktywnego przycisku
-    void changeActiveButton(Button* newActiveButton) {
+    void changeActiveButton(Button*& activeButton, Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
             activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
@@ -202,13 +208,15 @@ public:
             activeButton->setActive(true);
             activeButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
         }
-        activeButton = newActiveButton;
     }
 
-    // Dodajemy metodę do wywołania funkcji onClick dla aktywnego przycisku
-    void clickActiveButton() {
+    // Modyfikujemy metodę do wywołania funkcji onClick dla aktywnych przycisków
+    void clickActiveButtons() {
         if (activeButton != nullptr) {
             activeButton->onClick();
+        }
+        if (secondActiveButton != nullptr) {
+            secondActiveButton->onClick();
         }
     }
 
@@ -318,9 +326,22 @@ public:
 
         //buttons on scene handling
         activeButton = era00;
+        secondActiveButton = startGame;
         lastButtonChangeTime = 0.0f;
-        buttonChangeDelay = 0.2f;
+        buttonChangeDelay = 0.1f;
         joystickReset = true;
+
+        // Dodajemy przyciski do wektorów
+        eraButtons.push_back(era00);
+        eraButtons.push_back(era80);
+        eraButtons.push_back(era90);
+        menuButtons.push_back(backToMenu);
+        menuButtons.push_back(startGame);
+
+        // Ustawiamy początkowe aktywne przyciski
+        changeActiveButton(activeButton, eraButtons[0]);
+        changeActiveButton(activeButton2, menuButtons[0]);
+
     };
 
     void update() override{
@@ -329,12 +350,10 @@ public:
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
 
-        //time = time + s.deltaTime;
-
         deltaTime = s.deltaTime;
 
         bool isDelayPassed = currentFrame - lastButtonChangeTime >= buttonChangeDelay;
-        bool isJoystickMoved = std::abs(joystickOffset.y) > 0.5;
+        bool isJoystickMoved = std::abs(joystickOffset.x) > 0.5 || std::abs(joystickOffset.y) > 0.5;
 
         debugInput.interpretIKInput(s.window, s.camera, s.deltaTime);
         playerInput.interpretInput();
@@ -357,10 +376,9 @@ public:
         sm.updateLoadedScenes();
 
         glDisable(GL_DEPTH_TEST);
-        //imageShader.use();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //hud
+
         glActiveTexture(GL_TEXTURE0);
         imageShader.use();
         manuBackground->renderPlane();
@@ -371,44 +389,34 @@ public:
         startGame->renderPlane();
         backToMenu->renderPlane();
 
-
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            LOG_INFO(std::to_string(joystickOffset.x));
-            if (joystickOffset.y < 0.5) {
-                if (activeButton == era00) {
-                    changeActiveButton(era80);
-                } else if (activeButton == era90) {
-                    changeActiveButton(era00);
-                } else if (activeButton == era80) {
-                    changeActiveButton(era90);
-                }
+        if (isDelayPassed && isJoystickMoved) {
+            // Sprawdzanie wychylenia joysticka w osi y
+            if (std::abs(joystickOffset.y) >= 0.8) {
+                int index = (joystickOffset.y < 0) ? 1 : -1;
+                int newIndex = (std::find(eraButtons.begin(), eraButtons.end(), activeButton) - eraButtons.begin() + index + eraButtons.size()) % eraButtons.size();
+                changeActiveButton(activeButton, eraButtons[newIndex]);
+                lastButtonChangeTime = currentFrame;
+                joystickReset = false;
             }
-            else if (joystickOffset.y > -0.5) {
-                if (activeButton == era00) {
-                    changeActiveButton(era90);
-                } else if (activeButton == era80) {
-                    changeActiveButton(era00);
-                } else if (activeButton == era90) {
-                    changeActiveButton(era80);
-                }
+                // Sprawdzanie wychylenia joysticka w osi x
+            else if (std::abs(joystickOffset.x) >= 0.8) {
+                int index = (joystickOffset.x < 0) ? 1 : -1;
+                int newIndex = (std::find(menuButtons.begin(), menuButtons.end(), activeButton2) - menuButtons.begin() + index + menuButtons.size()) % menuButtons.size();
+                changeActiveButton(activeButton2, menuButtons[newIndex]);
+                lastButtonChangeTime = currentFrame;
+                joystickReset = false;
             }
-            else if (joystickOffset.x > -0.5){
-                changeActiveButton(backToMenu);
-            }
-            else if (joystickOffset.x < 0.5){
-                changeActiveButton(startGame);
-            }
-            lastButtonChangeTime = currentFrame;
-            joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
-            joystickReset = true;
         }
 
+        //wypisz mi parametry x i y gałki
+        //std::cout << "x: " << joystickOffset.x << " y: " << joystickOffset.y << std::endl;
+
+        // Sprawdzanie, czy przycisk został naciśnięty
         if (playerInput.isKeyPressed(1)) {
-            clickActiveButton();
+            clickActiveButtons();
         }
 
     };

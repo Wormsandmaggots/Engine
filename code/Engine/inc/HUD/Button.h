@@ -84,9 +84,13 @@ public:
 
     void setActive(bool isActive) {
         if (isActive) {
-            setTexture(activeTexture);
+            if (activeTexture != nullptr) {
+                setTexture(activeTexture);
+            }
         } else {
-            setTexture(inactiveTexture);
+            if (inactiveTexture != nullptr) {
+                setTexture(inactiveTexture);
+            }
         }
     }
 
