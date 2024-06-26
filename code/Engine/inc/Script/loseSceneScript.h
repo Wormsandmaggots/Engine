@@ -149,10 +149,10 @@ public:
             cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
-            background(new Texture("res/content/textures/lose/you_lost.png", "background")),
-            cs_button_idle(new Texture("res/content/textures/lose/choose_d.png", "change_d")),
+            background(new Texture("res/content/textures/lose/youlose_b.png", "background")),
+            cs_button_idle(new Texture("res/content/textures/lose/restart_d.png", "change_d")),
             ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
-            cs_button_activ(new Texture("res/content/textures/lose/choose_h.png", "change_h")),
+            cs_button_activ(new Texture("res/content/textures/lose/restart2_h.png", "change_h")),
             ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
 
     {
@@ -162,12 +162,18 @@ public:
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
             activeButton->setActive(false);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.140f, 0.040f, 0.184f));
+            }
         }
 
         activeButton = newActiveButton;
 
         if (activeButton != nullptr) {
             activeButton->setActive(true);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.146f, 0.051f, 0.184f));
+            }
         }
         activeButton = newActiveButton;
     }
@@ -200,7 +206,7 @@ public:
 
         currentScene->addEntity(cs);
         cs->addComponent(changeSongButton);
-        changeSongButton->getTransform()->setScale(glm::vec3(0.35f, 0.055f, 0.2f));
+        changeSongButton->getTransform()->setScale(glm::vec3(0.146f, 0.051f, 0.184f));
         changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
 
         changeSongButton->setTexture(cs_button_activ);
