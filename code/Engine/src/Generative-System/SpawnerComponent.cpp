@@ -5,7 +5,7 @@ SpawnerComponent::SpawnerComponent(std::string songPath, glm::vec3 originPos, un
 
 	this->originPos = originPos;
 	inactivePos = glm::vec3(-100);
-	this->orbDistance = originPos.z;
+	//this->orbDistance = originPos.z;
 	this->entitiesCount = entitiesCount;
 	this->orbsSpawned = 0;
 	this->songPath = songPath;
@@ -255,6 +255,12 @@ void SpawnerComponent::init()
 	parentEntity->addChild(drink2);
 	entitiesInactive.push_back(drink1);
 	entitiesInactive.push_back(drink2);
+}
+void SpawnerComponent::reset()
+{
+	songDataIndex = 0;
+	originPos = glm::vec3(0, 0, orbDistance);
+	AudioManager::getInstance().restartThisSong("bicik");
 }
 void SpawnerComponent::deactiveEntity(Collectable *ent)
 {

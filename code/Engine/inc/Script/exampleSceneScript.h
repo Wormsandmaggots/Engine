@@ -133,6 +133,7 @@ private:
     float mul;
     float texelSize;
 
+
     float time;
 
     // spawner
@@ -388,6 +389,19 @@ public:
         activeButton = newActiveButton;
     }
 
+    void resetGame() {
+        score = 0;
+        combo = 0;
+		player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
+        spawnerComponent->reset();
+        time = 0;
+        s.camera.SetPosition(glm::vec3(0.0f, .3f, -8.0f));
+        pointLight8E->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+        AudioManager::getInstance();
+        LOG_INFO("Game restarted");
+
+    }
+
     void clickActiveButton()
     {
         if (activeButton != nullptr)
@@ -416,6 +430,9 @@ public:
 
     void start() override
     {
+
+
+
 
         // audio
         // audioManager.init();
@@ -587,6 +604,11 @@ public:
 
     void update() override
     {
+
+        if(reset){
+            resetGame();
+            reset = false;
+        }
 
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
@@ -859,6 +881,8 @@ public:
 
         // temporary------------------------------------------------------------------------------------
         // text
+
+        score = score * (1.0 + 0.01 * combo);
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
@@ -928,6 +952,14 @@ public:
         {
             sm.setCurrentScene("PauseScene");
         }
+
+        if (playerInput.isKeyPressed(GLFW_GAMEPAD_BUTTON_Y))
+        {
+            reset = true;
+        }
+
+
+     
 
         if (time > songLenghtGlobal + 5)
         {

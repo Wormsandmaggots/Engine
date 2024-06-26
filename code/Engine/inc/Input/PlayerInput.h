@@ -15,7 +15,7 @@ public:
     }
 
     //method for checking if gamepad button is pressed
-    bool isKeyPressed(int key) {
+    bool isKeyPressed(int key) {    
         // Sprawdzamy, czy przycisk na kontrolerze jest naciśnięty i czy nie został już wcześniej zarejestrowany jako naciśnięty
         if (input.getControllerButtonState(joystickId, key) == GLFW_PRESS && !keysPressed[key]) {
             keysPressed[key] = true;
@@ -51,6 +51,7 @@ public:
                     // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Circle  is pressed"); //X
                     break;
                 case 3: // triangle/Y
+                    reset = true;
                     // LOG_INFO("Joystick " + std::to_string(joystickId) + ": Button Triangle is pressed"); //Y
                     break;
                 }

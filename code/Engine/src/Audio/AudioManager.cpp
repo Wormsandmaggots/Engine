@@ -38,6 +38,26 @@ void AudioManager::pauseThisSong(const std::string& name) {
     }
 }
 
+void AudioManager::restartThisSong(const std::string& name)
+{
+    auto it = soundMap.find(name);
+    if (it != soundMap.end()) {
+        // Stop the song
+        ma_sound_stop(&it->second->getSound());
+
+        // Seek to the beginning of the song
+        ma_result result = ma_sound_seek_to_pcm_frame(&it->second->getSound(), 0);
+        if (result != MA_SUCCESS) {
+            // Handle error, for example, log it
+            LOG_ERROR("Failed to seek to start of song: " + name);
+            return;
+        }
+
+        // Start playing the song again
+        ma_sound_start(&it->second->getSound());
+    }
+}
+
 
 
 

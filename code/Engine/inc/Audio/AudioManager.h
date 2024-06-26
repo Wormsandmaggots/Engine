@@ -28,6 +28,7 @@ public:
     void playThisSound(const std::string& name, const std::string& filePath, float volume);
     void playThisSong(const std::string& name);
     void pauseThisSong(const std::string& name);
+    void restartThisSong(const std::string& name);
 
     int init();
     void end();
