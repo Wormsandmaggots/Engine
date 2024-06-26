@@ -38,6 +38,9 @@ public:
             if(it->p == "-100"){
                 textRenderer->setParameters(it->p, it->x, it->y, 4.2f/it->t, glm::vec3(0.5f, 0.0f, 0.0f), width, height);
             }
+            else if(it->p == "FREEZE!"){
+                textRenderer->setParameters(it->p, it->x, it->y, 6.2f/it->t, glm::vec3(0.0f, 0.0f, 0.5f), width, height);
+            }
             else{
                 textRenderer->setParameters(it->p, it->x, it->y, 4.2f/it->t, glm::vec3(0.5f, 0.8f, 0.2f), width, height);
             }
