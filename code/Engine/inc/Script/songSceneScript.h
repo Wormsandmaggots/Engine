@@ -157,11 +157,16 @@ public:
             era00(new Button(&imageShader)),
             era80(new Button(&imageShader)),
             era90(new Button(&imageShader)),
+            startGame(new Button(&imageShader)),
+            backToMenu(new Button(&imageShader)),
+
 
             menuWalpaper(new Entity("mainMenu")),
             ng(new Entity("era00")),
             ex(new Entity("era80")),
             cr(new Entity("era90")),
+            sg(new Entity("startGame")),
+            bm(new Entity("backToMenu")),
 
 //            background(new Texture("res/content/textures/background.png", "background")),
 //            button00_idle(new Texture("ares/content/textures/britney.png", "start_d")),
@@ -176,8 +181,11 @@ public:
             button80_idle(new Texture("res/content/textures/songScene/80_d.png", "credits_d")),
             button00_activ(new Texture("res/content/textures/songScene/00_h.png", "start_h")),
             button90_activ(new Texture("res/content/textures/songScene/90_h.png", "exit_h")),
-            button80_activ(new Texture("res/content/textures/songScene/80_h.png", "credits_h"))
-
+            button80_activ(new Texture("res/content/textures/songScene/80_h.png", "credits_h")),
+            buttonmenu_idle(new Texture("res/content/textures/songScene/mainmenu_d.png", "menu_d")),
+            buttonstart_idle(new Texture("res/content/textures/songScene/letsdance_d.png", "letsdance_d")),
+            buttonmenu_activ(new Texture("res/content/textures/songScene/mainmenu_h.png", "menu_h")),
+            buttonstart_activ(new Texture("res/content/textures/songScene/letsdance_h.png", "letsdance_h"))
     {
     }
 
@@ -244,7 +252,7 @@ public:
         currentScene->addEntity(cr);
         cr->addComponent(era90);
         era90->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
-        era90->getTransform()->setPosition(glm::vec3(0.0f, -0.45f, 0.0f));
+        era90->getTransform()->setPosition(glm::vec3(0.0f, -0.50f, 0.0f));
 
         era90->setTexture(button90_idle);
         era90->setInactiveTexture(button90_idle);
@@ -261,7 +269,7 @@ public:
         currentScene->addEntity(ex);
         ex->addComponent(era80);
         era80->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
-        era80->getTransform()->setPosition(glm::vec3(0.0f, -0.60f, 0.0f));
+        era80->getTransform()->setPosition(glm::vec3(0.0f, -0.70f, 0.0f));
 
         era80->setTexture(button80_idle);
         era80->setInactiveTexture(button80_idle);
@@ -270,6 +278,40 @@ public:
         era80->setOnClick([this]() {
             std::cout << "80 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
+            this->sm.setCurrentScene("MarcinScene");
+        });
+
+        //mainmenu
+        currentScene->addEntity(bm);
+        bm->addComponent(backToMenu);
+        backToMenu->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        backToMenu->getTransform()->setPosition(glm::vec3(-0.628f, -0.828f, 0.0f));
+
+        backToMenu->setTexture(buttonmenu_idle);
+        backToMenu->setInactiveTexture(buttonmenu_idle);
+        backToMenu->setActiveTexture(buttonmenu_activ);
+
+        backToMenu->setOnClick([this]() {
+            std::cout << "backToMenu button clicked!" << std::endl;
+            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
+            //this->sm.setCurrentScene("CalibrationScene");
+            this->sm.setCurrentScene("KubaScene");
+        });
+
+        //letsdance
+        currentScene->addEntity(sg);
+        sg->addComponent(startGame);
+        startGame->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+        startGame->getTransform()->setPosition(glm::vec3(0.611f, -0.828f, 0.0f));
+
+        startGame->setTexture(buttonstart_idle);
+        startGame->setInactiveTexture(buttonstart_idle);
+        startGame->setActiveTexture(buttonstart_activ);
+
+        startGame->setOnClick([this]() {
+            std::cout << "startgame button clicked!" << std::endl;
+            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
             //this->sm.setCurrentScene("CalibrationScene");
             this->sm.setCurrentScene("MarcinScene");
         });
@@ -326,12 +368,15 @@ public:
         era00->renderPlane();
         era80->renderPlane();
         era90->renderPlane();
+        startGame->renderPlane();
+        backToMenu->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
+            LOG_INFO(std::to_string(joystickOffset.x));
             if (joystickOffset.y < 0.5) {
                 if (activeButton == era00) {
                     changeActiveButton(era80);
@@ -349,6 +394,12 @@ public:
                 } else if (activeButton == era90) {
                     changeActiveButton(era80);
                 }
+            }
+            else if (joystickOffset.x > -0.5){
+                changeActiveButton(backToMenu);
+            }
+            else if (joystickOffset.x < 0.5){
+                changeActiveButton(startGame);
             }
             lastButtonChangeTime = currentFrame;
             joystickReset = false;
