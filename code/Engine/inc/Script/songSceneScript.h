@@ -200,10 +200,10 @@ public:
     // Dodajemy metodę do zmiany aktywnego przycisku
     void changeActiveButton(Button* newActiveButton) {
         if (activeButton != nullptr) {
-            activeButton->setActive(false);
-            activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
-            // Ustawiamy teksturę na nieaktywną dla poprzedniego aktywnego przycisku era
-            if (activeButton == era00 || activeButton == era90 || activeButton == era80) {
+            // Dezaktywujemy activeButton tylko wtedy, gdy nie jest to przycisk era00, era80 lub era90
+            if (activeButton != era00 && activeButton != era80 && activeButton != era90) {
+                activeButton->setActive(false);
+                activeButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
                 activeButton->setTexture(activeButton->getInactiveTexture());
             }
         }
@@ -213,13 +213,27 @@ public:
         if (activeButton != nullptr) {
             activeButton->setActive(true);
             activeButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
-            // Ustawiamy teksturę na aktywną dla nowego aktywnego przycisku
             activeButton->setTexture(activeButton->getActiveTexture());
         }
 
-        // Aktualizujemy activeEraButton tylko wtedy, gdy nowy aktywny przycisk jest jednym z przycisków era00, era90, era80
-        if (activeButton == era00 || activeButton == era90 || activeButton == era80) {
+        // Jeśli nowy aktywny przycisk to startGame lub backToMenu, zostawiamy activeEraButton aktywnym
+        if (activeButton == startGame || activeButton == backToMenu) {
+            return;
+        }
+
+        // Jeśli nowy aktywny przycisk to jeden z przycisków era, dezaktywujemy poprzedni activeEraButton i ustawiamy jego teksturę na nieaktywną
+        if (activeEraButton != nullptr) {
+            activeEraButton->setActive(false);
+            activeEraButton->getTransform()->setScale(glm::vec3(0.23f, 0.057f, 0.23f));
+            activeEraButton->setTexture(activeEraButton->getInactiveTexture());
+        }
+
+        // Ustawiamy nowy activeEraButton i jego teksturę na aktywną
+        if (activeButton == era00 || activeButton == era80 || activeButton == era90) {
             activeEraButton = activeButton;
+            activeEraButton->setActive(true);
+            activeEraButton->getTransform()->setScale(glm::vec3(0.25f, 0.09f, 0.25f));
+            activeEraButton->setTexture(activeEraButton->getActiveTexture());
         }
     }
 
