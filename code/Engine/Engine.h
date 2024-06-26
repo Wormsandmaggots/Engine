@@ -6,7 +6,7 @@
 #include "imgui_impl/imgui_impl_opengl3.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "Debug/Profiler.h"
-#include "tracy/Tracy.hpp"
+//#include "tracy/Tracy.hpp"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 //#define PROFILER

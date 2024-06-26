@@ -31,6 +31,7 @@ CPMAddPackage("gh:CedricGuillemet/ImGuizmo#1.83")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-2")
 CPMAddPackage("gh:wolfpld/tracy#v0.10")
 CPMAddPackage("gh:libsndfile/libsndfile#1.2.2")
+#CPMAddPackage("gh:libsndfile/libsndfile#1.2.2")
 
 # if one of thirdparty libraries is not building you maybe have to do smth like this below
 # and remember to add source dir to exe in code
@@ -101,7 +102,7 @@ set(fftw_dir ${CMAKE_CURRENT_LIST_DIR}/fftw CACHE INTERNAL "")
 
 add_subdirectory(joyshock)
 
-
+#2
 set_target_properties(glad
         stb_image
         assimp
