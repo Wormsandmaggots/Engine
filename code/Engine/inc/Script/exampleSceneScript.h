@@ -429,7 +429,8 @@ public:
         time = 0;
         s.camera.SetPosition(glm::vec3(0.0f, .3f, -8.0f));
         pointLight8E->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
-        AudioManager::getInstance();
+        //playerRig->restart(playerModel);
+        resBar->resetScaleAndPosition();
         LOG_INFO("Game restarted");
     }
 

@@ -50,6 +50,8 @@ public:
     {
         return m_BoneInfoMap;
     }
+
+
     void ReadHierarchyData( const aiNode* src, Bone* destBone, Bone* parentBone)
     {
         assert(src);
@@ -124,6 +126,19 @@ public:
     void setBones(std::map<std::string,Bone*> _bones){
         bones = _bones;
         update();
+    }
+
+    void restart(Model* model) {
+        Assimp::Importer importer;
+        const aiScene* scene = importer.ReadFile(model->getPath(),
+            aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
+            aiProcess_CalcTangentSpace);
+        m_BoneInfoMap = model->getMap();
+        assert(scene && scene->mRootNode);
+        m_FinalBoneMatrices.resize(m_BoneInfoMap.size());
+        rootBone = new Bone();
+        ReadHierarchyData(scene->mRootNode, rootBone, NULL);
+        CalculateBoneTransform(glm::mat4(1.0f), rootBone, 1.0f);
     }
 
 
