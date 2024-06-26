@@ -217,6 +217,11 @@ private:
 
     Button *activeButton;
 
+    //stoping bar from falling
+    bool canDecreaseBar;
+    float clock;
+    float fallStop;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, AudioManager &audioManager, PlayerInput &playerInput,
@@ -361,7 +366,10 @@ public:
                                              resBarEntity(new Entity("resBar")),
                                              lastTime(0.0),
                                              spawner(new Entity("Spawner")),
-                                             spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17))
+                                             spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17)),
+                                             canDecreaseBar(true),
+                                             clock(5),
+                                             fallStop(5)
     {
     }
 
@@ -615,8 +623,6 @@ public:
             pointLight8E->getTransform()->translate(glm::vec3(0.0f, 0.0f, deltaTime * globalVelocity));
         }
 
-        LOG_INFO(std::to_string(globalVelocity));
-
         npcAnimator->UpdateAnimation(s.deltaTime, lookatAngle);
         shaderRigInstanced.use();
         auto transforms2 = npcAnimator->GetFinalBoneMatrices();
@@ -744,6 +750,8 @@ public:
             DrunkShader.setFloat("time", time);
             DrunkShader.setInt("screenTexture", 0);
             timer -= s.deltaTime;
+                clock -= s.deltaTime;
+                canDecreaseBar = false;
 
             break;
         case DrinkType::InverseInput:
@@ -755,6 +763,8 @@ public:
             joystickOffset3 = -joystickOffset3;
             joystickOffset4 = -joystickOffset4;
             timer -= s.deltaTime;
+                clock -= s.deltaTime;
+                canDecreaseBar = false;
 
             break;
         case DrinkType::UpsideDown:
@@ -763,6 +773,8 @@ public:
             reverseShader.setFloat("time", time);
             reverseShader.setInt("screenTexture", 0);
             timer -= s.deltaTime;
+                clock -= s.deltaTime;
+                canDecreaseBar = false;
 
             break;
         case DrinkType::None:
@@ -787,7 +799,7 @@ public:
         // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
         if (currentTime - lastUpdateTime >= resizeInterval)
         {
-            if(time < songLenghtGlobal)
+            if(time < songLenghtGlobal && canDecreaseBar)
                 resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
             if (lookatAngle < 170.0f)
@@ -806,6 +818,19 @@ public:
                 lookatAngle -= 5.0f;
             }
         }
+        //resBar może nowu spadać
+        if (!canDecreaseBar && timer < 0)
+        {
+            canDecreaseBar = true;
+            //lock = fallStop; // resetujemy timer
+        }
+        //zmiana koloru paska na szary gdy nie mozę spadać
+        imageShaderGreen.use();
+        if (canDecreaseBar) {
+            imageShaderGreen.setBool("isBarLocked", false);
+        } else {
+            imageShaderGreen.setBool("isBarLocked", true);
+        }
 //std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
 //giving a 2 second chance to player to bumpup the bar
     if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
@@ -819,7 +844,7 @@ public:
 
 
         if (isCounting) {
-            timeLeft -= deltaTime; // deltaTime to czas, który upłynął od ostatniej klatki
+            timeLeft -= s.deltaTime;
             if (timeLeft <= 0.0f) {
                 sm.setCurrentScene("LoseScene");
             }
@@ -840,7 +865,6 @@ public:
 
         shaderRig.use();
 
-//        AudioManager::getInstance().playThisSong("bicik");
 
         joystickOffset.x = Math::Remap(
             utils::easeInOutQuint(Math::Remap(joystickOffset.x, -1, 1, 0, 1)),
