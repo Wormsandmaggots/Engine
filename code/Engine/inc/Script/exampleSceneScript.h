@@ -615,8 +615,8 @@ public:
         resBar->getTransform()->setPosition(glm::vec3(-0.65f, -0.699f, 0.0f));
 
         // txt
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
         //hud2
         currentScene->addEntity(scoreEntity);
@@ -628,7 +628,7 @@ public:
         currentScene->addEntity(comboEntity);
         comboEntity->addComponent(comboImage);
         comboImage->getTransform()->setScale(glm::vec3(0.16f, 0.24f, 0.0f));
-        comboImage->getTransform()->setPosition(glm::vec3(0.53f, -0.2f, 0.0f));
+        comboImage->getTransform()->setPosition(glm::vec3(0.5f, -0.23f, 0.0f));
         comboImage->setTexture(comboTexture);
 
         currentScene->addEntity(humanEntity);
@@ -871,44 +871,44 @@ public:
         // resizing bar
         // temporary------------------------------------------------------------------------------------
         double currentTime = glfwGetTime();
-//        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
-//        if (currentTime - lastUpdateTime >= resizeInterval)
-//        {
-//            if(time < songLenghtGlobal && canDecreaseBar)
-//                resBar->resizeOnImpulse(resizeAmount);
-//            lastUpdateTime = currentTime;
-//            if (lookatAngle < 170.0f)
-//            {
-//                lookatAngle += 5.0f;
-//            }
-//        }
-//        // Jeśli score został zwiększony o incrementScore
-//        if (score - lastScore >= incrementScore)
-//        {
-//            resBar->increaseOnImpulse(resizeAmount);
-//            lastScore = score;
-//
-//            if (lookatAngle > 5.0f)
-//            {
-//                lookatAngle -= 5.0f;
-//            }
-//        }
-//        //resBar może nowu spadać
-//        if (!canDecreaseBar && timer < 0)
-//        {
-//            canDecreaseBar = true;
-//            //lock = fallStop; // resetujemy timer
-//        }
-//        //zmiana koloru paska na szary gdy nie mozę spadać
-//        imageShaderGreen.use();
-//        if (canDecreaseBar) {
-//            imageShaderGreen.setBool("isBarLocked", false);
-//        } else {
-//            imageShaderGreen.setBool("isBarLocked", true);
-//        }
+        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
+        if (currentTime - lastUpdateTime >= resizeInterval)
+        {
+            if(time < songLenghtGlobal && canDecreaseBar)
+                resBar->resizeOnImpulse(resizeAmount);
+            lastUpdateTime = currentTime;
+            if (lookatAngle < 170.0f)
+            {
+                lookatAngle += 5.0f;
+            }
+        }
+        // Jeśli score został zwiększony o incrementScore
+        if (score - lastScore >= incrementScore)
+        {
+            resBar->increaseOnImpulse(resizeAmount);
+            lastScore = score;
+
+            if (lookatAngle > 5.0f)
+            {
+                lookatAngle -= 5.0f;
+            }
+        }
+        //resBar może nowu spadać
+        if (!canDecreaseBar && timer < 0)
+        {
+            canDecreaseBar = true;
+            //lock = fallStop; // resetujemy timer
+        }
+        //zmiana koloru paska na szary gdy nie mozę spadać
+        imageShaderGreen.use();
+        if (canDecreaseBar) {
+            imageShaderGreen.setBool("isBarLocked", false);
+        } else {
+            imageShaderGreen.setBool("isBarLocked", true);
+        }
 //std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
 //giving a 2 second chance to player to bumpup the bar
-    if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
+    if (resBar->getTransform()->getLocalScale().x <= 0.01f) {
         if (!isCounting) {
             isCounting = true; // Rozpocznij odliczanie
         }
@@ -927,9 +927,6 @@ public:
 
         // temporary------------------------------------------------------------------------------------
         // text
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-
         comboRenderer->renderText();
         scoreRenderer->renderText();
 

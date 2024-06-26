@@ -7,40 +7,42 @@ class ResizableImage : public Image {
 public:
     ResizableImage(Shader* shader) : Image(shader) {
         shader->use();
-        shader->setFloat("scale", 0.3f);
+        shader->setFloat("scale", 0.166f);
     }
 
     void resizeOnImpulse(float impulse) {
         glm::vec3 currentScale = parentTransform->getLocalScale();
         glm::vec3 currentPosition = parentTransform->getLocalPosition();
 
-        if (currentScale.y - impulse > 0) {
-            currentScale.y -= impulse;
-            parentTransform->setScale(currentScale);
-
-            // Przesunięcie obiektu w dół
-            currentPosition.y -= impulse;
-            parentTransform->setPosition(currentPosition);
+        if (currentScale.x - impulse > 0) {
+            currentScale.x -= impulse;
+            currentPosition.x -= impulse; // Przesuwamy obiekt w dół tylko jeśli skala jest większa od zera
+        } else {
+            currentScale.x = 0; // Ustawiamy wartość skali na zero, jeżeli nowa wartość byłaby ujemna
         }
 
-        shader->setFloat("scale", currentScale.y);
+        parentTransform->setScale(currentScale);
+        parentTransform->setPosition(currentPosition);
+
+        shader->setFloat("scale", currentScale.x);
     }
 
     void increaseOnImpulse(float impulse) {
         glm::vec3 currentScale = parentTransform->getLocalScale();
         glm::vec3 currentPosition = parentTransform->getLocalPosition();
 
-        if (currentScale.y + impulse < 0.3) {
-        // Zwiększamy rozmiar paska
-        currentScale.y += impulse;
-        parentTransform->setScale(currentScale);
-
-        // Przesuwamy obiekt w górę
-        currentPosition.y += impulse;
-        parentTransform->setPosition(currentPosition);
+        if (currentScale.x + impulse <= 0.166) {
+            // Zwiększamy rozmiar paska
+            currentScale.x += impulse;
+            currentPosition.x += impulse; // Przesuwamy obiekt w górę tylko jeśli skala jest mniejsza od 0.166
+        } else {
+            currentScale.x = 0.166; // Ustawiamy wartość skali na 0.166, jeżeli nowa wartość byłaby większa
         }
 
-        shader->setFloat("scale", currentScale.y);
+        parentTransform->setScale(currentScale);
+        parentTransform->setPosition(currentPosition);
+
+        shader->setFloat("scale", currentScale.x);
     }
 
     void showScale() {

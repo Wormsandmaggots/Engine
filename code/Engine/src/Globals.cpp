@@ -15,8 +15,8 @@ float orbDistance = 5.0f; // droga do spawnera do gracza
 float lastUpdateTime = 0.0f;
 
 //resizableBar
-float resizeInterval = 1.0f; // Co sekundę
-float resizeAmount = 0.01f;
+float resizeInterval = 0.5f; // Co sekundę
+float resizeAmount = 0.005f;
 float timeLeft = 2.0f; // Czas na podbicie paska
 bool isCounting = false; // Czy odliczamy czas
 
