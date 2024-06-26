@@ -84,7 +84,7 @@ int main() {
 
     menusceneScript->awake();
     menusceneScript->start();
-/*
+
     pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -108,7 +108,7 @@ int main() {
 
     winsceneScript->awake();
     winsceneScript->start();
-*/
+/*
     creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                         shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                         shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -124,7 +124,7 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-
+*/
 //    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
 //                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
 //                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -133,7 +133,7 @@ int main() {
 //    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("CreditsScene");
+    sm.setCurrentScene("PauseScene");
 
     bool switched = true;
     Scene2* currentScene;
@@ -155,7 +155,7 @@ int main() {
             } else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->update();
-            }/*
+            }
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->onExit();
@@ -168,7 +168,7 @@ int main() {
             else if (currentScene->getName() == "WinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 winsceneScript->update();
-            }*/
+            }/*
             else if (currentScene->getName() == "CreditsScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 creditssceneScript->update();
@@ -177,7 +177,7 @@ int main() {
             else if (currentScene->getName() == "SongScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
-            }/*
+            }
 //            else if (currentScene->getName() == "CalibrationScene") {
 //                // Wywołanie metody update dla exampleSceneScript
 //                calibrationsceneScript->update();
