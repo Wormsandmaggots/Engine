@@ -24,11 +24,11 @@ void BadOrb::onTriggerStay(ColliderComponent* collidedWith)
 void BadOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer" || collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer") {
-		position = glm::vec3(100);
-		this->getTransform()->setPosition(glm::vec3(100));
+		this->animationPos = position;
+		this->animation = true;
 		score -= 100;
 		combo = 0;
-		active = false;
+		position = glm::vec3(100);
 		AudioManager::getInstance().playSound("res/content/sounds/effects/fail1.mp3", 1);
 	}
 }

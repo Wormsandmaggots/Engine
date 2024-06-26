@@ -5,7 +5,6 @@ Ring::Ring(const std::string name, const glm::vec3& position, Model* model) : Co
 {
 	speed = 0;
 	this->getTransform()->setRotation(glm::vec3(90, 90, 90));
-	//this->getComponent<ColliderComponent>()->getCollider()->getColliderShape()->setRadius(1);
 
 }
 

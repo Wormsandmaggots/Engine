@@ -26,6 +26,8 @@ void HandOrb::onTriggerStay(ColliderComponent* collidedWith)
 void HandOrb::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer") {
+		this->animationPos = position;
+		this->animation = true;
 		position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		this->active = false;

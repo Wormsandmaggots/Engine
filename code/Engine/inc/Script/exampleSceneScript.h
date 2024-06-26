@@ -775,7 +775,7 @@ public:
         }
                 if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
                     //std::cout << "Koniec" << std::endl;
-                    sm.setCurrentScene("LoseScene");
+                    //SceneManagement::SceneManager::getInstance().setCurrentScene("LoseScene");
                 }
 
         // temporary------------------------------------------------------------------------------------

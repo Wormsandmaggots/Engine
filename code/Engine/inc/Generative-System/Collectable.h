@@ -8,7 +8,10 @@
 class Collectable :public Entity {
 public:
     float speed = ballSpeed;
+    bool animation = false;
+    std::string ringType;
     glm::vec3 position;
+    glm::vec3 animationPos;
     Model* model;
     ColliderComponent* collider;
     Collectable(const std::string name, const glm::vec3& position, Model* model);

@@ -135,6 +135,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 float calculateSpotLight(vec3 spotLightPos, vec3 spotLightDir, float cutOff, float outerCutOff, vec3 color, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 
+
 void main()
 {
     gPosition = FragPos;

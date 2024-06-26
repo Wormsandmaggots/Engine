@@ -25,6 +25,8 @@ void Drink::onTriggerEnter(ColliderComponent* collidedWith)
 {
 	if (collidedWith->parentEntity->getName() == "leftHandPointer" || collidedWith->parentEntity->getName() == "rightHandPointer" || collidedWith->parentEntity->getName() == "leftFootPointer" || collidedWith->parentEntity->getName() == "rightFootPointer")
 	{
+		this->animationPos = position;
+		this->animation = true;
 		position = glm::vec3(100);
 		this->getTransform()->setPosition(glm::vec3(100));
 		currentDrink = (DrinkType)(rand() % 3);

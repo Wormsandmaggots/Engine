@@ -13,6 +13,16 @@ namespace SceneManagement {
     class SceneManager {
     public:
         static SceneManager* Instance;
+
+		static SceneManager& getInstance() {
+			if (SceneManager::Instance == nullptr)
+			{
+				SceneManager::Instance = new SceneManager();
+			}
+			return *SceneManager::Instance;
+		}
+
+
         Scene2* currentScene = nullptr;
         SceneManager();
 
