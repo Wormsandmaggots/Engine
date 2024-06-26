@@ -115,6 +115,34 @@ private:
     Entity *rightFootPointer;
     ColliderComponent *rightFootCollider;
 
+    Entity* firstBallE;
+    Entity* secondBallE;
+    Entity* thirdBallE;
+    Entity* fourthBallE;
+    Entity* backgroundE;
+
+    Entity* firstRingE;
+    Entity* secondRingE;
+    Entity* thirdRingE;
+    Entity* fourthRingE;
+
+    Model* firstBall;
+    Model* secondBall;
+    Model* thirdBall;
+    Model* fourthBall;
+    Model* background;
+
+    Model* firstRing;
+    Model* secondRing;
+    Model* thirdRing;
+    Model* fourthRing;
+
+    bool firstCollision;
+    bool secondCollision;
+    bool thirdCollision;
+    bool fourthCollision;
+
+
     Entity *sun;
     DirectionalLight *sunLight;
 
@@ -191,6 +219,7 @@ public:
                                              leftFootCollider(new ColliderComponent()),
                                              rightFootPointer(new Entity("rightFootPointer")),
                                              rightFootCollider(new ColliderComponent()),
+                                             backgroundE(new Entity("background")),
                                              effectTime(10),
                                              timer(10),
                                              reversed(false),
@@ -199,7 +228,28 @@ public:
                                              pointLight(new Entity("pointLight1")),
                                              pointLight1(new PointLight()),
                                              handOrbEntity(new Entity("handOrbEntity")),
-                                             footOrbEntity(new Entity("footOrbEntity"))
+                                             footOrbEntity(new Entity("footOrbEntity")),
+                                             firstBallE(new Entity("firstBallE")),
+                                            secondBallE(new Entity("secondBallE")),
+                                            thirdBallE(new Entity("thirdBallE")),
+                                            fourthBallE(new Entity("fourthBallE")),
+                                            firstRingE(new Entity("firstRingE")),
+                                            secondRingE(new Entity("secondRingE")),
+                                            thirdRingE(new Entity("thirdRing")),
+                                            fourthRingE(new Entity("fourthRingE")),
+                                            firstBall(new Model("res/content/models/orbUP/orbUP.fbx", &ssao.shaderGeometryPass)),
+                                            secondBall(new Model("res/content/models/orbUP/orbUP.fbx", &ssao.shaderGeometryPass)),
+                                            thirdBall(new Model("res/content/models/orbDown/orbDOWN.fbx", &ssao.shaderGeometryPass)),
+                                            fourthBall(new Model("res/content/models/orbDown/orbDOWN.fbx", &ssao.shaderGeometryPass)),
+                                            firstRing(new Model("res/content/models/orbUP/ringUP.fbx", &ssao.shaderGeometryPass)),
+                                            secondRing(new Model("res/content/models/orbUP/ringUP.fbx", &ssao.shaderGeometryPass)),
+                                            thirdRing(new Model("res/content/models/orbDown/ringDOWN.fbx", &ssao.shaderGeometryPass)),
+                                            fourthRing(new Model("res/content/models/orbDown/ringDOWN.fbx", &ssao.shaderGeometryPass)),
+                                            background(new Model("res/content/models/roofwalls/roof_walls.fbx", &ssao.shaderGeometryPass)),
+                                            firstCollision(false),
+                                            secondCollision(false),
+                                            thirdCollision(false),
+                                            fourthCollision(false)
     {
     }
 
@@ -226,14 +276,17 @@ public:
 
         screenShader.use();
         screenShader.setInt("screenTexture", 0);
-
+/*
         // lights
         pointLight->addComponent(pointLight1);
-        pointLight->getTransform()->setScale(glm::vec3(5.f));
+        pointLight->getTransform()->setPosition(glm::vec3(1.f));
+        pointLight->getTransform()->setScale(glm::vec3(74.0f, 7.0f, 100.0f));
+*/
         currentScene->addEntity(pointLight);
 
         currentScene->addEntity(sun);
         sun->addComponent(sunLight);
+        sun->getTransform()->setPosition(glm::vec3(0.0f, 10.0f,0.0f));
 
         // gemplay
         player->addComponent(playerModelCalibra);
@@ -265,19 +318,73 @@ public:
         rightFootPointer->addComponent(rightFootCollider);
         rightFootPointer->getTransform()->setPosition(playerRigCalibra->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
 
-        glm::vec3 inactivePos = glm::vec3(5,5,5);
-        glm::vec3 inactivePos2 = glm::vec3(-5,5,5);
-        Collectable* handOrb = new HandOrb("handOrb", inactivePos, new Model(*handOrbModel));
-        Collectable* footOrb = new FootOrb("footOrb", inactivePos2, new Model(*footOrbModel));
+        //orbs
+        firstBallE->addComponent(firstBall);
+        currentScene->addEntity(firstBallE);
+        firstBallE->getTransform()->translate(rightHandPointer->getTransform()->getPosition());
+        firstBallE->getTransform()->translate(glm::vec3(-0.5f, -2.0f, 100.0f));
+        firstBallE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        firstBallE->getTransform()->setScale(glm::vec3(0.35f));
 
-        handOrbEntity->addComponent(handOrbModel);
-        handOrbEntity->getTransform()->setPosition(inactivePos);
-        currentScene->addEntity(handOrbEntity);
+        firstRingE->addComponent(firstRing);
+        currentScene->addEntity(firstRingE);
+        firstRingE->getTransform()->translate(rightHandPointer->getTransform()->getPosition());
+        firstRingE->getTransform()->translate(glm::vec3(-0.5f, -2.0f, 0.0f));
+        firstRingE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        firstRingE->getTransform()->setScale(glm::vec3(0.35f));
 
-        footOrbEntity->addComponent(footOrbModel);
-        footOrbEntity->getTransform()->setPosition(inactivePos2);
-        currentScene->addEntity(footOrbEntity);
-        
+        secondBallE->addComponent(secondBall);
+        currentScene->addEntity(secondBallE);
+        secondBallE->getTransform()->translate(leftHandPointer->getTransform()->getPosition());
+        secondBallE->getTransform()->translate(glm::vec3(0.8f, -1.8f, 100.0f));
+        secondBallE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        secondBallE->getTransform()->setScale(glm::vec3(0.35f));
+
+        secondRingE->addComponent(secondRing);
+        currentScene->addEntity(secondRingE);
+        secondRingE->getTransform()->translate(leftHandPointer->getTransform()->getPosition());
+        secondRingE->getTransform()->translate(glm::vec3(0.8f, -1.8f, -0.0f));
+        secondRingE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        secondRingE->getTransform()->setScale(glm::vec3(0.35f));
+
+
+        thirdBallE->addComponent(thirdBall);
+        currentScene->addEntity(thirdBallE);
+        thirdBallE->getTransform()->translate(rightFootPointer->getTransform()->getPosition());
+        thirdBallE->getTransform()->translate(glm::vec3(-0.841f, -1.584f, 100.0f));
+        thirdBallE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        thirdBallE->getTransform()->setScale(glm::vec3(0.35f));
+
+        thirdRingE->addComponent(thirdRing);
+        currentScene->addEntity(thirdRingE);
+        thirdRingE->getTransform()->translate(rightFootPointer->getTransform()->getPosition());
+        thirdRingE->getTransform()->translate(glm::vec3(-0.841f, -1.584f, 0.0f));
+        thirdRingE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        thirdRingE->getTransform()->setScale(glm::vec3(0.35f));
+
+
+        fourthBallE->addComponent(fourthBall);
+        currentScene->addEntity(fourthBallE);
+        fourthBallE->getTransform()->translate(leftFootPointer->getTransform()->getPosition());
+        fourthBallE->getTransform()->translate(glm::vec3(1.111f, -0.952f, 100.0f));
+        fourthBallE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        fourthBallE->getTransform()->setScale(glm::vec3(0.35f));
+
+        fourthRingE->addComponent(fourthRing);
+        currentScene->addEntity(fourthRingE);
+        fourthRingE->getTransform()->translate(leftFootPointer->getTransform()->getPosition());
+        fourthRingE->getTransform()->translate(glm::vec3(1.111f, -0.952f, -0.00f));
+        fourthRingE->getTransform()->rotate(glm::vec3(-90.0f,180.0f,0.0f));
+        fourthRingE->getTransform()->setScale(glm::vec3(0.35f));
+
+        backgroundE->addComponent(background);
+        currentScene->addEntity(backgroundE);
+        backgroundE->getTransform()->setScale(glm::vec3(1.0f));
+        backgroundE->getTransform()->rotate(glm::vec3(270.0f, 0.0f, 0.0f));
+        backgroundE->getTransform()->setPosition(glm::vec3(0.0f, -23.0f, -69.0f));
+
+        s.camera.SetPosition(glm::vec3(0.0f, -0.3f, -8.0f));
+        LOG_INFO(std::to_string(s.camera.Position.x) + " " + std::to_string(s.camera.Position.y)+" " + std::to_string(s.camera.Position.z));
     };
 
     void update() override
@@ -302,11 +409,7 @@ public:
         glm::mat4 view = s.camera.GetViewMatrix();
 
         LightManager::UpdateLightShader(shaderRig, view);
-        //LightManager::UpdateLightShader(shaderRigCalibraInstanced, view);
         LightManager::UpdateLightShader(ssao.shaderGeometryPass, view);
-//        LightManager::UpdateLightShader(shaderBarmanRig, view);
-//        LightManager::UpdateLightShader(shaderRigInstanced2, view);
-//        LightManager::UpdateLightShader(shaderDjRig, view);
 
         ssao.shaderGeometryPass.use();
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
@@ -385,10 +488,10 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 
-        joystickOffsetCalibra = playerInput.getJoystick(2);
-        joystickOffset2Calibra = playerInput.getJoystick(1);
-        joystickOffset3Calibra = playerInput1.getJoystick(2);
-        joystickOffset4Calibra = playerInput1.getJoystick(1);
+        joystickOffsetCalibra = playerInput1.getJoystick(2);
+        joystickOffset2Calibra = playerInput1.getJoystick(1);
+        joystickOffset3Calibra = playerInput.getJoystick(2);
+        joystickOffset4Calibra = playerInput.getJoystick(1);
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -445,7 +548,6 @@ public:
         joystickOffset2Calibra *= 200 * s.deltaTime;
         joystickOffset3Calibra *= 200 * s.deltaTime;
         joystickOffset4Calibra *= 200 * s.deltaTime;
-        // old
 
         playerIKCalibra->update(-joystickOffset3Calibra[0], -joystickOffset3Calibra[1], "mixamorig:RightHand");
         playerIKCalibra->update(-joystickOffset4Calibra[0], -joystickOffset4Calibra[1], "mixamorig:LeftHand");
@@ -460,6 +562,59 @@ public:
         leftHandPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:RightHand")->getModelPosition() * 0.01f);
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRigCalibra->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
+
+         if(glm::distance(glm::vec2(rightHandPointer->getTransform()->getPosition()), glm::vec2(firstRing->getTransform()->getPosition())+glm::vec2(0.0f,+2.5f))< 0.2f){
+            if(firstCollision == false){
+                AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
+            }
+             firstCollision = true;
+            firstBall->getTransform()->setPosition(glm::vec3(firstBall->getTransform()->getPosition().x,firstBall->getTransform()->getPosition().y,0.0f));
+        }
+        else{
+            firstCollision = false;
+             firstBall->getTransform()->setPosition(glm::vec3(firstBall->getTransform()->getPosition().x,firstBall->getTransform()->getPosition().y,100.0f));
+        }
+
+        if(glm::distance(glm::vec2(leftHandPointer->getTransform()->getPosition()), glm::vec2(secondRing->getTransform()->getPosition())+glm::vec2(0.0f,+2.5f))< 0.2f){
+            if(secondCollision == false){
+                AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
+            }
+            secondCollision = true;
+            secondBall->getTransform()->setPosition(glm::vec3(secondBall->getTransform()->getPosition().x,secondBall->getTransform()->getPosition().y,0.0f));
+        }
+        else{
+            secondCollision = false;
+            secondBall->getTransform()->setPosition(glm::vec3(secondBall->getTransform()->getPosition().x,secondBall->getTransform()->getPosition().y,100.0f));
+        }
+
+        if(glm::distance(glm::vec2(rightFootPointer->getTransform()->getPosition()), glm::vec2(thirdRing->getTransform()->getPosition())+glm::vec2(0.0f,+2.5f))< 0.2f){
+            if(thirdCollision == false){
+                AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
+            }
+            thirdCollision = true;
+            thirdBall->getTransform()->setPosition(glm::vec3(thirdBall->getTransform()->getPosition().x,thirdBall->getTransform()->getPosition().y,0.0f));
+        }
+        else{
+            thirdCollision = false;
+            thirdBall->getTransform()->setPosition(glm::vec3(thirdBall->getTransform()->getPosition().x,thirdBall->getTransform()->getPosition().y,100.0f));
+        }
+
+        if(glm::distance(glm::vec2(leftFootPointer->getTransform()->getPosition()), glm::vec2(fourthRing->getTransform()->getPosition())+glm::vec2(0.0f,+2.5f))< 0.2f){
+            if(fourthCollision == false){
+                AudioManager::getInstance().playSound("res/content/sounds/effects/pop1.wav", 0.4);
+            }
+            fourthCollision = true;
+            fourthBall->getTransform()->setPosition(glm::vec3(fourthBall->getTransform()->getPosition().x,fourthBall->getTransform()->getPosition().y,0.0f));
+        }
+        else{
+            fourthCollision = false;
+            fourthBall->getTransform()->setPosition(glm::vec3(fourthBall->getTransform()->getPosition().x,fourthBall->getTransform()->getPosition().y,100.0f));
+        }
+
+
+        if(firstCollision && secondCollision && thirdCollision && fourthCollision){
+            sm.setCurrentScene("MarcinScene");
+        }
 
         if (playerInput.isKeyPressed(1))
         {

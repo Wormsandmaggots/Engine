@@ -78,7 +78,11 @@ public:
         Pitch = pitch;
         updateCameraVectors();
     }
-
+    void SetPosition(glm::vec3 position)
+    {
+        Position = position;
+        updateCameraVectors();
+    }
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix()
     {
