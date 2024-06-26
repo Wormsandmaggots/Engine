@@ -36,13 +36,11 @@ using namespace SceneManagement;
 class exampleSceneScript : public SceneScript
 {
 private:
-    ///////////////////////////////////////////////////
     EditorLayer::Editor &editor;
     // collision
     CollisionManager &cm;
     // scene manager
     SceneManager &sm;
-    ///////////////////////////////////////////////////
     // audio
     AudioManager &audioManager;
 
@@ -52,15 +50,12 @@ private:
 
     // input joystick
     int connectedControllers;
-    ///////////////////////////////////////////////////
     PlayerInput &playerInput;
     PlayerInput &playerInput1;
-    ///////////////////////////////////////////////////
     glm::vec2 joystickOffset;
     glm::vec2 joystickOffset2;
     glm::vec2 joystickOffset3;
     glm::vec2 joystickOffset4;
-    ///////////////////////////////////////////////////
     DebugInput &debugInput;
 
     Shader &shader;
@@ -79,15 +74,12 @@ private:
     Shader &imageShaderGreen;
     Shader &shaderRigInstanced;
     Shader &shaderRigInstanced2;
-    ///////////////////////////////////////////////////
     FrameBuffer buffer;
 
     // ssao
     SSAO &ssao;
-    ///////////////////////////////////////////////////
     // renderer
     Renderer &renderer;
-    ///////////////////////////////////////////////////
     // model
     Model *box;
     Model *club;
@@ -222,12 +214,36 @@ private:
     float clock;
     float fallStop;
 
+    //hud2
+    Entity* scoreEntity;
+    Image* scoreImage;
+    Texture* scoreTexture;
+
+    Entity* comboEntity;
+    Image* comboImage;
+    Texture* comboTexture;
+
+    Entity* humanEntity;
+    Image* humanImage;
+    Texture* humanTexture;
+
+    Entity* robotEntity;
+    Image* robotImage;
+    Texture* robotTexture;
+
+    Entity* frameEntity;
+    Image* frameImage;
+    Texture* frameTexture;
+
+
+
 public:
     // Konstruktor domyślny
     exampleSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, AudioManager &audioManager, PlayerInput &playerInput,
                        PlayerInput &playerInput1, DebugInput &debugInput, Shader &shader, Shader &collisionTestShader, Shader &shaderText,
                        Shader &colorShader, Shader &shaderPbr, Shader &screenShader, Shader &shaderRig, Shader &shaderBarmanRig, Shader &DrunkShader,
-                       Shader &shaderNoneDrink, Shader &reverseShader, Shader &imageShader, Shader &imageShaderGreen, Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2) : editor(editor),
+                       Shader &shaderNoneDrink, Shader &reverseShader, Shader &imageShader, Shader &imageShaderGreen, Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2) :
+                                             editor(editor),
                                              cm(cm),
                                              sm(sm),
                                              ssao(ssao),
@@ -369,7 +385,24 @@ public:
                                              spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17)),
                                              canDecreaseBar(true),
                                              clock(5),
-                                             fallStop(5)
+                                             fallStop(5),
+                                             scoreEntity(new Entity("scoreEntity")),
+                                             scoreImage(new Image(&imageShader)),
+                                             scoreTexture(new Texture("res/content/textures/hud/score.png", "scoreTexture")),
+                                            comboEntity(new Entity("comboEntity")),
+                                            comboImage(new Image(&imageShader)),
+                                            comboTexture(new Texture("res/content/textures/hud/combo.png", "comboTexture")),
+                                            humanEntity(new Entity("humanEntity")),
+                                            humanImage(new Image(&imageShader)),
+                                            humanTexture(new Texture("res/content/textures/hud/glowa.png", "humanTexture")),
+                                            robotEntity(new Entity("robotEntity")),
+                                            robotImage(new Image(&imageShader)),
+                                            robotTexture(new Texture("res/content/textures/hud/robot.png", "robotTexture")),
+                                            frameEntity(new Entity("frameEntity")),
+                                            frameImage(new Image(&imageShader)),
+                                            frameTexture(new Texture("res/content/textures/hud/ramka.png", "frameTexture"))
+
+
     {
     }
 
@@ -576,12 +609,45 @@ public:
         // hud
         currentScene->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
-        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
-        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+//        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
+//        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+        resBar->getTransform()->setScale(glm::vec3(0.166f, 0.041f, 0.0f));
+        resBar->getTransform()->setPosition(glm::vec3(-0.65f, -0.699f, 0.0f));
 
         // txt
         comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
+        //hud2
+        currentScene->addEntity(scoreEntity);
+        scoreEntity->addComponent(scoreImage);
+        scoreImage->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
+        scoreImage->getTransform()->setPosition(glm::vec3(-0.85f, 0.75f, 0.0f));
+        scoreImage->setTexture(scoreTexture);
+
+        currentScene->addEntity(comboEntity);
+        comboEntity->addComponent(comboImage);
+        comboImage->getTransform()->setScale(glm::vec3(0.16f, 0.24f, 0.0f));
+        comboImage->getTransform()->setPosition(glm::vec3(0.53f, -0.2f, 0.0f));
+        comboImage->setTexture(comboTexture);
+
+        currentScene->addEntity(humanEntity);
+        humanEntity->addComponent(humanImage);
+        humanImage->getTransform()->setScale(glm::vec3(0.024f, 0.04f, 0.0f));
+        humanImage->getTransform()->setPosition(glm::vec3(-0.853f, -0.7f, 0.0f));
+        humanImage->setTexture(humanTexture);
+
+        currentScene->addEntity(robotEntity);
+        robotEntity->addComponent(robotImage);
+        robotImage->getTransform()->setScale(glm::vec3(0.018f, 0.05f, 0.0f));
+        robotImage->getTransform()->setPosition(glm::vec3(-0.45f, -0.7f, 0.0f));
+        robotImage->setTexture(robotTexture);
+
+        currentScene->addEntity(frameEntity);
+        frameEntity->addComponent(frameImage);
+        frameImage->getTransform()->setScale(glm::vec3(0.17f, 0.05f, 0.0f));
+        frameImage->getTransform()->setPosition(glm::vec3(-0.65f, -0.7f, 0.0f));
+        frameImage->setTexture(frameTexture);
 
 
         DrunkShader.setInt("screenTexture", 0);
@@ -792,45 +858,54 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // hud
+        //hud2
+        imageShader.use();
+
+        scoreImage->renderPlane();
+        comboImage->renderPlane();
+        humanImage->renderPlane();
+        robotImage->renderPlane();
+        frameImage->renderPlane();
+
         resBar->renderPlane();
         // resizing bar
         // temporary------------------------------------------------------------------------------------
         double currentTime = glfwGetTime();
-        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
-        if (currentTime - lastUpdateTime >= resizeInterval)
-        {
-            if(time < songLenghtGlobal && canDecreaseBar)
-                resBar->resizeOnImpulse(resizeAmount);
-            lastUpdateTime = currentTime;
-            if (lookatAngle < 170.0f)
-            {
-                lookatAngle += 5.0f;
-            }
-        }
-        // Jeśli score został zwiększony o incrementScore
-        if (score - lastScore >= incrementScore)
-        {
-            resBar->increaseOnImpulse(resizeAmount);
-            lastScore = score;
-
-            if (lookatAngle > 5.0f)
-            {
-                lookatAngle -= 5.0f;
-            }
-        }
-        //resBar może nowu spadać
-        if (!canDecreaseBar && timer < 0)
-        {
-            canDecreaseBar = true;
-            //lock = fallStop; // resetujemy timer
-        }
-        //zmiana koloru paska na szary gdy nie mozę spadać
-        imageShaderGreen.use();
-        if (canDecreaseBar) {
-            imageShaderGreen.setBool("isBarLocked", false);
-        } else {
-            imageShaderGreen.setBool("isBarLocked", true);
-        }
+//        // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
+//        if (currentTime - lastUpdateTime >= resizeInterval)
+//        {
+//            if(time < songLenghtGlobal && canDecreaseBar)
+//                resBar->resizeOnImpulse(resizeAmount);
+//            lastUpdateTime = currentTime;
+//            if (lookatAngle < 170.0f)
+//            {
+//                lookatAngle += 5.0f;
+//            }
+//        }
+//        // Jeśli score został zwiększony o incrementScore
+//        if (score - lastScore >= incrementScore)
+//        {
+//            resBar->increaseOnImpulse(resizeAmount);
+//            lastScore = score;
+//
+//            if (lookatAngle > 5.0f)
+//            {
+//                lookatAngle -= 5.0f;
+//            }
+//        }
+//        //resBar może nowu spadać
+//        if (!canDecreaseBar && timer < 0)
+//        {
+//            canDecreaseBar = true;
+//            //lock = fallStop; // resetujemy timer
+//        }
+//        //zmiana koloru paska na szary gdy nie mozę spadać
+//        imageShaderGreen.use();
+//        if (canDecreaseBar) {
+//            imageShaderGreen.setBool("isBarLocked", false);
+//        } else {
+//            imageShaderGreen.setBool("isBarLocked", true);
+//        }
 //std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
 //giving a 2 second chance to player to bumpup the bar
     if (resBar->getTransform()->getLocalScale().y <= 0.01f) {
@@ -846,7 +921,7 @@ public:
         if (isCounting) {
             timeLeft -= s.deltaTime;
             if (timeLeft <= 0.0f) {
-                sm.setCurrentScene("LoseScene");
+               // sm.setCurrentScene("LoseScene");
             }
         }
 
@@ -857,6 +932,16 @@ public:
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
+
+//        //hud2
+//        imageShader.use();
+//
+//        scoreImage->renderPlane();
+//        comboImage->renderPlane();
+//        humanImage->renderPlane();
+//        robotImage->renderPlane();
+//        frameImage->renderPlane();
+
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
@@ -923,10 +1008,10 @@ public:
             sm.setCurrentScene("PauseScene");
         }
 
-        if(time > songLenghtGlobal + 5)
-        {
-            sm.setCurrentScene("WinScene");
-        }
+//        if(time > songLenghtGlobal + 5)
+//        {
+//            sm.setCurrentScene("WinScene");
+//        }
     };
 
     void onExit() {

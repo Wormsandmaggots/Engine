@@ -133,7 +133,8 @@ int main() {
 //    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("KubaScene");
+    //sm.setCurrentScene("KubaScene");
+    sm.setCurrentScene("MarcinScene");
 
     bool switched = true;
     Scene2* currentScene;
