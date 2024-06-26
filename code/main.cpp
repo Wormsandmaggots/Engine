@@ -165,7 +165,7 @@ int main() {
     //start
     examplesceneScript->start();
 
-
+/*
     menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -213,16 +213,16 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-
-//    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
-//                                                                                shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
-//                                                                                shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
-//                                                                                imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
-//    calibrationsceneScript->awake();
-//    calibrationsceneScript->start();
+*/
+    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, /*AudioManager &audioManager, */playerInput,
+                                                                                playerInput1, debugInput, shader, collisionTestShader, shaderText,
+                                                                                colorShader, shaderPbr, screenShader, shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
+            /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/imageShader, imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/);
+    calibrationsceneScript->awake();
+    calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("KubaScene");
+    sm.setCurrentScene("CalibrationScene");
 
     bool switched = true;
     Scene2* currentScene;
@@ -245,14 +245,18 @@ int main() {
         // Pobieranie aktualnej sceny
         currentScene = sm.getCurrentScene();
         if (currentScene != nullptr) {
+            /*
             // Sprawdzanie, która scena jest aktualnie aktywna
             if (currentScene->getName() == "KubaScene") {
                 // Wywołanie metody update dla menuSceneScript
                 menusceneScript->update();
-            } else if (currentScene->getName() == "MarcinScene") {
-                // Wywołanie metody update dla exampleSceneScript
-                examplesceneScript->update();
             }
+             */
+            if (currentScene->getName() == "MarcinScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                //calibrationsceneScript->onExit();
+                examplesceneScript->update();
+            }/*
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->onExit();
@@ -274,11 +278,11 @@ int main() {
             else if (currentScene->getName() == "SongScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
+            }*/
+            else if (currentScene->getName() == "CalibrationScene") {
+                // Wywołanie metody update dla exampleSceneScript
+                calibrationsceneScript->update();
             }
-//            else if (currentScene->getName() == "CalibrationScene") {
-//                // Wywołanie metody update dla exampleSceneScript
-//                calibrationsceneScript->update();
-//            }
         }
 
 
