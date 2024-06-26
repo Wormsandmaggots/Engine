@@ -221,6 +221,23 @@ private:
     float clock;
     float fallStop;
 
+    //hud2
+    Entity* scoreEntity;
+    Image* scoreImage;
+    Texture* scoreTexture;
+    Entity* comboEntity;
+    Image* comboImage;
+    Texture* comboTexture;
+    Entity* humanEntity;
+    Image* humanImage;
+    Texture* humanTexture;
+    Entity* robotEntity;
+    Image* robotImage;
+    Texture* robotTexture;
+    Entity* frameEntity;
+    Image* frameImage;
+    Texture* frameTexture;
+
 public:
     // Konstruktor domyślny
     exampleSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, AudioManager &audioManager, PlayerInput &playerInput,
@@ -368,7 +385,22 @@ public:
                                                                                                                                                                                                       spawnerComponent(new SpawnerComponent(pathToSong, glm::vec3(0, 0, orbDistance), 17)),
                                                                                                                                                                                                       canDecreaseBar(true),
                                                                                                                                                                                                       clock(5),
-                                                                                                                                                                                                      fallStop(5)
+                                                                                                                                                                                                      fallStop(5),
+                                                                                                                                                                                                      scoreEntity(new Entity("scoreEntity")),
+                                                                                                                                                                                                      scoreImage(new Image(&imageShader)),
+                                                                                                                                                                                                      scoreTexture(new Texture("res/content/textures/hud/score.png", "scoreTexture")),
+                                                                                                                                                                                                      comboEntity(new Entity("comboEntity")),
+                                                                                                                                                                                                      comboImage(new Image(&imageShader)),
+                                                                                                                                                                                                      comboTexture(new Texture("res/content/textures/hud/combo.png", "comboTexture")),
+                                                                                                                                                                                                      humanEntity(new Entity("humanEntity")),
+                                                                                                                                                                                                      humanImage(new Image(&imageShader)),
+                                                                                                                                                                                                      humanTexture(new Texture("res/content/textures/hud/glowa.png", "humanTexture")),
+                                                                                                                                                                                                      robotEntity(new Entity("robotEntity")),
+                                                                                                                                                                                                      robotImage(new Image(&imageShader)),
+                                                                                                                                                                                                      robotTexture(new Texture("res/content/textures/hud/robot.png", "robotTexture")),
+                                                                                                                                                                                                      frameEntity(new Entity("frameEntity")),
+                                                                                                                                                                                                      frameImage(new Image(&imageShader)),
+                                                                                                                                                                                                      frameTexture(new Texture("res/content/textures/hud/ramka.png", "frameTexture"))
     {
     }
 
@@ -574,13 +606,40 @@ public:
         // hud
         currentScene->addEntity(resBarEntity);
         resBarEntity->addComponent(resBar);
-        resBar->getTransform()->setScale(glm::vec3(0.02f, 0.3f, 0.0f));
-        resBar->getTransform()->setPosition(glm::vec3(0.847f, 0.0f, 0.0f));
+        resBar->getTransform()->setScale(glm::vec3(0.2f, 0.041f, 0.0f));
+        resBar->getTransform()->setPosition(glm::vec3(-0.699f, -0.699f, 0.0f));
 
         // txt
         // comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         // scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
         // scoreRenderer->setParameters("Score " + std::to_string(score), 768, 601, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+
+        //hud2
+        currentScene->addEntity(scoreEntity);
+        scoreEntity->addComponent(scoreImage);
+        scoreImage->getTransform()->setScale(glm::vec3(0.1f, 0.1f, 0.0f));
+        scoreImage->getTransform()->setPosition(glm::vec3(-0.85f, 0.75f, 0.0f));
+        scoreImage->setTexture(scoreTexture);
+        currentScene->addEntity(comboEntity);
+        comboEntity->addComponent(comboImage);
+        comboImage->getTransform()->setScale(glm::vec3(0.16f, 0.24f, 0.0f));
+        comboImage->getTransform()->setPosition(glm::vec3(0.5f, -0.23f, 0.0f));
+        comboImage->setTexture(comboTexture);
+        currentScene->addEntity(humanEntity);
+        humanEntity->addComponent(humanImage);
+        humanImage->getTransform()->setScale(glm::vec3(0.024f, 0.04f, 0.0f));
+        humanImage->getTransform()->setPosition(glm::vec3(-0.942f, -0.7f, 0.0f));
+        humanImage->setTexture(humanTexture);
+        currentScene->addEntity(robotEntity);
+        robotEntity->addComponent(robotImage);
+        robotImage->getTransform()->setScale(glm::vec3(0.018f, 0.05f, 0.0f));
+        robotImage->getTransform()->setPosition(glm::vec3(-0.46f, -0.7f, 0.0f));
+        robotImage->setTexture(robotTexture);
+        currentScene->addEntity(frameEntity);
+        frameEntity->addComponent(frameImage);
+        frameImage->getTransform()->setScale(glm::vec3(0.204f, 0.05f, 0.0f));
+        frameImage->getTransform()->setPosition(glm::vec3(-0.699f, -0.7f, 0.0f));
+        frameImage->setTexture(frameTexture);
 
         DrunkShader.setInt("screenTexture", 0);
     };
@@ -791,6 +850,14 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // hud
+        //hud2
+        imageShader.use();
+        scoreImage->renderPlane();
+        comboImage->renderPlane();
+        humanImage->renderPlane();
+        robotImage->renderPlane();
+        frameImage->renderPlane();
+
         resBar->renderPlane();
         // resizing bar
         // temporary------------------------------------------------------------------------------------
@@ -833,9 +900,9 @@ public:
         {
             imageShaderGreen.setBool("isBarLocked", true);
         }
-        // std::cout<<resBar->getTransform()->getLocalScale().y<<std::endl;
+        // std::cout<<resBar->getTransform()->getLocalScale().x<<std::endl;
         // giving a 2 second chance to player to bumpup the bar
-        if (resBar->getTransform()->getLocalScale().y <= 0.01f)
+        if (resBar->getTransform()->getLocalScale().x <= 0.01f)
         {
             if (!isCounting)
             {
@@ -853,14 +920,14 @@ public:
             timeLeft -= s.deltaTime;
             if (timeLeft <= 0.0f)
             {
-                sm.setCurrentScene("LoseScene");
+                //sm.setCurrentScene("LoseScene");
             }
         }
 
         // temporary------------------------------------------------------------------------------------
         // text
-        comboRenderer->setParameters("Combo " + std::to_string(combo) + "x", 150, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters("Score " + std::to_string(score), 1920 / 2 - 12, 950, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
         comboRenderer->renderText();
         scoreRenderer->renderText();
