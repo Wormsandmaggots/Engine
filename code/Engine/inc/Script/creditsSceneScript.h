@@ -253,7 +253,7 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        if (playerInput.isKeyPressed(1)) {
+        if (playerInput.isKeyPressed(0) || playerInput.isKeyPressed(1)){
             clickActiveButton();
         }
 

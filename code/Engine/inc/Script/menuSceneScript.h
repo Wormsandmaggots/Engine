@@ -332,7 +332,7 @@ public:
             joystickReset = true;
         }
 
-        if (playerInput.isKeyPressed(1)) {
+        if (playerInput.isKeyPressed(0) || playerInput.isKeyPressed(1)){
             clickActiveButton();
         }
 
