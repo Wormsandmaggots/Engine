@@ -377,8 +377,8 @@ public:
         glDisable(GL_BLEND);
 
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            LOG_INFO(std::to_string(joystickOffset.x));
-            if (joystickOffset.y < 0.5) {
+            //LOG_INFO(std::to_string(joystickOffset.x));
+            if (joystickOffset.y < 0.5 || joystickOffset2.y < 0.5) {
                 if (activeButton == era00) {
                     changeActiveButton(era80);
                 } else if (activeButton == era90) {
@@ -387,7 +387,7 @@ public:
                     changeActiveButton(era90);
                 }
             }
-            else if (joystickOffset.y > -0.5) {
+            else if (joystickOffset.y > -0.5 || joystickOffset2.y > -0.5) {
                 if (activeButton == era00) {
                     changeActiveButton(era90);
                 } else if (activeButton == era80) {
@@ -396,15 +396,15 @@ public:
                     changeActiveButton(era80);
                 }
             }
-            else if (joystickOffset.x > -0.5){
+            else if (joystickOffset.x > -0.5 || joystickOffset2.x > -0.5){
                 changeActiveButton(backToMenu);
             }
-            else if (joystickOffset.x < 0.5){
+            else if (joystickOffset.x < 0.5 || joystickOffset2.x < 0.5){
                 changeActiveButton(startGame);
             }
             lastButtonChangeTime = currentFrame;
             joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
+        } else if (std::abs(joystickOffset.y || joystickOffset2.y) <= 0.5) {
             joystickReset = true;
         }
 

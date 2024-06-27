@@ -150,7 +150,7 @@ public:
             ex(new Entity("exitButton")),
             cr(new Entity("creditsButton")),
 
-            background(new Texture("res/content/textures/mainmenu_b.png", "background")),
+            background(new Texture("res/content/textures/mainmenu_backgroundv3.png", "background")),
             ng_button_idle(new Texture("res/content/textures/start_d.png", "start_d")),
             ex_button_idle(new Texture("res/content/textures/exit_d.png", "exit_d")),
             cr_button_idle(new Texture("res/content/textures/credits_d.png", "credits_d")),
@@ -308,7 +308,7 @@ public:
         glDisable(GL_BLEND);
 
         if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            if (joystickOffset.y < 0.5) {
+            if (joystickOffset.y < 0.5 || joystickOffset2.y < 0.5) {
                 if (activeButton == startButton) {
                     changeActiveButton(exitButton);
                 } else if (activeButton == creditsButton) {
@@ -317,7 +317,7 @@ public:
                     changeActiveButton(creditsButton);
                 }
             }
-            else if (joystickOffset.y > -0.5) {
+            else if (joystickOffset.y > -0.5 || joystickOffset2.y > -0.5) {
                 if (activeButton == startButton) {
                     changeActiveButton(creditsButton);
                 } else if (activeButton == exitButton) {
@@ -328,7 +328,7 @@ public:
             }
             lastButtonChangeTime = currentFrame;
             joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
+        } else if (std::abs(joystickOffset.y || joystickOffset2.y) <= 0.5) {
             joystickReset = true;
         }
 
