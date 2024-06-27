@@ -83,12 +83,12 @@ private:
     Image* pauseWallpaper;
 
     //Button* continueButton;
-    Button* changeSongButton;
+    //Button* changeSongButton;
     Button* exitButton;
 
     Entity* pauseBackground;
     //Entity* cn;
-    Entity* cs;
+    //Entity* cs;
     Entity* ex;
 
     Texture* background;
@@ -145,12 +145,12 @@ public:
             //hud
             pauseWallpaper(new Image(&imageShader)),
             //continueButton(new Button(&imageShader)),
-            changeSongButton(new Button(&imageShader)),
+            //changeSongButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
 
             pauseBackground(new Entity("mainMenu")),
             //cn(new Entity("continueButton")),
-            cs(new Entity("changeSongButton")),
+            //cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
             background(new Texture("res/content/textures/win/youwon_b.png", "background")),
@@ -164,25 +164,25 @@ public:
     {
     }
 
-    // Dodajemy metodę do zmiany aktywnego przycisku
-    void changeActiveButton(Button* newActiveButton) {
-        if (activeButton != nullptr) {
-            activeButton->setActive(false);
-            if(activeButton == changeSongButton){
-                activeButton->getTransform()->setScale(glm::vec3(0.37f, 0.050f, 0.182f));
-            }
-        }
-
-        activeButton = newActiveButton;
-
-        if (activeButton != nullptr) {
-            activeButton->setActive(true);
-            if(activeButton == changeSongButton){
-                activeButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
-            }
-        }
-        activeButton = newActiveButton;
-    }
+//    // Dodajemy metodę do zmiany aktywnego przycisku
+//    void changeActiveButton(Button* newActiveButton) {
+//        if (activeButton != nullptr) {
+//            activeButton->setActive(false);
+//            if(activeButton == changeSongButton){
+//                activeButton->getTransform()->setScale(glm::vec3(0.37f, 0.050f, 0.182f));
+//            }
+//        }
+//
+//        activeButton = newActiveButton;
+//
+//        if (activeButton != nullptr) {
+//            activeButton->setActive(true);
+//            if(activeButton == changeSongButton){
+//                activeButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
+//            }
+//        }
+//        activeButton = newActiveButton;
+//    }
 
     // Dodajemy metodę do wywołania funkcji onClick dla aktywnego przycisku
     void clickActiveButton() {
@@ -207,19 +207,19 @@ public:
 
         pauseWallpaper->setTexture(background);
 
-        currentScene->addEntity(cs);
-        cs->addComponent(changeSongButton);
-        changeSongButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
-        changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
+//        currentScene->addEntity(cs);
+//        cs->addComponent(changeSongButton);
+//        changeSongButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
+//        changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
 
-        changeSongButton->setTexture(cs_button_activ);
-        changeSongButton->setInactiveTexture(cs_button_idle);
-        changeSongButton->setActiveTexture(cs_button_activ);
-
-        changeSongButton->setOnClick([this]() {
-            std::cout << "changeButton button clicked!" << std::endl;
-            this->sm.setCurrentScene("SongScene");
-        });
+//        changeSongButton->setTexture(cs_button_activ);
+//        changeSongButton->setInactiveTexture(cs_button_idle);
+//        changeSongButton->setActiveTexture(cs_button_activ);
+//
+//        changeSongButton->setOnClick([this]() {
+//            std::cout << "changeButton button clicked!" << std::endl;
+//            this->sm.setCurrentScene("SongScene");
+//        });
 
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
@@ -236,7 +236,7 @@ public:
         });
 
         //buttons on scene handling
-        activeButton = changeSongButton;
+        activeButton = exitButton;
         lastButtonChangeTime = 0.0f;
         buttonChangeDelay = 0.2f;
         joystickReset = true;
@@ -292,33 +292,33 @@ public:
         pauseWallpaper->renderPlane();
 
         //continueButton->renderPlane();
-        changeSongButton->renderPlane();
+        //changeSongButton->renderPlane();
         exitButton->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-            if (joystickOffset.y < 0.5) {
-                if (activeButton == changeSongButton) {
-                    changeActiveButton(exitButton);
-                } else if (activeButton == exitButton) {
-                    changeActiveButton(changeSongButton);
-                }
-            }
-            else if (joystickOffset.y > -0.5) {
-                if (activeButton == exitButton) {
-                    changeActiveButton(changeSongButton);
-                } else if (activeButton == changeSongButton) {
-                    changeActiveButton(exitButton);
-                }
-            }
-            lastButtonChangeTime = currentFrame;
-            joystickReset = false;
-        } else if (std::abs(joystickOffset.y) <= 0.5) {
-            joystickReset = true;
-        }
+//        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
+//            if (joystickOffset.y < 0.5) {
+//                if (activeButton == changeSongButton) {
+//                    changeActiveButton(exitButton);
+//                } else if (activeButton == exitButton) {
+//                    changeActiveButton(changeSongButton);
+//                }
+//            }
+//            else if (joystickOffset.y > -0.5) {
+//                if (activeButton == exitButton) {
+//                    changeActiveButton(changeSongButton);
+//                } else if (activeButton == changeSongButton) {
+//                    changeActiveButton(exitButton);
+//                }
+//            }
+//            lastButtonChangeTime = currentFrame;
+//            joystickReset = false;
+//        } else if (std::abs(joystickOffset.y) <= 0.5) {
+//            joystickReset = true;
+//        }
 
 
         if (playerInput.isKeyPressed(1)) {

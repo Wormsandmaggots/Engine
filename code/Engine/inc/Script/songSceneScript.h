@@ -242,7 +242,7 @@ public:
 
         era00->setOnClick([this]() {
             std::cout << "00 button clicked!" << std::endl;
-            pathToSong = "res/content/sounds/effects/kicked out.wav";
+            pathToSong = "res/content/sounds/songs/00/vengeance.wav";
             AudioManager::getInstance().pauseThisSong("menu");
 //            pathToSong = "res/content/sounds/effects/kicked out.wav";
             this->sm.setCurrentScene("CalibrationScene");

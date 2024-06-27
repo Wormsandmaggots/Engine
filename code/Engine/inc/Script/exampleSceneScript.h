@@ -291,8 +291,8 @@ public:
                                                                                                                                                                                                       sphereModel_green(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
                                                                                                                                                                                                       sphereModel_green2(new Model("res/content/models/sphere/untitled.obj", new MaterialAsset("res/content/materials/color_green.json"))),
                                                                                                                                                                                                       dj(new Model("res/content/models/mrDJ/noRig/MrDJ/DJ.fbx", &shaderDjRig)),
-                                                                                                                                                                                                      comboRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
-                                                                                                                                                                                                      scoreRenderer(new Text("res/content/fonts/ARCADECLASSIC.TTF")),
+                                                                                                                                                                                                      comboRenderer(new Text("res/content/fonts/nasalization.otf")),
+                                                                                                                                                                                                      scoreRenderer(new Text("res/content/fonts/nasalization.otf")),
                                                                                                                                                                                                       playerCamera(new ThirdPersonCamera()),
                                                                                                                                                                                                       playerRig(new RigPrep(playerModel)),
                                                                                                                                                                                                       playerIK(new InverseKinematics(playerRig)),
@@ -969,8 +969,8 @@ public:
 
         // temporary------------------------------------------------------------------------------------
         // text
-        comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
-        scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(0.5, 0.8f, 0.2f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        comboRenderer->setParameters("x" + std::to_string(combo), 1920 / 2 + 470, 370, 1.2f, glm::vec3(1.0, 1.0f, 1.0f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
+        scoreRenderer->setParameters(std::to_string(score), 200, 865, 1.2f, glm::vec3(1.0, 1.0f, 1.0f), (float)s.WINDOW_WIDTH, (float)s.WINDOW_HEIGHT);
 
         if (combo > 0)
             comboRenderer->renderText();
