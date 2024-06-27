@@ -245,8 +245,8 @@ public:
             pathToSong = "res/content/sounds/effects/kicked out.wav";
             AudioManager::getInstance().pauseThisSong("menu");
 //            pathToSong = "res/content/sounds/effects/kicked out.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //credits
@@ -264,8 +264,8 @@ public:
             pathToSong = "res/content/sounds/songs/90/love.wav";
             AudioManager::getInstance().pauseThisSong("menu");
 
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //exit
@@ -282,8 +282,8 @@ public:
             std::cout << "80 button clicked!" << std::endl;
             pathToSong = "res/content/sounds/songs/80/cluster.wav";
             AudioManager::getInstance().pauseThisSong("menu");
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //mainmenu
@@ -316,8 +316,8 @@ public:
         startGame->setOnClick([this]() {
             std::cout << "startgame button clicked!" << std::endl;
             //pathToSong = "res/content/sounds/songs/80/goddess.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("MarcinScene");
+            this->sm.setCurrentScene("CalibrationScene");
+            //this->sm.setCurrentScene("MarcinScene");
         });
 
         //buttons on scene handling

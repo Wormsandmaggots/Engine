@@ -122,7 +122,7 @@ int main() {
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
         //TODO::Kuba zmień teksturę
-        Texture loadTexture = Texture("res/content/images.jpg", "load");
+        Texture loadTexture = Texture("res/content/loadingscreen2.jpg", "load");
 
 
         sh->use();
@@ -165,7 +165,7 @@ int main() {
     //start
     examplesceneScript->start();
 
-/*
+
     menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
@@ -213,7 +213,7 @@ int main() {
 
     songsceneScript->awake();
     songsceneScript->start();
-*/
+
     calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, /*AudioManager &audioManager, */playerInput,
                                                                                 playerInput1, debugInput, shader, collisionTestShader, shaderText,
                                                                                 colorShader, shaderPbr, screenShader, shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
@@ -222,7 +222,7 @@ int main() {
     calibrationsceneScript->start();
 
 // Ustawianie aktualnej sceny na menuSceneScript
-    sm.setCurrentScene("CalibrationScene");
+    sm.setCurrentScene("KubaScene");
 
     bool switched = true;
     Scene2* currentScene;
@@ -245,18 +245,18 @@ int main() {
         // Pobieranie aktualnej sceny
         currentScene = sm.getCurrentScene();
         if (currentScene != nullptr) {
-            /*
+
             // Sprawdzanie, która scena jest aktualnie aktywna
             if (currentScene->getName() == "KubaScene") {
                 // Wywołanie metody update dla menuSceneScript
                 menusceneScript->update();
             }
-             */
-            if (currentScene->getName() == "MarcinScene") {
+
+            else if (currentScene->getName() == "MarcinScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 //calibrationsceneScript->onExit();
                 examplesceneScript->update();
-            }/*
+            }
             else if (currentScene->getName() == "PauseScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 examplesceneScript->onExit();
@@ -278,7 +278,7 @@ int main() {
             else if (currentScene->getName() == "SongScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 songsceneScript->update();
-            }*/
+            }
             else if (currentScene->getName() == "CalibrationScene") {
                 // Wywołanie metody update dla exampleSceneScript
                 calibrationsceneScript->update();

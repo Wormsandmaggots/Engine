@@ -612,7 +612,7 @@ public:
         }
 
 
-        if(firstCollision && secondCollision && thirdCollision && fourthCollision){
+        if(firstCollision || secondCollision || thirdCollision || fourthCollision){
             sm.setCurrentScene("MarcinScene");
         }
 
