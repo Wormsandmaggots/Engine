@@ -158,7 +158,7 @@ void SpawnerComponent::update()
 				spawn<FootOrb>(glm::vec3(xLF, adjustedYLF, originPos.z));
 		}
 
-		if (orbsSpawned > 10)
+		if (orbsSpawned > 50)
 		{
 			spawn<Drink>(glm::vec3(generateRandomFloat(-1.5, 1.5), generateRandomFloat(-1.5, 1.5), originPos.z));
 			orbsSpawned = 0;
