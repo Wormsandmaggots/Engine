@@ -488,10 +488,10 @@ public:
         glBindTexture(GL_TEXTURE_2D, ssao.gEmissive);
         ssao.renderQuad();
 
-        joystickOffsetCalibra = playerInput1.getJoystick(2);
-        joystickOffset2Calibra = playerInput1.getJoystick(1);
-        joystickOffset3Calibra = playerInput.getJoystick(2);
-        joystickOffset4Calibra = playerInput.getJoystick(1);
+        joystickOffsetCalibra = playerInput.getJoystick(2);
+        joystickOffset2Calibra = playerInput.getJoystick(1);
+        joystickOffset3Calibra = playerInput1.getJoystick(2);
+        joystickOffset4Calibra = playerInput1.getJoystick(1);
 
         buffer.unbind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

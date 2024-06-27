@@ -82,20 +82,20 @@ private:
     //main menu
     Image* pauseWallpaper;
 
-    //Button* continueButton;
-    //Button* changeSongButton;
+    Button* continueButton;
+    Button* changeSongButton;
     Button* exitButton;
 
     Entity* pauseBackground;
-    //Entity* cn;
-    //Entity* cs;
+    Entity* cn;
+    Entity* cs;
     Entity* ex;
 
     Texture* background;
-    //Texture* cn_button_idle;
+    Texture* cn_button_idle;
     Texture* cs_button_idle;
     Texture* ex_button_idle;
-    //Texture* cn_button_activ;
+    Texture* cn_button_activ;
     Texture* cs_button_activ;
     Texture* ex_button_activ;
 
@@ -144,45 +144,45 @@ public:
             buffer(FrameBuffer(s.WINDOW_WIDTH, s.WINDOW_HEIGHT)),
             //hud
             pauseWallpaper(new Image(&imageShader)),
-            //continueButton(new Button(&imageShader)),
-            //changeSongButton(new Button(&imageShader)),
+            continueButton(new Button(&imageShader)),
+            changeSongButton(new Button(&imageShader)),
             exitButton(new Button(&imageShader)),
 
             pauseBackground(new Entity("mainMenu")),
-            //cn(new Entity("continueButton")),
-            //cs(new Entity("changeSongButton")),
+            cn(new Entity("continueButton")),
+            cs(new Entity("changeSongButton")),
             ex(new Entity("exitButton")),
 
             background(new Texture("res/content/textures/win/youwon_b.png", "background")),
-            //cn_button_idle(new Texture("res/content/textures/pause/continue_d.png", "continue_d")),
+            cn_button_idle(new Texture("res/content/textures/pause/continue_d.png", "continue_d")),
             cs_button_idle(new Texture("res/content/textures/lose/choose_d.png", "restart_d")),
             ex_button_idle(new Texture("res/content/textures/pause/exit_d.png", "exit_d")),
-            //cn_button_activ(new Texture("res/content/textures/pause/continue_h.png", "continue_h")),
+            cn_button_activ(new Texture("res/content/textures/pause/continue_h.png", "continue_h")),
             cs_button_activ(new Texture("res/content/textures/lose/choose_h.png", "restart_h")),
             ex_button_activ(new Texture("res/content/textures/pause/exit_h.png", "exit_h"))
 
     {
     }
 
-//    // Dodajemy metodę do zmiany aktywnego przycisku
-//    void changeActiveButton(Button* newActiveButton) {
-//        if (activeButton != nullptr) {
-//            activeButton->setActive(false);
-//            if(activeButton == changeSongButton){
-//                activeButton->getTransform()->setScale(glm::vec3(0.37f, 0.050f, 0.182f));
-//            }
-//        }
-//
-//        activeButton = newActiveButton;
-//
-//        if (activeButton != nullptr) {
-//            activeButton->setActive(true);
-//            if(activeButton == changeSongButton){
-//                activeButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
-//            }
-//        }
-//        activeButton = newActiveButton;
-//    }
+    // Dodajemy metodę do zmiany aktywnego przycisku
+    void changeActiveButton(Button* newActiveButton) {
+        if (activeButton != nullptr) {
+            activeButton->setActive(false);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.37f, 0.050f, 0.182f));
+            }
+        }
+
+        activeButton = newActiveButton;
+
+        if (activeButton != nullptr) {
+            activeButton->setActive(true);
+            if(activeButton == changeSongButton){
+                activeButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
+            }
+        }
+        activeButton = newActiveButton;
+    }
 
     // Dodajemy metodę do wywołania funkcji onClick dla aktywnego przycisku
     void clickActiveButton() {
@@ -207,19 +207,19 @@ public:
 
         pauseWallpaper->setTexture(background);
 
-//        currentScene->addEntity(cs);
-//        cs->addComponent(changeSongButton);
-//        changeSongButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
-//        changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
+        currentScene->addEntity(cs);
+        cs->addComponent(changeSongButton);
+        changeSongButton->getTransform()->setScale(glm::vec3(0.39f, 0.068f, 0.196f));
+        changeSongButton->getTransform()->setPosition(glm::vec3(0.0f, -0.25f, 0.0f));
 
-//        changeSongButton->setTexture(cs_button_activ);
-//        changeSongButton->setInactiveTexture(cs_button_idle);
-//        changeSongButton->setActiveTexture(cs_button_activ);
-//
-//        changeSongButton->setOnClick([this]() {
-//            std::cout << "changeButton button clicked!" << std::endl;
-//            this->sm.setCurrentScene("SongScene");
-//        });
+        changeSongButton->setTexture(cs_button_activ);
+        changeSongButton->setInactiveTexture(cs_button_idle);
+        changeSongButton->setActiveTexture(cs_button_activ);
+
+        changeSongButton->setOnClick([this]() {
+            std::cout << "changeButton button clicked!" << std::endl;
+            this->sm.setCurrentScene("SongScene");
+        });
 
         currentScene->addEntity(ex);
         ex->addComponent(exitButton);
@@ -255,7 +255,7 @@ public:
         s.lastFrame = currentFrame;
         debugInput.interpretInput(s.window, s.camera, s.deltaTime);
 
-        //time = time + s.deltaTime;
+//        time = time + s.deltaTime;
 
         deltaTime = s.deltaTime;
 
@@ -291,34 +291,34 @@ public:
         imageShader.use();
         pauseWallpaper->renderPlane();
 
-        //continueButton->renderPlane();
-        //changeSongButton->renderPlane();
+        continueButton->renderPlane();
+        changeSongButton->renderPlane();
         exitButton->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
-//        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
-//            if (joystickOffset.y < 0.5) {
-//                if (activeButton == changeSongButton) {
-//                    changeActiveButton(exitButton);
-//                } else if (activeButton == exitButton) {
-//                    changeActiveButton(changeSongButton);
-//                }
-//            }
-//            else if (joystickOffset.y > -0.5) {
-//                if (activeButton == exitButton) {
-//                    changeActiveButton(changeSongButton);
-//                } else if (activeButton == changeSongButton) {
-//                    changeActiveButton(exitButton);
-//                }
-//            }
-//            lastButtonChangeTime = currentFrame;
-//            joystickReset = false;
-//        } else if (std::abs(joystickOffset.y) <= 0.5) {
-//            joystickReset = true;
-//        }
+        if ((isDelayPassed && isJoystickMoved) || (joystickReset && isJoystickMoved)) {
+            if (joystickOffset.y < 0.5) {
+                if (activeButton == changeSongButton) {
+                    changeActiveButton(exitButton);
+                } else if (activeButton == exitButton) {
+                    changeActiveButton(changeSongButton);
+                }
+            }
+            else if (joystickOffset.y > -0.5) {
+                if (activeButton == exitButton) {
+                    changeActiveButton(changeSongButton);
+                } else if (activeButton == changeSongButton) {
+                    changeActiveButton(exitButton);
+                }
+            }
+            lastButtonChangeTime = currentFrame;
+            joystickReset = false;
+        } else if (std::abs(joystickOffset.y) <= 0.5) {
+            joystickReset = true;
+        }
 
 
         if (playerInput.isKeyPressed(0) || playerInput.isKeyPressed(1)) {
