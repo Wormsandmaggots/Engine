@@ -1045,7 +1045,7 @@ public:
             reset = true;
         }
 
-        if (time > songLenghtGlobal + 5)
+        if (time > songLenghtGlobal + 7)
         {
             AudioManager::getInstance().pauseThisSong("bicik");
             sm.setCurrentScene("WinScene");
