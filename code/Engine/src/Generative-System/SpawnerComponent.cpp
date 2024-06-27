@@ -179,6 +179,13 @@ void SpawnerComponent::update()
 		//spawnAnimationRing(glm::vec3(8.4, -1.7, 53.0), "drink");
 	}
 
+	if (entitiesActive.size() > 0) {
+		decrease = true;
+	}
+	else {
+		decrease = false;
+	}
+
 	for (Collectable *entity : entitiesActive)
 	{
 		if (entity->animation)

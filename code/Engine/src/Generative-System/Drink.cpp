@@ -28,12 +28,12 @@ void Drink::onTriggerEnter(ColliderComponent *collidedWith)
 	{
 		this->animationPos = position;
 		this->animation = true;
-		ScoreNumbers::getInstance().calculateViewPos(position, "FREEZE!");
+		AudioManager::getInstance().playSound("res/content/sounds/effects/drink.wav", 0.4);
+		ScoreNumbers::getInstance().calculateViewPos(position, "FREEZE");//TODO:
+		this->active = false;
 		position = glm::vec3(-100);
 		this->getTransform()->setPosition(glm::vec3(-100));
 		currentDrink = (DrinkType)(rand() % 3);
 		combo += 1;
-		this->active = false;
-		AudioManager::getInstance().playSound("res/content/sounds/effects/drink.wav", 0.4);
 	}
 }

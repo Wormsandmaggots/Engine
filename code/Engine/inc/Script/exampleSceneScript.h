@@ -423,7 +423,9 @@ public:
     void resetGame()
     {
         score = 0;
+        lastScore = 0;
         combo = 0;
+        timeLeft = 0;
         player->getTransform()->setPosition(glm::vec3(0, -2.5, 0));
         spawnerComponent->reset();
         time = 0;
@@ -435,7 +437,7 @@ public:
         spawnerComponent->orbsSpawned = 0;
 		currentDrink = DrinkType::None;
         lookatAngle = 0;
-
+        canDecreaseBar = true;
         spawnerComponent->xRH = 0;
         spawnerComponent->yRH = 0;
         spawnerComponent->yLH = 0;
@@ -904,7 +906,7 @@ public:
         // Jeśli upłynęła 1 sekunda od ostatniej aktualizacji
         if (currentTime - lastUpdateTime >= resizeInterval)
         {
-            if (time < songLenghtGlobal && canDecreaseBar)
+            if (time < songLenghtGlobal && canDecreaseBar&&spawnerComponent->decrease)
                 resBar->resizeOnImpulse(resizeAmount);
             lastUpdateTime = currentTime;
             if (lookatAngle < 170.0f)
