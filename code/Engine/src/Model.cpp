@@ -1,6 +1,4 @@
 #include "Model.h"
-#include "imgui.h"
-#include "Editor/Panels/FileDialog.h"
 #include <GLFW/glfw3.h>
 #include "assimp_glm_helpers.h"
 void Model::awake() {}
@@ -200,33 +198,8 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
     return textures;
 }
 
-void Model::convertToYaml(YAML::Emitter &emitter) {
-    emitter << YAML::Key << "Type" << YAML::Value << "Model";
-
-    emitter << YAML::Key << "Path" << YAML::Value << path;
-}
-
 void Model::setPath(std::string path) {
     this->path = path;
-}
-
-void Model::drawEditor() {
-    ImGui::Text("Model");
-
-    if(ImGui::Button(path.c_str()))
-    {
-        std::string newPath = FileDialog::openFile("");
-
-        if(!newPath.empty())
-        {
-            setPath(newPath);
-            textures_loaded.clear();
-            meshes.clear();
-            loadModel(newPath);
-        }
-    }
-
-    ImGui::NewLine();
 }
 
 auto& Model::GetBoneInfoMap() {return m_BoneInfoMap;}

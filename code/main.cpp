@@ -28,7 +28,6 @@ int main() {
     PlayerInput playerInput1(GLFW_JOYSTICK_2);
     DebugInput debugInput;
 
-    EditorLayer::Editor editor;
     CollisionManager cm;
     SceneManager sm;
     AudioManager& audioManager(AudioManager::getInstance());
@@ -69,7 +68,6 @@ int main() {
     sm.loadScene("res/content/maps/Calibration.yaml");
     ssao.create(s.WINDOW_WIDTH, s.WINDOW_HEIGHT);
     renderer.init();
-    editor.init(&s.camera);
 
     //Ustawianie aktualnej sceny na menuSceneScript
     sm.setCurrentScene("KubaScene");
@@ -156,7 +154,7 @@ int main() {
 
 
     //instance
-    exampleSceneScript* examplesceneScript = new exampleSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    exampleSceneScript* examplesceneScript = new exampleSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                                     shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                                     imageShaderGreen, shaderRigInstanced, shaderDjRig, shaderRigInstanced2);
@@ -166,7 +164,7 @@ int main() {
     examplesceneScript->start();
 
 
-    menuSceneScript* menusceneScript = new menuSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    menuSceneScript* menusceneScript = new menuSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
@@ -174,7 +172,7 @@ int main() {
     menusceneScript->awake();
     menusceneScript->start();
 
-    pauseSceneScript* pausesceneScript = new pauseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    pauseSceneScript* pausesceneScript = new pauseSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
@@ -182,7 +180,7 @@ int main() {
     pausesceneScript->awake();
     pausesceneScript->start();
 
-    loseSceneScript* losesceneScript = new loseSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    loseSceneScript* losesceneScript = new loseSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                               shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                               shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                               imageShaderGreen, shaderRigInstanced);
@@ -190,7 +188,7 @@ int main() {
     losesceneScript->awake();
     losesceneScript->start();
 
-    winSceneScript* winsceneScript = new winSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    winSceneScript* winsceneScript = new winSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                            shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                            shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                            imageShaderGreen, shaderRigInstanced);
@@ -198,7 +196,7 @@ int main() {
     winsceneScript->awake();
     winsceneScript->start();
 
-    creditsSceneScript* creditssceneScript = new creditsSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    creditsSceneScript* creditssceneScript = new creditsSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                         shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                         shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                         imageShaderGreen, shaderRigInstanced);
@@ -206,7 +204,7 @@ int main() {
     creditssceneScript->awake();
     creditssceneScript->start();
 
-    songSceneScript* songsceneScript = new songSceneScript(editor, cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
+    songSceneScript* songsceneScript = new songSceneScript(cm, sm, ssao, renderer, audioManager, playerInput, playerInput1, debugInput,
                                                                     shader, collisionTestShader, shaderText, colorShader, shaderPbr, screenShader,
                                                                     shaderRig, shaderBarmanRig, DrunkShader, shaderNoneDrink, reverseShader, imageShader,
                                                                     imageShaderGreen, shaderRigInstanced);
@@ -214,7 +212,7 @@ int main() {
     songsceneScript->awake();
     songsceneScript->start();
 
-    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(editor, cm, sm, ssao, renderer, /*AudioManager &audioManager, */playerInput,
+    calibrationSceneScript* calibrationsceneScript = new calibrationSceneScript(cm, sm, ssao, renderer, /*AudioManager &audioManager, */playerInput,
                                                                                 playerInput1, debugInput, shader, collisionTestShader, shaderText,
                                                                                 colorShader, shaderPbr, screenShader, shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
             /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/imageShader, imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/);

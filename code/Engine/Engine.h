@@ -1,12 +1,7 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
 
-#include "imgui.h"
-#include "imgui_impl/imgui_impl_glfw.h"
-#include "imgui_impl/imgui_impl_opengl3.h"
 #include "Core/AssetManager/AssetManager.h"
-#include "Debug/Profiler.h"
-//#include "tracy/Tracy.hpp"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 //#define PROFILER
@@ -33,7 +28,6 @@ void operator delete(void* ptr) noexcept
 #include "Scene/SceneManager.h"
 #include "Debug/Logger.h"
 #include "Audio/AudioManager.h"
-#include "Editor/Gizmos.h"
 #include "Engine/inc/Physics/Colliders/Collider.h"
 #include "Input/Input.h"
 
@@ -75,16 +69,16 @@ int GLFWInit()
 void init_imgui()
 {
     // Setup Dear ImGui binding
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
-
-    ImGui_ImplGlfw_InitForOpenGL(s.window, true);
-    ImGui_ImplOpenGL3_Init(s.glsl_version);
-
-    ImGui::StyleColorsDark();
+//    IMGUI_CHECKVERSION();
+//    ImGui::CreateContext();
+//    ImGuiIO& io = ImGui::GetIO(); (void)io;
+//    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+//    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+//
+//    ImGui_ImplGlfw_InitForOpenGL(s.window, true);
+//    ImGui_ImplOpenGL3_Init(s.glsl_version);
+//
+//    ImGui::StyleColorsDark();
 }
 
 static void glfw_error_callback(int error, const char* description)
@@ -110,10 +104,10 @@ void SetCallbacks(GLFWwindow* window)
 
 void imgui_begin()
 {
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+//    // Start the Dear ImGui frame
+//    ImGui_ImplOpenGL3_NewFrame();
+//    ImGui_ImplGlfw_NewFrame();
+//    ImGui::NewFrame();
 }
 #pragma endregion INITIALIZERS
 ///!!!!!----------------------------->
@@ -185,8 +179,8 @@ void update(){
         Profiler::get().markFrame();
                 Profiler::get().zoneScope();
     #endif
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+//        ImGui::Render();
+//        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(s.window);
         glfwMakeContextCurrent(s.window);
@@ -194,9 +188,9 @@ void update(){
 }
 void end(){
     AssetManager::end();
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+//    ImGui_ImplOpenGL3_Shutdown();
+//    ImGui_ImplGlfw_Shutdown();
+//    ImGui::DestroyContext();
 
     glfwDestroyWindow(s.window);
     glfwTerminate();

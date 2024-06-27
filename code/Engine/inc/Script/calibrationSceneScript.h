@@ -36,7 +36,6 @@ using namespace SceneManagement;
 class calibrationSceneScript : public SceneScript
 {
 private:
-    EditorLayer::Editor &editor;
     // collision
     CollisionManager &cm;
     // scene manager
@@ -158,10 +157,10 @@ private:
 
 public:
     // Konstruktor domyślny
-    calibrationSceneScript(EditorLayer::Editor &editor, CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, /*AudioManager &audioManager, */PlayerInput &playerInput,
+    calibrationSceneScript( CollisionManager &cm, SceneManager &sm, SSAO &ssao, Renderer &renderer, /*AudioManager &audioManager, */PlayerInput &playerInput,
                        PlayerInput &playerInput1, DebugInput &debugInput, Shader &shader, Shader &collisionTestShader, Shader &shaderText,
                        Shader &colorShader, Shader &shaderPbr, Shader &screenShader, Shader &shaderRig,/* Shader &shaderBarmanRig, Shader &DrunkShader,*/
-                       /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/ Shader &imageShader, Shader &imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/) : editor(editor),
+                       /*Shader &shaderNoneDrink, *//*Shader &reverseShader,*/ Shader &imageShader, Shader &imageShaderGreen /*Shader &shaderRigInstanced, Shader &shaderDjRig,Shader &shaderRigInstanced2*/) :
                                              cm(cm),
                                              sm(sm),
                                              ssao(ssao),
@@ -415,7 +414,6 @@ public:
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
         glBindFramebuffer(GL_FRAMEBUFFER, ssao.gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        editor.draw();
 
         sm.updateLoadedScenes();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

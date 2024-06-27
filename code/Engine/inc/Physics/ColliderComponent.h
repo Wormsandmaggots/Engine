@@ -21,11 +21,9 @@ public:
     void awake() override{};
     void onDestroy() override{};
     void update() override;
-    void convertToYaml(YAML::Emitter &) override;
 
     Collider *getCollider() const;
 
-    void drawEditor() override;
 
 private:
     Collider* collider = new Collider(this);

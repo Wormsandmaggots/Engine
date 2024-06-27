@@ -1,7 +1,6 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 #include "yaml-cpp/yaml.h"
-#include "imgui.h"
 
 
 unsigned int Entity::EntityCounter = 0;
@@ -132,66 +131,6 @@ Entity::~Entity() {
 void Entity::removeChild(Entity *e) {
     children.erase(std::remove(children.begin(), children.end(), e), children.end());
     e->parent = nullptr;
-}
-
-void Entity::toYaml(YAML::Emitter &emitter) {
-
-    emitter << YAML::BeginMap << YAML::Key << "Name" << YAML::Anchor(to_string(id)) << YAML::Value << name;
-
-    if(parent != nullptr)
-    {
-        emitter << YAML::Key << "Parent" << YAML::Alias(to_string(parent->id));
-    }
-
-    float pos[3] = {transform->getLocalPosition().x,
-                    transform->getLocalPosition().y,
-                    transform->getLocalPosition().z};
-
-    float rot[3] = {transform->getLocalRotation().x,
-                    transform->getLocalRotation().y,
-                    transform->getLocalRotation().z};
-
-    float scale[3] = {transform->getLocalScale().x,
-                    transform->getLocalScale().y,
-                    transform->getLocalScale().z};
-
-    emitter << YAML::Key << "Transform" << YAML::BeginMap;
-    emitter << YAML::Key << "pos" << YAML::Flow << YAML::BeginSeq << pos[0] << pos[1] << pos[2] << YAML::EndSeq;
-    emitter << YAML::Key << "rot" << YAML::Flow << YAML::BeginSeq << rot[0] << rot[1] << rot[2] << YAML::EndSeq;
-    emitter << YAML::Key << "scale" << YAML::Flow << YAML::BeginSeq << scale[0] << scale[1] << scale[2] << YAML::EndSeq;
-    emitter << YAML::EndMap;
-
-    emitter << YAML::Key << "Components" << YAML::BeginSeq;
-
-    for(Component* c : components)
-    {
-        emitter << YAML::BeginMap;
-        c->convertToYaml(emitter);
-        emitter << YAML::EndMap;
-    }
-
-    emitter << YAML::EndSeq;
-
-    emitter << YAML::EndMap;
-
-    for (Entity* e : children) {
-        e->toYaml(emitter);
-    }
-}
-
-void Entity::drawEditor() {
-    int i = 0;
-    for (Component* c : components) {
-        c->drawEditor();
-        ImGui::Button("Remove component");
-        if(ImGui::IsItemClicked())
-        {
-            removeComponent(i);
-        }
-
-        ImGui::Separator();
-        i++;
-    }
 }
 
 void Entity::removeComponent(Component *c) {

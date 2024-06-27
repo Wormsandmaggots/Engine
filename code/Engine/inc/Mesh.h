@@ -10,7 +10,6 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include <tracy/Tracy.hpp>
 #include "Shader.h"
 #include "ECS/Component.h"
 #include "Renderer/Texture.h"
@@ -161,7 +160,6 @@ public:
         else{
             str =path;
         }
-        ZoneTransientN(Draw,str.c_str(), true);
         // bind appropriate textures
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
