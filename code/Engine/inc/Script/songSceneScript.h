@@ -296,12 +296,12 @@ public:
         backToMenu->setInactiveTexture(buttonmenu_idle);
         backToMenu->setActiveTexture(buttonmenu_activ);
 
-        backToMenu->setOnClick([this]() {
-            std::cout << "backToMenu button clicked!" << std::endl;
-            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
-            //this->sm.setCurrentScene("CalibrationScene");
-            this->sm.setCurrentScene("KubaScene");
-        });
+//        backToMenu->setOnClick([this]() {
+//            std::cout << "backToMenu button clicked!" << std::endl;
+//            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
+//            //this->sm.setCurrentScene("CalibrationScene");
+//            this->sm.setCurrentScene("KubaScene");
+//        });
 
         //letsdance
         currentScene->addEntity(sg);
@@ -313,12 +313,12 @@ public:
         startGame->setInactiveTexture(buttonstart_idle);
         startGame->setActiveTexture(buttonstart_activ);
 
-        startGame->setOnClick([this]() {
-            std::cout << "startgame button clicked!" << std::endl;
-            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
-            this->sm.setCurrentScene("CalibrationScene");
-            //this->sm.setCurrentScene("MarcinScene");
-        });
+//        startGame->setOnClick([this]() {
+//            std::cout << "startgame button clicked!" << std::endl;
+//            //pathToSong = "res/content/sounds/songs/80/goddess.wav";
+//            this->sm.setCurrentScene("CalibrationScene");
+//            //this->sm.setCurrentScene("MarcinScene");
+//        });
 
         //buttons on scene handling
         activeButton = era00;
@@ -372,8 +372,8 @@ public:
         era00->renderPlane();
         era80->renderPlane();
         era90->renderPlane();
-        startGame->renderPlane();
-        backToMenu->renderPlane();
+//        startGame->renderPlane();
+//        backToMenu->renderPlane();
 
 
         glEnable(GL_DEPTH_TEST);
