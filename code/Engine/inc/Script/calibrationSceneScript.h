@@ -612,11 +612,11 @@ public:
         }
 
 
-        if(firstCollision || secondCollision || thirdCollision || fourthCollision){
+        if(firstCollision && secondCollision && thirdCollision && fourthCollision){
             sm.setCurrentScene("MarcinScene");
         }
 
-        if (playerInput.isKeyPressed(1))
+        if (playerInput.isKeyPressed(0) || playerInput.isKeyPressed(1))
         {
             sm.setCurrentScene("MarcinScene");
         }

@@ -50,6 +50,8 @@ private:
     std::vector<SongSample> songData;
     int songDataIndex;
 
+    bool started = true;
+
     // input joystick
     int connectedControllers;
     ///////////////////////////////////////////////////
@@ -682,6 +684,10 @@ public:
             reset = false;
         }
 
+        if(started){
+            s.camera.SetPosition(glm::vec3(0.0f, 1.0f, -9.5f));
+            started = false;
+        }
         float currentFrame = static_cast<float>(glfwGetTime());
         s.deltaTime = currentFrame - s.lastFrame;
         s.lastFrame = currentFrame;
@@ -1035,7 +1041,7 @@ public:
         rightFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:RightFoot")->getModelPosition() * 0.01f);
         leftFootPointer->getTransform()->setPosition(glm::vec3(0, 0, 0.6) + playerRig->getBone("mixamorig:LeftFoot")->getModelPosition() * 0.01f);
 
-        if (playerInput.isKeyPressed(1))
+        if (playerInput.isKeyPressed(0) || playerInput.isKeyPressed(1))
         {
             sm.setCurrentScene("PauseScene");
         }
