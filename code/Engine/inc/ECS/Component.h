@@ -25,8 +25,8 @@ public:
     virtual void onDestroy() {};
     virtual void setParent(Entity* e);
     virtual void setTransform(Transform2* t);
-    virtual void convertToYaml(YAML::Emitter&);
-    virtual void drawEditor() {};
+    //virtual void convertToYaml(YAML::Emitter&);
+    //virtual void drawEditor() {};
 
 private:
 

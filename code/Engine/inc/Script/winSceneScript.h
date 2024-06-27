@@ -33,7 +33,6 @@ using namespace SceneManagement;
 
 class winSceneScript : public SceneScript {
 private:
-    EditorLayer::Editor& editor;
     // collision
     CollisionManager& cm;
     // scene manager
@@ -107,11 +106,10 @@ private:
 
 public:
     // Konstruktor domyślny
-    winSceneScript(EditorLayer::Editor& editor, CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
+    winSceneScript(CollisionManager& cm, SceneManager& sm, SSAO& ssao, Renderer& renderer, AudioManager& audioManager, PlayerInput& playerInput,
                     PlayerInput& playerInput1, DebugInput& debugInput, Shader& shader, Shader& collisionTestShader, Shader& shaderText,
                     Shader& colorShader, Shader& shaderPbr, Shader& screenShader, Shader& shaderRig, Shader& shaderBarmanRig, Shader& DrunkShader,
                     Shader& shaderNoneDrink, Shader& reverseShader, Shader& imageShader, Shader& imageShaderGreen, Shader& shaderRigInstanced) :
-            editor(editor),
             cm(cm),
             sm(sm),
             ssao(ssao),
@@ -279,7 +277,6 @@ public:
 
         renderer.updateProjectionAndView(projection, view, s.camera.Position);
 
-        editor.draw();
         sm.updateLoadedScenes();
 
         glDisable(GL_DEPTH_TEST);

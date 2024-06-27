@@ -65,8 +65,8 @@ public:
     Shader* getShader()override;
     Transform2* getTransform()override;
 
-    void convertToYaml(YAML::Emitter &) override;
-    void drawEditor() override;
+    //void convertToYaml(YAML::Emitter &) override;
+    //void drawEditor() override;
     void setPath(std::string);
     const aiScene* getScene();
     std::string getPath();

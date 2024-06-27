@@ -39,10 +39,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${glad_SOURCE_DIR}
         ${stb_image_SOURCE_DIR}
-        ${imgui_SOURCE_DIR}
-        ${ImGuizmo_SOURCE_DIR}
         ${miniaudio_SOURCE_DIR}
-        ${aabb_SOURCE_DIR}
         ${ftgl_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine/inc
         ${fftw_dir}
@@ -55,18 +52,13 @@ target_link_libraries(${PROJECT_NAME}
         stb_image
         assimp
         glfw
-        imgui
         spdlog
         glm::glm
         nlohmann_json::nlohmann_json
         yaml-cpp
         freetype
         miniaudio
-        #aabb
         effolkronium_random
-        gizmos
-        #ftgl
-        TracyClient
         sndfile
         JoyShockLibrary
         ${fftw_dir}/fftw3.lib
