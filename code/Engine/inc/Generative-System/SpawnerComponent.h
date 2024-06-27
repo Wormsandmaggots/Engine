@@ -37,12 +37,14 @@ public:
     int songDataIndex=0;
 
     bool started = false;
+	bool decrease = false;
 
     unsigned int entitiesCount;
     unsigned int orbsSpawned;
     float spawnAfter = songInterval;
     float spawnTimer;
     std::string songPath;
+
 
     SpawnerComponent(std::string songPath, glm::vec3 originPos, unsigned int enritiesCount);
     void update() override;
