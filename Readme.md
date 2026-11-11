@@ -26,3 +26,7 @@ To enable color console output in clion
 ## Error situations
 - try deleting dlls from the folder where your exe is and reload cmake
 - imgui problem? check if your custom callbacks are set before imgui init
+
+## Game engine architecture design
+<img width="4989" height="2621" alt="0_0" src="https://github.com/user-attachments/assets/eb87f3e1-d320-4d51-8c06-f030265d9056" />
+
